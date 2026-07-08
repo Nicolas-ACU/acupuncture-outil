@@ -218,7 +218,14 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
   <div id="content">
 
     <div class="pg on" id="pg-patients">
-      <div id="pat-list"></div>
+      <div class="sh"><h2>Dossiers patients</h2><span class="zh">病人列表</span></div>
+      <div style="display:flex;gap:8px;margin-bottom:12px">
+        <input id="pt-search" placeholder="🔍 Rechercher un patient…"
+          style="flex:1;padding:9px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;font-family:inherit"
+          oninput="renderPatients()">
+        <button class="btn bg" onclick="newPatient()">➕ Nouveau patient</button>
+      </div>
+      <div id="pt-list"></div>
     </div>
 
     <div class="pg" id="pg-fiche">
@@ -1354,8 +1361,9 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
         <button class="btn" onclick="exportPatient()">⬇ Export Excel</button>
       </div>
 
+    </div>
 
-      <div class="pg" id="pg-seances">
+    <div class="pg" id="pg-seances">
       <div class="sh"><h2>Historique des séances</h2><span class="zh">就诊历史</span></div>
       <div id="seances-list"></div>
     </div>
@@ -1753,12 +1761,26 @@ let db=null;
 function openDB(){
   return new Promise((res,rej)=>{
     const req=indexedDB.open('MTC_v5',1);
-    req.onupgradeneeded=e=>{const d=e.target.result;if(!d.objectStoreNames.contains('patients'))d.createObjectStore('patients',{keyPath:'id',autoIncrement:true});};
-    req.onsuccess=e=>{db=e.target.result;res(db);};
-    req.onerror=()=>rej(req.error);
+    req.onupgradeneeded=e=>{
+      const d=e.target.result;
+      if(!d.objectStoreNames.contains('patients'))
+        d.createObjectStore('patients',{keyPath:'id',autoIncrement:true});
+    };
+    req.onsuccess=e=>{db=e.target.result;console.log('IndexedDB MTC_v5 ouverte');res(db);};
+    req.onerror=e=>{
+      console.error('IndexedDB erreur:',req.error);
+      showToast('❌ Base de données inaccessible : '+req.error?.message);
+      rej(req.error);
+    };
+    req.onblocked=()=>{
+      showToast('⚠️ Base bloquée — fermez les autres onglets MTC et rechargez');
+    };
   });
 }
-const dbt=(m='readonly')=>db.transaction('patients',m).objectStore('patients');
+const dbt=(m='readonly')=>{
+  if(!db) throw new Error('Base de données non initialisée — rechargez la page');
+  return db.transaction('patients',m).objectStore('patients');
+};
 function dbGet(id){return new Promise((r,j)=>{const q=dbt().get(id);q.onsuccess=()=>r(q.result);q.onerror=()=>j(q.error);});}
 function dbAll(){return new Promise((r,j)=>{const q=dbt().getAll();q.onsuccess=()=>r(q.result);q.onerror=()=>j(q.error);});}
 function dbPut(o){
@@ -1808,15 +1830,18 @@ function navTo(pg){
   if(pg==='patients')renderPatients();
   if(pg==='seances')renderSeances();
   if(pg==='dix')updDixInfo();
+  if(pg==='fiche'&&!curPt){curPt=mkPt();document.getElementById('btn-dp').style.display='none';document.getElementById('pi-name').textContent='Nouveau patient';document.getElementById('pi-sub').textContent='0 séance';}
   if(pg==='examen')restorePoulsDisplays();
   if(pg==='realises')updateRealisesPage();
 }
 // ══════ PATIENTS ══════
 async function renderPatients(){
   const all=await dbAll();
-  const q=(document.getElementById('pt-search').value||'').toLowerCase();
+  const searchEl=document.getElementById('pt-search');
+  const q=searchEl?(searchEl.value||'').toLowerCase():'';
   const list=all.filter(p=>(p.nom+p.prenom).toLowerCase().includes(q)).sort((a,b)=>(a.nom+a.prenom).localeCompare(b.nom+b.prenom));
   const el=document.getElementById('pt-list');
+  if(!el)return;
   if(!list.length){el.innerHTML='<p style="color:var(--slate);font-size:13px;text-align:center;padding:24px">Aucun patient. Créez votre premier dossier.</p>';return;}
   el.innerHTML=list.map(p=>{
     const ini=((p.prenom||'?')[0]+(p.nom||'?')[0]).toUpperCase();
@@ -1849,15 +1874,31 @@ function loadFiche(){
   s('p-atcd',curPt.atcd);s('p-traitement',curPt.traitement);s('p-allergies',curPt.allergies);s('p-vie',curPt.vie);
 }
 async function savePatient(){
-  if(!curPt)return;
+  // Créer curPt si on arrive sur la fiche sans passer par "Nouveau patient"
+  if(!curPt) curPt = mkPt();
   const g=id=>(document.getElementById(id)||{}).value||'';
   curPt.nom=g('p-nom');curPt.prenom=g('p-prenom');curPt.ddn=g('p-ddn');curPt.age=g('p-age');
   curPt.sexe=g('p-sexe');curPt.prof=g('p-prof');curPt.tel=g('p-tel');curPt.email=g('p-email');
   curPt.motif=g('p-motif');curPt.praticien=g('p-praticien');
   curPt.atcd=g('p-atcd');curPt.traitement=g('p-traitement');curPt.allergies=g('p-allergies');curPt.vie=g('p-vie');
   if(!curPt.seances)curPt.seances=[];
-  const id=await dbPut(curPt);if(!curPt.id)curPt.id=id;
-  updSb();isDirty=false;showToast('Patient enregistré');
+  try {
+    const id=await dbPut(curPt);
+    if(!curPt.id)curPt.id=id;
+    updSb();isDirty=false;
+    // Mettre à jour l'affichage et rendre btn-ns visible
+    const nom=(curPt.prenom+' '+curPt.nom).trim()||'Patient';
+    document.getElementById('pi-name').textContent=nom;
+    document.getElementById('pi-sub').textContent=(curPt.seances.length||0)+' séance'+(curPt.seances.length>1?'s':'');
+    document.getElementById('btn-dp').style.display='';
+    // Afficher btn-ns maintenant qu'on a un patient
+    document.getElementById('btn-ns').style.display='';
+    await renderPatients();
+    showToast('✅ Patient enregistré — cliquez ➕ Nouvelle séance');
+  } catch(e) {
+    showToast('❌ Erreur : '+e.message);
+    console.error('savePatient error:',e);
+  }
 }
 async function deletePtById(id, nom){
   if(!confirm(`Supprimer définitivement le dossier de ${nom} et toutes ses séances ?`)) return;
@@ -2031,14 +2072,30 @@ function collectSc(){
   return sc;
 }
 async function saveSeance(){
-  if(!curPt){showToast('Aucun patient');return;}
-  if(!curPt.id)await savePatient();
+  if(!curPt){showToast('Aucun patient — créez d\'abord un patient');return;}
+  // S'assurer que le patient est en base
+  if(!curPt.id){
+    await savePatient();
+    if(!curPt.id){showToast('Erreur : identité patient non enregistrée');return;}
+  }
+  if(!curPt.seances)curPt.seances=[];
   const sc=collectSc();
   sc.statut='realisee';
-  if(!curPt.seances)curPt.seances=[];
-  if(curScIdx!==null)curPt.seances[curScIdx]=sc;
-  else{curPt.seances.push(sc);curScIdx=curPt.seances.length-1;}
-  await dbPut(curPt);updSb();isDirty=false;syncPts();showToast('Séance enregistrée');
+  if(curScIdx!==null && curPt.seances[curScIdx]){
+    curPt.seances[curScIdx]=sc;
+  } else {
+    curPt.seances.push(sc);
+    curScIdx=curPt.seances.length-1;
+  }
+  try {
+    await dbPut(curPt);
+    updSb();isDirty=false;syncPts();
+    showToast('✅ Séance enregistrée (N°'+curScIdx+')');
+    renderSeances();
+  } catch(e) {
+    showToast('❌ Erreur enregistrement : '+e.message);
+    console.error('saveSeance error:',e);
+  }
 }
 
 async function saveCCMQOnly(){
