@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mtc-consult-v1';
+const CACHE_NAME = 'mtc-consult-v3';
 const FILES_TO_CACHE = ['./', './consultation_mtc.html', './manifest.json', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', event => {
@@ -14,9 +14,14 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
   if(event.request.url.includes('anthropic.com')) return;
   event.respondWith(
-    caches.match(event.request).then(cached => {
-      if(cached) return cached;
-      return fetch(event.request).catch(() => caches.match('./consultation_mtc.html'));
-    })
+    fetch(event.request)
+      .then(response => {
+        if(response && response.status === 200){
+          const clone = response.clone();
+          caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
+        }
+        return response;
+      })
+      .catch(() => caches.match(event.request))
   );
 });
