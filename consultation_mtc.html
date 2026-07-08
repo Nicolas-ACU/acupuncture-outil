@@ -1452,9 +1452,20 @@ function logout(){
 
 // ══════ SERVICE WORKER (PWA offline) ══════
 if('serviceWorker' in navigator){
-  window.addEventListener('load', ()=>{
+  // Désinscrire TOUS les anciens SW puis réinscrire
+  window.addEventListener('load', async ()=>{
+    const regs = await navigator.serviceWorker.getRegistrations();
+    for(const reg of regs){
+      if(reg.scope !== location.origin+'/'){
+        await reg.unregister();
+        console.log('Old SW unregistered:', reg.scope);
+      }
+    }
     navigator.serviceWorker.register('sw.js')
-      .then(()=>console.log('SW registered'))
+      .then(reg=>{
+        console.log('SW registered v3');
+        reg.update(); // Forcer la vérification de mise à jour
+      })
       .catch(e=>console.log('SW error:', e));
   });
 }
