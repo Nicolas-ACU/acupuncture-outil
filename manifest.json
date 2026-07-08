@@ -1,0 +1,27 @@
+{
+  "name": "MTC Consult — Acupuncture",
+  "short_name": "MTC Consult",
+  "description": "Application de consultation en acupuncture et médecine traditionnelle chinoise",
+  "start_url": "./consultation_mtc.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#1A3A2A",
+  "theme_color": "#2D6A4F",
+  "lang": "fr",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["medical", "health"],
+  "screenshots": []
+}
