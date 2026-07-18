@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Questionnaire Acupuncture — Dr Nicolas BLANCHARD</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f7f5; color: #1a3a2a; min-height: 100vh; }
+
+  .header { background: linear-gradient(135deg, #1A3A2A 0%, #2D6A4F 100%); color: #fff; padding: 28px 20px 20px; text-align: center; }
+  .header h1 { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+  .header p { font-size: 13px; opacity: .8; }
+  .header .doc { font-size: 14px; font-weight: 600; margin-top: 8px; opacity: .9; }
+
+  .intro { background: #fff; border-left: 4px solid #2D6A4F; margin: 16px; border-radius: 8px; padding: 16px; font-size: 13px; line-height: 1.7; color: #374151; }
+  .intro strong { color: #1A3A2A; }
+  .scale { background: #F0FDF4; border-radius: 6px; padding: 10px 14px; margin-top: 10px; font-size: 12px; display: flex; flex-wrap: wrap; gap: 6px 14px; }
+  .scale span { color: #2D6A4F; font-weight: 600; }
+
+  .progress-bar { margin: 0 16px 4px; height: 6px; background: #e0e0e0; border-radius: 3px; overflow: hidden; }
+  .progress-fill { height: 100%; background: #2D6A4F; border-radius: 3px; transition: width .3s; width: 0%; }
+  .progress-txt { text-align: right; font-size: 11px; color: #6B7280; margin: 0 16px 12px; }
+
+  .qcard { background: #fff; border-radius: 12px; margin: 0 16px 12px; padding: 18px; box-shadow: 0 2px 8px rgba(0,0,0,.06); border: 2px solid transparent; transition: border-color .2s; }
+  .qcard.answered { border-color: #86EFAC; }
+  .qnum { font-size: 11px; font-weight: 700; color: #2D6A4F; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 8px; }
+  .qtot { color: #9CA3AF; font-weight: 400; }
+  .qtxt { font-size: 15px; line-height: 1.5; color: #1F2937; margin-bottom: 14px; }
+
+  .opts { display: flex; gap: 8px; flex-wrap: wrap; }
+  .opt { flex: 1; min-width: 52px; border: 2px solid #D1FAE5; border-radius: 10px; background: #F0FDF4; cursor: pointer; padding: 8px 4px; text-align: center; transition: all .15s; }
+  .opt:hover { border-color: #2D6A4F; background: #D1FAE5; }
+  .opt.sel { border-color: #2D6A4F; background: #2D6A4F; color: #fff; }
+  .opt .ov { display: block; font-size: 18px; font-weight: 700; line-height: 1; }
+  .opt .ol { display: block; font-size: 10px; line-height: 1.3; margin-top: 3px; opacity: .8; }
+  .opt.sel .ol { opacity: .9; }
+
+  .sticky-bottom { position: sticky; bottom: 0; background: #fff; border-top: 1px solid #E5E7EB; padding: 12px 16px; z-index: 100; }
+  .btn-fin { width: 100%; padding: 14px; background: #2D6A4F; color: #fff; border: none; border-radius: 10px; font-size: 15px; font-weight: 700; cursor: pointer; transition: background .2s; }
+  .btn-fin:hover { background: #1A3A2A; }
+  .btn-fin:disabled { background: #9CA3AF; cursor: not-allowed; }
+  .manquant { font-size: 12px; color: #EF4444; text-align: center; margin-top: 6px; display: none; }
+
+  /* RÉSULTAT */
+  #ecran-result { display: none; }
+  .result-box { background: #fff; border-radius: 12px; margin: 16px; padding: 24px; box-shadow: 0 4px 16px rgba(0,0,0,.08); }
+  .result-box h2 { font-size: 18px; color: #1A3A2A; margin-bottom: 8px; }
+  .result-box p { font-size: 13px; color: #6B7280; line-height: 1.6; margin-bottom: 16px; }
+  .code-display { background: #F0FDF4; border: 2px solid #2D6A4F; border-radius: 10px; padding: 16px; font-family: 'Courier New', monospace; font-size: 22px; letter-spacing: 3px; text-align: center; color: #1A3A2A; font-weight: 700; word-break: break-all; margin-bottom: 14px; }
+  .btn-copy { width: 100%; padding: 12px; background: #2D6A4F; color: #fff; border: none; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; margin-bottom: 8px; }
+  .btn-mail { width: 100%; padding: 12px; background: #F59E0B; color: #fff; border: none; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; }
+  .copied { background: #059669 !important; }
+  .instruc { background: #FEF3C7; border-left: 3px solid #F59E0B; border-radius: 6px; padding: 12px; font-size: 12px; line-height: 1.6; color: #92400E; margin-top: 12px; }
+</style>
+</head>
+<body>
+
+<div id="ecran-questionnaire">
+  <div class="header">
+    <h1>Questionnaire Acupuncture</h1>
+    <p>Préparez votre consultation en répondant aux 60 questions</p>
+    <div class="doc">Dr Nicolas BLANCHARD</div>
+  </div>
+
+  <div class="intro">
+    <strong>Répondez à chaque question en pensant à votre état de santé au cours des 3 derniers mois.</strong><br>
+    Appuyez simplement sur le chiffre qui correspond le mieux à votre situation.
+    <div class="scale">
+      <span>1</span> Jamais &nbsp;
+      <span>2</span> Rarement &nbsp;
+      <span>3</span> Parfois &nbsp;
+      <span>4</span> Souvent &nbsp;
+      <span>5</span> Toujours
+    </div>
+  </div>
+
+  <div class="progress-bar"><div class="progress-fill" id="prog"></div></div>
+  <div class="progress-txt" id="prog-txt">0 / 60 réponses</div>
+
+  
+    <div class="qcard" id="q1">
+      <div class="qnum">1<span class="qtot">/60</span></div>
+      <div class="qtxt">Vous sentez-vous en bonne forme ?</div>
+      <div class="opts">
+        <button class="opt" data-q="1" data-v="1" onclick="pick(this)"><span class="ov">1</span><span class="ol">Jamais</span></button>
+        <button class="opt" data-q="1" data-v="2" onclick="pick(this)"><span class="ov">2</span><span class="ol">Rarement</span></button>
+        <button class="opt" data-q="1" data-v="3" onclick="pick(this)"><span class="ov">3</span><span class="ol">Parfois</span></button>
+        <button class="opt" data-q="1" data-v="4" onclick="pick(this)"><span class="ov">4</span><span class="ol">Souvent</span></button>
+        <button class="opt" data-q="1" data-v="5" onclick="pick(this)"><span class="ov">5</span><span class="ol">Toujours</span></button>
+      </div>
+    </div>
+    <div class="qcard" id="q2">
+      <div class="qnum">2<span class="qtot">/60</span></div>
+      <div class="qtxt">Êtes-vous facilement fatigué(e) ?</div>
+      <div class="opts">
+        <button class="opt" data-q="2" data-v="1" onclick="pick(this)"><span class="ov">1</span><span class="ol">Jamais</span></button>
+        <button class="opt" data-q="2" data-v="2" onclick="pick(this)"><span class="ov">2</span><span class="ol">Rarement</span></button>
+        <button class="opt" data-q="2" data-v="3" onclick="pick(this)"><span class="ov">3</span><span class="ol">Parfois</span></button>
+        <button class="opt" data-q="2" data-v="4" onclick="pick(this)"><span class="ov">4</span><span class="ol">Souvent</span></button>
+        <button class="opt" data-q="2" data-v="5" onclick="pick(this)"><span class="ov">5</span><span class="ol">Toujours</span></button>
+      </div>
+    </div>
+    <div class="qcard" id="q3">
+      <div class="qnum">3<span class="qtot">/60</span></div>
+      <div class="qtxt">Êtes-vous essoufflé(e) ?</div>
+      <div class="opts">
+        <button class="opt" data-q="3" data-v="1" onclick="pick(this)"><span class="ov">1</span><span class="ol">Jamais</span></button>
+        <button class="opt" data-q="3" data-v="2" onclick="pick(this)"><span class="ov">2</span><span class="ol">Rarement</span></button>
+        <button class="opt" data-q="3" data-v="3" onclick="pick(this)"><span class="ov">3</span><span class="ol">Parfois</span></button>
+        <button class="opt" data-q="3" data-v="4" onclick="pick(this)"><span class="ov">4</span><span class="ol">Souvent</span></button>
+        <button class="opt" data-q="3" data-v="5" onclick="pick(this)"><span class="ov">5</span><span class="ol">Toujours</span></button>
+      </div>
+    </div>
+    <div class="qcard" id="q4">
+      <div class="qnum">4<span class="qtot">/60</span></div>
+      <div class="qtxt">Avez-vous des palpitations ?</div>
+      <div class="opts">
+        <button class="opt" data-q="4" data-v="1" onclick="pick(this)"><span class="ov">1</span><span class="ol">Jamais</span></button>
+        <button class="opt" data-q="4" data-v="2" onclick="pick(this)"><span class="ov">2</span><span class="ol">Rarement</span></button>
+        <button class="opt" data-q="4" data-v="3" onclick="pick(this)"><span class="ov">3</span><span class="ol">Parfois</span></button>
+        <button class="opt" data-q="4" data-v="4" onclick="pick(this)"><span class="ov">4</span><span class="ol">Souvent</span></button>
+        <button class="opt" data-q="4" data-v="5" onclick="pick(this)"><span class="ov">5</span><span class="ol">Toujours</span></button>
+      </div>
+    </div>
+    <div class="qcard" id="q5">
+      <div class="qnum">5<span class="qtot">/60</span></div>
+      <div class="qtxt">Avez-vous des étourdissements ou des vertiges en vous levant ?</div>
+      <div class="opts">
+        <button class="opt" data-q="5" data-v="1" onclick="pick(this)"><span class="ov">1</span><span class="ol">Jamais</span></button>
+        <button class="opt" data-q="5" data-v="2" onclick="pick(this)"><span class="ov">2</span><span class="ol">Rarement</span></button>
+        <button class="opt" data-q="5" data-v="3" onclick="pick(this)"><span class="ov">3</span><span class="ol">Parfois</span></button>
+        <button class="opt" data-q="5" data-v="4" onclick="pick(this)"><span class="ov">4</span><span class="ol">Souvent</span></button>
+        <button class="opt" data-q="5" data-v="5" onclick="pick(this)"><span class="ov">5</span><span class="ol">Toujours</span></button>
+      </div>
+    </div>
+    <div class="qcard" id="q6">
+      <div class="qnum">6<span class="qtot">/60</span></div>
+      <div class="qtxt">Avez-vous tendance à rester au calme et à peu parler ?</div>
+      <div class="opts">
+        <button class="opt" data-q="6" data-v="1" onclick="pick(this)"><span class="ov">1</span><span class="ol">Jamais</span></button>
+        <button class="opt" data-q="6" data-v="2" onclick="pick(this)"><span class="ov">2</span><span class="ol">Rarement</span></button>
+        <button class="opt" data-q="6" data-v="3" onclick="pick(this)"><span class="ov">3</span><span class="ol">Parfois</span></button>
+        <button class="opt" data-q="6" data-v="4" onclick="pick(this)"><span class="ov">4</span><span class="ol">Souvent</span></button>
+        <button class="opt" data-q="6" data-v="5" onclick="pick(this)"><span class="ov">5</span><span class="ol">Toujours</span></button>
+      </div>
+    </div>
+    <div class="qcard" id="q7">
+      <div class="qnum">7<span class="qtot">/60</span></div>
+      <div class="qtxt">Parlez-vous d'une petite voix ?</div>
+      <div class="opts">
+        <button class="opt" data-q="7" data-v="1" onclick="pick(this)"><span class="ov">1</span><span class="ol">Jamais</span></button>
+        <button class="opt" data-q="7" data-v="2" onclick="pick(this)"><span class="ov">2</span><span class="ol">Rarement</span></button>
+        <button class="opt" data-q="7" data-v="3" onclick="pick(this)"><span class="ov">3</span><span class="ol">Parfois</span></button>
+        <button class="opt" data-q="7" data-v="4" onclick="pick(this)"><span class="ov">4</span><span class="ol">Souvent</span></button>
+        <button class="opt" data-q="7" data-v="5" onclick="pick(this)"><span class="ov">5</span><span class="ol">Toujours</span></button>
+      </div>
+    </div>
+    <div class="qcard" id="q8">
+      <div class="qnum">8<span class="qtot">/60</span></div>
+      <div class="qtxt">Vous sentez-vous triste ou abattu(e) ?</div>
+      <div class="opts">
+        <button class="opt" data-q="8" data-v="1" onclick="pick(this)"><span class="ov">1</span><span class="ol">Jamais</span></button>
+        <button class="opt" data-q="8" data-v="2" onclick="pick(this)"><span class="ov">2</span><span class="ol">Rarement</span></button>
+        <button class="opt" data-q="8" data-v="3" onclick="pick(this)"><span class="ov">3</span><span class="ol">Parfois</span></button>
+        <button class="opt" data-q="8" data-v="4" onclick="pick(this)"><span class="ov">4</span><span class="ol">Souvent</span></button>
+        <button class="opt" data-q="8" data-v="5" onclick="pick(this)"><span class="ov">5</span><span class="ol">Toujours</span></button>
+      </div>
+    </div>
+    <div class="qcard" id="q9">
+      <div class="qnum">9<span class="qtot">/60</span></div>
+      <div class="qtxt">Êtes-vous tendu(e), anxieux(se) ou inquiet(ète) ?</div>
+      <div class="opts">
+        <button class="opt" data-q="9" data-v="1" onclick="pick(this)"><span class="ov">1</span><span class="ol">Jamais</span></button>
+        <button class="opt" data-q="9" data-v="2" onclick="pick(this)"><span class="ov">2</span><span class="ol">Rarement</span></button>
+        <button class="opt" data-q="9" data-v="3" onclick="pick(this)"><span class="ov">3</span><span class="ol">Parfois</span></button>
+        <button class="opt" data-q="9" data-v="4" onclick="pick(this)"><span class="ov">4</span><span class="ol">Souvent</span></button>
+        <button class="opt" data-q="9" data-v="5" onclick="pick(this)"><span class="ov">5</span><span class="ol">Toujours</span></button>
+      </div>
+    </div>
+    <div class="qcard" id="q10">
+      <div class="qnum">10<span class="qtot">/60</span></div>
+      <div class="qtxt">Êtes-vous émotionnellement fragile ?</div>
+      <div class="opts">
+        <button class="opt" data-q="10" data-v="1" onclick="pick(this)"><span class="ov">1</span><span class="ol">Jamais</span></button>
+        <button class="opt" data-q="10" data-v="2" onclick="pick(this)"><span class="ov">2</span><span class="ol">Rarement</span></button>
+        <button class="opt" data-q="10" data-v="3" onclick="pick(this)"><span class="ov">3</span><span class="ol">Parfois</span></button>
+        <button class="opt" data-q="10" data-v="4" onclick="pick(this)"><span class="ov">4</span><span class="ol">Souvent</span></button>
+        <button class="opt" data-q="10" data-v="5" onclick="pick(this)"><span class="ov">5</span><span class="ol">Toujours</span></button>
+      </div>
+    </div>
+    <div class="qcard" id="q11">
+      <div class="qnum">11<span class="qtot">/60</span></div>
+      <div class="qtxt">Vous arrive-t-il d'avoir des frayeurs ou de sursauter ?</div>
+      <div class="opts">
+        <button class="opt" data-q="11" data-v="1" onclick="pick(this)"><span class="ov">1</span><span class="ol">Jamais</span></button>
+        <button class="opt" data-q="11" data-v="2" onclick="pick(this)"><span class="ov">2</span><span class="ol">Rarement</span></button>
+        <button class="opt" data-q="11" data-v="3" onclick="pick(this)"><span class="ov">3</span><span class="ol">Parfois</span></button>
+        <button class="opt" data-q="11" data-v="4" onclick="pick(this)"><span class="ov">4</span><span class="ol">Souvent</span></button>
+        <button class="opt" data-q="11" data-v="5" onclick="pick(this)"><span class="ov">5</span><span class="ol">Toujours</span></button>
+      </div>
+    </div>
+    <div class="qcard" id="q12">
+      <div class="qnum">12<span class="qtot">/60</span></div>
+      <div class="qtxt">Ressentez-vous une tension douloureuse au niveau des seins ou sous les côtes ?</div>
+      <div class="opts">
+        <button class="opt" data-q="12" data-v="1" onclick="pick(this)"><span class="ov">1</span><span class="ol">Jamais</span></button>
+        <button class="opt" data-q="12" data-v="2" onclick="pick(this)"><span class="ov">2</span><span class="ol">Rarement</span></button>
+        <button class="opt" data-q="12" data-v="3" onclick="pick(this)"><span class="ov">3</span><span class="ol">Parfois</span></button>
+        <button class="opt" data-q="12" data-v="4" onclick="pick(this)"><span class="ov">4</span><span class="ol">Souvent</span></button>
+        <button class="opt" data-q="12" data-v="5" onclick="pick(this)"><span class="ov">5</span><span class="ol">Toujours</span></button>
+      </div>
+    </div>
+    <div class="qcard" id="q13">
+      <div class="qnum">13<span class="qtot">/60</span></div>
+      <div class="qtxt">Éprouvez-vous une sensation de poitrine serrée ou de distention du ventre ?</div>
+      <div class="opts">
+        <button class="opt" data-q="13" data-v="1" onclick="pick(this)"><span class="ov">1</span><span class="ol">Jamais</span></button>
+        <button class="opt" data-q="13" data-v="2" onclick="pick(this)"><span class="ov">2</span><span class="ol">Rarement</span></button>
+        <button class="opt" data-q="13" data-v="3" onclick="pick(this)"><span class="ov">3</span><span class="ol">Parfois</span></button>
+        <button class="opt" data-q="13" data-v="4" onclick="pick(this)"><span class="ov">4</span><span class="ol">Souvent</span></button>
+        <button class="opt" data-q="13" data-v="5" onclick="pick(this)"><span class="ov">5</span><span class="ol">Toujours</span></button>
+      </div>
+    </div>
+    <div class="qcard" id="q14">
+      <div class="qnum">14<span class="qtot">/60</span></div>
+      <div class="qtxt">Soupirez-vous sans raison apparente ?</div>
+      <div class="opts">
+        <button class="opt" data-q="14" data-v="1" onclick="pick(this)"><span class="ov">1</span><span class="ol">Jamais</span></button>
+        <button class="opt" data-q="14" data-v="2" onclick="pick(this)"><span class="ov">2</span><span class="ol">Rarement</span></button>
+        <button class="opt" data-q="14" data-v="3" onclick="pick(this)"><span class="ov">3</span><span class="ol">Parfois</span></button>
+        <button class="opt" data-q="14" data-v="4" onclick="pick(this)"><span class="ov">4</span><span class="ol">Souvent</span></button>
+        <button class="opt" data-q="14" data-v="5" onclick="pick(this)"><span class="ov">5</span><span class="ol">Toujours</span></button>
+      </div>
+    </div>
+    <div class="qcard" id="q15">
+      <div class="qnum">15<span class="qtot">/60</span></div>
+      <div class="qtxt">Votre corps vous semble-t-il lourd ou emprunté ?</div>
+      <div class="opts">
+        <button class="opt" data-q="15" data-v="1" onclick="pick(this)"><span class="ov">1</span><span class="ol">Jamais</span></button>
+        <button class="opt" data-q="15" data-v="2" onclick="pick(this)"><span class="ov">2</span><span class="ol">Rarement</span></button>
+        <button class="opt" data-q="15" data-v="3" onclick="pick(this)"><span class="ov">3</span><span class="ol">Parfois</span></button>
+        <button class="opt" data-q="15" data-v="4" onclick="pick(this)"><span class="ov">4</span><span class="ol">Souvent</span></button>
+        <button class="opt" data-q="15" data-v="5" onclick="pick(this)"><span class="ov">5</span><span class="ol">Toujours</span></button>
+      </div>
+    </div>
+    <div class="qcard" id="q16">
+      <div class="qnum">16<span class="qtot">/60</span></div>
+      <div class="qtxt">Ressentez-vous une chaleur au niveau des paumes des mains ou des plantes des pieds ?</div>
+      <div class="opts">
+        <button class="opt" data-q="16" data-v="1" onclick="pick(this)"><span class="ov">1</span><span class="ol">Jamais</span></button>
+        <button class="opt" data-q="16" data-v="2" onclick="pick(this)"><span class="ov">2</span><span class="ol">Rarement</span></button>
+        <button class="opt" data-q="16" data-v="3" onclick="pick(this)"><span class="ov">3</span><span class="ol">Parfois</span></button>
+        <button class="opt" data-q="16" data-v="4" onclick="pick(this)"><span class="ov">4</span><span class="ol">Souvent</span></button>
+        <button class="opt" data-q="16" data-v="5" onclick="pick(this)"><span class="ov">5</span><span class="ol">Toujours</span></button>
+      </div>
+    </div>
+    <div class="qcard" id="q17">
+      <div class="qnum">17<span class="qtot">/60</span></div>
+      <div class="qtxt">Avez-vous les mains ou les pieds froids ?</div>
+      <div class="opts">
+        <button class="opt" data-q="17" data-v="1" onclick="pick(this)"><span class="ov">1</span><span class="ol">Jamais</span></button>
+        <button class="opt" data-q="17" data-v="2" onclick="pick(this)"><span class="ov">2</span><span class="ol">Rarement</span></button>
+        <button class="opt" data-q="17" data-v="3" onclick="pick(this)"><span class="ov">3</span><span class="ol">Parfois</span></button>
+        <button class="opt" data-q="17" data-v="4" onclick="pick(this)"><span class="ov">4</span><span class="ol">Souvent</span></button>
+        <button class="opt" data-q="17" data-v="5" onclick="pick(this)"><span class="ov">5</span><span class="ol">Toujours</span></button>
+      </div>
+    </div>
+    <div class="qcard" id="q18">
+      <div class="qnum">18<span class="qtot">/60</span></div>
+      <div class="qtxt">Craignez-vous le froid au niveau du ventre, du dos, des reins ou des genoux ?</div>
+      <div class="opts">
+        <button class="opt" data-q="18" data-v="1" onclick="pick(this)"><span class="ov">1</span><span class="ol">Jamais</span></button>
+        <button class="opt" data-q="18" data-v="2" onclick="pick(this)"><span class="ov">2</span><span class="ol">Rarement</span></button>
+        <button class="opt" data-q="18" data-v="3" onclick="pick(this)"><span class="ov">3</span><span class="ol">Parfois</span></button>
+        <button class="opt" data-q="18" data-v="4" onclick="pick(this)"><span class="ov">4</span><span class="ol">Souvent</span></button>
+        <button class="opt" data-q="18" data-v="5" onclick="pick(this)"><span class="ov">5</span><span class="ol">Toujours</span></button>
+      </div>
+    </div>
+    <div class="qcard" id="q19">
+      <div class="qnum">19<span class="qtot">/60</span></div>
+      <div class="qtxt">Êtes-vous sensible au froid et plus couvert(e) que les autres ?</div>
+      <div class="opts">
+        <button class="opt" data-q="19" data-v="1" onclick="pick(this)"><span class="ov">1</span><span class="ol">Jamais</span></button>
+        <button class="opt" data-q="19" data-v="2" onclick="pick(this)"><span class="ov">2</span><span class="ol">Rarement</span></button>
+        <button class="opt" data-q="19" data-v="3" onclick="pick(this)"><span class="ov">3</span><span class="ol">Parfois</span></button>
+        <button class="opt" data-q="19" data-v="4" onclick="pick(this)"><span class="ov">4</span><span class="ol">Souvent</span></button>
+        <button class="opt" data-q="19" data-v="5" onclick="pick(this)"><span class="ov">5</span><span class="ol">Toujours</span></button>
+      </div>
+    </div>
+    <div class="qcard" id="q20">
+      <div class="qnum">20<span class="qtot">/60</span></div>
+      <div class="qtxt">Avez-vous des sensations de chaleur dans le corps ou au visage ?</div>
+      <div class="opts">
+        <button class="opt" data-q="20" data-v="1" onclick="pick(this)"><span class="ov">1</span><span class="ol">Jamais</span></button>
+        <button class="opt" data-q="20" data-v="2" onclick="pick(this)"><span class="ov">2</span><span class="ol">Rarement</span></button>
+        <button class="opt" data-q="20" data-v="3" onclick="pick(this)"><span class="ov">3</span><span class="ol">Parfois</span></button>
+        <button class="opt" data-q="20" data-v="4" onclick="pick(this)"><span class="ov">4</span><span class="ol">Souvent</span></button>
+        <button class="opt" data-q="20" data-v="5" onclick="pick(this)"><span class="ov">5</span><span class="ol">Toujours</span></button>
+      </div>
+    </div>
+    <div class="qcard" id="q21">
+      <div class="qnum">21<span class="qtot">/60</span></div>
+      <div class="qtxt">Supportez-vous moins bien le froid que les autres (hiver, climatisation, ventilateur...) ?</div>
+      <div class="opts">
+        <button class="opt" data-q="21" data-v="1" onclick="pick(this)"><span class="ov">1</span><span class="ol">Jamais</span></button>
+        <button class="opt" data-q="21" data-v="2" onclick="pick(this)"><span class="ov">2</span><span class="ol">Rarement</span></button>
+        <button class="opt" data-q="21" data-v="3" onclick="pick(this)"><span class="ov">3</span><span class="ol">Parfois</span></button>
+        <button class="opt" data-q="21" data-v="4" onclick="pick(this)"><span class="ov">4</span><span class="ol">Souvent</span></button>
+        <button class="opt" data-q="21" data-v="5" onclick="pick(this)"><span class="ov">5</span><span class="ol">Toujours</span></button>
+      </div>
+    </div>
+    <div class="qcard" id="q22">
+      <div class="qnum">22<span class="qtot">/60</span></div>
+      <div class="qtxt">Avez-vous plus tendance aux rhumes que les autres ?</div>
+      <div class="opts">
+        <button class="opt" data-q="22" data-v="1" onclick="pick(this)"><span class="ov">1</span><span class="ol">Jamais</span></button>
+        <button class="opt" data-q="22" data-v="2" onclick="pick(this)"><span class="ov">2</span><span class="ol">Rarement</span></button>
+        <button class="opt" data-q="22" data-v="3" onclick="pick(this)"><span class="ov">3</span><span class="ol">Parfois</span></button>
+        <button class="opt" data-q="22" data-v="4" onclick="pick(this)"><span class="ov">4</span><span class="ol">Souvent</span></button>
+        <button class="opt" data-q="22" data-v="5" onclick="pick(this)"><span class="ov">5</span><span class="ol">Toujours</span></button>
+      </div>
+    </div>
+    <div class="qcard" id="q23">
+      <div class="qnum">23<span class="qtot">/60</span></div>
+      <div class="qtxt">Éternuez-vous même en dehors d'un rhume ?</div>
+      <div class="opts">
+        <button class="opt" data-q="23" data-v="1" onclick="pick(this)"><span class="ov">1</span><span class="ol">Jamais</span></button>
+        <button class="opt" data-q="23" data-v="2" onclick="pick(this)"><span class="ov">2</span><span class="ol">Rarement</span></button>
+        <button class="opt" data-q="23" data-v="3" onclick="pick(this)"><span class="ov">3</span><span class="ol">Parfois</span></button>
+        <button class="opt" data-q="23" data-v="4" onclick="pick(this)"><span class="ov">4</span><span class="ol">Souvent</span></button>
+        <button class="opt" data-q="23" data-v="5" onclick="pick(this)"><span class="ov">5</span><span class="ol">Toujours</span></button>
+      </div>
+    </div>
+    <div class="qcard" id="q24">
+      <div class="qnum">24<span class="qtot">/60</span></div>
+      <div class="qtxt">Avez-vous le nez bouché ou qui coule même en dehors d'un rhume ?</div>
+      <div class="opts">
+        <button class="opt" data-q="24" data-v="1" onclick="pick(this)"><span class="ov">1</span><span class="ol">Jamais</span></button>
+        <button class="opt" data-q="24" data-v="2" onclick="pick(this)"><span class="ov">2</span><span class="ol">Rarement</span></button>
+        <button class="opt" data-q="24" data-v="3" onclick="pick(this)"><span class="ov">3</span><span class="ol">Parfois</span></button>
+        <button class="opt" data-q="24" data-v="4" onclick="pick(this)"><span class="ov">4</span><span class="ol">Souvent</span></button>
+        <button class="opt" data-q="24" data-v="5" onclick="pick(this)"><span class="ov">5</span><span class="ol">Toujours</span></button>
+      </div>
+    </div>
+    <div class="qcard" id="q25">
+      <div class="qnum">25<span class="qtot">/60</span></div>
+      <div class="qtxt">Toussez-vous ou êtes-vous gêné(e) pour respirer lors de changements de saison, de température ou d'odeurs ?</div>
+      <div class="opts">
+        <button class="opt" data-q="25" data-v="1" onclick="pick(this)"><span class="ov">1</span><span class="ol">Jamais</span></button>
+        <button class="opt" data-q="25" data-v="2" onclick="pick(this)"><span class="ov">2</span><span class="ol">Rarement</span></button>
+        <button class="opt" data-q="25" data-v="3" onclick="pick(this)"><span class="ov">3</span><span class="ol">Parfois</span></button>
+        <button class="opt" data-q="25" data-v="4" onclick="pick(this)"><span class="ov">4</span><span class="ol">Souvent</span></button>
+        <button class="opt" data-q="25" data-v="5" onclick="pick(this)"><span class="ov">5</span><span class="ol">Toujours</span></button>
+      </div>
+    </div>
+    <div class="qcard" id="q26">
+      <div class="qnum">26<span class="qtot">/60</span></div>
+      <div class="qtxt">Transpirez-vous au moindre effort ?</div>
+      <div class="opts">
+        <button class="opt" data-q="26" data-v="1" onclick="pick(this)"><span class="ov">1</span><span class="ol">Jamais</span></button>
+        <button class="opt" data-q="26" data-v="2" onclick="pick(this)"><span class="ov">2</span><span class="ol">Rarement</span></button>
+        <button class="opt" data-q="26" data-v="3" onclick="pick(this)"><span class="ov">3</span><span class="ol">Parfois</span></button>
+        <button class="opt" data-q="26" data-v="4" onclick="pick(this)"><span class="ov">4</span><span class="ol">Souvent</span></button>
+        <button class="opt" data-q="26" data-v="5" onclick="pick(this)"><span class="ov">5</span><span class="ol">Toujours</span></button>
+      </div>
+    </div>
+    <div class="qcard" id="q27">
+      <div class="qnum">27<span class="qtot">/60</span></div>
+      <div class="qtxt">Avez-vous des oublis ?</div>
+      <div class="opts">
+        <button class="opt" data-q="27" data-v="1" onclick="pick(this)"><span class="ov">1</span><span class="ol">Jamais</span></button>
+        <button class="opt" data-q="27" data-v="2" onclick="pick(this)"><span class="ov">2</span><span class="ol">Rarement</span></button>
+        <button class="opt" data-q="27" data-v="3" onclick="pick(this)"><span class="ov">3</span><span class="ol">Parfois</span></button>
+        <button class="opt" data-q="27" data-v="4" onclick="pick(this)"><span class="ov">4</span><span class="ol">Souvent</span></button>
+        <button class="opt" data-q="27" data-v="5" onclick="pick(this)"><span class="ov">5</span><span class="ol">Toujours</span></button>
+      </div>
+    </div>
+    <div class="qcard" id="q28">
+      <div class="qnum">28<span class="qtot">/60</span></div>
+      <div class="qtxt">Avez-vous la peau grasse au niveau du front ?</div>
+      <div class="opts">
+        <button class="opt" data-q="28" data-v="1" onclick="pick(this)"><span class="ov">1</span><span class="ol">Jamais</span></button>
+        <button class="opt" data-q="28" data-v="2" onclick="pick(this)"><span class="ov">2</span><span class="ol">Rarement</span></button>
+        <button class="opt" data-q="28" data-v="3" onclick="pick(this)"><span class="ov">3</span><span class="ol">Parfois</span></button>
+        <button class="opt" data-q="28" data-v="4" onclick="pick(this)"><span class="ov">4</span><span class="ol">Souvent</span></button>
+        <button class="opt" data-q="28" data-v="5" onclick="pick(this)"><span class="ov">5</span><span class="ol">Toujours</span></button>
+      </div>
+    </div>
+    <div class="qcard" id="q29">
+      <div class="qnum">29<span class="qtot">/60</span></div>
+      <div class="qtxt">Par rapport aux autres, vos lèvres sont-elles particulièrement rouges ?</div>
+      <div class="opts">
+        <button class="opt" data-q="29" data-v="1" onclick="pick(this)"><span class="ov">1</span><span class="ol">Jamais</span></button>
+        <button class="opt" data-q="29" data-v="2" onclick="pick(this)"><span class="ov">2</span><span class="ol">Rarement</span></button>
+        <button class="opt" data-q="29" data-v="3" onclick="pick(this)"><span class="ov">3</span><span class="ol">Parfois</span></button>
+        <button class="opt" data-q="29" data-v="4" onclick="pick(this)"><span class="ov">4</span><span class="ol">Souvent</span></button>
+        <button class="opt" data-q="29" data-v="5" onclick="pick(this)"><span class="ov">5</span><span class="ol">Toujours</span></button>
+      </div>
+    </div>
+    <div class="qcard" id="q30">
+      <div class="qnum">30<span class="qtot">/60</span></div>
+      <div class="qtxt">Êtes-vous sujet(te) aux allergies (médicaments, aliments, odeurs, pollen, changements de saison...) ?</div>
+      <div class="opts">
+        <button class="opt" data-q="30" data-v="1" onclick="pick(this)"><span class="ov">1</span><span class="ol">Jamais</span></button>
+        <button class="opt" data-q="30" data-v="2" onclick="pick(this)"><span class="ov">2</span><span class="ol">Rarement</span></button>
+        <button class="opt" data-q="30" data-v="3" onclick="pick(this)"><span class="ov">3</span><span class="ol">Parfois</span></button>
+        <button class="opt" data-q="30" data-v="4" onclick="pick(this)"><span class="ov">4</span><span class="ol">Souvent</span></button>
+        <button class="opt" data-q="30" data-v="5" onclick="pick(this)"><span class="ov">5</span><span class="ol">Toujours</span></button>
+      </div>
+    </div>
+    <div class="qcard" id="q31">
+      <div class="qnum">31<span class="qtot">/60</span></div>
+      <div class="qtxt">Avez-vous tendance à avoir des réactions de type urticaire sur la peau ?</div>
+      <div class="opts">
+        <button class="opt" data-q="31" data-v="1" onclick="pick(this)"><span class="ov">1</span><span class="ol">Jamais</span></button>
+        <button class="opt" data-q="31" data-v="2" onclick="pick(this)"><span class="ov">2</span><span class="ol">Rarement</span></button>
+        <button class="opt" data-q="31" data-v="3" onclick="pick(this)"><span class="ov">3</span><span class="ol">Parfois</span></button>
+        <button class="opt" data-q="31" data-v="4" onclick="pick(this)"><span class="ov">4</span><span class="ol">Souvent</span></button>
+        <button class="opt" data-q="31" data-v="5" onclick="pick(this)"><span class="ov">5</span><span class="ol">Toujours</span></button>
+      </div>
+    </div>
+    <div class="qcard" id="q32">
+      <div class="qnum">32<span class="qtot">/60</span></div>
+      <div class="qtxt">Votre peau a-t-elle déjà présenté des taches violacées liées à une allergie ?</div>
+      <div class="opts">
+        <button class="opt" data-q="32" data-v="1" onclick="pick(this)"><span class="ov">1</span><span class="ol">Jamais</span></button>
+        <button class="opt" data-q="32" data-v="2" onclick="pick(this)"><span class="ov">2</span><span class="ol">Rarement</span></button>
+        <button class="opt" data-q="32" data-v="3" onclick="pick(this)"><span class="ov">3</span><span class="ol">Parfois</span></button>
+        <button class="opt" data-q="32" data-v="4" onclick="pick(this)"><span class="ov">4</span><span class="ol">Souvent</span></button>
+        <button class="opt" data-q="32" data-v="5" onclick="pick(this)"><span class="ov">5</span><span class="ol">Toujours</span></button>
+      </div>
+    </div>
+    <div class="qcard" id="q33">
+      <div class="qnum">33<span class="qtot">/60</span></div>
+      <div class="qtxt">Votre peau présente-t-elle des bleus ou des ecchymoses sans raison apparente ?</div>
+      <div class="opts">
+        <button class="opt" data-q="33" data-v="1" onclick="pick(this)"><span class="ov">1</span><span class="ol">Jamais</span></button>
+        <button class="opt" data-q="33" data-v="2" onclick="pick(this)"><span class="ov">2</span><span class="ol">Rarement</span></button>
+        <button class="opt" data-q="33" data-v="3" onclick="pick(this)"><span class="ov">3</span><span class="ol">Parfois</span></button>
+        <button class="opt" data-q="33" data-v="4" onclick="pick(this)"><span class="ov">4</span><span class="ol">Souvent</span></button>
+        <button class="opt" data-q="33" data-v="5" onclick="pick(this)"><span class="ov">5</span><span class="ol">Toujours</span></button>
+      </div>
+    </div>
+    <div class="qcard" id="q34">
+      <div class="qnum">34<span class="qtot">/60</span></div>
+      <div class="qtxt">Votre peau rougit-elle et garde-t-elle des marques lorsque vous vous grattez ?</div>
+      <div class="opts">
+        <button class="opt" data-q="34" data-v="1" onclick="pick(this)"><span class="ov">1</span><span class="ol">Jamais</span></button>
+        <button class="opt" data-q="34" data-v="2" onclick="pick(this)"><span class="ov">2</span><span class="ol">Rarement</span></button>
+        <button class="opt" data-q="34" data-v="3" onclick="pick(this)"><span class="ov">3</span><span class="ol">Parfois</span></button>
+        <button class="opt" data-q="34" data-v="4" onclick="pick(this)"><span class="ov">4</span><span class="ol">Souvent</span></button>
+        <button class="opt" data-q="34" data-v="5" onclick="pick(this)"><span class="ov">5</span><span class="ol">Toujours</span></button>
+      </div>
+    </div>
+    <div class="qcard" id="q35">
+      <div class="qnum">35<span class="qtot">/60</span></div>
+      <div class="qtxt">Avez-vous la peau ou les lèvres sèches ?</div>
+      <div class="opts">
+        <button class="opt" data-q="35" data-v="1" onclick="pick(this)"><span class="ov">1</span><span class="ol">Jamais</span></button>
+        <button class="opt" data-q="35" data-v="2" onclick="pick(this)"><span class="ov">2</span><span class="ol">Rarement</span></button>
+        <button class="opt" data-q="35" data-v="3" onclick="pick(this)"><span class="ov">3</span><span class="ol">Parfois</span></button>
+        <button class="opt" data-q="35" data-v="4" onclick="pick(this)"><span class="ov">4</span><span class="ol">Souvent</span></button>
+        <button class="opt" data-q="35" data-v="5" onclick="pick(this)"><span class="ov">5</span><span class="ol">Toujours</span></button>
+      </div>
+    </div>
+    <div class="qcard" id="q36">
+      <div class="qnum">36<span class="qtot">/60</span></div>
+      <div class="qtxt">Avez-vous de la couperose sur les pommettes ?</div>
+      <div class="opts">
+        <button class="opt" data-q="36" data-v="1" onclick="pick(this)"><span class="ov">1</span><span class="ol">Jamais</span></button>
+        <button class="opt" data-q="36" data-v="2" onclick="pick(this)"><span class="ov">2</span><span class="ol">Rarement</span></button>
+        <button class="opt" data-q="36" data-v="3" onclick="pick(this)"><span class="ov">3</span><span class="ol">Parfois</span></button>
+        <button class="opt" data-q="36" data-v="4" onclick="pick(this)"><span class="ov">4</span><span class="ol">Souvent</span></button>
+        <button class="opt" data-q="36" data-v="5" onclick="pick(this)"><span class="ov">5</span><span class="ol">Toujours</span></button>
+      </div>
+    </div>
+    <div class="qcard" id="q37">
+      <div class="qnum">37<span class="qtot">/60</span></div>
+      <div class="qtxt">Avez-vous des douleurs quelque part dans le corps ?</div>
+      <div class="opts">
+        <button class="opt" data-q="37" data-v="1" onclick="pick(this)"><span class="ov">1</span><span class="ol">Jamais</span></button>
+        <button class="opt" data-q="37" data-v="2" onclick="pick(this)"><span class="ov">2</span><span class="ol">Rarement</span></button>
+        <button class="opt" data-q="37" data-v="3" onclick="pick(this)"><span class="ov">3</span><span class="ol">Parfois</span></button>
+        <button class="opt" data-q="37" data-v="4" onclick="pick(this)"><span class="ov">4</span><span class="ol">Souvent</span></button>
+        <button class="opt" data-q="37" data-v="5" onclick="pick(this)"><span class="ov">5</span><span class="ol">Toujours</span></button>
+      </div>
+    </div>
+    <div class="qcard" id="q38">
+      <div class="qnum">38<span class="qtot">/60</span></div>
+      <div class="qtxt">Avez-vous par moments les pommettes ou le visage rouges ?</div>
+      <div class="opts">
+        <button class="opt" data-q="38" data-v="1" onclick="pick(this)"><span class="ov">1</span><span class="ol">Jamais</span></button>
+        <button class="opt" data-q="38" data-v="2" onclick="pick(this)"><span class="ov">2</span><span class="ol">Rarement</span></button>
+        <button class="opt" data-q="38" data-v="3" onclick="pick(this)"><span class="ov">3</span><span class="ol">Parfois</span></button>
+        <button class="opt" data-q="38" data-v="4" onclick="pick(this)"><span class="ov">4</span><span class="ol">Souvent</span></button>
+        <button class="opt" data-q="38" data-v="5" onclick="pick(this)"><span class="ov">5</span><span class="ol">Toujours</span></button>
+      </div>
+    </div>
+    <div class="qcard" id="q39">
+      <div class="qnum">39<span class="qtot">/60</span></div>
+      <div class="qtxt">Votre visage ou votre nez apparaissent-ils gras ou luisants ?</div>
+      <div class="opts">
+        <button class="opt" data-q="39" data-v="1" onclick="pick(this)"><span class="ov">1</span><span class="ol">Jamais</span></button>
+        <button class="opt" data-q="39" data-v="2" onclick="pick(this)"><span class="ov">2</span><span class="ol">Rarement</span></button>
+        <button class="opt" data-q="39" data-v="3" onclick="pick(this)"><span class="ov">3</span><span class="ol">Parfois</span></button>
+        <button class="opt" data-q="39" data-v="4" onclick="pick(this)"><span class="ov">4</span><span class="ol">Souvent</span></button>
+        <button class="opt" data-q="39" data-v="5" onclick="pick(this)"><span class="ov">5</span><span class="ol">Toujours</span></button>
+      </div>
+    </div>
+    <div class="qcard" id="q40">
+      <div class="qnum">40<span class="qtot">/60</span></div>
+      <div class="qtxt">Votre visage est-il d'un teint terne ou présente-t-il des taches brunes ?</div>
+      <div class="opts">
+        <button class="opt" data-q="40" data-v="1" onclick="pick(this)"><span class="ov">1</span><span class="ol">Jamais</span></button>
+        <button class="opt" data-q="40" data-v="2" onclick="pick(this)"><span class="ov">2</span><span class="ol">Rarement</span></button>
+        <button class="opt" data-q="40" data-v="3" onclick="pick(this)"><span class="ov">3</span><span class="ol">Parfois</span></button>
+        <button class="opt" data-q="40" data-v="4" onclick="pick(this)"><span class="ov">4</span><span class="ol">Souvent</span></button>
+        <button class="opt" data-q="40" data-v="5" onclick="pick(this)"><span class="ov">5</span><span class="ol">Toujours</span></button>
+      </div>
+    </div>
+    <div class="qcard" id="q41">
+      <div class="qnum">41<span class="qtot">/60</span></div>
+      <div class="qtxt">Avez-vous de l'acné ou des boutons similaires ?</div>
+      <div class="opts">
+        <button class="opt" data-q="41" data-v="1" onclick="pick(this)"><span class="ov">1</span><span class="ol">Jamais</span></button>
+        <button class="opt" data-q="41" data-v="2" onclick="pick(this)"><span class="ov">2</span><span class="ol">Rarement</span></button>
+        <button class="opt" data-q="41" data-v="3" onclick="pick(this)"><span class="ov">3</span><span class="ol">Parfois</span></button>
+        <button class="opt" data-q="41" data-v="4" onclick="pick(this)"><span class="ov">4</span><span class="ol">Souvent</span></button>
+        <button class="opt" data-q="41" data-v="5" onclick="pick(this)"><span class="ov">5</span><span class="ol">Toujours</span></button>
+      </div>
+    </div>
+    <div class="qcard" id="q42">
+      <div class="qnum">42<span class="qtot">/60</span></div>
+      <div class="qtxt">Par rapport aux autres, vos paupières supérieures sont-elles gonflées ?</div>
+      <div class="opts">
+        <button class="opt" data-q="42" data-v="1" onclick="pick(this)"><span class="ov">1</span><span class="ol">Jamais</span></button>
+        <button class="opt" data-q="42" data-v="2" onclick="pick(this)"><span class="ov">2</span><span class="ol">Rarement</span></button>
+        <button class="opt" data-q="42" data-v="3" onclick="pick(this)"><span class="ov">3</span><span class="ol">Parfois</span></button>
+        <button class="opt" data-q="42" data-v="4" onclick="pick(this)"><span class="ov">4</span><span class="ol">Souvent</span></button>
+        <button class="opt" data-q="42" data-v="5" onclick="pick(this)"><span class="ov">5</span><span class="ol">Toujours</span></button>
+      </div>
+    </div>
+    <div class="qcard" id="q43">
+      <div class="qnum">43<span class="qtot">/60</span></div>
+      <div class="qtxt">Avez-vous des cernes ?</div>
+      <div class="opts">
+        <button class="opt" data-q="43" data-v="1" onclick="pick(this)"><span class="ov">1</span><span class="ol">Jamais</span></button>
+        <button class="opt" data-q="43" data-v="2" onclick="pick(this)"><span class="ov">2</span><span class="ol">Rarement</span></button>
+        <button class="opt" data-q="43" data-v="3" onclick="pick(this)"><span class="ov">3</span><span class="ol">Parfois</span></button>
+        <button class="opt" data-q="43" data-v="4" onclick="pick(this)"><span class="ov">4</span><span class="ol">Souvent</span></button>
+        <button class="opt" data-q="43" data-v="5" onclick="pick(this)"><span class="ov">5</span><span class="ol">Toujours</span></button>
+      </div>
+    </div>
+    <div class="qcard" id="q44">
+      <div class="qnum">44<span class="qtot">/60</span></div>
+      <div class="qtxt">Avez-vous les yeux secs ou irrités ?</div>
+      <div class="opts">
+        <button class="opt" data-q="44" data-v="1" onclick="pick(this)"><span class="ov">1</span><span class="ol">Jamais</span></button>
+        <button class="opt" data-q="44" data-v="2" onclick="pick(this)"><span class="ov">2</span><span class="ol">Rarement</span></button>
+        <button class="opt" data-q="44" data-v="3" onclick="pick(this)"><span class="ov">3</span><span class="ol">Parfois</span></button>
+        <button class="opt" data-q="44" data-v="4" onclick="pick(this)"><span class="ov">4</span><span class="ol">Souvent</span></button>
+        <button class="opt" data-q="44" data-v="5" onclick="pick(this)"><span class="ov">5</span><span class="ol">Toujours</span></button>
+      </div>
+    </div>
+    <div class="qcard" id="q45">
+      <div class="qnum">45<span class="qtot">/60</span></div>
+      <div class="qtxt">Vos lèvres peuvent-elles apparaître ternes et sans éclat ?</div>
+      <div class="opts">
+        <button class="opt" data-q="45" data-v="1" onclick="pick(this)"><span class="ov">1</span><span class="ol">Jamais</span></button>
+        <button class="opt" data-q="45" data-v="2" onclick="pick(this)"><span class="ov">2</span><span class="ol">Rarement</span></button>
+        <button class="opt" data-q="45" data-v="3" onclick="pick(this)"><span class="ov">3</span><span class="ol">Parfois</span></button>
+        <button class="opt" data-q="45" data-v="4" onclick="pick(this)"><span class="ov">4</span><span class="ol">Souvent</span></button>
+        <button class="opt" data-q="45" data-v="5" onclick="pick(this)"><span class="ov">5</span><span class="ol">Toujours</span></button>
+      </div>
+    </div>
+    <div class="qcard" id="q46">
+      <div class="qnum">46<span class="qtot">/60</span></div>
+      <div class="qtxt">Avez-vous la bouche ou la gorge sèche, avec envie de boire ?</div>
+      <div class="opts">
+        <button class="opt" data-q="46" data-v="1" onclick="pick(this)"><span class="ov">1</span><span class="ol">Jamais</span></button>
+        <button class="opt" data-q="46" data-v="2" onclick="pick(this)"><span class="ov">2</span><span class="ol">Rarement</span></button>
+        <button class="opt" data-q="46" data-v="3" onclick="pick(this)"><span class="ov">3</span><span class="ol">Parfois</span></button>
+        <button class="opt" data-q="46" data-v="4" onclick="pick(this)"><span class="ov">4</span><span class="ol">Souvent</span></button>
+        <button class="opt" data-q="46" data-v="5" onclick="pick(this)"><span class="ov">5</span><span class="ol">Toujours</span></button>
+      </div>
+    </div>
+    <div class="qcard" id="q47">
+      <div class="qnum">47<span class="qtot">/60</span></div>
+      <div class="qtxt">Avez-vous une sensation de corps étranger dans la gorge, impossible à cracher ou à avaler ?</div>
+      <div class="opts">
+        <button class="opt" data-q="47" data-v="1" onclick="pick(this)"><span class="ov">1</span><span class="ol">Jamais</span></button>
+        <button class="opt" data-q="47" data-v="2" onclick="pick(this)"><span class="ov">2</span><span class="ol">Rarement</span></button>
+        <button class="opt" data-q="47" data-v="3" onclick="pick(this)"><span class="ov">3</span><span class="ol">Parfois</span></button>
+        <button class="opt" data-q="47" data-v="4" onclick="pick(this)"><span class="ov">4</span><span class="ol">Souvent</span></button>
+        <button class="opt" data-q="47" data-v="5" onclick="pick(this)"><span class="ov">5</span><span class="ol">Toujours</span></button>
+      </div>
+    </div>
+    <div class="qcard" id="q48">
+      <div class="qnum">48<span class="qtot">/60</span></div>
+      <div class="qtxt">Avez-vous un goût amer ou inhabituel dans la bouche ?</div>
+      <div class="opts">
+        <button class="opt" data-q="48" data-v="1" onclick="pick(this)"><span class="ov">1</span><span class="ol">Jamais</span></button>
+        <button class="opt" data-q="48" data-v="2" onclick="pick(this)"><span class="ov">2</span><span class="ol">Rarement</span></button>
+        <button class="opt" data-q="48" data-v="3" onclick="pick(this)"><span class="ov">3</span><span class="ol">Parfois</span></button>
+        <button class="opt" data-q="48" data-v="4" onclick="pick(this)"><span class="ov">4</span><span class="ol">Souvent</span></button>
+        <button class="opt" data-q="48" data-v="5" onclick="pick(this)"><span class="ov">5</span><span class="ol">Toujours</span></button>
+      </div>
+    </div>
+    <div class="qcard" id="q49">
+      <div class="qnum">49<span class="qtot">/60</span></div>
+      <div class="qtxt">Avez-vous une sensation de bouche pâteuse ?</div>
+      <div class="opts">
+        <button class="opt" data-q="49" data-v="1" onclick="pick(this)"><span class="ov">1</span><span class="ol">Jamais</span></button>
+        <button class="opt" data-q="49" data-v="2" onclick="pick(this)"><span class="ov">2</span><span class="ol">Rarement</span></button>
+        <button class="opt" data-q="49" data-v="3" onclick="pick(this)"><span class="ov">3</span><span class="ol">Parfois</span></button>
+        <button class="opt" data-q="49" data-v="4" onclick="pick(this)"><span class="ov">4</span><span class="ol">Souvent</span></button>
+        <button class="opt" data-q="49" data-v="5" onclick="pick(this)"><span class="ov">5</span><span class="ol">Toujours</span></button>
+      </div>
+    </div>
+    <div class="qcard" id="q50">
+      <div class="qnum">50<span class="qtot">/60</span></div>
+      <div class="qtxt">Avez-vous un ventre mou et volumineux ?</div>
+      <div class="opts">
+        <button class="opt" data-q="50" data-v="1" onclick="pick(this)"><span class="ov">1</span><span class="ol">Jamais</span></button>
+        <button class="opt" data-q="50" data-v="2" onclick="pick(this)"><span class="ov">2</span><span class="ol">Rarement</span></button>
+        <button class="opt" data-q="50" data-v="3" onclick="pick(this)"><span class="ov">3</span><span class="ol">Parfois</span></button>
+        <button class="opt" data-q="50" data-v="4" onclick="pick(this)"><span class="ov">4</span><span class="ol">Souvent</span></button>
+        <button class="opt" data-q="50" data-v="5" onclick="pick(this)"><span class="ov">5</span><span class="ol">Toujours</span></button>
+      </div>
+    </div>
+    <div class="qcard" id="q51">
+      <div class="qnum">51<span class="qtot">/60</span></div>
+      <div class="qtxt">Avez-vous souvent des glaires, surtout avec une sensation d'encombrement au niveau de la gorge ?</div>
+      <div class="opts">
+        <button class="opt" data-q="51" data-v="1" onclick="pick(this)"><span class="ov">1</span><span class="ol">Jamais</span></button>
+        <button class="opt" data-q="51" data-v="2" onclick="pick(this)"><span class="ov">2</span><span class="ol">Rarement</span></button>
+        <button class="opt" data-q="51" data-v="3" onclick="pick(this)"><span class="ov">3</span><span class="ol">Parfois</span></button>
+        <button class="opt" data-q="51" data-v="4" onclick="pick(this)"><span class="ov">4</span><span class="ol">Souvent</span></button>
+        <button class="opt" data-q="51" data-v="5" onclick="pick(this)"><span class="ov">5</span><span class="ol">Toujours</span></button>
+      </div>
+    </div>
+    <div class="qcard" id="q52">
+      <div class="qnum">52<span class="qtot">/60</span></div>
+      <div class="qtxt">Ressentez-vous un inconfort en mangeant/buvant froid, ou évitez-vous les aliments/boissons froids ?</div>
+      <div class="opts">
+        <button class="opt" data-q="52" data-v="1" onclick="pick(this)"><span class="ov">1</span><span class="ol">Jamais</span></button>
+        <button class="opt" data-q="52" data-v="2" onclick="pick(this)"><span class="ov">2</span><span class="ol">Rarement</span></button>
+        <button class="opt" data-q="52" data-v="3" onclick="pick(this)"><span class="ov">3</span><span class="ol">Parfois</span></button>
+        <button class="opt" data-q="52" data-v="4" onclick="pick(this)"><span class="ov">4</span><span class="ol">Souvent</span></button>
+        <button class="opt" data-q="52" data-v="5" onclick="pick(this)"><span class="ov">5</span><span class="ol">Toujours</span></button>
+      </div>
+    </div>
+    <div class="qcard" id="q53">
+      <div class="qnum">53<span class="qtot">/60</span></div>
+      <div class="qtxt">Vous adaptez-vous aux changements de votre environnement (naturel ou social) ?</div>
+      <div class="opts">
+        <button class="opt" data-q="53" data-v="1" onclick="pick(this)"><span class="ov">1</span><span class="ol">Jamais</span></button>
+        <button class="opt" data-q="53" data-v="2" onclick="pick(this)"><span class="ov">2</span><span class="ol">Rarement</span></button>
+        <button class="opt" data-q="53" data-v="3" onclick="pick(this)"><span class="ov">3</span><span class="ol">Parfois</span></button>
+        <button class="opt" data-q="53" data-v="4" onclick="pick(this)"><span class="ov">4</span><span class="ol">Souvent</span></button>
+        <button class="opt" data-q="53" data-v="5" onclick="pick(this)"><span class="ov">5</span><span class="ol">Toujours</span></button>
+      </div>
+    </div>
+    <div class="qcard" id="q54">
+      <div class="qnum">54<span class="qtot">/60</span></div>
+      <div class="qtxt">Avez-vous des insomnies ?</div>
+      <div class="opts">
+        <button class="opt" data-q="54" data-v="1" onclick="pick(this)"><span class="ov">1</span><span class="ol">Jamais</span></button>
+        <button class="opt" data-q="54" data-v="2" onclick="pick(this)"><span class="ov">2</span><span class="ol">Rarement</span></button>
+        <button class="opt" data-q="54" data-v="3" onclick="pick(this)"><span class="ov">3</span><span class="ol">Parfois</span></button>
+        <button class="opt" data-q="54" data-v="4" onclick="pick(this)"><span class="ov">4</span><span class="ol">Souvent</span></button>
+        <button class="opt" data-q="54" data-v="5" onclick="pick(this)"><span class="ov">5</span><span class="ol">Toujours</span></button>
+      </div>
+    </div>
+    <div class="qcard" id="q55">
+      <div class="qnum">55<span class="qtot">/60</span></div>
+      <div class="qtxt">Avez-vous de la diarrhée après avoir attrapé froid ou consommé des boissons/aliments froids ?</div>
+      <div class="opts">
+        <button class="opt" data-q="55" data-v="1" onclick="pick(this)"><span class="ov">1</span><span class="ol">Jamais</span></button>
+        <button class="opt" data-q="55" data-v="2" onclick="pick(this)"><span class="ov">2</span><span class="ol">Rarement</span></button>
+        <button class="opt" data-q="55" data-v="3" onclick="pick(this)"><span class="ov">3</span><span class="ol">Parfois</span></button>
+        <button class="opt" data-q="55" data-v="4" onclick="pick(this)"><span class="ov">4</span><span class="ol">Souvent</span></button>
+        <button class="opt" data-q="55" data-v="5" onclick="pick(this)"><span class="ov">5</span><span class="ol">Toujours</span></button>
+      </div>
+    </div>
+    <div class="qcard" id="q56">
+      <div class="qnum">56<span class="qtot">/60</span></div>
+      <div class="qtxt">Vos selles sont-elles collantes ou avez-vous une sensation d'évacuation incomplète ?</div>
+      <div class="opts">
+        <button class="opt" data-q="56" data-v="1" onclick="pick(this)"><span class="ov">1</span><span class="ol">Jamais</span></button>
+        <button class="opt" data-q="56" data-v="2" onclick="pick(this)"><span class="ov">2</span><span class="ol">Rarement</span></button>
+        <button class="opt" data-q="56" data-v="3" onclick="pick(this)"><span class="ov">3</span><span class="ol">Parfois</span></button>
+        <button class="opt" data-q="56" data-v="4" onclick="pick(this)"><span class="ov">4</span><span class="ol">Souvent</span></button>
+        <button class="opt" data-q="56" data-v="5" onclick="pick(this)"><span class="ov">5</span><span class="ol">Toujours</span></button>
+      </div>
+    </div>
+    <div class="qcard" id="q57">
+      <div class="qnum">57<span class="qtot">/60</span></div>
+      <div class="qtxt">Avez-vous de la constipation ou des selles sèches ?</div>
+      <div class="opts">
+        <button class="opt" data-q="57" data-v="1" onclick="pick(this)"><span class="ov">1</span><span class="ol">Jamais</span></button>
+        <button class="opt" data-q="57" data-v="2" onclick="pick(this)"><span class="ov">2</span><span class="ol">Rarement</span></button>
+        <button class="opt" data-q="57" data-v="3" onclick="pick(this)"><span class="ov">3</span><span class="ol">Parfois</span></button>
+        <button class="opt" data-q="57" data-v="4" onclick="pick(this)"><span class="ov">4</span><span class="ol">Souvent</span></button>
+        <button class="opt" data-q="57" data-v="5" onclick="pick(this)"><span class="ov">5</span><span class="ol">Toujours</span></button>
+      </div>
+    </div>
+    <div class="qcard" id="q58">
+      <div class="qnum">58<span class="qtot">/60</span></div>
+      <div class="qtxt">Avez-vous la langue chargée ou une sensation de langue chargée ?</div>
+      <div class="opts">
+        <button class="opt" data-q="58" data-v="1" onclick="pick(this)"><span class="ov">1</span><span class="ol">Jamais</span></button>
+        <button class="opt" data-q="58" data-v="2" onclick="pick(this)"><span class="ov">2</span><span class="ol">Rarement</span></button>
+        <button class="opt" data-q="58" data-v="3" onclick="pick(this)"><span class="ov">3</span><span class="ol">Parfois</span></button>
+        <button class="opt" data-q="58" data-v="4" onclick="pick(this)"><span class="ov">4</span><span class="ol">Souvent</span></button>
+        <button class="opt" data-q="58" data-v="5" onclick="pick(this)"><span class="ov">5</span><span class="ol">Toujours</span></button>
+      </div>
+    </div>
+    <div class="qcard" id="q59">
+      <div class="qnum">59<span class="qtot">/60</span></div>
+      <div class="qtxt">Avez-vous une sensation de brûlure en urinant ou des urines foncées ?</div>
+      <div class="opts">
+        <button class="opt" data-q="59" data-v="1" onclick="pick(this)"><span class="ov">1</span><span class="ol">Jamais</span></button>
+        <button class="opt" data-q="59" data-v="2" onclick="pick(this)"><span class="ov">2</span><span class="ol">Rarement</span></button>
+        <button class="opt" data-q="59" data-v="3" onclick="pick(this)"><span class="ov">3</span><span class="ol">Parfois</span></button>
+        <button class="opt" data-q="59" data-v="4" onclick="pick(this)"><span class="ov">4</span><span class="ol">Souvent</span></button>
+        <button class="opt" data-q="59" data-v="5" onclick="pick(this)"><span class="ov">5</span><span class="ol">Toujours</span></button>
+      </div>
+    </div>
+    <div class="qcard" id="q60">
+      <div class="qnum">60<span class="qtot">/60</span></div>
+      <div class="qtxt">Hommes : Transpirez-vous au niveau des parties génitales ?<br>Femmes : Avez-vous des pertes jaunâtres ?</div>
+      <div class="opts">
+        <button class="opt" data-q="60" data-v="1" onclick="pick(this)"><span class="ov">1</span><span class="ol">Jamais</span></button>
+        <button class="opt" data-q="60" data-v="2" onclick="pick(this)"><span class="ov">2</span><span class="ol">Rarement</span></button>
+        <button class="opt" data-q="60" data-v="3" onclick="pick(this)"><span class="ov">3</span><span class="ol">Parfois</span></button>
+        <button class="opt" data-q="60" data-v="4" onclick="pick(this)"><span class="ov">4</span><span class="ol">Souvent</span></button>
+        <button class="opt" data-q="60" data-v="5" onclick="pick(this)"><span class="ov">5</span><span class="ol">Toujours</span></button>
+      </div>
+    </div>
+
+  <div class="sticky-bottom">
+    <button class="btn-fin" id="btn-fin" onclick="terminer()" disabled>Terminer et obtenir mon code</button>
+    <div class="manquant" id="manquant">⚠️ Veuillez répondre à toutes les questions avant de continuer</div>
+  </div>
+</div>
+
+<div id="ecran-result">
+  <div class="header">
+    <h1>✅ Questionnaire terminé</h1>
+    <p>Merci ! Transmettez votre code au Dr BLANCHARD</p>
+  </div>
+  <div class="result-box">
+    <h2>Votre code personnel</h2>
+    <p>Ce code contient vos 60 réponses. Copiez-le et envoyez-le par mail au Dr BLANCHARD, ou appuyez sur "Envoyer par mail".</p>
+    <div class="code-display" id="code-display">—</div>
+    <button class="btn-copy" id="btn-copy" onclick="copierCode()">📋 Copier le code</button>
+    <button class="btn-mail" onclick="envoyerMail()">📧 Envoyer par mail au Dr BLANCHARD</button>
+    <div class="instruc">
+      <strong>Si vous copiez le code :</strong><br>
+      1. Copiez le code ci-dessus<br>
+      2. Ouvrez votre application mail<br>
+      3. Adressez-le à votre praticien avec votre nom et prénom<br>
+      4. Collez le code dans le corps du message
+    </div>
+  </div>
+</div>
+
+<script>
+const reponses = {};
+
+function pick(btn) {
+  const q = btn.dataset.q;
+  const v = btn.dataset.v;
+  // Désélectionner les autres options de la même question
+  document.querySelectorAll(`.opt[data-q="${q}"]`).forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+  reponses[q] = v;
+  // Marquer la carte comme répondue
+  const card = document.getElementById('q' + q);
+  if(card) card.classList.add('answered');
+  updateProgress();
+}
+
+function updateProgress() {
+  const nb = Object.keys(reponses).length;
+  const pct = Math.round(nb / 60 * 100);
+  document.getElementById('prog').style.width = pct + '%';
+  document.getElementById('prog-txt').textContent = nb + ' / 60 réponses';
+  const btn = document.getElementById('btn-fin');
+  btn.disabled = nb < 60;
+}
+
+function terminer() {
+  const nb = Object.keys(reponses).length;
+  if(nb < 60) {
+    document.getElementById('manquant').style.display = 'block';
+    // Scroller vers la première question sans réponse
+    for(let i = 1; i <= 60; i++) {
+      if(!reponses[i]) {
+        document.getElementById('q' + i).scrollIntoView({behavior: 'smooth', block: 'center'});
+        break;
+      }
+    }
+    return;
+  }
+  // Générer le code : 60 chiffres concaténés
+  let code = '';
+  for(let i = 1; i <= 60; i++) code += reponses[i] || '0';
+  document.getElementById('code-display').textContent = code;
+  document.getElementById('ecran-questionnaire').style.display = 'none';
+  document.getElementById('ecran-result').style.display = 'block';
+  window.scrollTo(0, 0);
+  window._ccmqCode = code;
+}
+
+function copierCode() {
+  const code = window._ccmqCode || '';
+  navigator.clipboard.writeText(code).then(() => {
+    const btn = document.getElementById('btn-copy');
+    btn.textContent = '✅ Copié !';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = '📋 Copier le code'; btn.classList.remove('copied'); }, 2500);
+  }).catch(() => {
+    // Fallback
+    const el = document.getElementById('code-display');
+    const range = document.createRange();
+    range.selectNode(el);
+    window.getSelection().removeAllRanges();
+    window.getSelection().addRange(range);
+    document.execCommand('copy');
+    window.getSelection().removeAllRanges();
+  });
+}
+
+function envoyerMail() {
+  const code = window._ccmqCode || '';
+  const sujet = encodeURIComponent('Mon questionnaire acupuncture - Code CCMQ');
+  const corps = encodeURIComponent(
+    'Bonjour Dr BLANCHARD,\n\n' +
+    'Veuillez trouver ci-dessous mon code questionnaire :\n\n' +
+    code + '\n\n' +
+    'Cordialement'
+  );
+  window.location.href = 'mailto:nicolas.blanchard@acupuncture.fr?subject=' + sujet + '&body=' + corps;
+}
+</script>
+</body>
+</html>
