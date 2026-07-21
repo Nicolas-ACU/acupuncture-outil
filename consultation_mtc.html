@@ -126,6 +126,7 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
 .pt-row{display:flex;align-items:flex-start;gap:8px;padding:7px 0;border-bottom:1px solid var(--border)}
 .pt-row:last-child{border-bottom:none}
 .pt-code{background:var(--jade);color:#fff;border-radius:5px;padding:2px 7px;font-size:11px;font-weight:700;flex-shrink:0;margin-top:2px;min-width:40px;text-align:center}
+#pts-secondaires .pt-code{background:#5D6D7E;color:#fff}
 .pt-code.ck{background:var(--ink)}
 .pt-txt{flex:1}
 .pt-nom{font-size:13px;font-weight:600}
@@ -180,7 +181,6 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
     <div class="ni" data-pg="points"><span>📍</span><span>Points</span></div>
     <div class="ni" data-pg="synthese"><span>✨</span><span>Synthèse</span></div>
     <div class="nsep">Historique</div>
-    <div class="ni" data-pg="realises"><span>✅</span><span>Points réalisés</span></div>
     <div class="ni" data-pg="seances"><span>📅</span><span>Séances</span></div>
   </nav>
   <div id="sb-bot">
@@ -406,7 +406,7 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
               <button class="btn br" style="font-size:11px;display:none" id="langue-photo-del" onclick="deleteLanguePhoto()">🗑 Supprimer</button>
             </div>
             <div id="langue-photo-preview" style="margin-top:8px;display:none">
-              <img id="langue-photo-img" style="max-width:100%;max-height:200px;border-radius:8px;border:1px solid var(--border);object-fit:cover" alt="Photo langue">
+              <img id="langue-photo-img" style="max-width:100%;max-height:200px;border-radius:8px;border:1px solid var(--border);object-fit:cover;cursor:zoom-in" alt="Photo langue" title="Cliquer pour agrandir" onclick="voirLanguePhoto()">
               <div style="font-size:10px;color:var(--slate);margin-top:3px" id="langue-photo-info"></div>
             </div>
           </div>
@@ -906,7 +906,10 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
     <!-- POINTS -->
 
     <div class="pg" id="pg-points">
-      <div class="sh"><h2>Prescription de points</h2><span class="zh">處方選穴</span></div>
+      <div class="sh" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+        <div><h2>Prescription de points</h2><span class="zh">處方選穴</span></div>
+        <button onclick="resetPrescription()" style="background:#FEF3C7;border:1px solid #D97706;color:#92400E;border-radius:8px;padding:6px 14px;font-size:12px;font-weight:600;cursor:pointer" title="Vider toutes les sélections et recommencer">🔄 Reset prescription</button>
+      </div>
 
       <!-- ══ BA GANG ══ -->
       <div class="card" style="border-left:4px solid #6C3483;margin-bottom:12px">
@@ -1093,7 +1096,7 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
           <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end">
             <div class="f" style="flex:1;min-width:180px">
               <label>Syndrome retenu</label>
-              <select id="synd-sel" onchange="if(this.value){resetPointsDisplay();showPoints(this.value);}else{resetPointsDisplay();}" style="font-size:12px">
+              <select id="synd-sel" onchange="if(this.value){resetPointsDisplay();showPoints(this.value);setTimeout(filterAuri,50);}else{resetPointsDisplay();}" style="font-size:12px">
                 <option value="">— Sélectionner un syndrome —</option>
                 <optgroup label="🫀 Cœur"><option value="Vide de Qi du Cœur">Vide de Qi du Cœur</option><option value="Vide de Yang du Cœur">Vide de Yang du Cœur</option><option value="Collapsus du Yang du Cœur">Collapsus du Yang du Cœur</option><option value="Vide de Sang du Cœur">Vide de Sang du Cœur</option><option value="Vide de Yin du Cœur">Vide de Yin du Cœur</option><option value="Feu du Cœur">Feu du Cœur</option><option value="Mucosités Feu agite le Cœur">Mucosités Feu agite le Cœur</option><option value="Mucosités troubles obstrue le Shen">Mucosités troubles obstrue le Shen</option><option value="Stase de Sang du Cœur">Stase de Sang du Cœur</option></optgroup>
                 <optgroup label="🌿 Rate"><option value="Vide de Qi de Rate">Vide de Qi de Rate</option><option value="Vide de Yang de Rate">Vide de Yang de Rate</option><option value="Effondrement du Qi de Rate">Effondrement du Qi de Rate</option><option value="Rate ne contrôle pas le Sang">Rate ne contrôle pas le Sang</option><option value="Humidité-Chaleur Rate">Humidité-Chaleur Rate</option></optgroup>
@@ -1145,19 +1148,24 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
         <div style="border-top:1px solid var(--border);padding-top:10px;margin-top:4px">
           <div style="font-size:11px;font-weight:700;color:var(--slate);text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px">Points réalisés (séance)</div>
           <div id="pts-realises" style="font-size:13px;min-height:40px;line-height:2;margin-bottom:8px"></div>
-          <div style="display:flex;gap:8px;margin-bottom:8px">
-          <button class="btn bg" onclick="navTo('synthese');setTimeout(autoFillSynthese,100)" style="font-size:11px">→ Aller à la Synthèse</button>
-          <button class="btn" onclick="autoFillSynthese();showToast('Points copiés vers Synthèse')" style="font-size:11px">📋 Copier points vers Synthèse</button>
-        </div>
+          
         <div class="f"><label style="font-size:11px">Notes de traitement</label>
             <textarea id="pts-nl" rows="2" placeholder="Ex : LV3 dispersion, moxa CV4 15 min, ST36 tonification…" oninput="markDirty()" style="font-size:12px"></textarea>
           </div>
           <div style="display:flex;gap:8px;margin-top:6px;align-items:center;flex-wrap:wrap">
             <input id="pts-libre-code" placeholder="Code (ex: ST36)" style="width:90px;font-size:12px;padding:6px 8px;border:1px solid var(--border);border-radius:6px;font-family:inherit">
-            <input id="pts-libre-nom" placeholder="Nom ou indication" style="flex:1;font-size:12px;padding:6px 8px;border:1px solid var(--border);border-radius:6px;font-family:inherit;min-width:120px">
+            <input id="pts-libre-nom" placeholder="Nom (ex: Zusanli)" style="flex:1;font-size:12px;padding:6px 8px;border:1px solid var(--border);border-radius:6px;font-family:inherit;min-width:120px">
             <button class="btn" onclick="addLibrePoint()" style="font-size:11px">+ Ajouter point libre</button>
           </div>
           <div id="pts-libres-list" style="margin-top:6px"></div>
+        <div style="margin-top:12px;padding-top:10px;border-top:2px solid var(--jade);display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn bg" onclick="validerVersSynthese()" style="flex:2;font-size:13px;padding:10px">
+            ✅ Valider et aller vers Synthèse →
+          </button>
+          <button class="btn" onclick="validerVersSynthese(false)" style="flex:1;font-size:12px;padding:10px">
+            📋 Copier sans naviguer
+          </button>
+        </div>
         </div>
       </div>
 
@@ -1250,7 +1258,12 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
           </div>
         </div>
         <div style="margin-top:8px;display:flex;gap:8px">
-          <button class="btn bg" onclick="applyRealises()">✓ Appliquer vers Synthèse</button>
+          <button class="btn bg" onclick="applyRealises();navTo('synthese')" style="font-size:13px;padding:10px 20px">
+            ✓ Valider et aller vers Synthèse →
+          </button>
+          <button class="btn" onclick="autoFillSynthese();showToast('Points copiés')" style="font-size:11px">
+            📋 Copier points seulement
+          </button>
         </div>
       </div>
     </div>
@@ -1477,7 +1490,7 @@ const CQ=[
   {n:59,q:"Brûlure en urinant ou urines foncées ?",c:"HC"},{n:60,q:"H : sueurs génitales ? / F : pertes jaunâtres ?",c:"HC"},
 ];
 const CC={
-  EQ:{lbl:'Équilibrée',items:[1,2,7,8,21,27,53,54],inv:[2,7,8,21,27,54],s:50,t:40,col:'#4A235A',bg:'#F3E8FF'},
+  EQ:{lbl:'Équilibrée',items:[1,2,7,8,21,27,53,54],inv:[2,7,8,21,27,54],s:60,t:60,col:'#4A235A',bg:'#F3E8FF'},
   QI:{lbl:'Vide de Qi',items:[2,3,4,5,6,7,22,26],inv:[],s:35,t:28,col:'#1A5276',bg:'#D6EAF8'},
   YG:{lbl:'Vide de Yang',items:[17,18,19,21,22,52,55],inv:[],s:28,t:22,col:'#0D6E8A',bg:'#D0ECF5'},
   YN:{lbl:'Vide de Yin',items:[16,20,29,35,38,44,46,57],inv:[],s:32,t:25,col:'#922B21',bg:'#FADBD8'},
@@ -2187,7 +2200,8 @@ function envoyerCCMQ(){
     'Afin de préparer au mieux votre séance, merci de répondre au questionnaire en ligne en cliquant sur le lien ci-dessous (5 à 10 minutes) :\n\n' +
     '👉 https://nicolas-acu.github.io/acupuncture-outil/ccmq_patient.html\n\n' +
     'À la fin du questionnaire, vous obtiendrez un code à 60 chiffres.\n' +
-    'Merci de me le retourner en répondant simplement à ce mail, ou de me l\'apporter lors de votre consultation.\n\n' +
+    'Merci de me le retourner en répondant simplement à ce mail.\n\n' +
+    'Je vous remercie également de bien préciser dans votre réponse le motif principal de votre consultation.\n\n' +
     'Je vous remercie\nCordialement\nDr Nicolas BLANCHARD'
   );
 
@@ -2217,6 +2231,144 @@ function importerCodeCCMQ(){
   showToast('✅ ' + ok + '/60 réponses importées — CCMQ calculé');
 }
 
+function voirLanguePhoto(){
+  const src = window._languePhotoB64 || (document.getElementById('langue-photo-img')||{}).src;
+  if(!src || src===window.location.href || src.startsWith('http') && !src.startsWith('data')) return;
+  const overlay = document.createElement('div');
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:9999;display:flex;align-items:center;justify-content:center;cursor:zoom-out';
+  overlay.innerHTML = '<img src="'+src+'" style="max-width:95vw;max-height:95vh;border-radius:8px;object-fit:contain">';
+  overlay.addEventListener('click', ()=>overlay.remove());
+  document.body.appendChild(overlay);
+}
+
+function resetPrescription(){
+  if(!confirm('Remettre à zéro toute la prescription ?\nToutes les cases cochées et les sélections seront effacées.')) return;
+
+  // Vider tous les selects de l'onglet Points
+  ['ebm-sel','synd-sel','gyno-cat','gyno-motif','auri-cat'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el) el.value = '';
+  });
+
+  // Vider champs libres
+  ['synd-libre','pts-libre-code','pts-libre-nom','pts-nl','auri-notes'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el) el.value = '';
+  });
+
+  // Décocher toutes les cases
+  document.querySelectorAll('.pt-chk,.ebm-chk,.gyno-chk,.libre-chk,.auri-chk').forEach(cb=>{
+    cb.checked = false;
+  });
+
+  // Vider les listes affichées
+  // Vider le contenu sans détruire la structure HTML
+  ['pts-principaux','pts-secondaires','pts-principe','pts-tech','pts-cons',
+   'pts-libres-list','auri-list','gyno-result','synd-suggestions',
+   'meridiens-result','bagang-result',
+   'ebm-pts-principaux','ebm-pts-secondaires','ebm-tech','ebm-proto','ebm-ref','ebm-note'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el) el.innerHTML='';
+  });
+  // Masquer sans détruire la structure
+  // Masquer EBM sans détruire la structure interne
+  const ebmResEl = document.getElementById('ebm-result');
+  if(ebmResEl) ebmResEl.style.display='none';
+  const ebmNivEl = document.getElementById('ebm-niveau');
+  if(ebmNivEl){ ebmNivEl.innerHTML=''; ebmNivEl.style.display='none'; }
+  ['ebm-pts-principaux','ebm-pts-secondaires','ebm-tech','ebm-proto','ebm-ref','ebm-note'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.innerHTML='';
+  });
+
+  // Remettre les panneaux à leur état initial
+  const ptsResult = document.getElementById('pts-result');
+  if(ptsResult) ptsResult.style.display='none';
+  const ptsEmpty = document.getElementById('pts-empty');
+  if(ptsEmpty) ptsEmpty.style.display='';
+  const ebmRes = document.getElementById('ebm-result');
+  if(ebmRes) ebmRes.style.display='none';
+  const gynoWrapper = document.getElementById('gyno-result-wrapper');
+  if(gynoWrapper) gynoWrapper.style.display='none';
+  const aiCard = document.getElementById('ai-pts-card');
+  if(aiCard) aiCard.style.display='none';
+  const syndSugg = document.getElementById('synd-suggestions');
+  if(syndSugg) syndSugg.style.display='none';
+
+  // Remettre label auri
+  const auriLbl = document.getElementById('auri-synd-label');
+  if(auriLbl) auriLbl.textContent='—';
+
+  // Reset Ba Gang
+  const bg = document.getElementById('bagang-result');
+  if(bg) bg.innerHTML='<span style="color:var(--slate);font-style:italic">Remplissez les 10 questions et l\'examen clinique puis cliquez Calculer.</span>';
+
+  syncRealises();
+  markDirty();
+  showToast('✅ Prescription remise à zéro — repartez sur une base propre');
+}
+
+function validerVersSynthese(navigate=true){
+  // Collecter TOUS les points cochés quelle que soit l'origine
+  const all = [];
+  const labels = {synd:'', ebm:'[EBM]', gyno:'[Gynéco]', libre:'[+]', auri:'[Auri]'};
+
+  document.querySelectorAll('.pt-chk:checked:not(.ebm-chk):not(.gyno-chk):not(.libre-chk)').forEach(cb=>{
+    const code = cb.dataset.code||'';
+    const nom  = cb.dataset.nom||'';
+    if(code) all.push(code + (nom && nom!==code ? ' '+nom : ''));
+  });
+  document.querySelectorAll('.ebm-chk:checked').forEach(cb=>{
+    all.push('[EBM] '+(cb.dataset.code||''));
+  });
+  document.querySelectorAll('.gyno-chk:checked').forEach(cb=>{
+    all.push('[Gynéco] '+(cb.dataset.code||''));
+  });
+  document.querySelectorAll('.libre-chk:checked').forEach(cb=>{
+    const c = cb.dataset.code||'';
+    const n = cb.dataset.nom||'';
+    all.push(n && n!==c ? '[+] '+n : '[+] '+c);
+  });
+  document.querySelectorAll('.auri-chk:checked').forEach(cb=>{
+    all.push('[Auri] '+(cb.dataset.code||''));
+  });
+
+  // Remplir la synthèse
+  const sPoints = document.getElementById('s-points');
+  if(sPoints) sPoints.value = all.join(', ');
+
+  // Principe de traitement
+  const sPrincipe = document.getElementById('s-principe');
+  if(sPrincipe && !sPrincipe.value){
+    const princEl = document.getElementById('pts-principe');
+    if(princEl && princEl.textContent.trim()) sPrincipe.value = princEl.textContent.trim();
+  }
+
+  // Technique depuis notes
+  const sTech = document.getElementById('s-tech');
+  if(sTech && !sTech.value){
+    const nlEl = document.getElementById('pts-nl');
+    if(nlEl && nlEl.value.trim()) sTech.value = nlEl.value.trim();
+  }
+
+  // Syndrome retenu
+  const sSyndromes = document.getElementById('s-syndromes');
+  if(sSyndromes && !sSyndromes.value){
+    const synd = (document.getElementById('synd-libre')||{}).value
+      || (document.getElementById('synd-sel')||{}).value
+      || (document.getElementById('gyno-motif')||{}).value
+      || (document.getElementById('ebm-sel')||{}).value || '';
+    if(synd) sSyndromes.value = synd;
+  }
+
+  markDirty();
+  if(navigate){
+    navTo('synthese');
+    showToast('✅ '+ all.length +' point(s) transféré(s) vers la Synthèse');
+  } else {
+    showToast('📋 '+ all.length +' point(s) copiés');
+  }
+}
+
 function toggleSAfield(){
   const sexe = (document.getElementById('p-sexe')||{}).value||'';
   const sa = document.getElementById('sa-field');
@@ -2237,6 +2389,7 @@ function navTo(pg){
   document.getElementById('btn-ex').style.display=hp&&pg!=='patients'?'':'none';
   if(pg==='patients')renderPatients();
   if(pg==='seances')renderSeances();
+  if(pg==='realises') setTimeout(syncRealises, 50);
   if(pg==='fiche') setTimeout(toggleSAfield, 30);
   if(pg==='synthese') setTimeout(autoFillSynthese, 50);
   if(pg==='points'){
@@ -2466,7 +2619,25 @@ function loadSeance(sc){
     else if(sel)sel.value=sc.pts.syndrome||'';
     s('pts-nl',sc.pts.notesLibres);s('auri-notes',sc.pts.auriNotes||'');
     const synd=sc.pts.syndLibre||sc.pts.syndrome||'';
-    if(synd){showPoints(synd,sc.pts.realises||[]);showAuri(synd,sc.pts.auriRealises||[]);}
+    if(synd){
+      showPoints(synd,sc.pts.realises||[]);
+      showAuri(synd,sc.pts.auriRealises||[]);
+    }
+    // Restaurer les points libres depuis les réalisés sauvegardés
+    if(sc.pts.realises && sc.pts.realises.length){
+      const libreList = document.getElementById('pts-libres-list');
+      if(libreList){
+        libreList.innerHTML = '';
+        sc.pts.realises.filter(r=>r.startsWith('[+] ')).forEach(r=>{
+          const code = r.replace('[+] ','').split(' — ')[0];
+          const nom  = r.replace('[+] ','');
+          const div = document.createElement('div');
+          div.style.cssText='display:flex;align-items:center;gap:8px;padding:3px 0;font-size:12px';
+          div.innerHTML='<input type="checkbox" class="libre-chk" data-code="'+code+'" data-nom="'+nom+'" checked onchange="syncRealises()" style="width:14px;height:14px"> <span>'+nom+'</span> <button onclick="this.parentElement.remove();syncRealises()" style="border:none;background:none;color:var(--slate);cursor:pointer;font-size:14px;padding:0 4px">×</button>';
+          libreList.appendChild(div);
+        });
+      }
+    }
   }
   const syn=sc.syn||{};
   s('s-motif',syn.motif);s('s-syndromes',syn.syndromes);s('s-principe',syn.principe);
@@ -2514,6 +2685,8 @@ function collectSc(){
   const real=[];
   syndChk2.forEach(cb=>{const n=cb.closest('.pt-row')?.querySelector('.pt-note');real.push(cb.dataset.code+(cb.dataset.nom&&cb.dataset.nom!==cb.dataset.code?' '+cb.dataset.nom:'')+(n&&n.value?' ('+n.value+')':''));});
   ebmChk2.forEach(cb=>{const n=cb.closest('.pt-row')?.querySelector('.pt-note');real.push('[EBM] '+cb.dataset.code+' '+cb.dataset.nom+(n&&n.value?' ('+n.value+')':''));});
+  gynoChk2.forEach(cb=>{real.push('[Gynéco] '+cb.dataset.code+(cb.dataset.nom&&cb.dataset.nom!==cb.dataset.code?' '+cb.dataset.nom:''));});
+  libreChk2.forEach(cb=>{ const c=cb.dataset.code||''; const n=cb.dataset.nom||''; real.push(n&&n!==c ? '[+] '+n : '[+] '+c); });
   gynoChk2.forEach(cb=>{real.push('[Gynéco] '+cb.dataset.code+(cb.dataset.nom&&cb.dataset.nom!==cb.dataset.code?' — '+cb.dataset.nom:''));});
   libreChk2.forEach(cb=>{real.push('[+] '+cb.dataset.code+(cb.dataset.nom?' — '+cb.dataset.nom:''));});
   const auriReal = collectAuri();
@@ -2536,6 +2709,8 @@ async function saveSeance(){
     updSb();
   }
   if(!curPt.seances)curPt.seances=[];
+  // Auto-remplir synthèse si vide avant sauvegarde
+  autoFillSynthese();
   const sc=collectSc();
   sc.statut='realisee';
   if(curScIdx!==null && curScIdx < curPt.seances.length){
@@ -2546,7 +2721,7 @@ async function saveSeance(){
   }
   await dbPut(curPt);
   updSb();isDirty=false;syncPts();
-  showToast('✅ Séance N°'+curScIdx+' enregistrée');
+  showToast('✅ Séance N°'+(curScIdx+1)+' enregistrée');
   renderSeances();
 }
 
@@ -2836,24 +3011,123 @@ function importCCMQ(){
 }
 function clearCCMQ(){CQ.forEach(i=>{const e=document.getElementById('c-'+i.n);if(e)e.value='';});const fb=document.getElementById('ccmq-fb');if(fb)fb.style.display='none';const ta=document.getElementById('ccmq-import');if(ta)ta.value='';markDirty();showToast('CCMQ effacé');}
 function calcCCMQ(){
+  // ── Étape 1 : calculer les scores normalisés ──
   const scores={};
   Object.entries(CC).forEach(([k,v])=>{
-    let raw=0,cnt=0;v.items.forEach(n=>{const e=document.getElementById('c-'+n);if(!e||!e.value)return;let s=parseInt(e.value);if(v.inv.includes(n))s=6-s;raw+=s;cnt++;});
-    const n=v.items.length,norm=cnt?Math.round((raw-n)/(n*4)*100):0;scores[k]={raw,norm,cnt};
-    const rs=document.getElementById('rs-'+k),rb=document.getElementById('rb-'+k);
-    if(rs)rs.textContent=cnt?norm:'—';
-    if(rb){if(!cnt){rb.textContent='—';rb.className='rcb ba';return;}if(norm>=v.s){rb.textContent='✅ Présente';rb.className='rcb bp';}else if(norm>=v.t){rb.textContent='⚠️ Tendance';rb.className='rcb bt';}else{rb.textContent='— Absente';rb.className='rcb ba';}}
+    let raw=0,cnt=0;
+    v.items.forEach(n=>{
+      const e=document.getElementById('c-'+n);
+      if(!e||!e.value)return;
+      let s=parseInt(e.value);
+      if(v.inv.includes(n))s=6-s;
+      raw+=s;cnt++;
+    });
+    const n=v.items.length;
+    const norm=cnt===n?Math.round((raw-n)/(n*4)*100):null; // null si incomplet
+    scores[k]={raw,norm,cnt,complete:cnt===n};
+    // Affichage badge individuel
+    const rs=document.getElementById('rs-'+k);
+    const rb=document.getElementById('rb-'+k);
+    if(rs) rs.textContent = norm!==null ? norm : '—';
+    if(rb){
+      if(norm===null){rb.textContent='—';rb.className='rcb ba';return;}
+      if(k==='EQ'){
+        if(norm>=60){rb.textContent='✅ Présente';rb.className='rcb bp';}
+        else if(norm>=40){rb.textContent='⚠️ Tendance';rb.className='rcb bt';}
+        else{rb.textContent='— Absente';rb.className='rcb ba';}
+      } else {
+        if(norm>=40){rb.textContent='✅ Présente';rb.className='rcb bp';}
+        else if(norm>=30){rb.textContent='⚠️ Tendance';rb.className='rcb bt';}
+        else{rb.textContent='— Absente';rb.className='rcb ba';}
+      }
+    }
   });
-  const pres=Object.entries(scores).filter(([k])=>scores[k].norm>=CC[k].s&&k!=='EQ');
-  const tend=Object.entries(scores).filter(([k])=>scores[k].norm>=CC[k].t&&scores[k].norm<CC[k].s&&k!=='EQ');
-  const eq=scores['EQ'],eqP=eq&&eq.norm>=CC.EQ.s&&pres.length===0;
-  let html='';
-  if(eqP)html+='<p><strong style="color:#065f46">✅ Constitution équilibrée présente.</strong></p>';
-  if(pres.length){html+='<p><strong>Présentes :</strong> '+pres.map(([k])=>`<span style="color:${CC[k].col};font-weight:600">${CC[k].lbl} (${scores[k].norm}/100)</span>`).join(', ')+'</p>';const prim=[...pres].sort((a,b)=>scores[b[0]].norm-scores[a[0]].norm)[0];html+=`<p><strong>Constitution primaire :</strong> <span style="color:${CC[prim[0]].col};font-weight:700">${CC[prim[0]].lbl}</span></p>`;}
-  if(tend.length)html+='<p><strong>Tendances :</strong> '+tend.map(([k])=>`${CC[k].lbl} (${scores[k].norm}/100)`).join(', ')+'</p>';
-  if(!html)html='<p style="color:var(--slate)">Complétez le questionnaire et recalculez.</p>';
-  const sy=document.getElementById('ccmq-synth');if(sy)sy.innerHTML=html;
-  stab('ccq-r','ccq-tabs',document.getElementById('ccr-btn'));markDirty();showToast('CCMQ calculé');
+
+  // ── Étape 2 : algorithme officiel CATCM 2009 ──
+  const eqScore = scores['EQ']?.norm;
+  const autresScores = Object.entries(scores).filter(([k])=>k!=='EQ');
+  const autresNorm = autresScores.map(([,v])=>v.norm).filter(n=>n!==null);
+
+  // Constitutions non équilibrées présentes (≥40) et tendancielles (30-39)
+  const presentes = autresScores.filter(([k,v])=>v.norm!==null&&v.norm>=40);
+  const tendancielles = autresScores.filter(([k,v])=>v.norm!==null&&v.norm>=30&&v.norm<40);
+
+  let interpretation = '';
+  let typeConstitution = '';
+
+  // ── Règle 1 : Constitution équilibrée ──
+  if(eqScore!==null && eqScore>=60){
+    const tousAutresInf30 = autresNorm.every(n=>n<30);
+    if(tousAutresInf30){
+      // Constitution équilibrée pure
+      typeConstitution = 'equilibree_pure';
+    } else {
+      // EQ ≥60 mais certains autres ≥30 → EQ tendancielle + constitutions associées
+      typeConstitution = 'equilibree_mixte';
+    }
+  } else if(presentes.length===0 && tendancielles.length===0){
+    // EQ <60 et rien d'autre → constitution équilibrée présente par défaut
+    const tousAutresInf30 = autresNorm.every(n=>n<30);
+    if(tousAutresInf30 && eqScore!==null && eqScore>=40){
+      typeConstitution = 'equilibree_tendance';
+    } else {
+      typeConstitution = 'indetermine';
+    }
+  } else if(presentes.length>0 || tendancielles.length>0){
+    typeConstitution = presentes.length===0 ? 'tendancielle' : (presentes.length===1 ? 'non_eq_isolee' : 'non_eq_mixte');
+  }
+
+  // ── Rendu de l'interprétation ──
+  const mkBadge = (k) => `<span style="color:${CC[k].col};background:${CC[k].bg};padding:2px 8px;border-radius:12px;font-weight:600;font-size:12px">${CC[k].lbl} (${scores[k].norm}/100)</span>`;
+
+  // Toujours afficher le score EQ en premier si ≥40
+  if(eqScore!==null && eqScore>=40){
+    const eqLabel = eqScore>=60 ? '✅' : '◑';
+    const eqStatus = eqScore>=60 ? 'présente' : 'tendancielle';
+    interpretation += `<div style="background:#F3E8FF;border-left:3px solid #4A235A;border-radius:6px;padding:8px 12px;margin-bottom:8px">
+      <strong style="color:#4A235A">${eqLabel} Constitution Équilibrée ${eqStatus} — ${eqScore}/100</strong>
+      ${typeConstitution==='equilibree_pure' ? '<div style="font-size:11px;color:#6D28D9;margin-top:3px">Tous les autres scores &lt;30 — Constitution équilibrée isolée</div>' : ''}
+      ${typeConstitution==='equilibree_mixte' ? '<div style="font-size:11px;color:#7C3AED;margin-top:3px">Constitution équilibrée associée à une ou plusieurs constitutions non équilibrées</div>' : ''}
+    </div>`;
+  }
+
+  if(typeConstitution==='equilibree_pure'){
+    interpretation += `<div style="color:#065F46;font-size:12px">Aucune constitution non équilibrée présente ou tendancielle.</div>`;
+  } else {
+    // Afficher les constitutions non équilibrées
+    if(presentes.length>0){
+      const sorted = [...presentes].sort((a,b)=>scores[b[0]].norm-scores[a[0]].norm);
+      const prim = sorted[0];
+      interpretation += `<div style="margin-bottom:6px"><strong>Constitutions présentes (≥40/100) :</strong><br>${sorted.map(([k])=>mkBadge(k)).join(' ')}</div>`;
+      if(presentes.length>1){
+        interpretation += `<div style="margin-bottom:6px"><strong>Constitution primaire :</strong> ${mkBadge(prim[0])} <span style="font-size:11px;color:var(--slate)">(score le plus élevé)</span></div>`;
+        interpretation += `<div style="font-size:11px;color:var(--slate);margin-bottom:6px">Constitutions mixtes — traiter la primaire en priorité</div>`;
+      } else {
+        interpretation += `<div style="font-size:11px;color:var(--slate);margin-bottom:6px">Constitution isolée</div>`;
+      }
+    }
+    if(tendancielles.length>0){
+      interpretation += `<div style="margin-bottom:6px"><strong>Tendances constitutionnelles (30-39/100) :</strong><br>${tendancielles.map(([k])=>mkBadge(k)).join(' ')}</div>`;
+      if(presentes.length===0){
+        const primT = [...tendancielles].sort((a,b)=>scores[b[0]].norm-scores[a[0]].norm)[0];
+        if(tendancielles.length>1){
+          interpretation += `<div style="font-size:11px;color:var(--slate);margin-bottom:6px">Constitutions tendancielles mixtes — constitution primaire : ${mkBadge(primT[0])}</div>`;
+        } else {
+          interpretation += `<div style="font-size:11px;color:var(--slate);margin-bottom:6px">Constitution tendancielle isolée</div>`;
+        }
+      }
+    }
+  }
+
+  if(typeConstitution==='indetermine' || (!interpretation)){
+    interpretation = '<p style="color:var(--slate);font-size:12px">Complétez le questionnaire pour obtenir l\'interprétation.</p>';
+  }
+
+  const sy=document.getElementById('ccmq-synth');
+  if(sy) sy.innerHTML = interpretation;
+  stab('ccq-r','ccq-tabs',document.getElementById('ccr-btn'));
+  markDirty();
+  showToast('CCMQ calculé');
 }
 // ══════ POINTS ══════
 function mkPtRow(p,realises=[]){
@@ -2892,7 +3166,7 @@ function addSecondSyndrome(){
   // Add points
   const pp = document.getElementById('pts-principaux');
   if(pp && db2.pp){
-    const frag = db2.pp.map(pt=>`<span class="pt-row" style="display:flex;align-items:center;gap:8px;margin:3px 0"><input type="checkbox" class="pt-chk" data-code="${pt.c}" data-nom="${pt.n}" onchange="syncRealises()" style="width:14px;height:14px"> <span class="pt-code" style="font-weight:700;min-width:40px;color:#8B4513">${pt.c}</span> <span>${pt.n}</span> <span style="font-size:10px;color:var(--slate)">${pt.a}</span></span>`).join('');
+    const frag = db2.pp.map(pt=>`<span class="pt-row" style="display:flex;align-items:center;gap:8px;margin:3px 0"><input type="checkbox" class="pt-chk" data-code="${pt.c}" data-nom="${pt.n}" onchange="syncRealises()" style="width:14px;height:14px"> <span class="pt-code" style="font-weight:700;min-width:40px;color:var(--jade)">${pt.c}</span> <span>${pt.n}</span> <span style="font-size:10px;color:var(--slate)">${pt.a}</span></span>`).join('');
     pp.insertAdjacentHTML('beforeend', '<div style="margin-top:8px;padding-top:8px;border-top:1px dashed var(--border)"><span style="font-size:10px;color:#8B4513;font-weight:700">2ème SYNDROME : '+libre+'</span></div>'+frag);
   }
   document.getElementById('pts-result').style.display='';
@@ -2900,15 +3174,22 @@ function addSecondSyndrome(){
 }
 
 function addLibrePoint(){
-  const code = (document.getElementById('pts-libre-code')||{}).value||'';
-  const nom = (document.getElementById('pts-libre-nom')||{}).value||'';
-  if(!code && !nom){ showToast('Saisissez un code ou un nom de point'); return; }
-  const label = code && nom ? code+' — '+nom : (code||nom);
+  const codeRaw = (document.getElementById('pts-libre-code')||{}).value.trim()||'';
+  const nomRaw  = (document.getElementById('pts-libre-nom')||{}).value.trim()||'';
+  if(!codeRaw && !nomRaw){ showToast('Saisissez un code ou un nom de point'); return; }
+  // Le code seul = identifiant complet (ex: "ST36", "KD3", "CV4")
+  // Le nom = indication ou nom chinois (ex: "Zusanli", "Tonification Rein")
+  const ptCode = codeRaw || nomRaw;
+  const ptNom  = (codeRaw && nomRaw) ? nomRaw : '';
+  const label  = ptNom ? ptCode+' — '+ptNom : ptCode;
   const list = document.getElementById('pts-libres-list');
   if(!list) return;
   const div = document.createElement('div');
-  div.style.cssText = 'display:flex;align-items:center;gap:8px;padding:3px 0;font-size:12px';
-  div.innerHTML = '<input type="checkbox" class="libre-chk" data-code="'+code+'" data-nom="'+label+'" checked onchange="syncRealises()" style="width:14px;height:14px"> <span>'+label+'</span> <button onclick="this.parentElement.remove();syncRealises()" style="border:none;background:none;color:var(--slate);cursor:pointer;font-size:14px;padding:0 4px">×</button>';
+  div.style.cssText = 'display:flex;align-items:center;gap:8px;padding:4px 0;font-size:12px;border-bottom:1px solid var(--border)';
+  div.innerHTML = '<input type="checkbox" class="libre-chk" data-code="'+ptCode+'" data-nom="'+label+'" checked onchange="syncRealises()" style="width:14px;height:14px;flex-shrink:0">'
+    + '<span style="font-weight:700;color:var(--jade);min-width:50px">'+ptCode+'</span>'
+    + (ptNom ? '<span style="color:var(--slate)">'+ptNom+'</span>' : '')
+    + '<button onclick="this.parentElement.remove();syncRealises()" style="border:none;background:none;color:#ccc;cursor:pointer;font-size:16px;padding:0;margin-left:auto">×</button>';
   list.appendChild(div);
   const cEl = document.getElementById('pts-libre-code');
   const nEl = document.getElementById('pts-libre-nom');
@@ -2930,7 +3211,7 @@ function syncRealises(){
   syndChk.forEach(cb=>{const n=cb.closest('.pt-row').querySelector('.pt-note');syndList.push(cb.dataset.code+' '+cb.dataset.nom+(n&&n.value?' ('+n.value+')':''));});
   ebmChk.forEach(cb=>{const n=cb.closest('.pt-row').querySelector('.pt-note');ebmList.push('[EBM] '+cb.dataset.code+' '+cb.dataset.nom+(n&&n.value?' ('+n.value+')':''));});
   gynoChk.forEach(cb=>{ gynoList.push('[Gynéco] '+cb.dataset.code+(cb.dataset.nom&&cb.dataset.nom!==cb.dataset.code?' — '+cb.dataset.nom:'')); });
-  libreChk.forEach(cb=>{ libreList.push('[+] '+cb.dataset.code+(cb.dataset.nom?' — '+cb.dataset.nom:'')); });
+  libreChk.forEach(cb=>{ const c=cb.dataset.code||''; const n=cb.dataset.nom||''; libreList.push(n&&n!==c?'[+] '+n:'[+] '+c); });
   auriChk.forEach(cb=>{const n=cb.closest('.auri-row').querySelector('.pt-note');auriList.push('[Auri] '+cb.dataset.code+(n&&n.value?' ('+n.value+')':''));});
 
   const allList=[...syndList,...ebmList,...gynoList,...libreList,...auriList];
@@ -3468,21 +3749,35 @@ function handleLanguePhoto(input){
   }
   const reader = new FileReader();
   reader.onload = e => {
-    const b64 = e.target.result; // data:image/jpeg;base64,...
-    // Afficher preview
-    const img = document.getElementById('langue-photo-img');
-    const prev = document.getElementById('langue-photo-preview');
-    const info = document.getElementById('langue-photo-info');
-    const del = document.getElementById('langue-photo-del');
-    if(img) img.src = b64;
-    if(prev) prev.style.display = '';
-    if(info) info.textContent = `${file.name} — ${(file.size/1024).toFixed(0)} Ko — ${new Date().toLocaleDateString('fr-FR')}`;
-    if(del) del.style.display = '';
+    const rawB64 = e.target.result;
+    // Convertir en JPEG via Canvas (gère HEIC et tous formats)
+    const tmpImg = new Image();
+    tmpImg.onload = () => {
+      const canvas = document.createElement('canvas');
+      const maxW = 1200, maxH = 1200;
+      let w = tmpImg.width, h = tmpImg.height;
+      if(w > maxW){ h = Math.round(h*maxW/w); w = maxW; }
+      if(h > maxH){ w = Math.round(w*maxH/h); h = maxH; }
+      canvas.width = w; canvas.height = h;
+      canvas.getContext('2d').drawImage(tmpImg, 0, 0, w, h);
+      const b64 = canvas.toDataURL('image/jpeg', 0.85);
+      // Afficher preview
+      const img = document.getElementById('langue-photo-img');
+      const prev = document.getElementById('langue-photo-preview');
+      const info = document.getElementById('langue-photo-info');
+      const del = document.getElementById('langue-photo-del');
+      if(img) img.src = b64;
+      if(prev) prev.style.display = '';
+      if(info) info.textContent = file.name+' → JPEG — '+new Date().toLocaleDateString('fr-FR');
+      if(del) del.style.display = '';
     // Stocker dans la séance courante
     if(!window._languePhotoB64) window._languePhotoB64 = null;
-    window._languePhotoB64 = b64;
-    markDirty();
-    showToast('Photo enregistrée (sera sauvegardée avec la séance)');
+      window._languePhotoB64 = b64;
+      markDirty();
+      showToast('Photo enregistrée (sera sauvegardée avec la séance)');
+    };
+    tmpImg.onerror = () => showToast('⚠️ Format HEIC non supporté — convertissez en JPEG sur Mac (Aperçu → Exporter)');
+    tmpImg.src = rawB64;
   };
   reader.readAsDataURL(file);
 }
@@ -3545,13 +3840,53 @@ function updateRealisesPage(){
 }
 
 function autoFillSynthese(){
-  // Pousser automatiquement les points réalisés vers le champ synthèse
-  const ptsList = document.getElementById('pts-realises');
-  const sPoints = document.getElementById('s-points');
-  if(!ptsList || !sPoints || sPoints.value.trim()) return; // ne pas écraser si déjà rempli
-  const pts = Array.from(ptsList.querySelectorAll('div[style*="border-bottom"]'))
-    .map(d=>d.textContent.trim()).filter(Boolean);
-  if(pts.length) sPoints.value = pts.join(', ');
+  const sPoints    = document.getElementById('s-points');
+  const sPrincipe  = document.getElementById('s-principe');
+  const sTech      = document.getElementById('s-tech');
+  const sConseils  = document.getElementById('s-conseils');
+  const sSyndromes = document.getElementById('s-syndromes');
+  if(!sPoints) return;
+
+  // Syndromes retenus
+  const syndSel   = (document.getElementById('synd-sel')||{}).value||'';
+  const syndLibre = (document.getElementById('synd-libre')||{}).value||'';
+  const ebmSel    = (document.getElementById('ebm-sel')||{}).value||'';
+  const gynoMotif = (document.getElementById('gyno-motif')||{}).value||'';
+  const synd = syndLibre || syndSel || gynoMotif || ebmSel;
+  if(sSyndromes && !sSyndromes.value && synd) sSyndromes.value = synd;
+
+  // Principe de traitement depuis pts-principe si vide
+  if(sPrincipe && !sPrincipe.value){
+    const princEl = document.getElementById('pts-principe');
+    if(princEl && princEl.textContent.trim()) sPrincipe.value = princEl.textContent.trim();
+  }
+
+  // Technique depuis pts-nl (notes de traitement) ou pts-tech
+  if(sTech && !sTech.value){
+    const nlEl = document.getElementById('pts-nl');
+    const techEl = document.getElementById('pts-tech');
+    const tech = (nlEl&&nlEl.value.trim()) || (techEl&&techEl.textContent.trim()) || '';
+    if(tech) sTech.value = tech;
+  }
+
+  // Conseils depuis pts-cons si vide
+  if(sConseils && !sConseils.value){
+    const consEl = document.getElementById('pts-cons');
+    if(consEl && consEl.textContent.trim()) sConseils.value = consEl.textContent.trim();
+  }
+
+  // Points cochés si s-points vide
+  if(sPoints.value.trim()) return;
+  const all = [];
+  document.querySelectorAll('.pt-chk:checked:not(.auri-chk)').forEach(cb=>{
+    const code = cb.dataset.code||'';
+    const nom  = cb.dataset.nom||'';
+    if(code) all.push(code+(nom&&nom!==code?' '+nom:''));
+  });
+  document.querySelectorAll('.auri-chk:checked').forEach(cb=>{
+    all.push('[Aur] '+(cb.dataset.code||''));
+  });
+  if(all.length) sPoints.value = all.join(', ');
 }
 
 function applyRealises(){
@@ -4390,6 +4725,77 @@ function analyserMeridiens(){
   }).join('');
 }
 
+function buildMeridPrescription(nom){
+  const rx = MERID_RX[nom];
+  if(!rx) return '';
+  const mkCb = (code, label, color, bg) => {
+    const c = color||'#1A5276', b = bg||'#EBF5FB';
+    return '<div style="display:inline-flex;align-items:center;gap:5px;margin:3px 6px 3px 0">'
+      + '<input type="checkbox" class="pt-chk" data-code="'+code+'" data-nom="'+code+' '+label+'" onchange="syncRealises()" style="width:13px;height:13px">'
+      + '<span style="font-size:11px;font-weight:700;color:'+c+';background:'+b+';padding:1px 6px;border-radius:10px">'+code+'</span>'
+      + '<span style="font-size:10px;color:var(--slate)">'+label+'</span></div>';
+  };
+  return '<div style="border-top:1px solid var(--border);padding-top:10px;margin-top:10px">'
+    + '<div style="font-size:10px;font-weight:700;color:var(--slate);text-transform:uppercase;letter-spacing:.4px;margin-bottom:8px">Prescription — cochez les points à utiliser</div>'
+    + '<div style="margin-bottom:8px">'
+    + '<div style="font-size:10px;color:#1A5276;font-weight:600;margin-bottom:4px">🔵 Méridien Principal — Yuan + Luo couplé (Biao-Li)</div>'
+    + mkCb(rx.yuan, 'Yuan — tonifie/régule le méridien', '#1A5276', '#EBF5FB')
+    + mkCb(rx.luo_coupled, 'Luo du couplé Biao-Li — ouvre la communication', '#065F46', '#D1FAE5')
+    + '</div>'
+    + '<div style="margin-bottom:8px">'
+    + '<div style="font-size:10px;color:#6C3483;font-weight:600;margin-bottom:4px">🟣 Méridien Luo — Point Luo propre</div>'
+    + mkCb(rx.luo, 'Luo propre — traite le méridien couplé', '#6C3483', '#F3E8FF')
+    + '</div>'
+    + '<div style="margin-bottom:8px">'
+    + '<div style="font-size:10px;color:#784212;font-weight:600;margin-bottom:4px">🟠 MTM — puncture superficielle et de biais · '+rx.groupe_mtm+'</div>'
+    + mkCb(rx.jing, 'Jing (puits) distal — point de départ du MTM', '#784212', '#FDF2E9')
+    + mkCb(rx.shu, 'Shu (rivière) — relance la circulation', '#784212', '#FDF2E9')
+    + mkCb(rx.reunion_mtm, 'Point de réunion MTM ('+rx.groupe_mtm+')', '#784212', '#FDF2E9')
+    + '<div style="display:inline-flex;align-items:center;gap:5px;margin:3px 6px 3px 0">'
+    + '<input type="checkbox" class="pt-chk" data-code="ASHI" data-nom="Points Ashi (MTM)" onchange="syncRealises()" style="width:13px;height:13px">'
+    + '<span style="font-size:11px;font-weight:700;color:#784212;background:#FDF2E9;padding:1px 6px;border-radius:10px">ASHI</span>'
+    + '<span style="font-size:10px;color:var(--slate)">Points Ashi — zones douloureuses du trajet</span></div>'
+    + '</div></div>';
+}
+
+// Méridiens curieux - points clé et couplés
+const MERID_CURIEUX_RX = {
+  'Du Mai (VG)':   {pointCle:'SI3', pointCouple:'BL62', ouverture:'IG3 ouvre Du Mai', couple:'V62 Yang Qiao Mai'},
+  'Ren Mai (VC)':  {pointCle:'LU7', pointCouple:'KD6',  ouverture:'P7 ouvre Ren Mai',  couple:'R6 Yin Qiao Mai'},
+  'Chong Mai':     {pointCle:'SP4', pointCouple:'PC6',  ouverture:'Rte4 ouvre Chong Mai', couple:'MC6 Yin Wei Mai'},
+  'Dai Mai':       {pointCle:'GB41', pointCouple:'SJ5', ouverture:'VB41 ouvre Dai Mai', couple:'TR5 Yang Wei Mai'},
+  'Yin Qiao Mai':  {pointCle:'KD6', pointCouple:'LU7',  ouverture:'R6 ouvre Yin Qiao', couple:'P7 Ren Mai'},
+  'Yang Qiao Mai': {pointCle:'BL62', pointCouple:'SI3', ouverture:'V62 ouvre Yang Qiao', couple:'IG3 Du Mai'},
+  'Yin Wei Mai':   {pointCle:'PC6', pointCouple:'SP4',  ouverture:'MC6 ouvre Yin Wei', couple:'Rte4 Chong Mai'},
+  'Yang Wei Mai':  {pointCle:'SJ5', pointCouple:'GB41', ouverture:'TR5 ouvre Yang Wei', couple:'VB41 Dai Mai'},
+};
+
+function buildCurieuxPrescription(nom){
+  const rx = MERID_CURIEUX_RX[nom];
+  if(!rx) return '';
+  const mkCb = (code, label, color, bg) => {
+    const c = color||'#6C3483', b = bg||'#F3E8FF';
+    return '<div style="display:inline-flex;align-items:center;gap:5px;margin:3px 6px 3px 0">'
+      + '<input type="checkbox" class="pt-chk" data-code="'+code+'" data-nom="'+code+' '+label+'" onchange="syncRealises()" style="width:13px;height:13px">'
+      + '<span style="font-size:11px;font-weight:700;color:'+c+';background:'+b+';padding:1px 6px;border-radius:10px">'+code+'</span>'
+      + '<span style="font-size:10px;color:var(--slate)">'+label+'</span></div>';
+  };
+  return '<div style="border-top:1px solid var(--border);padding-top:10px;margin-top:10px">'
+    + '<div style="font-size:10px;font-weight:700;color:var(--slate);text-transform:uppercase;letter-spacing:.4px;margin-bottom:8px">Prescription — Méridien Curieux</div>'
+    + '<div style="background:#F3E8FF;border-radius:6px;padding:8px 12px;margin-bottom:8px;font-size:11px;color:#6C3483">'
+    + '<strong>Règle d\'utilisation :</strong> Point d\'ouverture (main dominante) + Point couplé (main opposée). Toujours les deux ensemble.'
+    + '</div>'
+    + '<div style="margin-bottom:8px">'
+    + '<div style="font-size:10px;color:#6C3483;font-weight:600;margin-bottom:4px">🟣 Point d\'ouverture (main dominante)</div>'
+    + mkCb(rx.pointCle, rx.ouverture, '#6C3483', '#F3E8FF')
+    + '</div>'
+    + '<div style="margin-bottom:8px">'
+    + '<div style="font-size:10px;color:#1A5276;font-weight:600;margin-bottom:4px">🔵 Point couplé (main opposée)</div>'
+    + mkCb(rx.pointCouple, rx.couple, '#1A5276', '#EBF5FB')
+    + '</div></div>';
+}
+
+const MERID_RX = {"Poumon (P)": {"yuan": "LU9", "luo_coupled": "LI6", "luo": "LU7", "jing": "LU11", "shu": "LU8", "reunion_mtm": "GB23", "groupe_mtm": "Yin main"}, "Gros Intestin (GI)": {"yuan": "LI4", "luo_coupled": "LU7", "luo": "LI6", "jing": "LI1", "shu": "LI5", "reunion_mtm": "GB13", "groupe_mtm": "Yang main"}, "Estomac (E)": {"yuan": "ST42", "luo_coupled": "SP4", "luo": "ST40", "jing": "ST45", "shu": "ST41", "reunion_mtm": "SI18", "groupe_mtm": "Yang pied"}, "Rate (RP)": {"yuan": "SP3", "luo_coupled": "ST40", "luo": "SP4", "jing": "SP1", "shu": "SP5", "reunion_mtm": "CV3", "groupe_mtm": "Yin pied"}, "Cœur (C)": {"yuan": "HT7", "luo_coupled": "SI7", "luo": "HT5", "jing": "HT9", "shu": "HT4", "reunion_mtm": "GB23", "groupe_mtm": "Yin main"}, "Intestin Grêle (IG)": {"yuan": "SI4", "luo_coupled": "HT5", "luo": "SI7", "jing": "SI1", "shu": "SI8", "reunion_mtm": "GB13", "groupe_mtm": "Yang main"}, "Vessie (V)": {"yuan": "BL64", "luo_coupled": "KD4", "luo": "BL58", "jing": "BL67", "shu": "BL60", "reunion_mtm": "SI18", "groupe_mtm": "Yang pied"}, "Rein (R)": {"yuan": "KD3", "luo_coupled": "BL58", "luo": "KD4", "jing": "KD1", "shu": "KD7", "reunion_mtm": "CV3", "groupe_mtm": "Yin pied"}, "Maître du Cœur (MC)": {"yuan": "PC7", "luo_coupled": "SJ5", "luo": "PC6", "jing": "PC9", "shu": "PC7", "reunion_mtm": "GB23", "groupe_mtm": "Yin main"}, "Triple Réchauffeur (TR)": {"yuan": "SJ4", "luo_coupled": "PC6", "luo": "SJ5", "jing": "SJ1", "shu": "SJ6", "reunion_mtm": "GB13", "groupe_mtm": "Yang main"}, "Vésicule Biliaire (VB)": {"yuan": "GB40", "luo_coupled": "LV5", "luo": "GB37", "jing": "GB44", "shu": "GB41", "reunion_mtm": "SI18", "groupe_mtm": "Yang pied"}, "Foie (F)": {"yuan": "LV3", "luo_coupled": "GB37", "luo": "LV5", "jing": "LV1", "shu": "LV4", "reunion_mtm": "CV2", "groupe_mtm": "Yin pied"}};
 function voirMeridien(nom){
   const m = MERIDIANS_DB[nom];
   if(!m) return;
@@ -4416,6 +4822,8 @@ function voirMeridien(nom){
       ${luoPlen.length ? `<div><span style="font-size:10px;color:#C0392B;font-weight:600">Plénitude : </span>${luoPlen.map(s=>`<span style="font-size:11px;padding:2px 7px;border-radius:12px;background:#FADBD8;color:#C0392B;margin:2px">${s}</span>`).join('')}</div>` : ''}
     </div>` : ''}
     ${mtm.length ? `<div><div style="font-size:10px;font-weight:700;color:var(--slate);text-transform:uppercase;margin-bottom:4px">Méridien Tendino-Musculaire</div><div style="display:flex;flex-wrap:wrap;gap:4px">${mtm.map(s=>`<span style="font-size:11px;padding:2px 7px;border-radius:12px;background:#FDF2E9;color:#784212">${s}</span>`).join('')}</div></div>` : ''}
+
+    ${m.type==='curieux' ? buildCurieuxPrescription(nom) : buildMeridPrescription(nom)}
   </div>`;
   document.body.appendChild(overlay);
   overlay.addEventListener('click', e => { if(e.target===overlay) overlay.remove(); });
@@ -5475,6 +5883,8 @@ function showGynoProtocole(category, motifKey){
   resultEl.innerHTML = html2;
   resultEl.style.display = '';
   document.getElementById('gyno-result-wrapper').style.display = '';
+  // Mettre à jour auriculothérapie avec le motif gynéco
+  setTimeout(()=>{ if(typeof filterAuri==='function') filterAuri(); }, 50);
 }
 
 function initGynoSelects(){
@@ -6159,6 +6569,8 @@ function showEBM(){
 
   result.style.display='';
   markDirty();
+  // Mettre à jour auriculothérapie
+  setTimeout(filterAuri, 80);
 }
 
 const ADB = [
@@ -6361,14 +6773,24 @@ function showAuri(syndrome, savedRealises=[]) {
   if (syndLabel) syndLabel.textContent = syndrome || '—';
 
   // Get priority points for this syndrome
-  const priority = syndrome ? (AURI_SYND_MAP[syndrome] || []) : [];
+  const syndNorm = syndrome ? normalizeSynd(syndrome) : '';
+  const priority = syndNorm ? (AURI_SYND_MAP[syndNorm] || []) : [];
 
-  // Filter ADB
+  // Filter ADB - toujours proposer des points
   let pts = ADB.filter(p => {
     const matchCat = !cat || p.cat === cat;
-    const matchSynd = !syndrome || p.synd.includes(syndrome) || priority.includes(p.c);
+    const matchSynd = !syndNorm || p.synd.includes(syndNorm) || p.synd.includes(syndrome) || priority.includes(p.c);
     return matchCat && matchSynd;
   });
+  // Fallback: si aucun point trouvé avec le syndrome, montrer les priorités ou tout
+  if(pts.length === 0 && syndNorm){
+    if(priority.length > 0){
+      pts = ADB.filter(p => (!cat || p.cat===cat) && priority.includes(p.c));
+    }
+    if(pts.length === 0){
+      pts = ADB.filter(p => !cat || p.cat===cat);
+    }
+  }
 
   // Sort: priority first
   pts.sort((a,b) => {
@@ -6413,10 +6835,43 @@ function onSyndLibre(){
 }
 
 function getSyndrome(){
-  // Retourne le syndrome actif : champ libre prioritaire, sinon select
+  // Priorité : syndrome libre → syndrome select → motif gynéco → motif EBM
   const libre = (document.getElementById('synd-libre')||{}).value||'';
   if(libre.trim()) return libre.trim();
-  return (document.getElementById('synd-sel')||{}).value||'';
+  const sel = (document.getElementById('synd-sel')||{}).value||'';
+  if(sel) return sel;
+  const gynoMotif = (document.getElementById('gyno-motif')||{}).value||'';
+  if(gynoMotif) return gynoMotif;
+  const ebmSel = (document.getElementById('ebm-sel')||{}).value||'';
+  if(ebmSel) return ebmSel;
+  return '';
+}
+
+// Table de correspondance EBM/motif → clé ADB
+const SYND_NORMALIZE = {
+  'Anxiété / Stress':          'Anxiété-stress',
+  'Anxiété-stress':            'Anxiété-stress',
+  'Insomnie':                  'Insomnie',
+  'Fatigue chronique / Burn-out': 'Fatigue chronique',
+  'Fatigue chronique':         'Fatigue chronique',
+  'Bi (obstruction-douleur)':  'Bi (obstruction-douleur)',
+  'Dysménorrhée primaire':     'Dysménorrhée par stase',
+  'Dysménorrhée (menstruations douloureuses)': 'Dysménorrhée par stase',
+  'Lombalgie aiguë (lumbago)': 'Lombalgie aiguë (lumbago)',
+  'Lombalgie chronique':       'Lombalgie chronique',
+  'Sciatique':                 'Sciatique',
+  'Céphalées de tension':      'Céphalées de tension',
+  'Migraine':                  'Migraine',
+  'Ménopause (bouffées de chaleur)': 'Ménopause',
+  'Ménopause':                 'Ménopause',
+  'Nausées de grossesse':      'Nausées et vomissements de grossesse',
+  'Nausées / Vomissements':    'Nausées et vomissements de grossesse',
+  'Sevrage tabagique':         'Sevrage tabagique',
+  'Sevrage tabagique en grossesse': 'Sevrage tabagique en grossesse',
+};
+
+function normalizeSynd(s){
+  return SYND_NORMALIZE[s] || s;
 }
 
 function filterAuri() {
