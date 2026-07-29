@@ -685,6 +685,97 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
         </div>
       </div>
 
+      <!-- PALPATION CORPORELLE -->
+      <div class="card" style="margin-top:12px">
+        <div class="ct">Palpation corporelle 觸診 — Points réactifs</div>
+        <div style="font-size:11px;color:var(--slate);font-style:italic;margin-bottom:12px">Après la palpation des pouls : rechercher les zones réactives (tension, induration, chaleur/froid local, sensibilité) sur les points Huatuojiaji, les points Shu-postérieurs et Mu-antérieurs, le trajet des méridiens aux quatre membres en rapport avec l'affection, et les points Ah Shi. Cocher les points retrouvés douloureux à la palpation.</div>
+
+        <!-- Huatuojiaji -->
+        <div style="margin-bottom:14px">
+          <div style="font-size:11px;font-weight:700;color:var(--jade);text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px">Points Huatuojiaji 夹脊 (M-BW-35) — 0,5 cun latéral au bord inférieur de l'apophyse épineuse, de C1 à L5</div>
+          <div class="tr">
+            <span class="tg" onclick="togEx(this,'palp-huatuo')">Cervical (C1–C7)</span>
+            <span class="tg" onclick="togEx(this,'palp-huatuo')">Thoracique haut (T1–T6)</span>
+            <span class="tg" onclick="togEx(this,'palp-huatuo')">Thoracique bas (T7–T12)</span>
+            <span class="tg" onclick="togEx(this,'palp-huatuo')">Lombaire (L1–L5)</span>
+          </div>
+          <input id="palp-huatuo" style="display:none" oninput="markDirty()">
+        </div>
+
+        <!-- Shu / Mu -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
+          <div>
+            <div style="font-size:11px;font-weight:700;color:var(--jade);text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px">Points Shu-postérieurs 背俞穴 (points d'Assentiment — dos, méridien Vessie, 1,5 cun latéral aux apophyses épineuses)</div>
+            <div class="tr" style="flex-wrap:wrap;gap:4px">
+              <span class="tg" onclick="togEx(this,'palp-shu')">BL13 Fèishū (Poumon) — T3</span>
+              <span class="tg" onclick="togEx(this,'palp-shu')">BL14 Juéyīnshū (Maître-Cœur) — T4</span>
+              <span class="tg" onclick="togEx(this,'palp-shu')">BL15 Xīnshū (Cœur) — T5</span>
+              <span class="tg" onclick="togEx(this,'palp-shu')">BL18 Gānshū (Foie) — T9</span>
+              <span class="tg" onclick="togEx(this,'palp-shu')">BL19 Dǎnshū (Vésicule biliaire) — T10</span>
+              <span class="tg" onclick="togEx(this,'palp-shu')">BL20 Píshū (Rate) — T11</span>
+              <span class="tg" onclick="togEx(this,'palp-shu')">BL21 Wèishū (Estomac) — T12</span>
+              <span class="tg" onclick="togEx(this,'palp-shu')">BL22 Sānjiāoshū (Triple Réchauffeur) — L1</span>
+              <span class="tg" onclick="togEx(this,'palp-shu')">BL23 Shènshū (Rein) — L2</span>
+              <span class="tg" onclick="togEx(this,'palp-shu')">BL25 Dàchángshū (Gros Intestin) — L4</span>
+              <span class="tg" onclick="togEx(this,'palp-shu')">BL27 Xiǎochángshū (Intestin Grêle) — S1 (1er trou sacré)</span>
+              <span class="tg" onclick="togEx(this,'palp-shu')">BL28 Pángguāngshū (Vessie) — S2 (2e trou sacré)</span>
+            </div>
+            <input id="palp-shu" style="display:none" oninput="markDirty()">
+          </div>
+          <div>
+            <div style="font-size:11px;font-weight:700;color:var(--jade);text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px">Points Mu-antérieurs 募穴 (points Hérauts / Alarme — face antérieure)</div>
+            <div class="tr" style="flex-wrap:wrap;gap:4px">
+              <span class="tg" onclick="togEx(this,'palp-mu')">LU1 Zhōngfǔ (Poumon) — 1er EIC, 6 cun latéral à la ligne médiane</span>
+              <span class="tg" onclick="togEx(this,'palp-mu')">CV17 Dànzhōng/Shānzhōng (Maître-Cœur) — ligne médiane, 4e EIC</span>
+              <span class="tg" onclick="togEx(this,'palp-mu')">CV14 Jùquè (Cœur) — ligne médiane, 6 cun au-dessus de l'ombilic</span>
+              <span class="tg" onclick="togEx(this,'palp-mu')">LV14 Qīmén (Foie) — 6e EIC, ligne mamelonnaire</span>
+              <span class="tg" onclick="togEx(this,'palp-mu')">GB24 Rìyuè (Vésicule biliaire) — 7e EIC, ligne mamelonnaire</span>
+              <span class="tg" onclick="togEx(this,'palp-mu')">LV13 Zhāngmén (Rate) — extrémité libre de la 11e côte</span>
+              <span class="tg" onclick="togEx(this,'palp-mu')">CV12 Zhōngwǎn (Estomac) — ligne médiane, 4 cun au-dessus de l'ombilic</span>
+              <span class="tg" onclick="togEx(this,'palp-mu')">CV5 Shímén (Triple Réchauffeur) — ligne médiane, 2 cun sous l'ombilic</span>
+              <span class="tg" onclick="togEx(this,'palp-mu')">GB25 Jīngmén (Rein) — extrémité libre de la 12e côte</span>
+              <span class="tg" onclick="togEx(this,'palp-mu')">ST25 Tiānshū (Gros Intestin) — 2 cun latéral à l'ombilic</span>
+              <span class="tg" onclick="togEx(this,'palp-mu')">CV4 Guānyuán (Intestin Grêle) — ligne médiane, 3 cun sous l'ombilic</span>
+              <span class="tg" onclick="togEx(this,'palp-mu')">CV3 Zhōngjí (Vessie) — ligne médiane, 4 cun sous l'ombilic</span>
+            </div>
+            <input id="palp-mu" style="display:none" oninput="markDirty()">
+          </div>
+        </div>
+
+        <!-- Points des 4 membres -->
+        <div style="margin-bottom:14px">
+          <div style="font-size:11px;font-weight:700;color:var(--jade);text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px">Points des quatre membres (le long des méridiens en rapport avec l'affection en cause)</div>
+          <div class="tr">
+            <span class="tg" onclick="togEx(this,'palp-membres-t')">MS — trajet Poumon / Gros Intestin</span>
+            <span class="tg" onclick="togEx(this,'palp-membres-t')">MS — trajet Cœur / Intestin Grêle</span>
+            <span class="tg" onclick="togEx(this,'palp-membres-t')">MS — trajet Maître-Cœur / Triple Réchauffeur</span>
+            <span class="tg" onclick="togEx(this,'palp-membres-t')">MI — trajet Estomac / Rate</span>
+            <span class="tg" onclick="togEx(this,'palp-membres-t')">MI — trajet Vessie / Rein</span>
+            <span class="tg" onclick="togEx(this,'palp-membres-t')">MI — trajet Vésicule Biliaire / Foie</span>
+          </div>
+          <input id="palp-membres-t" style="display:none" oninput="markDirty()">
+          <div class="f" style="margin-top:6px">
+            <textarea id="palp-membres" rows="2" placeholder="Points précis retrouvés sensibles (nom, méridien, niveau)…" oninput="markDirty()"></textarea>
+          </div>
+        </div>
+
+        <!-- Ah Shi -->
+        <div>
+          <div style="font-size:11px;font-weight:700;color:var(--jade);text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px">Points Ah Shi 阿是穴 (points cutanés sensibles, sans localisation fixe)</div>
+          <div class="tr">
+            <span class="tg" onclick="togEx(this,'palp-ahshi-t')">Points Ah Shi retrouvés</span>
+          </div>
+          <input id="palp-ahshi-t" style="display:none" oninput="markDirty()">
+          <div class="f" style="margin-top:6px">
+            <textarea id="palp-ahshi" rows="2" placeholder="Localisation précise des points Ah Shi retrouvés…" oninput="markDirty()"></textarea>
+          </div>
+        </div>
+
+        <div class="f" style="margin-top:12px">
+          <label>Notes palpation corporelle (observations libres)</label>
+          <textarea id="palp-notes" rows="2" oninput="markDirty()"></textarea>
+        </div>
+      </div>
 
       <!-- DOULEUR -->
       <div class="card" style="margin-top:12px">
@@ -2573,6 +2664,10 @@ function loadSeance(sc){
     'e-nez-oreilles':ex.eNezOreilles, 'e-levres':ex['e-levres'],
     'e-ongles':ex.eOngles, 'e-morpho':ex['e-morpho'],
     'e-membres':ex.eMembres, 'e-resp':ex['e-resp'], 'e-libre':ex.eLibre,
+    // Palpation corporelle
+    'palp-huatuo':ex.palpHuatuo, 'palp-shu':ex.palpShu, 'palp-mu':ex.palpMu,
+    'palp-membres-t':ex.palpMembresT, 'palp-membres':ex.palpMembres,
+    'palp-ahshi-t':ex.palpAhshiT, 'palp-ahshi':ex.palpAhshi, 'palp-notes':ex.palpNotes,
     // Douleur
     'd-localisation':ex.dLocalisation, 'd-type':ex.dType, 'd-rythme':ex.dRythme,
     'd-aggrave':ex.dAggrave, 'd-ameliore':ex.dAmeliore, 'd-libre':ex.dLibre,
@@ -2675,6 +2770,9 @@ function collectSc(){
     eNezOreilles:gT('e-nez-oreilles'),'e-levres':gT('e-levres'),
     eOngles:gT('e-ongles'),'e-morpho':gT('e-morpho'),
     eMembres:gT('e-membres'),'e-resp':gT('e-resp'),eLibre:g('e-libre'),
+    palpHuatuo:gT('palp-huatuo'),palpShu:gT('palp-shu'),palpMu:gT('palp-mu'),
+    palpMembresT:gT('palp-membres-t'),palpMembres:g('palp-membres'),
+    palpAhshiT:gT('palp-ahshi-t'),palpAhshi:g('palp-ahshi'),palpNotes:g('palp-notes'),
     dLocalisation:gT('d-localisation'),dType:gT('d-type'),dRythme:gT('d-rythme'),
     dAggrave:gT('d-aggrave'),dAmeliore:gT('d-ameliore'),dLibre:g('d-libre')};
   sc.ccmq={};CQ.forEach(i=>{const v=g('c-'+i.n);if(v)sc.ccmq[i.n]=v;});
@@ -2834,6 +2932,11 @@ function viewScIdx(idx){
     ex.guanG?`Guan G : ${ex.guanG}`:'',ex.guanD?`Guan D : ${ex.guanD}`:'',
     ex.chiG?`Chi G : ${ex.chiG}`:'',ex.chiD?`Chi D : ${ex.chiD}`:'',
     ex.eShen?`Shen : ${ex.eShen}`:'',ex['e-teint']?`Teint : ${ex['e-teint']}`:'',
+    ex.palpHuatuo?`Huatuojiaji sensible : ${ex.palpHuatuo}`:'',
+    ex.palpShu?`Shu douloureux : ${ex.palpShu}`:'',
+    ex.palpMu?`Mu douloureux : ${ex.palpMu}`:'',
+    ex.palpMembresT||ex.palpMembres?`Points 4 membres : ${[ex.palpMembresT,ex.palpMembres].filter(Boolean).join(' — ')}`:'',
+    ex.palpAhshiT||ex.palpAhshi?`Points Ah Shi : ${[ex.palpAhshiT,ex.palpAhshi].filter(Boolean).join(' — ')}`:'',
     ex.dAggrave?`Douleur aggravée par : ${ex.dAggrave}`:'',
     ex.dAmeliore?`Douleur améliorée par : ${ex.dAmeliore}`:'',
   ].filter(Boolean);
@@ -3479,8 +3582,16 @@ async function refineAI(){
     g('e-teint')?'Teint: '+g('e-teint'):'',
     g('e-yeux')?'Yeux: '+g('e-yeux'):''
   ].filter(Boolean).join(' | ')||'nr';
+  const palpation=[
+    g('palp-huatuo')?'Huatuojiaji sensible: '+g('palp-huatuo'):'',
+    g('palp-shu')?'Shu-postérieurs douloureux: '+g('palp-shu'):'',
+    g('palp-mu')?'Mu-antérieurs douloureux: '+g('palp-mu'):'',
+    (g('palp-membres-t')||g('palp-membres'))?'Points 4 membres: '+[g('palp-membres-t'),g('palp-membres')].filter(Boolean).join(' — '):'',
+    (g('palp-ahshi-t')||g('palp-ahshi'))?'Points Ah Shi: '+[g('palp-ahshi-t'),g('palp-ahshi')].filter(Boolean).join(' — '):'',
+    g('palp-notes')?'Notes: '+g('palp-notes'):''
+  ].filter(Boolean).join(' | ')||'nr';
 
-  const prompt=`Tu es expert en acupuncture MTC et diagnostic syndromique. 
+  const prompt=`Tu es expert en acupuncture MTC et diagnostic syndromique.
 Analyse ce tableau clinique complet et propose un DIAGNOSTIC SYNDROMIQUE précis.
 
 PATIENT : ${p.prenom||''} ${p.nom||''}, ${p.age||'?'} ans, ${p.sexe||''}
@@ -3505,12 +3616,13 @@ CCMQ (constitution) : ${ccmq}
 LANGUE : ${langue}
 POULS : ${pouls}
 INSPECTION : ${insp}
+PALPATION CORPORELLE (Huatuojiaji, Shu-postérieurs, Mu-antérieurs, points 4 membres, Ah Shi) : ${palpation}
 DOULEUR : ${douleur}
 
 Réponds en 3 parties :
 1. SYNDROME(S) RETENU(S) — principal + éventuels secondaires ou combinés (précise 🟢🟡🔵)
-2. ARGUMENTS CLINIQUES — les éléments qui fondent ce diagnostic
-3. POINTS PROPOSÉS — 6-10 points avec code, nom, action, technique (tonification/dispersion/neutre/moxa)
+2. ARGUMENTS CLINIQUES — les éléments qui fondent ce diagnostic, en t'appuyant notamment sur la concordance entre les Shu/Mu douloureux et les organes/entrailles suspectés
+3. POINTS PROPOSÉS — 6-10 points avec code, nom, action, technique (tonification/dispersion/neutre/moxa) ; inclure les Shu/Mu douloureux pertinents et les points Ah Shi/locaux comme points d'appoint le cas échéant
 
 Sois précis, cliniquement utilisable. Max 400 mots.`;
 
@@ -3575,6 +3687,7 @@ PATIENT : ${p.prenom} ${p.nom}, ${p.age} ans, ${p.sexe} | MOTIF : ${g('s-motif')
 ATCD : ${p.atcd||'aucun'}
 10Q : FC=${gQ('q1')} | Transp=${gQ('q2')} | Sommeil=${gQ('q9')} | Selles=${gQ('q4')} | Émotions=${gQ('q10')} | Gynéco=${gQ('q11')}
 LANGUE : couleur=${g('l-couleur')||'nr'} forme=${g('l-forme')||'nr'} enduit=${g('l-enduit-couleur')||'nr'} humidité=${g('l-humidite')||'nr'} ${g('l-obs')||''} | POULS : ${g('pq-freq')||''} ${g('pq-prof')||''} ${g('pq-force')||''} ${g('pq')||''} | Shen=${g('e-shen')||'nr'}
+PALPATION : Shu=${g('palp-shu')||'nr'} | Mu=${g('palp-mu')||'nr'} | Huatuojiaji=${g('palp-huatuo')||'nr'} | Ah Shi=${[g('palp-ahshi-t'),g('palp-ahshi')].filter(Boolean).join(' — ')||'nr'}
 CCMQ : ${(document.getElementById('ccmq-synth')||{}).textContent?.slice(0,200)||'nc'}
 POINTS RÉALISÉS : ${g('s-points')||'non saisi'}`;
   try{
@@ -3731,6 +3844,15 @@ function exportPatient(){
       ['Lèvres',sc.ex?.['e-levres']||''],['Ongles/Cheveux',sc.ex?.eOngles||''],
       ['Morphologie',sc.ex?.['e-morpho']||''],['Membres/Abdomen',sc.ex?.eMembres||''],
       ['Respiration',sc.ex?.['e-resp']||''],['Observations libres',sc.ex?.eLibre||''],
+      [],['PALPATION CORPORELLE'],
+      ['Huatuojiaji',sc.ex?.palpHuatuo||''],
+      ['Shu-postérieurs douloureux',sc.ex?.palpShu||''],
+      ['Mu-antérieurs douloureux',sc.ex?.palpMu||''],
+      ['Points 4 membres — zones',sc.ex?.palpMembresT||''],
+      ['Points 4 membres — détail',sc.ex?.palpMembres||''],
+      ['Points Ah Shi',sc.ex?.palpAhshiT||''],
+      ['Points Ah Shi — localisation',sc.ex?.palpAhshi||''],
+      ['Notes palpation',sc.ex?.palpNotes||''],
       [],['SYNTHÈSE'],['Syndromes',sc.syn?.syndromes||''],['Principes',sc.syn?.principe||''],['Points réalisés',(sc.pts?.realises||[]).join(' — ')||sc.syn?.points||''],['Notes points',sc.pts?.notesLibres||''],['Technique',sc.syn?.tech||''],['Durée',sc.syn?.duree||''],['Réactions',sc.syn?.react||''],['Conseils',sc.syn?.conseils||''],['Compte-rendu',sc.syn?.cr||''],['Prochain RDV',sc.syn?.rdv||'']);
     XLSX.utils.book_append_sheet(wb,aoa(rows),`Séance ${i+1}`.slice(0,31));
   });
@@ -3989,6 +4111,13 @@ function prefillAIquestion(){
   const langue = [g('l-couleur'),g('l-couleur-loc'),g('l-enduit-couleur'),g('l-enduit-dist'),g('l-humidite')].filter(Boolean).join(', ');
   const pouls = [g('pq-freq'),g('pq-prof'),g('pq-force'),g('pq'),g('cun-g'),g('cun-d')].filter(Boolean).join(', ');
   const douleur = [g('d-localisation'),g('d-type'),g('d-aggrave'),g('d-ameliore')].filter(Boolean).join(', ');
+  const palpation = [
+    g('palp-huatuo')?'Huatuojiaji: '+g('palp-huatuo'):'',
+    g('palp-shu')?'Shu: '+g('palp-shu'):'',
+    g('palp-mu')?'Mu: '+g('palp-mu'):'',
+    (g('palp-membres-t')||g('palp-membres'))?'4 membres: '+[g('palp-membres-t'),g('palp-membres')].filter(Boolean).join(' — '):'',
+    (g('palp-ahshi-t')||g('palp-ahshi'))?'Ah Shi: '+[g('palp-ahshi-t'),g('palp-ahshi')].filter(Boolean).join(' — '):''
+  ].filter(Boolean).join(', ');
   const q9 = gTags('q9'), q10 = gTags('q10'), q1 = gTags('q1');
   const ccmqSynth = (document.getElementById('ccmq-synth')||{}).textContent?.replace(/\s+/g,' ').trim().slice(0,150)||'';
 
@@ -4002,6 +4131,7 @@ function prefillAIquestion(){
   if(q9) parts.push(`- Sommeil/Énergie : ${q9}`);
   if(q10) parts.push(`- Émotions : ${q10}`);
   if(douleur) parts.push(`- Douleur : ${douleur}`);
+  if(palpation) parts.push(`- Palpation (Shu/Mu/Huatuojiaji/Ah Shi) : ${palpation}`);
 
   const ta = document.getElementById('ai-motif-question');
   if(ta){ ta.value = parts.join('\n'); markDirty(); }
