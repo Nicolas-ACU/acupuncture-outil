@@ -35,12 +35,7 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
 .bg{background:var(--jade);border-color:var(--jade);color:#fff}.bg:hover{background:#246b51}
 .br{background:var(--vermil);border-color:var(--vermil);color:#fff}
 .bo{background:var(--gold);border-color:var(--gold);color:#fff}
-#mic-bar{background:var(--cream2);border-bottom:1px solid var(--border);padding:7px 14px;display:flex;align-items:center;gap:9px;flex-shrink:0;transition:background .3s}
-#mic-bar.rec{background:var(--vermil-lt)}
-#mbtn{width:32px;height:32px;border-radius:50%;border:none;background:var(--jade);color:#fff;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:inherit;transition:all .2s}
-#mbtn.on{background:var(--vermil);animation:pulse 1.2s infinite}
-@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(192,57,43,.4)}50%{box-shadow:0 0 0 6px rgba(192,57,43,0)}}
-#mic-st{font-size:11px;color:var(--slate);flex-shrink:0;width:80px}
+#mic-bar{background:var(--cream2);border-bottom:1px solid var(--border);padding:7px 14px;display:flex;align-items:center;gap:9px;flex-shrink:0}
 #tbox{flex:1;min-height:28px;max-height:64px;overflow-y:auto;padding:5px 9px;background:#fff;border:1px solid var(--border);border-radius:6px;font-size:13px;color:var(--slate);line-height:1.5;cursor:text}
 #tbox.has{color:var(--ink)}
 #ai-btn{display:none;flex-shrink:0}
@@ -94,9 +89,6 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
 .itp strong{display:block;margin-bottom:1px;color:var(--ink);font-size:11px}
 .frow{display:flex;gap:6px;align-items:flex-start}
 .frow .f{flex:1}
-.mqb{width:26px;height:26px;border-radius:50%;border:none;background:var(--cream2);color:var(--slate);font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:inherit;margin-top:16px;transition:all .15s}
-.mqb:hover{background:var(--jade-lt);color:var(--jade)}
-.mqb.on{background:var(--vermil-lt);color:var(--vermil);animation:pulse 1.2s infinite}
 .cg{display:grid;grid-template-columns:1fr 1fr;gap:0}
 .ci{display:flex;align-items:center;gap:7px;padding:6px 9px;border-bottom:1px solid var(--border);border-right:1px solid var(--border)}
 .ci:nth-child(even){border-right:none}
@@ -202,9 +194,7 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
     </div>
   </div>
   <div id="mic-bar">
-    <button id="mbtn" onclick="toggleMic()">🎤</button>
-    <div id="mic-st">Micro inactif</div>
-    <div id="tbox" contenteditable="true" spellcheck="false">Cliquez sur le micro ou saisissez ici…</div>
+    <div id="tbox" contenteditable="true" spellcheck="false">Saisissez ou collez du texte ici…</div>
     <button class="btn bg" id="ai-btn" style="display:none;font-size:12px" onclick="analyzeAI()">✨ Analyser IA</button>
     <div id="ai-st"></div>
   </div>
@@ -1152,8 +1142,17 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
           <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px">
             <button class="btn" onclick="prefillAIquestion()" style="font-size:11px">📋 Pré-remplir depuis dossier</button>
             <button class="btn bg" onclick="askAIpoints()" style="font-size:11px">✨ Demander à Claude</button>
+            <button class="btn" onclick="copyMotifPromptForAI()" style="font-size:11px">📋 Copier le prompt pour l'IA</button>
+            <button class="btn br" onclick="resetAImotif()" style="font-size:11px" title="Efface motif, prompt, réponse — à utiliser si le motif ou le raisonnement change">🔄 Réinitialiser</button>
           </div>
           <span style="font-size:11px;color:var(--slate);font-style:italic" id="ai-pts-status"></span>
+          <div id="ai-motif-paste-block" style="display:none;margin-top:8px;padding:10px;border:1px dashed var(--border);border-radius:8px">
+            <label style="font-size:11px;font-weight:700;color:#1A5276;text-transform:uppercase;letter-spacing:.5px">Coller la réponse de l'IA</label>
+            <textarea id="ai-motif-paste" rows="4" placeholder="Collez ici la réponse obtenue depuis l'IA (ex : Claude.ai)…" style="font-size:12px;margin-top:6px;width:100%;box-sizing:border-box" oninput="markDirty()"></textarea>
+            <div style="margin-top:6px">
+              <button class="btn bg" onclick="applyPastedAIResponse()" style="font-size:11px">✅ Utiliser cette réponse</button>
+            </div>
+          </div>
           <div id="ai-motif-result" style="display:none;margin-top:10px;padding:10px 13px;background:#EBF5FB;border-left:3px solid #1A5276;border-radius:6px;font-size:12px;line-height:1.7;white-space:pre-wrap"></div>
         </div>
       </div>
@@ -2164,7 +2163,7 @@ function dbPut(o){
 }
 function dbDel(id){return new Promise((r,j)=>{const q=dbt('readwrite').delete(id);q.onsuccess=()=>r();q.onerror=()=>j(q.error);});}
 // ══════ STATE ══════
-let curPt=null,curScIdx=null,isDirty=false,recognition=null,isRec=false,fldTarget=null;
+let curPt=null,curScIdx=null,isDirty=false;
 const PG_T={patients:'Patients',fiche:'Identité & antécédents',dix:'10+1 Questions',
   examen:'Examen clinique MTC',ccmq:'CCMQ — Constitution MTC',
   points:'Prescription de points',realises:'Points réalisés',synthese:'Synthèse & traitement',seances:'Historique séances'};
@@ -2178,11 +2177,11 @@ document.addEventListener('DOMContentLoaded',async()=>{
   document.querySelectorAll('.ni').forEach(el=>el.addEventListener('click',()=>navTo(el.dataset.pg)));
   const tb=document.getElementById('tbox');
   tb.addEventListener('input',()=>{
-    const h=tb.textContent.trim().length>0&&tb.textContent!=='Cliquez sur le micro ou saisissez ici…';
+    const h=tb.textContent.trim().length>0&&tb.textContent!=='Saisissez ou collez du texte ici…';
     tb.classList.toggle('has',h);
     document.getElementById('ai-btn').style.display=h?'':'none';
   });
-  tb.addEventListener('focus',()=>{if(tb.textContent==='Cliquez sur le micro ou saisissez ici…'){tb.textContent='';tb.classList.remove('has');}});
+  tb.addEventListener('focus',()=>{if(tb.textContent==='Saisissez ou collez du texte ici…'){tb.textContent='';tb.classList.remove('has');}});
   await renderPatients();
 });
 // ══════ UTILITAIRE BA GANG / QUESTIONS ══════
@@ -3063,7 +3062,6 @@ function buildTenQ(){
         <div class="frow" style="margin-top:6px">
           <div class="f"><label>Notes / précisions</label>
             <textarea id="rep-${q.id}" rows="2" placeholder="Précisions, nuances…" oninput="onQC('${q.id}')"></textarea></div>
-          <button class="mqb" id="mqb-${q.id}" onclick="togFM('${q.id}')" title="Micro">🎤</button>
         </div>
         <div class="itp"><strong>Interprétation MTC</strong>${q.itp}</div>
         <div class="f" style="margin-top:7px"><label>Analyse clinique</label>
@@ -3696,38 +3694,11 @@ POINTS RÉALISÉS : ${g('s-points')||'non saisi'}`;
     setAiSt('<span style="color:var(--jade);font-size:11px">✅ Synthèse générée</span>');markDirty();showToast('Synthèse générée');setTimeout(()=>setAiSt(''),3000);
   }catch(e){setAiSt('<span style="color:var(--vermil);font-size:11px">❌ '+e.message+'</span>');}
 }
-// ══════ MIC ══════
-function toggleMic(){fldTarget=null;if(isRec)stopMic();else startMic();}
-function togFM(qid){
-  if(isRec&&fldTarget===qid){stopMic();return;}if(isRec)stopMic();fldTarget=qid;
-  const tb=document.getElementById('tbox');if(tb)tb.textContent=(document.getElementById('rep-'+qid)||{}).value||'';
-  startMic();document.querySelectorAll('.mqb').forEach(b=>b.classList.remove('on'));
-  const mb=document.getElementById('mqb-'+qid);if(mb)mb.classList.add('on');
-}
-function startMic(){
-  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-  if(!SR){showToast('Web Speech API non disponible — utilisez Chrome');return;}
-  recognition=new SR();recognition.lang='fr-FR';recognition.continuous=true;recognition.interimResults=true;
-  const tb=document.getElementById('tbox');let base=tb?tb.textContent.replace('Cliquez sur le micro ou saisissez ici…','').trim():'';
-  recognition.onresult=e=>{let interim='',final='';for(let i=e.resultIndex;i<e.results.length;i++){if(e.results[i].isFinal)final+=e.results[i][0].transcript;else interim+=e.results[i][0].transcript;}if(final)base+=(base?' ':'')+final.trim();if(tb){tb.textContent=base+(interim?' '+interim:'');tb.classList.toggle('has',!!tb.textContent.trim());}document.getElementById('ai-btn').style.display=tb&&tb.textContent.trim()?'':'none';};
-  recognition.onerror=e=>{if(e.error!=='aborted')showToast('Erreur micro : '+e.error);stopMic();};
-  recognition.onend=()=>{if(isRec){try{recognition.start();}catch(e){}}};
-  recognition.start();isRec=true;
-  const mb=document.getElementById('mbtn');if(mb){mb.classList.add('on');mb.textContent='⏹';}
-  document.getElementById('mic-st').textContent='● Écoute…';document.getElementById('mic-bar').classList.add('rec');
-}
-function stopMic(){
-  if(recognition){try{recognition.onend=null;recognition.stop();}catch(e){}recognition=null;}isRec=false;
-  const mb=document.getElementById('mbtn');if(mb){mb.classList.remove('on');mb.textContent='🎤';}
-  document.getElementById('mic-st').textContent='Micro inactif';document.getElementById('mic-bar').classList.remove('rec');
-  document.querySelectorAll('.mqb').forEach(b=>b.classList.remove('on'));
-  if(fldTarget){const tb=document.getElementById('tbox'),ta=document.getElementById('rep-'+fldTarget);if(ta&&tb){ta.value=tb.textContent.trim();onQC(fldTarget);}fldTarget=null;}
-}
 // ══════ AI TRANSCRIPT ══════
 async function analyzeAI(){
   const key=getApiKey();if(!key){setApiKey();return;}
   const txt=(document.getElementById('tbox')||{}).textContent?.trim()||'';
-  if(!txt||txt==='Cliquez sur le micro ou saisissez ici…'){showToast('Aucun texte');return;}
+  if(!txt||txt==='Saisissez ou collez du texte ici…'){showToast('Aucun texte');return;}
   const pg=document.querySelector('.ni.on')?.dataset?.pg||'';setAiSt(ldH());
   const prompt=pg==='dix'
     ?`Extrais les informations pour les 11 questions MTC. JSON valide uniquement.\nTRANSCRIPTION:"${txt}"\nFORMAT:{"q1":"","q2":"","q3":"","q4":"","q5":"","q6":"","q7":"","q8":"","q9":"","q10":"","q11":""}`
@@ -4050,6 +4021,120 @@ function applyAItoSynthese(){
 }
 
 // ══════ AXE 1 : IA MOTIF ══════
+function buildFullMotifPrompt(motifText){
+  // Reprend le motif en texte libre + tout le contexte clinique (examen, 10+1 questions, CCMQ)
+  const p = curPt||{};
+  const g = id => (document.getElementById(id)||{}).value||'';
+  const gQ = id => {
+    const tr = document.getElementById('tr-'+id);
+    const tags = tr ? Array.from(tr.querySelectorAll('.tg.on')).map(t=>t.textContent).join(', ') : '';
+    return [tags, g('rep-'+id)].filter(Boolean).join(' — ') || 'nr';
+  };
+  const ccmq = (document.getElementById('ccmq-synth')||{}).textContent?.replace(/\s+/g,' ').trim().slice(0,300) || 'nc';
+  const langue = [
+    g('l-couleur')?'Couleur: '+g('l-couleur'):'',
+    g('l-couleur-loc')?'Localisation: '+g('l-couleur-loc'):'',
+    g('l-forme')?'Forme: '+g('l-forme'):'',
+    g('l-enduit-couleur')?'Enduit: '+g('l-enduit-couleur'):'',
+    g('l-enduit-dist')?'Distribution enduit: '+g('l-enduit-dist'):'',
+    g('l-humidite')?'Humidité: '+g('l-humidite'):'',
+    g('l-obs')?'Obs: '+g('l-obs'):''
+  ].filter(Boolean).join(' | ') || 'non renseignée';
+  const pouls = [
+    g('pq-freq')||'',g('pq-prof')||'',g('pq-force')||'',g('pq')||'',
+    g('cun-g')?'Cun G: '+g('cun-g'):'',g('cun-d')?'Cun D: '+g('cun-d'):'',
+    g('guan-g')?'Guan G: '+g('guan-g'):'',g('guan-d')?'Guan D: '+g('guan-d'):'',
+    g('chi-g')?'Chi G: '+g('chi-g'):'',g('chi-d')?'Chi D: '+g('chi-d'):''
+  ].filter(Boolean).join(' | ') || 'non renseigné';
+  const insp = [
+    g('e-shen')?'Shen: '+g('e-shen'):'',
+    g('e-teint')?'Teint: '+g('e-teint'):'',
+    g('e-yeux')?'Yeux: '+g('e-yeux'):''
+  ].filter(Boolean).join(' | ') || 'nr';
+  const palpation = [
+    g('palp-huatuo')?'Huatuojiaji: '+g('palp-huatuo'):'',
+    g('palp-shu')?'Shu-postérieurs: '+g('palp-shu'):'',
+    g('palp-mu')?'Mu-antérieurs: '+g('palp-mu'):'',
+    (g('palp-membres-t')||g('palp-membres'))?'4 membres: '+[g('palp-membres-t'),g('palp-membres')].filter(Boolean).join(' — '):'',
+    (g('palp-ahshi-t')||g('palp-ahshi'))?'Ah Shi: '+[g('palp-ahshi-t'),g('palp-ahshi')].filter(Boolean).join(' — '):''
+  ].filter(Boolean).join(' | ') || 'nr';
+  const douleur = [
+    g('d-localisation')?'Localisation: '+g('d-localisation'):'',
+    g('d-type')?'Type: '+g('d-type'):'',
+    g('d-aggrave')?'Aggravé: '+g('d-aggrave'):'',
+    g('d-ameliore')?'Amélioré: '+g('d-ameliore'):''
+  ].filter(Boolean).join(' | ') || 'nr';
+
+  return `Tu es l'acupuncteur MTC en charge de ce patient. En te fondant sur tes recherches et connaissances (littérature MTC et médecine basée sur les preuves), établis toi-même le diagnostic syndromique et propose la prescription de points comme si tu voyais le patient en consultation.
+
+MOTIF (texte libre du praticien) : ${motifText}
+
+PATIENT : ${p.prenom||''} ${p.nom||''}, ${p.age||'?'} ans, ${p.sexe||''}
+ATCD : ${p.atcd||'aucun'}
+
+CCMQ (constitution) : ${ccmq}
+
+10+1 QUESTIONS :
+- Froid/Chaleur : ${gQ('q1')}
+- Transpiration : ${gQ('q2')}
+- Tête/Corps : ${gQ('q3')}
+- Selles/Urines : ${gQ('q4')}
+- Appétit/Goût : ${gQ('q5')}
+- Thorax/Abdomen : ${gQ('q6')}
+- Ouïe/Vision : ${gQ('q7')}
+- Soif/Bouche : ${gQ('q8')}
+- Sommeil/Énergie : ${gQ('q9')}
+- Émotions : ${gQ('q10')}
+- Gynéco/Urinaire : ${gQ('q11')}
+
+LANGUE : ${langue}
+POULS : ${pouls}
+INSPECTION : ${insp}
+PALPATION CORPORELLE (Huatuojiaji, Shu-postérieurs, Mu-antérieurs, points 4 membres, Ah Shi) : ${palpation}
+DOULEUR : ${douleur}
+
+Réponds en 3 parties :
+1. SYNDROME(S) RETENU(S) — ta lecture syndromique
+2. ARGUMENTS CLINIQUES — les éléments qui la fondent
+3. POINTS PROPOSÉS — code, nom, localisation, action, technique (tonification/dispersion/neutre/moxa), niveau de preuve si disponible
+
+Sois précis et cliniquement utilisable.`;
+}
+
+function copyMotifPromptForAI(){
+  const ta = document.getElementById('ai-motif-question');
+  const raw = ((ta||{}).value||'').trim();
+  if(!raw){ showToast('Saisissez d\'abord le motif en texte libre'); return; }
+  const prompt = buildFullMotifPrompt(raw);
+  navigator.clipboard.writeText(prompt).then(()=>{
+    showToast('Prompt copié — collez-le dans votre IA');
+    const pasteBlock = document.getElementById('ai-motif-paste-block');
+    if(pasteBlock) pasteBlock.style.display='';
+  }).catch(()=>showToast('Copie impossible'));
+}
+
+function resetAImotif(){
+  // À utiliser si le motif change ou si le raisonnement clinique est repris à zéro :
+  // efface le texte libre, le prompt collé, la réponse collée et le résultat affiché.
+  const q = document.getElementById('ai-motif-question'); if(q) q.value='';
+  const paste = document.getElementById('ai-motif-paste'); if(paste) paste.value='';
+  const pasteBlock = document.getElementById('ai-motif-paste-block'); if(pasteBlock) pasteBlock.style.display='none';
+  const resultEl = document.getElementById('ai-motif-result'); if(resultEl){ resultEl.textContent=''; resultEl.style.display='none'; }
+  const statusEl = document.getElementById('ai-pts-status'); if(statusEl) statusEl.innerHTML='';
+  markDirty();
+  showToast('Motif IA réinitialisé');
+}
+
+function applyPastedAIResponse(){
+  const pasteEl = document.getElementById('ai-motif-paste');
+  const text = ((pasteEl||{}).value||'').trim();
+  if(!text){ showToast('Collez d\'abord la réponse de l\'IA'); return; }
+  const resultEl = document.getElementById('ai-motif-result');
+  if(resultEl){ resultEl.textContent = text; resultEl.style.display=''; }
+  markDirty();
+  showToast('Réponse IA appliquée');
+}
+
 async function askAIpoints(){
   const key = getApiKey();
   if(!key){ setApiKey(); return; }
@@ -4062,7 +4147,7 @@ async function askAIpoints(){
   if(resultEl){ resultEl.style.display='none'; resultEl.textContent=''; }
 
   const p = curPt||{};
-  const system = `Tu es un expert en acupuncture MTC et médecine basée sur les preuves. 
+  const system = `Tu es un expert en acupuncture MTC et médecine basée sur les preuves.
 Réponds en français. Propose des points d'acupuncture précis avec :
 - Code du point (ex: ST36)
 - Nom chinois et français
