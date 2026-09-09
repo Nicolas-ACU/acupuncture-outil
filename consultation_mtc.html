@@ -56,6 +56,9 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
 .tr{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px;margin-bottom:4px}
 .tg{font-size:11px;padding:3px 8px;border-radius:20px;background:var(--cream2);color:var(--slate);cursor:pointer;border:1px solid transparent;transition:all .1s;user-select:none}
 .tg:hover,.tg.on{background:var(--jade-lt);color:var(--jade);border-color:var(--jade)}
+.ear-zone{cursor:pointer;transition:fill .15s}
+.ear-zone:hover{fill:var(--jade-lt) !important}
+.ear-zone.on{fill:var(--vermil) !important;stroke:var(--vermil) !important}
 .pt-item{background:#fff;border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:8px;cursor:pointer;display:flex;align-items:center;gap:12px;transition:all .15s;box-shadow:0 2px 8px rgba(26,58,42,.08)}
 .pt-item.selected{border-color:var(--jade);background:var(--jade-lt);border-left:4px solid var(--jade)}
 .pt-item:hover{border-color:var(--jade);background:var(--jade-lt)}
@@ -166,6 +169,8 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
     <div class="nsep">Dossiers</div>
     <div class="ni on" data-pg="patients"><span>🗂</span><span>Patients</span></div>
     <div class="ni" data-pg="fiche"><span>👤</span><span>Identité</span></div>
+    <div class="nsep">Accès rapide</div>
+    <div class="ni" data-pg="urgence"><span>⚡</span><span>Mode Urgence</span></div>
     <div class="nsep">Séance</div>
     <div class="ni" data-pg="dix"><span>📋</span><span>10+1 Questions</span></div>
     <div class="ni" data-pg="examen"><span>🔬</span><span>Examen</span></div>
@@ -245,6 +250,64 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
         <button class="btn" onclick="envoyerCCMQ()" title="Envoyer le questionnaire CCMQ au patient par mail" style="background:#FEF3C7;border-color:#D97706;color:#92400E;font-weight:600">
           📧 Envoyer questionnaire CCMQ
         </button>
+      </div>
+    </div>
+
+    <!-- MODE URGENCE — RECETTES SYMPTOMATIQUES -->
+    <div class="pg" id="pg-urgence">
+      <div class="sh"><h2>⚡ Mode Urgence — Recettes symptomatiques</h2><span class="zh">应急处方</span></div>
+      <div class="card" style="background:#FEF3C7;border-color:#D97706;padding:10px 13px">
+        <div style="font-size:12px;color:#92400E;line-height:1.6">
+          <strong>Objectif :</strong> traiter rapidement une <strong>Branche</strong> (标 Biao) sans passer par l'analyse fine des Racines. Recettes de points éprouvées pour les affections courantes de la vie quotidienne et pour la médecine péri-opératoire (épargne morphinique). Ne remplace pas une analyse syndromique complète pour un suivi de fond — utile en dépannage, en garde, ou en complément d'un protocole d'épargne morphinique.
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="ct">Recherche</div>
+        <div style="display:flex;gap:9px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px">
+          <div class="f" style="flex:2;min-width:220px">
+            <label>Motif / symptôme (texte libre)</label>
+            <input id="urg-motif" placeholder="Ex : lombalgie aiguë, nausées post-opératoires, migraine, insomnie…" oninput="searchUrgence()">
+          </div>
+          <div class="f" style="flex:1;min-width:220px">
+            <label>Type de chirurgie (péri-opératoire, optionnel)</label>
+            <select id="urg-chirurgie" onchange="searchUrgence()">
+              <option value="">— Aucune / non applicable —</option>
+              <option value="abdominale">Chirurgie abdominale / viscérale</option>
+              <option value="orthopedique">Chirurgie orthopédique / membre</option>
+              <option value="orl">ORL / cervico-faciale</option>
+              <option value="gyneco">Gynécologique / pelvienne</option>
+              <option value="thoracique">Thoracique / cardiaque</option>
+              <option value="dentaire">Dentaire / maxillo-faciale</option>
+              <option value="rachis">Rachis / neurochirurgie</option>
+              <option value="urologique">Urologique</option>
+            </select>
+          </div>
+          <button class="btn" onclick="resetUrgence()" style="font-size:12px">🔄 Réinitialiser</button>
+        </div>
+        <div id="urg-empty" style="text-align:center;padding:20px;color:var(--slate);font-size:13px">
+          Décrivez le motif ou choisissez un type de chirurgie pour obtenir une proposition de points.
+        </div>
+        <div id="urg-result" style="display:none">
+          <div class="card" style="border-left:4px solid var(--jade);padding:10px;margin:0 0 8px">
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:6px">
+              <div style="font-size:11px;font-weight:700;color:var(--slate);text-transform:uppercase;letter-spacing:.4px">Points d'acupuncture proposés (max 10)</div>
+              <button class="btn" style="font-size:10px;padding:3px 9px" onclick="addAllUrgencePoints('acu')">➕ Tout ajouter</button>
+            </div>
+            <div id="urg-acu-list"></div>
+          </div>
+          <div class="card" style="border-left:4px solid #8B3A3A;padding:10px;margin:0 0 8px">
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:6px">
+              <div style="font-size:11px;font-weight:700;color:#8B3A3A;text-transform:uppercase;letter-spacing:.4px">Points d'auriculothérapie proposés (4-5)</div>
+              <button class="btn" style="font-size:10px;padding:3px 9px" onclick="addAllUrgencePoints('auri')">➕ Tout ajouter</button>
+            </div>
+            <div id="urg-auri-list"></div>
+          </div>
+          <div id="urg-sources" style="font-size:10px;color:var(--slate);font-style:italic;margin-top:4px"></div>
+          <div style="font-size:10px;color:var(--slate);font-style:italic;margin-top:10px;padding-top:8px;border-top:1px solid var(--border)">
+            Les points ajoutés apparaissent dans « Points réalisés » (onglet Points) et sont enregistrés avec la séance, comme n'importe quel point.
+          </div>
+        </div>
       </div>
     </div>
     <!-- 10+1 QUESTIONS -->
@@ -761,6 +824,41 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
           </div>
         </div>
 
+        <!-- Palpation auriculaire -->
+        <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border)">
+          <div style="font-size:11px;font-weight:700;color:var(--jade);text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px">Palpation auriculaire 耳診 — Zones réactives</div>
+          <div style="font-size:10px;color:var(--slate);font-style:italic;margin-bottom:8px">Cliquez sur les zones du pavillon sensibles/douloureuses à la palpation (recherche de points Ah Shi auriculaires — rougeur, chaleur, dépression cutanée, sensibilité). Ces zones alimentent les propositions d'auriculothérapie (③).</div>
+          <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start">
+            <svg viewBox="0 0 220 300" style="width:150px;height:205px;flex-shrink:0" id="ear-svg">
+              <ellipse cx="110" cy="155" rx="78" ry="138" fill="#FBF6EC" stroke="var(--border)" stroke-width="1.5"/>
+              <path class="ear-zone" data-zone="Hélix" onclick="togEarZone(this,'Hélix')" d="M140,25 L170,58 L182,118 L179,182 L162,232 L146,262 L124,256 L141,224 L157,180 L161,120 L149,64 L128,34 Z" fill="#F4ECD8" stroke="var(--border)" stroke-width="1"><title>Hélix — bord externe : points spécifiques, apex (anti-inflammatoire)</title></path>
+              <ellipse class="ear-zone" data-zone="Apex" onclick="togEarZone(this,'Apex')" cx="118" cy="34" rx="17" ry="13" fill="#F4ECD8" stroke="var(--border)" stroke-width="1"><title>Apex (sommet) — anti-inflammatoire, anti-allergique</title></ellipse>
+              <path class="ear-zone" data-zone="Anthélix" onclick="togEarZone(this,'Anthélix')" d="M100,205 L122,205 L122,148 L146,98 L136,88 L112,127 L108,127 L84,88 L74,98 L98,148 Z" fill="#F4ECD8" stroke="var(--border)" stroke-width="1"><title>Anthélix — colonne vertébrale, membres (branche sup. = MI, branche inf. = MS)</title></path>
+              <path class="ear-zone" data-zone="Fosse triangulaire" onclick="togEarZone(this,'Fosse triangulaire')" d="M111,78 L92,52 L130,52 Z" fill="#F4ECD8" stroke="var(--border)" stroke-width="1"><title>Fosse triangulaire — Shen Men, organes génitaux, Utérus</title></path>
+              <ellipse class="ear-zone" data-zone="Conque supérieure" onclick="togEarZone(this,'Conque supérieure')" cx="101" cy="178" rx="27" ry="21" fill="#F4ECD8" stroke="var(--border)" stroke-width="1"><title>Conque supérieure — Rate, Estomac, Rein, Foie, Triple Réchauffeur</title></ellipse>
+              <ellipse class="ear-zone" data-zone="Conque inférieure" onclick="togEarZone(this,'Conque inférieure')" cx="95" cy="227" rx="23" ry="19" fill="#F4ECD8" stroke="var(--border)" stroke-width="1"><title>Conque inférieure — Cœur, Poumon, Foie, Vésicule biliaire</title></ellipse>
+              <ellipse class="ear-zone" data-zone="Tragus" onclick="togEarZone(this,'Tragus')" cx="76" cy="217" rx="13" ry="17" fill="#F4ECD8" stroke="var(--border)" stroke-width="1"><title>Tragus — Nez, Surrénale, Faim, Endocrine</title></ellipse>
+              <ellipse class="ear-zone" data-zone="Lobe" onclick="togEarZone(this,'Lobe')" cx="115" cy="270" rx="34" ry="28" fill="#F4ECD8" stroke="var(--border)" stroke-width="1"><title>Lobe — Œil, visage, dents, Shen (émotionnel)</title></ellipse>
+            </svg>
+            <div style="flex:1;min-width:160px">
+              <div style="font-size:10px;color:var(--slate);line-height:1.7">
+                <div><strong style="color:var(--jade)">Hélix</strong> — points spécifiques, Apex (anti-inflammatoire)</div>
+                <div><strong style="color:var(--jade)">Anthélix</strong> — colonne vertébrale, membres</div>
+                <div><strong style="color:var(--jade)">Fosse triangulaire</strong> — Shen Men, génital, Utérus</div>
+                <div><strong style="color:var(--jade)">Conque sup.</strong> — Rate, Estomac, Rein, Foie</div>
+                <div><strong style="color:var(--jade)">Conque inf.</strong> — Cœur, Poumon, VB</div>
+                <div><strong style="color:var(--jade)">Tragus</strong> — Nez, Surrénale, Faim</div>
+                <div><strong style="color:var(--jade)">Lobe</strong> — Œil, visage, Shen</div>
+              </div>
+              <input id="palp-oreille" style="display:none" oninput="markDirty()">
+              <div id="palp-oreille-disp" class="pouls-display empty" style="margin-top:8px">—</div>
+            </div>
+          </div>
+          <div class="f" style="margin-top:8px">
+            <textarea id="palp-oreille-notes" rows="2" placeholder="Précisions (côté, intensité, aspect cutané…)" oninput="markDirty()"></textarea>
+          </div>
+        </div>
+
         <div class="f" style="margin-top:12px">
           <label>Notes palpation corporelle (observations libres)</label>
           <textarea id="palp-notes" rows="2" oninput="markDirty()"></textarea>
@@ -1262,8 +1360,9 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
       <!-- ══ AURICULOTHÉRAPIE ══ -->
       <div class="card" style="border-left:4px solid #8B3A3A;margin-bottom:12px">
         <div class="ct" style="color:#8B3A3A">③ Auriculothérapie 耳針
-          <span style="font-weight:400;color:var(--slate);font-size:10px;text-transform:none;letter-spacing:0">Filtrez par syndrome actif ou par catégorie</span>
+          <span style="font-weight:400;color:var(--slate);font-size:10px;text-transform:none;letter-spacing:0">Logique propre à l'oreille : motif + zones douloureuses à la palpation, pas le syndrome Zang-Fu</span>
         </div>
+        <div style="font-size:10px;color:var(--slate);font-style:italic;margin-bottom:8px">En auriculothérapie, le choix des points suit d'abord le motif de consultation et les points Ah Shi retrouvés à la palpation de l'oreille (②, examen clinique) — la différenciation Zang-Fu n'est qu'un appui complémentaire, pas le critère principal.</div>
         <div style="display:flex;gap:9px;flex-wrap:wrap;align-items:flex-end;margin-bottom:8px">
           <div class="f" style="flex:1;min-width:160px"><label>Catégorie</label>
             <select id="auri-cat" onchange="filterAuri()" style="font-size:12px">
@@ -1279,11 +1378,17 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
               <option>Endocrinien / Métabolique</option>
             </select>
           </div>
-          <div class="f" style="flex:1;min-width:140px"><label>Syndrome actif</label>
-            <div id="auri-synd-label" style="font-size:12px;color:var(--jade);padding:7px 9px;border:1px solid var(--border);border-radius:6px;background:var(--jade-lt)">—</div>
+          <div class="f" style="flex:1;min-width:140px"><label>Motif</label>
+            <div id="auri-motif-label" style="font-size:11px;color:var(--ink);padding:7px 9px;border:1px solid var(--border);border-radius:6px;background:#fff">—</div>
+          </div>
+          <div class="f" style="flex:1;min-width:140px"><label>Zones oreille douloureuses</label>
+            <div id="auri-zones-label" style="font-size:11px;color:var(--vermil);padding:7px 9px;border:1px solid var(--border);border-radius:6px;background:#FDECEA">—</div>
+          </div>
+          <div class="f" style="flex:1;min-width:140px"><label>Syndrome (appui secondaire)</label>
+            <div id="auri-synd-label" style="font-size:11px;color:var(--jade);padding:7px 9px;border:1px solid var(--border);border-radius:6px;background:var(--jade-lt)">—</div>
           </div>
         </div>
-        <p style="font-size:10px;color:var(--slate);margin-bottom:8px;font-style:italic">★ = prioritaire · cochez les points réalisés</p>
+        <p style="font-size:10px;color:var(--slate);margin-bottom:8px;font-style:italic">Triés par pertinence : 🔴 zone douloureuse retrouvée · 🔵 mot-clé du motif · 🟢 syndrome · cochez les points réalisés</p>
         <div id="auri-list" style="margin-bottom:8px"></div>
         <div class="f"><label style="font-size:11px">Notes auriculothérapie</label>
           <textarea id="auri-notes" rows="2" placeholder="Aiguilles semi-permanentes, vaccariae, électrostimulation…" oninput="markDirty()" style="font-size:12px"></textarea>
@@ -2166,7 +2271,8 @@ function dbDel(id){return new Promise((r,j)=>{const q=dbt('readwrite').delete(id
 let curPt=null,curScIdx=null,isDirty=false;
 const PG_T={patients:'Patients',fiche:'Identité & antécédents',dix:'10+1 Questions',
   examen:'Examen clinique MTC',ccmq:'CCMQ — Constitution MTC',
-  points:'Prescription de points',realises:'Points réalisés',synthese:'Synthèse & traitement',seances:'Historique séances'};
+  points:'Prescription de points',realises:'Points réalisés',synthese:'Synthèse & traitement',seances:'Historique séances',
+  urgence:'Mode Urgence — Recettes symptomatiques'};
 function mkPt(){return{id:undefined,nom:'',prenom:'',ddn:'',age:'',sexe:'',prof:'',tel:'',email:'',motif:'',praticien:'',atcd:'',traitement:'',allergies:'',vie:'',seances:[]};}
 function mkSc(){return{date:new Date().toISOString().slice(0,10),statut:'preparation',q:{},ex:{},ccmq:{},pts:{syndrome:'',realises:[],auriRealises:[],auriNotes:'',notesLibres:''},syn:{motif:'',syndromes:'',principe:'',points:'',tech:'',duree:'',react:'',conseils:'',cr:'',rdv:''}};}
 // ══════ INIT ══════
@@ -2475,7 +2581,7 @@ function navTo(pg){
   document.getElementById('tb-title').textContent=PG_T[pg]||pg;
   const hp=!!curPt,hs=curScIdx!==null;
   document.getElementById('btn-ns').style.display=(hp&&pg!=='patients'&&pg!=='fiche')?'':'none';
-  document.getElementById('btn-ss').style.display=(hs&&['dix','examen','ccmq','points','synthese'].includes(pg))?'':'none';
+  document.getElementById('btn-ss').style.display=(hs&&['dix','examen','ccmq','points','synthese','urgence'].includes(pg))?'':'none';
   document.getElementById('btn-ex').style.display=hp&&pg!=='patients'?'':'none';
   if(pg==='patients')renderPatients();
   if(pg==='seances')renderSeances();
@@ -2535,6 +2641,7 @@ async function openPt(id){
   if(selItem){selItem.classList.add('selected');selItem.scrollIntoView({block:'nearest'});}
   if(curPt.seances&&curPt.seances.length>0) navTo('seances');
   else newSeance();
+  _flushUrgPending(true);
 }
 function updSb(){
   if(!curPt)return;
@@ -2553,6 +2660,7 @@ function newPatient(){
   document.getElementById('pi-name').textContent='Nouveau patient';
   document.getElementById('pi-sub').textContent='0 séance';
   navTo('fiche');
+  _flushUrgPending(false);
 }
 
 function loadFiche(){
@@ -2600,11 +2708,18 @@ function calcAge(){
 // ══════ SÉANCES ══════
 function newSeance(){
   if(!curPt){showToast('Sélectionnez d\'abord un patient');return;}
+  const preps=(curPt.seances||[]).map((s,idx)=>({s,idx})).filter(o=>o.s.statut==='preparation'||!o.s.statut);
+  if(preps.length){
+    const last=preps[preps.length-1];
+    const reprendre=confirm('🕐 Une séance du '+fmtD(last.s.date)+' est encore « en préparation » (non finalisée).\n\nVoulez-vous la reprendre plutôt que d\'en créer une nouvelle ?\n\nOK = reprendre cette séance\nAnnuler = créer quand même une nouvelle séance (l\'ancienne restera en préparation)');
+    if(reprendre){ loadScIdx(last.idx); return; }
+  }
   curScIdx=null;const sc=mkSc();
   if(curPt.seances&&curPt.seances.length>0){
     const prev=curPt.seances[curPt.seances.length-1];
-    sc.syn.syndromes=prev.syn?.syndromes||'';
-    // NE PAS pré-remplir le syndrome/points — sécurité patient
+    // NE PAS pré-remplir le syndrome/points/motif — sécurité patient : le motif de consultation
+    // peut être différent ou avoir évolué depuis la dernière séance, la synthèse doit repartir
+    // vierge et refléter uniquement l'analyse faite pour CETTE séance.
     // Vérifier âge du CCMQ (validité 3 mois)
     const lastCcmqDate = prev.date ? new Date(prev.date) : null;
     if(lastCcmqDate){
@@ -2667,6 +2782,7 @@ function loadSeance(sc){
     'palp-huatuo':ex.palpHuatuo, 'palp-shu':ex.palpShu, 'palp-mu':ex.palpMu,
     'palp-membres-t':ex.palpMembresT, 'palp-membres':ex.palpMembres,
     'palp-ahshi-t':ex.palpAhshiT, 'palp-ahshi':ex.palpAhshi, 'palp-notes':ex.palpNotes,
+    'palp-oreille':ex.palpOreille, 'palp-oreille-notes':ex.palpOreilleNotes,
     // Douleur
     'd-localisation':ex.dLocalisation, 'd-type':ex.dType, 'd-rythme':ex.dRythme,
     'd-aggrave':ex.dAggrave, 'd-ameliore':ex.dAmeliore, 'd-libre':ex.dLibre,
@@ -2693,6 +2809,8 @@ function loadSeance(sc){
       });
     }
   });
+  // Restaurer les zones auriculaires sélectionnées sur la carte SVG (délai pour laisser le DOM se stabiliser)
+  setTimeout(()=>restoreEarZones(ex.palpOreille), 80);
   // Déclencher l'analyse douleur si données présentes
   if(ex.dAggrave||ex.dAmeliore) setTimeout(calcDouleurType, 80);
   // Mettre à jour la suggestion langue
@@ -2772,6 +2890,7 @@ function collectSc(){
     palpHuatuo:gT('palp-huatuo'),palpShu:gT('palp-shu'),palpMu:gT('palp-mu'),
     palpMembresT:gT('palp-membres-t'),palpMembres:g('palp-membres'),
     palpAhshiT:gT('palp-ahshi-t'),palpAhshi:g('palp-ahshi'),palpNotes:g('palp-notes'),
+    palpOreille:gT('palp-oreille'),palpOreilleNotes:g('palp-oreille-notes'),
     dLocalisation:gT('d-localisation'),dType:gT('d-type'),dRythme:gT('d-rythme'),
     dAggrave:gT('d-aggrave'),dAmeliore:gT('d-ameliore'),dLibre:g('d-libre')};
   sc.ccmq={};CQ.forEach(i=>{const v=g('c-'+i.n);if(v)sc.ccmq[i.n]=v;});
@@ -2782,10 +2901,8 @@ function collectSc(){
   const real=[];
   syndChk2.forEach(cb=>{const n=cb.closest('.pt-row')?.querySelector('.pt-note');real.push(cb.dataset.code+(cb.dataset.nom&&cb.dataset.nom!==cb.dataset.code?' '+cb.dataset.nom:'')+(n&&n.value?' ('+n.value+')':''));});
   ebmChk2.forEach(cb=>{const n=cb.closest('.pt-row')?.querySelector('.pt-note');real.push('[EBM] '+cb.dataset.code+' '+cb.dataset.nom+(n&&n.value?' ('+n.value+')':''));});
-  gynoChk2.forEach(cb=>{real.push('[Gynéco] '+cb.dataset.code+(cb.dataset.nom&&cb.dataset.nom!==cb.dataset.code?' '+cb.dataset.nom:''));});
-  libreChk2.forEach(cb=>{ const c=cb.dataset.code||''; const n=cb.dataset.nom||''; real.push(n&&n!==c ? '[+] '+n : '[+] '+c); });
   gynoChk2.forEach(cb=>{real.push('[Gynéco] '+cb.dataset.code+(cb.dataset.nom&&cb.dataset.nom!==cb.dataset.code?' — '+cb.dataset.nom:''));});
-  libreChk2.forEach(cb=>{real.push('[+] '+cb.dataset.code+(cb.dataset.nom?' — '+cb.dataset.nom:''));});
+  libreChk2.forEach(cb=>{ const c=cb.dataset.code||''; const n=cb.dataset.nom||''; real.push(n&&n!==c ? '[+] '+n : '[+] '+c); });
   const auriReal = collectAuri();
   sc.pts={syndrome:getSyndrome(),syndLibre:g('synd-libre'),realises:real,auriRealises:auriReal,auriNotes:g('auri-notes'),notesLibres:g('pts-nl')};
   // Motif : priorité au champ de la bannière 10+1 Questions
@@ -2864,10 +2981,11 @@ function renderSeances(){
     const badgeCol=isPrep?'#92400E':'#065F46';
     const badgeTxt=isPrep?'🕐 En préparation':'✅ Réalisée';
     const ccmqFilled=s.ccmq&&Object.keys(s.ccmq).length>0;
+    const delBtn=`<button class="btn" style="font-size:11px;padding:4px 8px;border-color:#DC2626;color:#DC2626" onclick="event.stopPropagation();deleteSeance(${i})" title="Supprimer cette séance">🗑</button>`;
     const btns=isPrep
-      ? `<button class="btn bg" style="font-size:11px;padding:4px 10px" onclick="loadScIdx(${i})">Reprendre →</button>`
+      ? `<button class="btn bg" style="font-size:11px;padding:4px 10px" onclick="loadScIdx(${i})">Reprendre →</button>${delBtn}`
       : `<button class="btn" style="font-size:11px;padding:4px 10px" onclick="viewScIdx(${i})">👁 Voir</button>
-         <button class="btn" style="font-size:11px;padding:4px 10px;border-color:var(--jade);color:var(--jade)" onclick="loadScIdx(${i})">✏️ Modifier</button>`;
+         <button class="btn" style="font-size:11px;padding:4px 10px;border-color:var(--jade);color:var(--jade)" onclick="loadScIdx(${i})">✏️ Modifier</button>${delBtn}`;
     return`<div class="sc-item" style="cursor:default">
       <div class="sc-num" style="${isPrep?'background:#92400E;':''}">${i+1}</div>
       <div style="flex:1;cursor:pointer" onclick="${isPrep?'loadScIdx('+i+')':'viewScIdx('+i+')'}">
@@ -2883,6 +3001,29 @@ function renderSeances(){
     </div>`;
   }).join('');
   el.innerHTML=html;
+}
+
+async function deleteSeance(idx){
+  if(!curPt||!curPt.seances||!curPt.seances[idx])return;
+  const s=curPt.seances[idx];
+  const isPrep=s.statut==='preparation'||!s.statut;
+  const motif=s.syn?.motif||s.syn?.syndromes||'(sans motif)';
+  const warn=isPrep
+    ? '🕐 Cette séance est en préparation (non finalisée).'
+    : '⚠️ Cette séance est marquée RÉALISÉE — des points ont peut-être déjà été appliqués au patient.';
+  const ok=confirm(warn+'\n\nSupprimer définitivement la séance du '+fmtD(s.date)+' ('+motif+') ?\n\nCette action est irréversible.');
+  if(!ok)return;
+  curPt.seances.splice(idx,1);
+  if(curScIdx===idx){curScIdx=null;}
+  else if(curScIdx!==null&&curScIdx>idx){curScIdx--;}
+  try{
+    await dbPut(curPt);
+    renderSeances();
+    showToast('Séance supprimée');
+  }catch(e){
+    showToast('Erreur suppression : '+e.message);
+    console.error('deleteSeance:',e);
+  }
 }
 
 function viewScIdx(idx){
@@ -2936,6 +3077,7 @@ function viewScIdx(idx){
     ex.palpMu?`Mu douloureux : ${ex.palpMu}`:'',
     ex.palpMembresT||ex.palpMembres?`Points 4 membres : ${[ex.palpMembresT,ex.palpMembres].filter(Boolean).join(' — ')}`:'',
     ex.palpAhshiT||ex.palpAhshi?`Points Ah Shi : ${[ex.palpAhshiT,ex.palpAhshi].filter(Boolean).join(' — ')}`:'',
+    ex.palpOreille?`Zones oreille douloureuses : ${ex.palpOreille}`:'',
     ex.dAggrave?`Douleur aggravée par : ${ex.dAggrave}`:'',
     ex.dAmeliore?`Douleur améliorée par : ${ex.dAmeliore}`:'',
   ].filter(Boolean);
@@ -3033,6 +3175,8 @@ function onMotifChange(){
   const sm=document.getElementById('s-motif');
   if(sm)sm.value=val;
   markDirty();
+  // Le motif pilote les propositions d'auriculothérapie : rafraîchir si déjà affichées
+  if(typeof filterAuri==='function') filterAuri();
 }
 
 function newCCMQ(){
@@ -3374,6 +3518,58 @@ function resetPointsDisplay(){
   syncRealises();
 }
 
+// ══════ MATCHING ROBUSTE (texte réel des tags vs libellés des règles) ══════
+// Les libellés affichés dans l'UI évoluent (ex: 'Rouge' → 'Rouge foncé / Cramoisi',
+// 'Vide (Xu)' → 'Vide — Xu (Vide)'...) et les comparaisons strictes (===, .includes exact)
+// se cassent silencieusement, faussant tout le diagnostic. On compare donc sur le mot-clé
+// central du libellé (avant tiret cadratin / parenthèse, articles retirés), dans les deux sens.
+function _normTxt(s){
+  return (s||'').toString().toLowerCase()
+    .normalize('NFD').replace(new RegExp('[̀-ͯ]','g'),'')
+    .replace(/[’]/g,"'").trim();
+}
+function _coreKw(s){
+  let t=_normTxt(s).split(' — ')[0].split('(')[0].trim();
+  t=t.replace(/^(le |la |les |l'|un |une |des )/,'');
+  return t;
+}
+// Retourne le libellé de règle qui matche un des libellés réellement cochés, ou null.
+function _tagMatch(ruleVals, recordedVals){
+  if(!ruleVals||!ruleVals.length||!recordedVals||!recordedVals.length) return null;
+  for(const rv of ruleVals){
+    const kw=_coreKw(rv);
+    if(kw.length<3) continue;
+    for(const val of recordedVals){
+      const vn=_normTxt(val);
+      if(!vn) continue;
+      if(vn.includes(kw)||kw.includes(vn)) return rv;
+    }
+  }
+  return null;
+}
+// Variante pour un champ à valeur unique (ex: ex.pqFreq)
+function _valMatch(ruleVals, singleVal){
+  return _tagMatch(ruleVals, singleVal?[singleVal]:[]);
+}
+// Paires antagonistes (mêmes libellés que ceux réellement utilisés dans les règles/tags)
+// utilisées pour détecter un signe cliniquement contradictoire avec une hypothèse.
+const _OPPOSITES = {
+  'Pâle':'Rouge', 'Rouge':'Pâle', 'Rouge foncé / Cramoisi':'Pâle',
+  'Lent — Chi':'Rapide — Shu', 'Rapide — Shu':'Lent — Chi',
+};
+function _hasOpposite(ruleVals, recordedVals){
+  if(!ruleVals||!ruleVals.length||!recordedVals||!recordedVals.length) return null;
+  // Si une des valeurs déjà listées par la règle correspond (ex: règle=['Rouge','Pâle'] et
+  // le patient a une langue rouge), la règle accepte explicitement ce signe : pas de contradiction.
+  if(_tagMatch(ruleVals, recordedVals)) return null;
+  for(const rv of ruleVals){
+    const opp=_OPPOSITES[rv];
+    if(!opp) continue;
+    if(_tagMatch([opp], recordedVals)) return {rule:rv, opp};
+  }
+  return null;
+}
+
 // ══════ BA GANG — 8 Règles diagnostiques ══════
 function calcBaGang(){
   const sc = collectSc ? collectSc() : {};
@@ -3392,46 +3588,65 @@ function calcBaGang(){
   // ── AXE BIAO / LI ──
   const q1t=q.q1_t||[], q2t=q.q2_t||[], q3t=q.q3_t||[];
   if(q1t.includes('Frissons')||q1t.includes('Fièvre')||q3t.includes('Raideur nuque')||q3t.includes('Courbatures')) scores.biao += 2;
-  if(ex.lEnduitDist === 'Mince (normal/début)') scores.biao += 1;
-  if(ex.freq === 'Superficiel (Fu)') scores.biao += 2;
+  if(_valMatch(['Uniforme (normal)'], ex.lEnduitDist)) scores.biao += 1;
+  if(_valMatch(['Superficiel — Fu'], ex.pqProf)) scores.biao += 2;
   // Li = signes profonds
-  if(ex.lForme !== 'Normale' || ex.lCouleur) scores.li += 1;
+  if((ex.lForme && ex.lForme !== 'Normale') || ex.lCouleur) scores.li += 1;
   const q4t = q.q4_t||[], q5t = q.q5_t||[], q6t = q.q6_t||[];
   if(q4t.length > 0 || q5t.length > 0 || q6t.length > 0) scores.li += 1;
-  if(ex.pqProf === 'Profond (Chen)') scores.li += 2;
+  if(_valMatch(['Profond — Chen'], ex.pqProf)) scores.li += 2;
+
+  // Valeurs des 6 positions du pouls (popup par position), utilisées en complément
+  // des qualités globales pq-*, car un praticien peut ne renseigner que l'un ou l'autre.
+  const posVals = [ex.cunG,ex.cunD,ex.guanG,ex.guanD,ex.chiG,ex.chiD].filter(Boolean);
 
   // ── AXE VIDE / PLÉNITUDE ──
   // Vide
-  if(['Faible (Ruo)','Vide (Xu)'].some(s=>ex.pqForce===s)) scores.vide += 2;
-  if(ex.lEpaisseur === 'Fine / Mince') scores.vide += 1;
+  if(_valMatch(['Épuisé — Ruo','Vide — Xu','Mou — Ru','Dispersé — San','Creux — Kou'], ex.pqForce)) scores.vide += 2;
+  if(_tagMatch(['Vide — Xu','Mou — Ru','Épuisé — Ruo'], posVals)) scores.vide += 1;
+  if(_tagMatch(['Fin — Xi'], posVals)) scores.vide += 1;
+  if(_valMatch(['Fine'], ex.lEpaisseur)) scores.vide += 1;
   const q9t = q.q9_t||[], q10t = q.q10_t||[];
   if(q9t.includes('Fatigue permanente')||q9t.includes('Fatigue matinale')) scores.vide += 1;
   if(q5t.includes("Peu d'appétit")) scores.vide += 1;
   if((q6t||[]).some(s=>s.includes("Amélioré par pression"))) scores.vide += 1;
   // Plénitude
-  if(['Plein (Shi)','Plein — Shi (Plénitude)'].some(s=>ex.pqForce===s)) scores.plen += 2;
-  if(ex.lEpaisseur === 'Épaisse') scores.plen += 1;
+  if(_valMatch(['Plein — Shi'], ex.pqForce)) scores.plen += 2;
+  if(_tagMatch(['Plein — Shi'], posVals)) scores.plen += 1;
+  if(_valMatch(['Épaisse'], ex.lEpaisseur)) scores.plen += 1;
   if((q6t||[]).some(s=>s.includes("Aggravé par pression"))) scores.plen += 1;
-  if(ex.lEnduitCouleur === 'Jaune' || ex.lEnduitCouleur === 'Jaune épais') scores.plen += 1;
+  if(_valMatch(['Jaune épais'], ex.lEnduitCouleur)) scores.plen += 1;
 
   // ── AXE FROID / CHALEUR ──
   // Froid
   if(q1t.includes('Froid permanent')||q1t.includes('Aggravé par le froid')) scores.froid += 2;
   if(q1t.includes('Frissons')&&!q1t.includes('Fièvre')) scores.froid += 1;
-  if(['Blanc','Blanc pâle','Blanc grisâtre'].some(s=>ex.lCouleur===s)) scores.froid += 1;
-  if(ex.lHumidite === 'Humide') scores.froid += 1;
+  if(_valMatch(['Pâle'], ex.lCouleur)) scores.froid += 1;
+  if(_valMatch(['Humide / Glissant'], ex.lHumidite)) scores.froid += 1;
   if((q4t||[]).includes('Urines claires abondantes')||(q4t||[]).includes('Diarrhée matinale (coq)')) scores.froid += 1;
-  if(ex.pqFreq === 'Lent (Chi)') scores.froid += 2;
+  if(_valMatch(['Lent — Chi'], ex.pqFreq)) scores.froid += 2;
+  if(_tagMatch(['Lent — Chi'], posVals)) scores.froid += 1;
   // Chaleur
   if(q1t.includes('Chaleur permanente')||q1t.includes('Bouffées de chaleur')) scores.chaleur += 2;
   if(q1t.includes('Chaleur des 5 centres (paumes/plantes/sternum)')) scores.chaleur += 3; // pathognomonique Vide Yin
   if(q1t.includes('Chaleur vespérale (après-midi)')||q1t.includes('Corps chaud la nuit')) scores.chaleur += 2;
   if(q2t.includes('Sueurs nocturnes')) scores.chaleur += 2; // Yin xu
-  if(['Rouge','Rouge vif','Rouge foncé'].some(s=>ex.lCouleur===s)) scores.chaleur += 2;
-  if(['Jaune','Jaune épais','Jaune gras'].some(s=>ex.lEnduitCouleur===s)) scores.chaleur += 1;
+  if(_valMatch(['Rouge','Rouge foncé / Cramoisi'], ex.lCouleur)) scores.chaleur += 2;
+  if(_valMatch(['Jaune mince','Jaune épais'], ex.lEnduitCouleur)) scores.chaleur += 1;
   if((q4t||[]).includes('Urines foncées')||(q4t||[]).includes('Brûlures urinaires')) scores.chaleur += 1;
-  if(ex.pqFreq === 'Rapide (Shu)') scores.chaleur += 2;
+  if(_valMatch(['Rapide — Shu'], ex.pqFreq)) scores.chaleur += 2;
+  if(_tagMatch(['Rapide — Shu'], posVals)) scores.chaleur += 1;
   if((q5t||[]).some(s=>s.includes('Goût amer'))) scores.chaleur += 1;
+
+  // ── Douleur : facteurs aggravants/améliorants (souvent le seul signe distinctif net) ──
+  const dAggBg = (ex.dAggrave||'').split(',').map(v=>v.trim()).filter(Boolean);
+  const dAmelBg = (ex.dAmeliore||'').split(',').map(v=>v.trim()).filter(Boolean);
+  if(_tagMatch(['Le froid'], dAggBg)) scores.froid += 2;           // aggravée par le froid → Froid
+  if(_tagMatch(['La chaleur','La chaleur locale'], dAggBg)) scores.chaleur += 2; // aggravée par la chaleur → Chaleur
+  if(_tagMatch(['Le froid',"L'application de froid"], dAmelBg)) scores.chaleur += 2; // améliorée PAR le froid → il y a de la Chaleur
+  if(_tagMatch(['La chaleur','La chaleur locale'], dAmelBg)) scores.froid += 2;      // améliorée par la chaleur → il y a du Froid
+  if(_tagMatch(['La pression'], dAmelBg)) scores.vide += 1;
+  if(_tagMatch(['La pression'], dAggBg)) scores.plen += 1;
 
   // ── SYNTHÈSE YIN/YANG ──
   scores.yin = scores.froid + scores.vide + scores.li;
@@ -3450,7 +3665,9 @@ function calcBaGang(){
   const chaleurType = () => {
     const q1t2 = q.q1_t||[];
     const q2t2 = q.q2_t||[];
-    if(q1t2.includes('Chaleur des 5 centres (paumes/plantes/sternum)')||q2t2.includes('Sueurs nocturnes')){
+    const langueSecheRouge = _valMatch(['Rouge','Rouge foncé / Cramoisi'], ex.lCouleur) && _valMatch(['Sec','Très sec / Brûlé'], ex.lHumidite);
+    const doleurAmelioreeFroid = _tagMatch(['Le froid',"L'application de froid"], dAmelBg);
+    if(q1t2.includes('Chaleur des 5 centres (paumes/plantes/sternum)')||q2t2.includes('Sueurs nocturnes')||langueSecheRouge||doleurAmelioreeFroid){
       return ' <span style="background:#FADBD8;color:#922B21;font-size:10px;padding:1px 6px;border-radius:10px">⚠️ Vide de Yin probable</span>';
     }
     return '';
@@ -3824,6 +4041,8 @@ function exportPatient(){
       ['Points Ah Shi',sc.ex?.palpAhshiT||''],
       ['Points Ah Shi — localisation',sc.ex?.palpAhshi||''],
       ['Notes palpation',sc.ex?.palpNotes||''],
+      ['Palpation auriculaire — zones',sc.ex?.palpOreille||''],
+      ['Palpation auriculaire — notes',sc.ex?.palpOreilleNotes||''],
       [],['SYNTHÈSE'],['Syndromes',sc.syn?.syndromes||''],['Principes',sc.syn?.principe||''],['Points réalisés',(sc.pts?.realises||[]).join(' — ')||sc.syn?.points||''],['Notes points',sc.pts?.notesLibres||''],['Technique',sc.syn?.tech||''],['Durée',sc.syn?.duree||''],['Réactions',sc.syn?.react||''],['Conseils',sc.syn?.conseils||''],['Compte-rendu',sc.syn?.cr||''],['Prochain RDV',sc.syn?.rdv||'']);
     XLSX.utils.book_append_sheet(wb,aoa(rows),`Séance ${i+1}`.slice(0,31));
   });
@@ -4378,6 +4597,7 @@ const SYND_RULES = {
     pouls:{global:['Vide — Xu','Retardé — Huan','Mou — Ru'],positions:{gG:['Vide — Xu','Mou — Ru'],gD:['Vide — Xu','Mou — Ru']}},
     q10:{q5:["Peu d'appétit"],q4:['Selles molles','Diarrhée'],q3:['Lourdeur corps'],q9:['Fatigue matinale','Fatigue permanente']},
     douleur:{ameliore:['La chaleur','La pression']},
+    axe:'racine',
     descr:"Fatigue, selles molles, peu d'appétit, langue pâle avec marques de dents"
   },
   'Vide de Qi du Poumon': {
@@ -4387,6 +4607,7 @@ const SYND_RULES = {
     pouls:{global:['Vide — Xu','Superficiel — Fu','Épuisé — Ruo']},
     q10:{q2:['Sueurs spontanées'],q9:['Fatigue permanente','Fatigue matinale']},
     douleur:{},
+    axe:'racine',
     descr:'Essoufflement, voix faible, sueurs spontanées'
   },
   'Qi des Reins non ferme': {
@@ -4396,6 +4617,7 @@ const SYND_RULES = {
     pouls:{global:['Vide — Xu','Profond — Chen'],positions:{chiG:['Vide — Xu'],chiD:['Vide — Xu']}},
     q10:{q4:['Pollakiurie nocturne','Urines claires abondantes'],q9:['Fatigue matinale']},
     douleur:{},
+    axe:'racine',
     descr:'Fatigue lombaire, pollakiurie nocturne, Chi vide et profond'
   },
   'Vide de Yang des Reins': {
@@ -4405,6 +4627,7 @@ const SYND_RULES = {
     pouls:{global:['Profond — Chen','Lent — Chi','Vide — Xu'],positions:{chiG:['Vide — Xu','Lent — Chi'],chiD:['Vide — Xu','Lent — Chi']}},
     q10:{q1:['Froid permanent','Aggravé par le froid'],q4:['Urines claires abondantes','Pollakiurie nocturne'],q9:['Fatigue matinale']},
     douleur:{aggrave:['Le froid'],ameliore:['La chaleur']},
+    axe:'racine',
     descr:'Froid constant, membres froids, langue pâle gonflée, Chi vide et lent'
   },
   'Vide de Yang de Rate': {
@@ -4414,6 +4637,7 @@ const SYND_RULES = {
     pouls:{global:['Lent — Chi','Vide — Xu','Mou — Ru'],positions:{gD:['Vide — Xu','Mou — Ru']}},
     q10:{q1:['Froid permanent'],q4:['Selles molles','Diarrhée'],q5:["Peu d'appétit"]},
     douleur:{ameliore:['La chaleur']},
+    axe:'racine',
     descr:'Froid abdominal, diarrhée, langue gonflée humide'
   },
   'Vide de Yin des Reins': {
@@ -4423,6 +4647,7 @@ const SYND_RULES = {
     pouls:{global:['Rapide — Shu','Fin — Xi','Profond — Chen'],positions:{chiG:['Rapide — Shu','Fin — Xi'],chiD:['Rapide — Shu','Fin — Xi']}},
     q10:{q2:['Sueurs nocturnes'],q1:['Bouffées de chaleur','Aggravé par la chaleur'],q8:['Soif intense','Gorge sèche'],q7:['Acouphènes graves']},
     douleur:{ameliore:['Le froid']},
+    axe:'racine',
     descr:'Sueurs nocturnes, bouffées de chaleur, langue rouge fissurée, Chi fin et rapide'
   },
   'Vide de Yin du Foie': {
@@ -4432,6 +4657,7 @@ const SYND_RULES = {
     pouls:{global:['Tendu en corde — Xuan','Fin — Xi','Rapide — Shu'],positions:{gG:['Tendu en corde — Xuan','Fin — Xi']}},
     q10:{q7:['Yeux secs','Vision trouble'],q10:['Irritabilité','Colère'],q2:['Sueurs nocturnes'],q9:['Réveils nocturnes']},
     douleur:{},
+    axe:'racine',
     descr:'Yeux secs, vertiges, Guan gauche tendu et fin, langue rouge'
   },
   'Vide de Yin du Cœur': {
@@ -4441,6 +4667,7 @@ const SYND_RULES = {
     pouls:{global:['Rapide — Shu','Fin — Xi','Irrégulier — Jie'],positions:{cunG:['Rapide — Shu','Fin — Xi','Vide — Xu']}},
     q10:{q9:['Insomnie totale','Réveils nocturnes','Cauchemars'],q10:['Anxiété','Labilité émotionnelle'],q2:['Sueurs nocturnes']},
     douleur:{},
+    axe:'racine',
     descr:'Insomnie, palpitations, anxiété, Cun gauche fin et rapide'
   },
   'Stagnation du Qi du Foie': {
@@ -4450,6 +4677,7 @@ const SYND_RULES = {
     pouls:{global:['Tendu en corde — Xuan'],positions:{gG:['Tendu en corde — Xuan']}},
     q10:{q6:['Douleur flancs','Distension abdominale','Oppression thoracique'],q10:['Irritabilité','Colère','Tristesse'],q5:['Nausées','Régurgitations']},
     douleur:{aggrave:['Le stress / émotions'],ameliore:['Le massage','Le mouvement']},
+    axe:'branche',
     descr:"Tension des flancs, irritabilité, Guan gauche tendu en corde"
   },
   'Stase de Sang': {
@@ -4459,6 +4687,7 @@ const SYND_RULES = {
     pouls:{global:['Rugueux — Se','Tendu en corde — Xuan']},
     q10:{q11:['Dysménorrhée','Aménorrhée'],q10:['Labilité émotionnelle']},
     douleur:{aggrave:['La pression','Le froid'],ameliore:['La chaleur','Le massage'],type:['Fixe / Stabbing']},
+    axe:'branche',
     descr:'Douleur fixe aggravée à la pression, langue violacée, pouls rugueux'
   },
   'Glaires-Humidité': {
@@ -4468,6 +4697,7 @@ const SYND_RULES = {
     pouls:{global:['Glissant — Hua','Mou — Ru','Lent — Chi']},
     q10:{q3:['Lourdeur corps','Lourdeur tête'],q5:["Peu d'appétit",'Nausées'],q8:['Sensation de bouche pâteuse']},
     douleur:{aggrave:["L'humidité"],type:['Pesanteur / Lourdeur']},
+    axe:'racine',
     descr:'Lourdeur, enduit épais et gras, pouls glissant'
   },
   'Humidité-Chaleur': {
@@ -4477,6 +4707,7 @@ const SYND_RULES = {
     pouls:{global:['Rapide — Shu','Glissant — Hua']},
     q10:{q4:['Selles collantes','Brûlures urinaires','Urines foncées'],q5:['Goût amer'],q1:['Chaleur permanente']},
     douleur:{aggrave:['La chaleur']},
+    axe:'branche',
     descr:'Chaleur, urines foncées, enduit jaune gras, pouls glissant rapide'
   },
   'Vide de Sang': {
@@ -4486,6 +4717,7 @@ const SYND_RULES = {
     pouls:{global:['Fin — Xi','Vide — Xu','Rugueux — Se']},
     q10:{q7:['Yeux secs','Vision trouble'],q9:['Insomnie totale','Réveils nocturnes'],q3:['Vertiges']},
     douleur:{},
+    axe:'racine',
     descr:'Pâleur, vertiges, yeux secs, pouls fin et vide'
   },
   'Feu du Cœur': {
@@ -4495,6 +4727,7 @@ const SYND_RULES = {
     pouls:{global:['Rapide — Shu','Plein — Shi'],positions:{cunG:['Rapide — Shu','Plein — Shi']}},
     q10:{q9:['Insomnie totale','Cauchemars'],q10:['Anxiété','Joie excessive'],q4:['Brûlures urinaires','Urines foncées']},
     douleur:{},
+    axe:'branche',
     descr:'Agitation, insomnie, urines foncées, langue rouge, Cun gauche rapide et plein'
   },
   'Vent-Froid externe': {
@@ -4504,6 +4737,7 @@ const SYND_RULES = {
     pouls:{global:['Superficiel — Fu','Serré — Jin']},
     q10:{q1:['Frissons','Froid permanent','Aggravé par le froid'],q3:['Céphalées nuque','Courbatures']},
     douleur:{aggrave:['Le froid'],type:['Contracture']},
+    axe:'branche',
     descr:'Frissons, céphalées de nuque, pouls superficiel et serré'
   },
   'Insomnie': {
@@ -4513,6 +4747,7 @@ const SYND_RULES = {
     pouls:{global:['Rapide — Shu','Fin — Xi','Tendu en corde — Xuan']},
     q10:{q9:['Insomnie totale','Endormissement difficile','Réveils nocturnes','Cauchemars']},
     douleur:{},
+    axe:'branche',
     descr:'Insomnie documentée dans les 10 questions'
   },
   'Anxiété-stress': {
@@ -4522,6 +4757,7 @@ const SYND_RULES = {
     pouls:{global:['Tendu en corde — Xuan','Rapide — Shu']},
     q10:{q10:['Anxiété','Inquiétude','Peur','Rumination'],q6:['Oppression thoracique']},
     douleur:{aggrave:['Le stress / émotions']},
+    axe:'branche',
     descr:'Anxiété, oppression, pouls tendu en corde'
   },
   'Dysménorrhée par stase': {
@@ -4531,6 +4767,7 @@ const SYND_RULES = {
     pouls:{global:['Rugueux — Se','Tendu en corde — Xuan']},
     q10:{q11:['Dysménorrhée','Règles en retard']},
     douleur:{aggrave:['La pression','Le froid'],ameliore:['La chaleur','Le massage'],type:['Fixe / Stabbing','Crampe / Spasme']},
+    axe:'branche',
     descr:'Dysménorrhée avec douleur fixe, langue violacée, pouls rugueux'
   },
   'Bi (obstruction-douleur)': {
@@ -4540,9 +4777,20 @@ const SYND_RULES = {
     pouls:{global:['Serré — Jin','Tendu en corde — Xuan','Glissant — Hua']},
     q10:{q3:['Courbatures','Douleurs articulaires'],q1:['Aggravé par le froid','Aggravé par la chaleur']},
     douleur:{aggrave:['Le froid',"L'humidité"],type:['Articulaire','Fixe / Stabbing','Mobile / Migrante']},
+    axe:'branche',
     descr:"Douleurs articulaires, aggravation par le froid ou l'humidité"
   },
 };
+
+// Syndromes dont l'identité même repose sur l'axe Froid/Chaleur ou Yang/Yin : pour ceux-là
+// seulement, un signe carrément opposé (langue, pouls, douleur) doit démentir l'hypothèse
+// plutôt que simplement ne pas la conforter — sinon un syndrome "Vide de Qi" (où la couleur
+// de langue n'est qu'un signe secondaire, pas définitoire) serait à tort exclu.
+const SYND_THERMAL_AXIS = new Set([
+  'Vide de Yang des Reins','Vide de Yang de Rate',
+  'Vide de Yin des Reins','Vide de Yin du Foie','Vide de Yin du Cœur',
+  'Vent-Froid externe','Humidité-Chaleur','Feu du Cœur'
+]);
 
 function suggestSyndromes() {
   const el = document.getElementById('synd-suggestions');
@@ -4565,17 +4813,19 @@ function suggestSyndromes() {
 
   // Motif de consultation
   const motifBrut=[g('dix-motif-input'),g('s-motif'),curPt?.motif||''].join(' ').toLowerCase();
+  // NB : les clés doivent correspondre EXACTEMENT aux clés de SYND_RULES, sinon le bonus
+  // "mot-clé du motif" ne s'applique jamais silencieusement pour ce syndrome.
   const MOTIF_KEYS={
-    'Vide Qi Rate':['fatigue','digestion','ballonnement','lourdeur','diarrhée','selles'],
-    'Vide Qi Poumon':['essoufflement','toux','rhume','fatigue','infections'],
-    'Vide Qi Rein':['fatigue','lombaire','lombes','reins','urinaire','pollakiurie'],
-    'Vide Yang Rein':['froid','frilosité','lombaire','reins','libido','oedème'],
-    'Vide Yang Rate':['froid','diarrhée','digestion','fatigue','poids'],
-    'Vide Yin Rein':['bouffées','sueurs nocturnes','sécheresse','acouphène','vertiges','ménopause'],
-    'Vide Yin Foie':['yeux','vertiges','sécheresse','ménopause','règles'],
-    'Vide Yin Coeur':['insomnie','palpitations','anxiété','stress','agitation'],
-    'Stagnation Qi Foie':['stress','anxiété','dépression','flancs','irritabilité','émotions'],
-    'Stase du Sang':['douleur','dysménorrhée','règles','circulation','varices'],
+    'Vide de Qi de Rate':['fatigue','digestion','ballonnement','lourdeur','diarrhée','selles'],
+    'Vide de Qi du Poumon':['essoufflement','toux','rhume','fatigue','infections'],
+    'Qi des Reins non ferme':['fatigue','lombaire','lombes','reins','urinaire','pollakiurie'],
+    'Vide de Yang des Reins':['froid','frilosité','lombaire','reins','libido','oedème'],
+    'Vide de Yang de Rate':['froid','diarrhée','digestion','fatigue','poids'],
+    'Vide de Yin des Reins':['bouffées','sueurs nocturnes','sécheresse','acouphène','vertiges','ménopause'],
+    'Vide de Yin du Foie':['yeux','vertiges','sécheresse','ménopause','règles'],
+    'Vide de Yin du Cœur':['insomnie','palpitations','anxiété','stress','agitation'],
+    'Stagnation du Qi du Foie':['stress','anxiété','dépression','flancs','irritabilité','émotions'],
+    'Stase de Sang':['douleur','dysménorrhée','règles','circulation','varices'],
     'Glaires-Humidité':['lourdeur','poids','mucosités','glaires','cholestérol'],
     'Humidité-Chaleur':['inflammation','infection','brûlure','urinaire','peau','acné'],
     'Vide de Sang':['pâleur','vertiges','règles peu','anémie'],
@@ -4593,21 +4843,22 @@ function suggestSyndromes() {
     // CCMQ +3
     const cMatch = (rule.ccmq||[]).filter(c => ccmqPres.some(p=>p.includes(c)));
     if (cMatch.length) { sc+=3; det.push('CCMQ: '+cMatch.join(', ')); }
-    // Langue
-    const lCheck = (arr, src, pts, lbl) => { if (!arr) return; const m=arr.filter(t=>src.includes(t)); if(m.length){sc+=pts;det.push(lbl+': '+m[0]);} };
+    // Langue — comparaison robuste sur le mot-clé central (voir _tagMatch) : évite les faux
+    // négatifs quand le libellé réel est une variante ('Rouge foncé / Cramoisi' pour 'Rouge').
+    const lCheck = (arr, src, pts, lbl) => { const m=_tagMatch(arr, src); if(m){sc+=pts;det.push(lbl+': '+m);} };
     lCheck(rule.langue?.couleur, lCouleur, 2, 'Langue couleur');
     lCheck(rule.langue?.forme, lForme, 1, 'Langue forme');
     lCheck(rule.langue?.enduitCouleur, lEnduit, 1, 'Enduit');
     lCheck(rule.langue?.humidite, lHum, 1, 'Humidité');
     // Pouls global +2
     if (rule.pouls?.global) {
-      const m=rule.pouls.global.filter(t=>pGlobal.some(p=>p.startsWith(t.split(' ')[0])));
-      if(m.length){sc+=2;det.push('Pouls: '+m[0]);}
+      const m=_tagMatch(rule.pouls.global, pGlobal);
+      if(m){sc+=2;det.push('Pouls: '+m);}
     }
     // Pouls positions +1 each
     Object.entries(rule.pouls?.positions||{}).forEach(([pos,quals])=>{
-      const m=quals.filter(q=>(pPos[pos]||[]).some(p=>p.startsWith(q.split(' ')[0])));
-      if(m.length){sc+=1;det.push('P-'+pos+': '+m[0]);}
+      const m=_tagMatch(quals, pPos[pos]||[]);
+      if(m){sc+=1;det.push('P-'+pos+': '+m);}
     });
     // 10Q +1 each
     Object.entries(rule.q10||{}).forEach(([qid,qtags])=>{
@@ -4619,7 +4870,7 @@ function suggestSyndromes() {
       if(m.length){sc+=1;det.push('Q'+qid.slice(1)+': '+m[0]);}
     });
     // Douleur +1 each
-    const dCheck=(arr,src,lbl)=>{if(!arr||!arr.length)return;const m=arr.filter(t=>src.some(v=>v.toLowerCase().includes(t.toLowerCase().slice(0,5))));if(m.length){sc+=1;det.push(lbl+': '+m[0]);}};
+    const dCheck=(arr,src,lbl)=>{const m=_tagMatch(arr,src); if(m){sc+=1;det.push(lbl+': '+m);}};
     dCheck(rule.douleur?.aggrave, dAgg, 'Aggravé');
     dCheck(rule.douleur?.ameliore, dAmel, 'Amélioré');
     dCheck(rule.douleur?.type, dTyp, 'Type');
@@ -4628,33 +4879,59 @@ function suggestSyndromes() {
       const mMatch=MOTIF_KEYS[nom].filter(k=>motifBrut.includes(k));
       if(mMatch.length){sc+=1;det.push('Motif: '+mMatch[0]);}
     }
+    // ── Signes contradictoires : pénalité forte pour éviter des suggestions incohérentes,
+    // réservée aux syndromes dont l'identité repose sur l'axe Froid/Chaleur ou Yang/Yin
+    // (SYND_THERMAL_AXIS). Ex: la règle attend une langue Pâle mais le patient a une langue
+    // Rouge → signe opposé présent → l'hypothèse est démentie, pas juste "non confirmée".
+    if(SYND_THERMAL_AXIS.has(nom)){
+      const cLangue=_hasOpposite(rule.langue?.couleur, lCouleur);
+      const cPouls=cLangue?null:_hasOpposite(rule.pouls?.global, pGlobal);
+      const cAggOpp=(cLangue||cPouls)?null:(rule.douleur?.aggrave?_tagMatch(rule.douleur.aggrave, dAmel):null);
+      const cAmelOpp=(cLangue||cPouls||cAggOpp)?null:(rule.douleur?.ameliore?_tagMatch(rule.douleur.ameliore, dAgg):null);
+      if(cLangue){ sc-=3; det.unshift(`⚠️ Langue ${cLangue.opp} incompatible avec ${cLangue.rule} attendu`); }
+      else if(cPouls){ sc-=3; det.unshift(`⚠️ Pouls ${cPouls.opp} incompatible avec ${cPouls.rule} attendu`); }
+      else if(cAggOpp){ sc-=3; det.unshift(`⚠️ Douleur améliorée par "${cAggOpp}" incompatible avec l'aggravation attendue`); }
+      else if(cAmelOpp){ sc-=3; det.unshift(`⚠️ Douleur aggravée par "${cAmelOpp}" incompatible avec l'amélioration attendue`); }
+    }
     if(sc>0) scores[nom]={sc,det,rule};
   });
 
-  const sorted=Object.entries(scores).sort((a,b)=>b[1].sc-a[1].sc).slice(0,5);
-  if(!sorted.length){
+  const all=Object.entries(scores).sort((a,b)=>b[1].sc-a[1].sc);
+  if(!all.length){
     el.style.display='';
     el.innerHTML='<p style="font-size:12px;color:var(--slate);font-style:italic">Données insuffisantes — renseignez la langue, le pouls et les 10 questions.</p>';
     return;
   }
-  const maxSc=sorted[0][1].sc;
+  const racineList=all.filter(([nom])=>(SYND_RULES[nom]||{}).axe==='racine').slice(0,4);
+  const brancheList=all.filter(([nom])=>(SYND_RULES[nom]||{}).axe==='branche').slice(0,4);
+  const maxSc=all[0][1].sc;
   el.style.display='';
-  el.innerHTML='<div style="font-size:11px;font-weight:700;color:var(--jade);text-transform:uppercase;letter-spacing:.4px;margin-bottom:8px">Syndromes sugg\u00e9r\u00e9s par l\'analyse clinique</div>'+
-    sorted.map(([nom,data])=>{
-      const pct=Math.round(data.sc/maxSc*100);
-      const conf=pct>=80?{lbl:'Très probable',bg:'#D1FAE5',col:'#065F46'}:pct>=55?{lbl:'Probable',bg:'#FEF3C7',col:'#92400E'}:{lbl:'Possible',bg:'var(--cream2)',col:'var(--slate)'};
-      return`<div style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:9px 12px;margin-bottom:6px">
-        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px">
-          <span style="font-size:13px;font-weight:600">${data.rule.couleur} ${nom}</span>
-          <span style="font-size:10px;padding:2px 8px;border-radius:20px;background:${conf.bg};color:${conf.col};font-weight:600">${conf.lbl} (${data.sc} pts)</span>
-          <button class="btn bg" style="font-size:11px;padding:3px 10px;margin-left:auto" onclick="applySyndrome('${nom.replace(/'/g,"\'")}')">Sélectionner →</button>
-          <button class="btn" style="font-size:10px;padding:2px 8px" onclick="addSecondSyndrome2('${nom.replace(/'/g,String.fromCharCode(39))}')" title="Ajouter comme 2ème syndrome">➕ 2ème</button>
-        </div>
-        <div style="font-size:11px;color:var(--slate);font-style:italic;margin-bottom:3px">${data.rule.descr}</div>
-        <div style="font-size:10px;color:var(--jade)">${data.det.slice(0,4).join(' · ')}</div>
-        <div style="background:var(--cream2);border-radius:4px;height:4px;margin-top:6px"><div style="background:var(--jade);height:4px;border-radius:4px;width:${pct}%"></div></div>
-      </div>`;
-    }).join('');
+  el.innerHTML='<div style="font-size:11px;font-weight:700;color:var(--jade);text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px">Syndromes sugg\u00e9r\u00e9s par l\'analyse clinique</div>'+
+    '<div style="font-size:10px;color:var(--slate);font-style:italic;margin-bottom:10px">Racine (\u672c Ben) : terrain de fond, cause profonde \u2014 souvent un Vide constitutionnel. Branche (\u6807 Biao) : manifestation actuelle, souvent une Pl\u00e9nitude/Stagnation surajout\u00e9e. R\u00e8gle classique : en urgence on traite la Branche en premier (\u6025\u5219\u6cbb\u6807), sinon on traite la Racine en fond (\u7f13\u5219\u6cbb\u672c). Les deux peuvent \u00eatre combin\u00e9s (bouton "2\u00e8me").</div>'+
+    renderSyndGroup('🌱 Racine — terrain de fond','本 Ben','#6B4A00',racineList,maxSc,'Aucun syndrome de fond net ne se dégage — le terrain constitutionnel (CCMQ, Vide de Qi/Yang/Yin) reste à préciser.')+
+    renderSyndGroup('🌿 Branche — manifestation actuelle','标 Biao','#8B3A3A',brancheList,maxSc,'Aucune manifestation aiguë/symptomatique nette ne se dégage à partir de la douleur et des 10 questions.');
+}
+
+function renderSyndCard(nom,data,maxSc){
+  const pct=Math.round(data.sc/maxSc*100);
+  const conf=pct>=80?{lbl:'Très probable',bg:'#D1FAE5',col:'#065F46'}:pct>=55?{lbl:'Probable',bg:'#FEF3C7',col:'#92400E'}:{lbl:'Possible',bg:'var(--cream2)',col:'var(--slate)'};
+  return`<div style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:9px 12px;margin-bottom:6px">
+    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px">
+      <span style="font-size:13px;font-weight:600">${data.rule.couleur} ${nom}</span>
+      <span style="font-size:10px;padding:2px 8px;border-radius:20px;background:${conf.bg};color:${conf.col};font-weight:600">${conf.lbl} (${data.sc} pts)</span>
+      <button class="btn bg" style="font-size:11px;padding:3px 10px;margin-left:auto" onclick="applySyndrome('${nom.replace(/'/g,"\'")}')">Sélectionner →</button>
+      <button class="btn" style="font-size:10px;padding:2px 8px" onclick="addSecondSyndrome2('${nom.replace(/'/g,String.fromCharCode(39))}')" title="Ajouter comme 2ème syndrome">➕ 2ème</button>
+    </div>
+    <div style="font-size:11px;color:var(--slate);font-style:italic;margin-bottom:3px">${data.rule.descr}</div>
+    <div style="font-size:10px;color:var(--jade)">${data.det.slice(0,4).join(' · ')}</div>
+    <div style="background:var(--cream2);border-radius:4px;height:4px;margin-top:6px"><div style="background:var(--jade);height:4px;border-radius:4px;width:${pct}%"></div></div>
+  </div>`;
+}
+function renderSyndGroup(title,zh,tint,list,maxSc,emptyMsg){
+  return `<div style="margin-bottom:10px">
+    <div style="font-size:11px;font-weight:700;color:${tint};text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px">${title} <span style="font-weight:400;opacity:.7">${zh}</span></div>
+    ${list.length?list.map(([nom,data])=>renderSyndCard(nom,data,maxSc)).join(''):`<p style="font-size:11px;color:var(--slate);font-style:italic;margin:0 0 6px">${emptyMsg}</p>`}
+  </div>`;
 }
 
 function addPtLibre(){
@@ -6978,65 +7255,101 @@ const AURI_SYND_MAP = {
   'Bi (obstruction-douleur)':     ['Thalamus (Analgésie)','Shen Men','Sous-cortex','Surrénal (ACTH)','Point Analgésie'],
 };
 
-function showAuri(syndrome, savedRealises=[]) {
-  const listEl = document.getElementById('auri-list');
-  const syndLabel = document.getElementById('auri-synd-label');
-  const cat = (document.getElementById('auri-cat')||{}).value || '';
-  if (!listEl) return;
+// Les noms de syndromes de SYND_RULES (② analyse Zang-Fu) diffèrent des clés courtes utilisées
+// ci-dessus par AURI_SYND_MAP / ADB.synd (ex: 'Vide de Qi de Rate' vs 'Vide Qi Rate') — sans
+// cette table, le signal "syndrome" ne matchait jamais rien en auriculothérapie.
+const SYND_TO_AURI_KEY = {
+  'Vide de Qi de Rate':'Vide Qi Rate', 'Vide de Qi du Poumon':'Vide Qi Poumon',
+  'Qi des Reins non ferme':'Vide Qi Rein', 'Vide de Yang des Reins':'Vide Yang Rein',
+  'Vide de Yang de Rate':'Vide Yang Rate', 'Vide de Yin des Reins':'Vide Yin Rein',
+  'Vide de Yin du Foie':'Vide Yin Foie', 'Vide de Yin du Cœur':'Vide Yin Coeur',
+  'Stagnation du Qi du Foie':'Stagnation Qi Foie', 'Stase de Sang':'Stase du Sang',
+};
 
-  // Update syndrome label
-  if (syndLabel) syndLabel.textContent = syndrome || '—';
+// Mots-clés (normalisés, sans accent) permettant de relier une zone du pavillon auriculaire
+// (palpée en examen clinique) au texte de localisation (loc) de chaque point ADB — les deux
+// vocabulaires ne sont pas rédigés à l'identique (ex: "Fosse triangulaire" / "Triangle de la fosse").
+const EAR_ZONE_KEYWORDS = {
+  'Hélix': ['helix'],
+  'Anthélix': ['anthelix'],
+  'Fosse triangulaire': ['triangle de la fosse','fosse triangulaire'],
+  'Conque supérieure': ['conque superieure'],
+  'Conque inférieure': ['conque inferieure'],
+  'Tragus': ['tragus'],
+  'Lobe': ['lobe'],
+  'Apex': ['apex','sommet du pavillon','apical'],
+};
+const AURI_STOPWORDS = new Set(['dans','avec','pour','depuis','chez','sans','vers','tres','plus','moins','cette','etre','avoir','tout','tous','toute','toutes','quand','comme','mais','donc','alors','aussi','encore','deja','entre','sous','leur','leurs','notre','votre','depuis','apres','avant']);
 
-  // Get priority points for this syndrome
-  const syndNorm = syndrome ? normalizeSynd(syndrome) : '';
-  const priority = syndNorm ? (AURI_SYND_MAP[syndNorm] || []) : [];
-
-  // Filter ADB - toujours proposer des points
-  let pts = ADB.filter(p => {
-    const matchCat = !cat || p.cat === cat;
-    const matchSynd = !syndNorm || p.synd.includes(syndNorm) || p.synd.includes(syndrome) || priority.includes(p.c);
-    return matchCat && matchSynd;
-  });
-  // Fallback: si aucun point trouvé avec le syndrome, montrer les priorités ou tout
-  if(pts.length === 0 && syndNorm){
-    if(priority.length > 0){
-      pts = ADB.filter(p => (!cat || p.cat===cat) && priority.includes(p.c));
-    }
-    if(pts.length === 0){
-      pts = ADB.filter(p => !cat || p.cat===cat);
-    }
-  }
-
-  // Sort: priority first
-  pts.sort((a,b) => {
-    const ai = priority.indexOf(a.c), bi = priority.indexOf(b.c);
-    if (ai>=0 && bi>=0) return ai-bi;
-    if (ai>=0) return -1;
-    if (bi>=0) return 1;
-    return a.cat.localeCompare(b.cat);
-  });
-
-  if (!pts.length) {
-    listEl.innerHTML = '<p style="color:var(--slate);font-size:12px;font-style:italic">Aucun point pour ces critères.</p>';
-    return;
-  }
-
-  listEl.innerHTML = pts.map(p => {
+function renderAuriRows(scored, savedRealises){
+  return scored.map(({p,why,isPrio}) => {
     const isR = savedRealises.some(r => r.startsWith('AURI:'+p.c));
-    const isPrio = priority.includes(p.c);
     return `<div class="auri-row">
       <input type="checkbox" class="auri-chk" data-code="${p.c}" ${isR?'checked':''} onchange="onAuriChk(this)">
-      <div class="auri-code${isR?' ck':''}${isPrio?' ':''}" style="${isPrio?'background:#6B2A2A;':''}">
+      <div class="auri-code${isR?' ck':''}" style="${isPrio?'background:#6B2A2A;':''}">
         ${isPrio?'★ ':''}${p.c}
       </div>
       <div class="auri-txt">
         <div class="auri-nom">${p.c} <span class="auri-cat-badge">${p.cat.split(' / ')[0]}</span></div>
         <div class="auri-act">${p.a}</div>
         <div class="auri-loc">📍 ${p.loc}</div>
+        ${why.length?`<div style="font-size:10px;color:var(--jade);margin-top:2px">${why.join(' · ')}</div>`:''}
         ${isR?`<input class="pt-note" placeholder="Technique…" value="${(savedRealises.find(r=>r.startsWith('AURI:'+p.c))||'').replace(/^[^(]*/,'').replace(/^\(|\)$/g,'')}">`:'' }
       </div>
     </div>`;
   }).join('');
+}
+
+function showAuri(syndrome, savedRealises=[]) {
+  const listEl = document.getElementById('auri-list');
+  const syndLabel = document.getElementById('auri-synd-label');
+  const motifLabel = document.getElementById('auri-motif-label');
+  const zonesLabel = document.getElementById('auri-zones-label');
+  const cat = (document.getElementById('auri-cat')||{}).value || '';
+  if (!listEl) return;
+
+  if (syndLabel) syndLabel.textContent = syndrome || '—';
+
+  // ── Signal principal 1 : motif de consultation (texte libre → mots-clés) ──
+  const pt = curPt||{};
+  const motifBrut = [(document.getElementById('dix-motif-input')||{}).value,(document.getElementById('s-motif')||{}).value, pt.motif||''].filter(Boolean).join(' ');
+  const motifTokens = _normTxt(motifBrut).split(/[^a-z0-9]+/i).filter(w=>w.length>=4 && !AURI_STOPWORDS.has(w));
+  if (motifLabel) motifLabel.textContent = motifBrut.trim() ? motifBrut.trim() : '—';
+
+  // ── Signal principal 2 : zones douloureuses retrouvées à la palpation de l'oreille (Ah Shi) ──
+  const earZones = ((document.getElementById('palp-oreille')||{}).value||'').split(',').map(v=>v.trim()).filter(Boolean);
+  if (zonesLabel) zonesLabel.textContent = earZones.length ? earZones.join(', ') : '—';
+
+  // ── Signal secondaire : syndrome Zang-Fu actif (simple appui, pas le critère principal) ──
+  const syndKey = syndrome ? (SYND_TO_AURI_KEY[syndrome] || normalizeSynd(syndrome)) : '';
+  const priority = syndKey ? (AURI_SYND_MAP[syndKey] || []) : [];
+
+  let scored = ADB.filter(p => !cat || p.cat === cat).map(p => {
+    let sc = 0; const why = [];
+    const locN = _normTxt(p.loc);
+    const zoneHit = earZones.find(z => (EAR_ZONE_KEYWORDS[z]||[]).some(kw => locN.includes(kw)));
+    if (zoneHit) { sc += 5; why.push('🔴 Zone douloureuse : '+zoneHit); }
+    const txtN = _normTxt(p.c+' '+p.a);
+    const motifHit = motifTokens.find(t => txtN.includes(t));
+    if (motifHit) { sc += 3; why.push('🔵 Motif : '+motifHit); }
+    if (syndKey && (p.synd.includes(syndKey) || priority.includes(p.c))) { sc += 1; why.push('🟢 Syndrome : '+syndrome); }
+    return {p, sc, why, isPrio:priority.includes(p.c)};
+  }).filter(x => x.sc > 0);
+  scored.sort((a,b)=> b.sc-a.sc);
+
+  // Repli : rien de spécifique ne ressort → liste complète de la catégorie, avec incitation
+  if (!scored.length) {
+    const fallback = ADB.filter(p => !cat || p.cat === cat).map(p=>({p,sc:0,why:[],isPrio:false}));
+    if (!fallback.length) {
+      listEl.innerHTML = '<p style="color:var(--slate);font-size:12px;font-style:italic">Aucun point pour ces critères.</p>';
+      return;
+    }
+    listEl.innerHTML = '<p style="color:var(--slate);font-size:11px;font-style:italic;margin-bottom:6px">Renseignez le motif et/ou la palpation auriculaire (examen clinique, ②) pour des propositions ciblées — liste complète de la catégorie en attendant.</p>'
+      + renderAuriRows(fallback, savedRealises);
+    return;
+  }
+
+  listEl.innerHTML = renderAuriRows(scored, savedRealises);
 }
 
 function onSyndLibre(){
@@ -7188,6 +7501,37 @@ function togEx(el, inputId) {
   }
 }
 
+// ══════ PALPATION AURICULAIRE (carte SVG) ══════
+function togEarZone(el, zoneName){
+  el.classList.toggle('on');
+  const svg = el.closest('svg');
+  const inp = document.getElementById('palp-oreille');
+  const disp = document.getElementById('palp-oreille-disp');
+  if(!svg || !inp) return;
+  const selected = Array.from(svg.querySelectorAll('.ear-zone.on')).map(z=>z.dataset.zone);
+  inp.value = selected.join(', ');
+  if(disp){
+    disp.textContent = selected.length ? 'Zones douloureuses : '+selected.join(', ') : '—';
+    disp.classList.toggle('empty', !selected.length);
+  }
+  markDirty();
+  // Rafraîchir les propositions d'auriculothérapie si déjà affichées
+  if(typeof filterAuri === 'function') filterAuri();
+}
+function restoreEarZones(val){
+  const svg = document.getElementById('ear-svg');
+  if(!svg) return;
+  const zones = (val||'').split(',').map(v=>v.trim()).filter(Boolean);
+  svg.querySelectorAll('.ear-zone').forEach(z=>{
+    z.classList.toggle('on', zones.includes(z.dataset.zone));
+  });
+  const disp = document.getElementById('palp-oreille-disp');
+  if(disp){
+    disp.textContent = zones.length ? 'Zones douloureuses : '+zones.join(', ') : '—';
+    disp.classList.toggle('empty', !zones.length);
+  }
+}
+
 function updateLangueDiag() {
   const allHints = [];
   Object.entries(LANGUE_HINTS).forEach(([fid, fhints]) => {
@@ -7298,6 +7642,10 @@ function resetPoints(){
   const ebmSel=document.getElementById('ebm-sel');if(ebmSel)ebmSel.value='';
   const syndSel=document.getElementById('synd-sel');if(syndSel)syndSel.value='';
   const syndLibre=document.getElementById('synd-libre');if(syndLibre)syndLibre.value='';
+  // Gynécologie — ne pas laisser une catégorie/motif d'une séance précédente présélectionnés
+  const gynoCat=document.getElementById('gyno-cat');if(gynoCat)gynoCat.value='';
+  const gynoMotif=document.getElementById('gyno-motif');if(gynoMotif)gynoMotif.value='';
+  if(typeof clearGynoResult==='function') clearGynoResult();
   // Panels EBM
   const ebmResult=document.getElementById('ebm-result');if(ebmResult)ebmResult.style.display='none';
   const ebmNiv=document.getElementById('ebm-niveau');if(ebmNiv)ebmNiv.innerHTML='';
@@ -7356,6 +7704,483 @@ function setApiKey(){const k=prompt('Clé API Anthropic (sk-ant-…):',getApiKey
 function setAiSt(html){const el=document.getElementById('ai-st');if(el)el.innerHTML=html;}
 function ldH(){return'<span class="ld"><span class="d"></span><span class="d"></span><span class="d"></span></span>';}
 function showToast(msg){const t=document.getElementById('toast');if(!t)return;t.textContent=msg;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),2800);}
+
+// ══════ MODE URGENCE — RECETTES SYMPTOMATIQUES (traitement de la Branche 标 Biao) ══════
+// Base de départ à enrichir avec l'expérience clinique du praticien. Chaque recette réunit
+// des points "classiques" pour un motif fréquent — logique Branche, réponse rapide, ne
+// remplace pas l'analyse Racine (本 Ben) complète du reste de l'application.
+// Les points d'auriculothérapie référencent par leur nom la base ADB déjà utilisée dans
+// l'onglet ③ Auriculothérapie (mêmes noms, mêmes localisations, mêmes descriptions).
+
+function _auriByName(name){
+  return (typeof ADB!=='undefined' ? ADB : []).find(p=>p.c===name) || null;
+}
+
+const URGENCE_RECIPES = [
+  { id:'cephalee', nom:'Céphalée / migraine',
+    keywords:['cephalee','cephalees','migraine','migraines','mal de tete','mal de crane','maux de tete'],
+    acu:[
+      {c:'GV20',n:'Baihui',a:'20VG — Convergence des Yang, apaise la céphalée du vertex'},
+      {c:'EX-HN3',n:'Yintang',a:'EX — Calme le Shen, céphalée frontale'},
+      {c:'GB20',n:'Fengchi',a:'20VB — Expulse le Vent, céphalée occipitale/nuque'},
+      {c:'LI4',n:'Hegu',a:'4GI — Analgésique général tête et visage'},
+      {c:'LV3',n:'Taichong',a:'3F — Fait descendre le Yang du Foie'}
+    ],
+    auri:['Shen Men','Occipital','Point Zéro','Sous-cortex']
+  },
+  { id:'cervicalgie', nom:'Cervicalgie / torticolis',
+    keywords:['cervicalgie','cervicalgies','torticolis','nuque','douleur cervicale','raideur de nuque','raideur cervicale'],
+    acu:[
+      {c:'GB20',n:'Fengchi',a:'20VB — Détend la nuque, expulse le Vent'},
+      {c:'SI3',n:'Houxi',a:'3IG — Point Shu, agit sur la nuque et le dos'},
+      {c:'BL60',n:'Kunlun',a:'60V — Douleur de la nuque et du dos, Tai Yang'},
+      {c:'GB21',n:'Jianjing',a:'21VB — Détend les trapèzes'},
+      {c:'LI4',n:'Hegu',a:'4GI — Analgésique général'}
+    ],
+    auri:['Cervicales','Shen Men','Point Analgésie']
+  },
+  { id:'lombalgie', nom:'Lombalgie aiguë / lumbago',
+    keywords:['lombalgie','lombalgies','lumbago','mal de dos','mal au dos','douleur lombaire','tour de rein'],
+    acu:[
+      {c:'BL40',n:'Weizhong',a:'40V — Point Hé, maître du bas du dos'},
+      {c:'BL60',n:'Kunlun',a:'60V — Douleur lombaire, Tai Yang'},
+      {c:'GB30',n:'Huantiao',a:'30VB — Douleur lombo-fessière irradiante'},
+      {c:'GV26',n:'Renzhong',a:'26VG — Lumbago aigu par faux mouvement (technique classique, stimulation forte)'},
+      {c:'Ashi',n:'Points Ah Shi locaux',a:'Points sensibles retrouvés à la palpation (②, examen clinique)'}
+    ],
+    auri:['Lombaires','Shen Men','Point Analgésie']
+  },
+  { id:'sciatique', nom:'Sciatique / sciatalgie',
+    keywords:['sciatique','sciatalgie','nerf sciatique','sciatiques'],
+    acu:[
+      {c:'GB30',n:'Huantiao',a:'30VB — Point clé, débloque la hanche/fesse'},
+      {c:'GB34',n:'Yanglingquan',a:'34VB — Hui des tendons, trajet latéral du membre'},
+      {c:'BL40',n:'Weizhong',a:'40V — Trajet postérieur du membre'},
+      {c:'BL60',n:'Kunlun',a:'60V — Trajet postérieur, cheville'},
+      {c:'GB39',n:'Xuanzhong',a:'39VB — Hui de la moelle, trajet latéral'}
+    ],
+    auri:['Nerf sciatique','Lombaires','Shen Men']
+  },
+  { id:'epaule', nom:'Épaule douloureuse / périarthrite',
+    keywords:['epaule','epaules','periarthrite','tendinite epaule','coiffe des rotateurs','epaule bloquee','omalgie'],
+    acu:[
+      {c:'LI15',n:'Jianyu',a:'15GI — Point local, mobilité de l\'épaule'},
+      {c:'SJ14',n:'Jianliao',a:'14TR — Point local postéro-latéral'},
+      {c:'SI9',n:'Jianzhen',a:'9IG — Point local postérieur'},
+      {c:'LI4',n:'Hegu',a:'4GI — Analgésique général'},
+      {c:'SI3',n:'Houxi',a:'3IG — Point Shu, agit à distance sur l\'épaule'}
+    ],
+    auri:['Épaule','Shen Men','Point Analgésie']
+  },
+  { id:'entorse-cheville', nom:'Entorse de cheville',
+    keywords:['entorse de cheville','entorse cheville','cheville foulee','cheville'],
+    acu:[
+      {c:'BL60',n:'Kunlun',a:'60V — Point local externe'},
+      {c:'GB40',n:'Qiuxu',a:'40VB — Point local externe, Yuan-Source'},
+      {c:'GB39',n:'Xuanzhong',a:'39VB — Trajet latéral de la cheville'},
+      {c:'Ashi',n:'Points Ah Shi locaux',a:'Autour du point douloureux, à distance de l\'œdème'}
+    ],
+    auri:['Point Analgésie','Sympathique','Shen Men']
+  },
+  { id:'gonalgie', nom:'Entorse / douleur du genou',
+    keywords:['genou','gonalgie','entorse genou','douleur du genou','genou douloureux'],
+    acu:[
+      {c:'ST35',n:'Dubi',a:'35E — Point local, œil externe du genou'},
+      {c:'GB34',n:'Yanglingquan',a:'34VB — Hui des tendons, mobilité'},
+      {c:'SP9',n:'Yinlingquan',a:'9RP — Point local interne, draine l\'œdème'}
+    ],
+    auri:['Genou','Shen Men','Point Analgésie']
+  },
+  { id:'nausees', nom:'Nausées / vomissements (mal des transports, post-opératoire)',
+    keywords:['nausee','nausees','vomissement','vomissements','mal des transports','mal de mer','mal de voiture','nvpo','nausees post operatoires','envie de vomir'],
+    acu:[
+      {c:'PC6',n:'Neiguan',a:'6MC — Référence pour les nausées, y compris post-opératoires'},
+      {c:'ST36',n:'Zusanli',a:'36E — Harmonise l\'Estomac'},
+      {c:'SP4',n:'Gongsun',a:'4RP — Harmonise Estomac/Intestin, Chong Mai'}
+    ],
+    auri:['Estomac (WEI)','Shen Men','Sympathique']
+  },
+  { id:'constipation', nom:'Constipation aiguë',
+    keywords:['constipation','constipe','transit ralenti','difficulte a aller a la selle'],
+    acu:[
+      {c:'LI4',n:'Hegu',a:'4GI — Active le transit'},
+      {c:'ST25',n:'Tianshu',a:'25E — Mu Gros Intestin'},
+      {c:'ST37',n:'Shangjuxu',a:'37E — He inférieur du Gros Intestin'},
+      {c:'SP15',n:'Daheng',a:'15RP — Régule le transit intestinal'}
+    ],
+    auri:['Gros intestin','Sympathique','Point Zéro']
+  },
+  { id:'diarrhee', nom:'Diarrhée aiguë',
+    keywords:['diarrhee','diarrhees','gastro enterite','gastro','selles molles'],
+    acu:[
+      {c:'ST25',n:'Tianshu',a:'25E — Mu Gros Intestin, régule les selles'},
+      {c:'ST36',n:'Zusanli',a:'36E — Tonifie Rate/Estomac'},
+      {c:'SP9',n:'Yinlingquan',a:'9RP — Transforme l\'Humidité'}
+    ],
+    auri:['Intestin grêle','Gros intestin','Sympathique']
+  },
+  { id:'insomnie', nom:'Insomnie occasionnelle',
+    keywords:['insomnie','difficulte a dormir','trouble du sommeil','reveil nocturne','n arrive pas a dormir'],
+    acu:[
+      {c:'HT7',n:'Shenmen',a:'7C — Calme le Shen, point cardinal du sommeil'},
+      {c:'SP6',n:'Sanyinjiao',a:'6RP — Nourrit le Yin, calme'},
+      {c:'GV20',n:'Baihui',a:'20VG — Calme le Shen'},
+      {c:'EX-HN3',n:'Yintang',a:'EX — Apaise, favorise l\'endormissement'},
+      {c:'EX',n:'Anmian',a:'EX, en arrière de VB20 — point classique du sommeil'}
+    ],
+    auri:['Shen Men','Occipital','Sous-cortex']
+  },
+  { id:'anxiete', nom:'Anxiété / crise d\'angoisse aiguë',
+    keywords:['anxiete','angoisse','crise d angoisse','stress aigu','panique','crise de panique'],
+    acu:[
+      {c:'PC6',n:'Neiguan',a:'6MC — Ouvre la poitrine, calme le Shen'},
+      {c:'HT7',n:'Shenmen',a:'7C — Calme le Shen'},
+      {c:'SP6',n:'Sanyinjiao',a:'6RP — Nourrit le Yin, apaise'},
+      {c:'LV3',n:'Taichong',a:'3F — Disperse le Qi du Foie'},
+      {c:'GV20',n:'Baihui',a:'20VG — Calme le Shen, ancre'}
+    ],
+    auri:['Shen Men','Point Zéro','Sous-cortex','Nerf Grand Auriculaire']
+  },
+  { id:'rhume', nom:'Rhume / état grippal débutant',
+    keywords:['rhume','etat grippal','debut de rhume','grippe','coup de froid','je couve quelque chose'],
+    acu:[
+      {c:'LI4',n:'Hegu',a:'4GI — Expulse le Vent'},
+      {c:'LI11',n:'Quchi',a:'11GI — Clarifie la Chaleur, renforce le Wei Qi'},
+      {c:'GB20',n:'Fengchi',a:'20VB — Expulse le Vent'},
+      {c:'LU7',n:'Lieque',a:'7P — Ouvre la surface'},
+      {c:'GV14',n:'Dazhui',a:'14VG — Expulse le Vent Froid, renforce le Wei Qi'}
+    ],
+    auri:['Poumon (FEI)','Nez interne','Surrénal (ACTH)']
+  },
+  { id:'mal-de-gorge', nom:'Mal de gorge / angine débutante',
+    keywords:['mal de gorge','angine','gorge irritee','pharyngite','gorge qui pique'],
+    acu:[
+      {c:'LI4',n:'Hegu',a:'4GI — Analgésique, sphère ORL'},
+      {c:'LU11',n:'Shaoshang',a:'11P — Point Jing-Puits, clarifie la Chaleur (piqûre superficielle)'},
+      {c:'LU7',n:'Lieque',a:'7P — Sphère ORL'}
+    ],
+    auri:['Poumon (FEI)','Trachée','Shen Men']
+  },
+  { id:'sinusite', nom:'Sinusite / congestion nasale',
+    keywords:['sinusite','nez bouche','congestion nasale','rhinite','nez qui coule'],
+    acu:[
+      {c:'LI20',n:'Yingxiang',a:'20GI — Point local, dégage le nez'},
+      {c:'EX-HN3',n:'Yintang',a:'EX — Dégage le nez et le front'},
+      {c:'LI4',n:'Hegu',a:'4GI — Expulse le Vent'}
+    ],
+    auri:['Nez interne','Poumon (FEI)','Surrénal (ACTH)']
+  },
+  { id:'dysmenorrhee', nom:'Dysménorrhée aiguë',
+    keywords:['dysmenorrhee','regles douloureuses','douleurs de regles','crampes menstruelles','mal aux regles'],
+    acu:[
+      {c:'SP6',n:'Sanyinjiao',a:'6RP — Point clé de la sphère gynécologique'},
+      {c:'CV4',n:'Guanyuan',a:'4VC — Réchauffe et tonifie le Bas-Ventre'},
+      {c:'CV6',n:'Qihai',a:'6VC — Mer du Qi, réchauffe'},
+      {c:'LV3',n:'Taichong',a:'3F — Fait circuler le Qi du Foie'}
+    ],
+    auri:['Utérus (ZIGONG)','Ovaires','Shen Men']
+  },
+  { id:'dent', nom:'Douleur dentaire',
+    keywords:['douleur dentaire','mal de dent','rage de dent','dent qui fait mal','douleur de dent'],
+    acu:[
+      {c:'LI4',n:'Hegu',a:'4GI — Analgésique de référence, tête/visage'},
+      {c:'ST44',n:'Neiting',a:'44E — Chaleur de l\'Estomac, douleur dentaire mâchoire inférieure'},
+      {c:'SI18',n:'Quanliao',a:'18IG — Point local, zone maxillaire'}
+    ],
+    auri:['Point Analgésie','Sympathique','Shen Men']
+  },
+  { id:'crampe', nom:'Crampe / spasme musculaire',
+    keywords:['crampe','crampes','spasme musculaire','contracture'],
+    acu:[
+      {c:'GB34',n:'Yanglingquan',a:'34VB — Hui des tendons/muscles, point de référence'},
+      {c:'BL57',n:'Chengshan',a:'57V — Crampes du mollet'}
+    ],
+    auri:['Sympathique','Point Analgésie']
+  },
+  { id:'vertige', nom:'Vertige / labyrinthite',
+    keywords:['vertige','vertiges','labyrinthite','etourdissement','tete qui tourne'],
+    acu:[
+      {c:'GB20',n:'Fengchi',a:'20VB — Expulse le Vent, clarifie la tête'},
+      {c:'GV20',n:'Baihui',a:'20VG — Ancre le Yang'},
+      {c:'PC6',n:'Neiguan',a:'6MC — Si composante nauséeuse'},
+      {c:'SJ17',n:'Yifeng',a:'17TR — Zone péri-auriculaire, vertiges d\'origine ORL'}
+    ],
+    auri:['Occipital','Sous-cortex','Shen Men']
+  },
+  { id:'allergie', nom:'Rhinite allergique / crise allergique',
+    keywords:['allergie','rhinite allergique','crise allergique','eternuements','allergies saisonnieres','rhume des foins'],
+    acu:[
+      {c:'LI20',n:'Yingxiang',a:'20GI — Dégage le nez'},
+      {c:'LI4',n:'Hegu',a:'4GI — Anti-allergique, expulse le Vent'},
+      {c:'ST36',n:'Zusanli',a:'36E — Renforce le Wei Qi'}
+    ],
+    auri:['Nez interne','Surrénal (ACTH)','Apex (Pointe)']
+  },
+  { id:'reflux', nom:'Reflux / brûlure d\'estomac aiguë',
+    keywords:['brulure d estomac','reflux','remontees acides','rgo','brulures gastriques'],
+    acu:[
+      {c:'PC6',n:'Neiguan',a:'6MC — Fait descendre le Qi rebelle de l\'Estomac'},
+      {c:'ST36',n:'Zusanli',a:'36E — Harmonise l\'Estomac'},
+      {c:'CV12',n:'Zhongwan',a:'12VC — Mu Estomac'}
+    ],
+    auri:['Estomac (WEI)','Sympathique']
+  },
+  { id:'hoquet', nom:'Hoquet rebelle',
+    keywords:['hoquet'],
+    acu:[
+      {c:'PC6',n:'Neiguan',a:'6MC — Fait descendre le Qi rebelle'},
+      {c:'CV17',n:'Shanzhong',a:'17VC — Mer du Qi thoracique'},
+      {c:'ST36',n:'Zusanli',a:'36E — Harmonise l\'Estomac'}
+    ],
+    auri:['Sympathique','Estomac (WEI)']
+  },
+  { id:'epicondylite', nom:'Tendinite du coude (épicondylite / tennis elbow)',
+    keywords:['tendinite du coude','epicondylite','tennis elbow','coude qui fait mal','epitrochleite'],
+    acu:[
+      {c:'LI11',n:'Quchi',a:'11GI — Point local, He-Mer'},
+      {c:'LI10',n:'Shousanli',a:'10GI — Point local'},
+      {c:'SI8',n:'Xiaohai',a:'8IG — Point local médial'}
+    ],
+    auri:['Point Analgésie','Sympathique','Shen Men']
+  },
+  { id:'acouphenes', nom:'Acouphènes aigus',
+    keywords:['acouphene','acouphenes','bourdonnement d oreille','oreille qui siffle'],
+    acu:[
+      {c:'SJ17',n:'Yifeng',a:'17TR — Point local péri-auriculaire'},
+      {c:'GB20',n:'Fengchi',a:'20VB — Expulse le Vent, clarifie la tête'},
+      {c:'KD3',n:'Taixi',a:'3R — Nourrit le Yin des Reins (le Rein s\'ouvre à l\'oreille)'}
+    ],
+    auri:['Vésicule biliaire','Rein (SHEN)','Shen Men']
+  },
+  { id:'fatigue', nom:'Coup de fatigue / fatigue passagère / décalage horaire',
+    keywords:['coup de fatigue','fatigue passagere','jet lag','decalage horaire','fatigue ponctuelle','manque d energie'],
+    acu:[
+      {c:'GV20',n:'Baihui',a:'20VG — Élève le Qi'},
+      {c:'ST36',n:'Zusanli',a:'36E — Tonifie Qi et Sang'},
+      {c:'LI4',n:'Hegu',a:'4GI — Stimulant général'}
+    ],
+    auri:['Point Zéro','Glande surrénale','Shen Men']
+  },
+  { id:'piqure', nom:'Piqûre d\'insecte / prurit localisé',
+    keywords:['piqure d insecte','prurit','demangeaison','urticaire','ca me demange'],
+    acu:[
+      {c:'LI11',n:'Quchi',a:'11GI — Clarifie la Chaleur, anti-prurigineux'},
+      {c:'SP10',n:'Xuehai',a:'10RP — Mer du Sang, anti-prurigineux'},
+      {c:'LI4',n:'Hegu',a:'4GI — Expulse le Vent'}
+    ],
+    auri:['Apex (Pointe)','Surrénal (ACTH)']
+  },
+  { id:'epistaxis', nom:'Épistaxis (saignement de nez)',
+    keywords:['epistaxis','saignement de nez','nez qui saigne'],
+    acu:[
+      {c:'LI20',n:'Yingxiang',a:'20GI — Point local'},
+      {c:'LI4',n:'Hegu',a:'4GI — Point à distance, tête/visage'}
+    ],
+    auri:['Nez interne','Apex (Pointe)']
+  }
+];
+
+// ── Médecine péri-opératoire / épargne morphinique ──
+// Base commune systématique + points additionnels selon le type de chirurgie sélectionné.
+const URGENCE_PERIOP_BASE = {
+  acu:[
+    {c:'PC6',n:'Neiguan',a:'6MC — Prévention/traitement des nausées post-opératoires, anxiolyse'},
+    {c:'ST36',n:'Zusanli',a:'36E — Récupération globale, immunité, transit'},
+    {c:'LI4',n:'Hegu',a:'4GI — Analgésie générale (avec LV3 = "4 Barrières / Si Guan")'},
+    {c:'LV3',n:'Taichong',a:'3F — Analgésie, avec LI4 = "4 Barrières / Si Guan"'}
+  ],
+  auri:['Shen Men','Point Zéro','Thalamus (Analgésie)','Point Analgésie','Sympathique']
+};
+
+const URGENCE_PERIOP_SURGERY = {
+  abdominale:{ label:'Chirurgie abdominale / viscérale',
+    acu:[{c:'ST25',n:'Tianshu',a:'25E — Mu Gros Intestin, reprise du transit'},{c:'SP4',n:'Gongsun',a:'4RP — Harmonise Estomac/Intestin'}],
+    auri:['Estomac (WEI)','Gros intestin'] },
+  orthopedique:{ label:'Chirurgie orthopédique / membre',
+    acu:[{c:'GB34',n:'Yanglingquan',a:'34VB — Hui des tendons/muscles, mobilité'},{c:'SP6',n:'Sanyinjiao',a:'6RP — Trophicité, cicatrisation'}],
+    auri:['Genou','Épaule'] },
+  orl:{ label:'ORL / cervico-faciale',
+    acu:[{c:'LU7',n:'Lieque',a:'7P — Sphère ORL'},{c:'SJ17',n:'Yifeng',a:'17TR — Zone péri-auriculaire'}],
+    auri:['Trachée','Poumon (FEI)'] },
+  gyneco:{ label:'Gynécologique / pelvienne',
+    acu:[{c:'SP6',n:'Sanyinjiao',a:'6RP — Sphère gynécologique/pelvienne'},{c:'CV4',n:'Guanyuan',a:'4VC — Réchauffe et tonifie le Bas-Ventre (needling seul en post-op immédiat, éviter la moxa)'}],
+    auri:['Utérus (ZIGONG)','Endocrine'] },
+  thoracique:{ label:'Thoracique / cardiaque',
+    acu:[{c:'CV17',n:'Shanzhong',a:'17VC — Mer du Qi thoracique'},{c:'BL13',n:'Feishu',a:'13V — Shu Poumon'}],
+    auri:['Poumon (FEI)','Cœur (CO)'] },
+  dentaire:{ label:'Dentaire / maxillo-faciale',
+    acu:[{c:'ST44',n:'Neiting',a:'44E — Douleur dentaire/mâchoire'},{c:'SI18',n:'Quanliao',a:'18IG — Zone maxillo-faciale'}],
+    auri:['Apex (Pointe)'] },
+  rachis:{ label:'Rachis / neurochirurgie',
+    acu:[{c:'BL60',n:'Kunlun',a:'60V — Douleur rachidienne, Tai Yang'},{c:'GB34',n:'Yanglingquan',a:'34VB — Hui des tendons'}],
+    auri:['Lombaires','Cervicales'] },
+  urologique:{ label:'Urologique',
+    acu:[{c:'CV3',n:'Zhongji',a:'3VC — Mu Vessie, sphère urinaire'},{c:'SP9',n:'Yinlingquan',a:'9RP — Draine l\'Humidité'}],
+    auri:['Vessie (PANG)','Rein (SHEN)'] }
+};
+
+let _urgLastAcu=[], _urgLastAuri=[], _urgDebounce=null;
+
+function searchUrgence(){
+  clearTimeout(_urgDebounce);
+  _urgDebounce=setTimeout(_doSearchUrgence, 180);
+}
+
+function _doSearchUrgence(){
+  const motif=(document.getElementById('urg-motif')||{}).value||'';
+  const chirurgie=(document.getElementById('urg-chirurgie')||{}).value||'';
+  const motifN=_normTxt(motif);
+
+  const acuMap=new Map(), auriMap=new Map();
+  const addAcu=(p,score,source)=>{
+    if(!p||!p.c) return;
+    if(!acuMap.has(p.c)) acuMap.set(p.c,{p,score:0,sources:[]});
+    const e=acuMap.get(p.c); e.score+=score; if(!e.sources.includes(source)) e.sources.push(source);
+  };
+  const addAuri=(name,score,source)=>{
+    const p=_auriByName(name);
+    if(!p) return;
+    if(!auriMap.has(name)) auriMap.set(name,{p,score:0,sources:[]});
+    const e=auriMap.get(name); e.score+=score; if(!e.sources.includes(source)) e.sources.push(source);
+  };
+
+  const matchedRecipes=[];
+  if(motifN){
+    URGENCE_RECIPES.forEach(r=>{
+      const hit=r.keywords.some(kw=>motifN.includes(_normTxt(kw)));
+      if(hit){
+        matchedRecipes.push(r);
+        r.acu.forEach(p=>addAcu(p,3,r.nom));
+        r.auri.forEach(n=>addAuri(n,3,r.nom));
+      }
+    });
+  }
+
+  let surgLabel='';
+  if(chirurgie && URGENCE_PERIOP_SURGERY[chirurgie]){
+    const surg=URGENCE_PERIOP_SURGERY[chirurgie];
+    surgLabel=surg.label;
+    URGENCE_PERIOP_BASE.acu.forEach(p=>addAcu(p,5,'Péri-opératoire (base)'));
+    URGENCE_PERIOP_BASE.auri.forEach(n=>addAuri(n,5,'Péri-opératoire (base)'));
+    surg.acu.forEach(p=>addAcu(p,4,surg.label));
+    surg.auri.forEach(n=>addAuri(n,4,surg.label));
+  }
+
+  const acuList=Array.from(acuMap.values()).sort((a,b)=>b.score-a.score).slice(0,10);
+  const auriList=Array.from(auriMap.values()).sort((a,b)=>b.score-a.score).slice(0,5);
+
+  _urgLastAcu=acuList; _urgLastAuri=auriList;
+  renderUrgenceResults(acuList, auriList, matchedRecipes, surgLabel);
+}
+
+function renderUrgenceResults(acuList, auriList, matchedRecipes, surgLabel){
+  const empty=document.getElementById('urg-empty');
+  const result=document.getElementById('urg-result');
+  if(!acuList.length && !auriList.length){
+    if(empty) empty.style.display='';
+    if(result) result.style.display='none';
+    return;
+  }
+  if(empty) empty.style.display='none';
+  if(result) result.style.display='';
+  const acuEl=document.getElementById('urg-acu-list');
+  const auriEl=document.getElementById('urg-auri-list');
+  if(acuEl) acuEl.innerHTML = acuList.length ? acuList.map((e,i)=>_urgRow(e,i,'acu')).join('') : '<p style="font-size:12px;color:var(--slate);font-style:italic">Aucun point d\'acupuncture pour cette recherche.</p>';
+  if(auriEl) auriEl.innerHTML = auriList.length ? auriList.map((e,i)=>_urgRow(e,i,'auri')).join('') : '<p style="font-size:12px;color:var(--slate);font-style:italic">Aucun point d\'auriculothérapie pour cette recherche.</p>';
+  const srcEl=document.getElementById('urg-sources');
+  const names=matchedRecipes.map(r=>r.nom);
+  if(surgLabel) names.push(surgLabel);
+  if(srcEl) srcEl.textContent = names.length ? 'Recette(s) reconnue(s) : '+names.join(' · ') : '';
+}
+
+function _urgRow(entry, idx, type){
+  const p=entry.p;
+  const code = type==='acu' ? p.c : 'Oreille';
+  const nom  = type==='acu' ? p.n : p.c;
+  const ind  = type==='acu' ? p.a : (p.a + (p.loc ? ' · 📍 '+p.loc : ''));
+  return `<div class="pt-row">
+    <div class="pt-code" style="min-width:${type==='acu'?'44px':'56px'}">${code}</div>
+    <div class="pt-txt">
+      <div class="pt-nom">${nom}</div>
+      <div class="pt-act">${ind}</div>
+      <div style="font-size:10px;color:var(--slate);font-style:italic;margin-top:2px">Recette(s) : ${entry.sources.join(' · ')}</div>
+    </div>
+    <button class="btn bg" style="font-size:11px;flex-shrink:0;margin-left:auto" onclick="addUrgencePointByIndex('${type}',${idx},this)">➕ Ajouter</button>
+  </div>`;
+}
+
+function addUrgencePointByIndex(type, idx, btn){
+  const entry = type==='acu' ? _urgLastAcu[idx] : _urgLastAuri[idx];
+  if(!entry) return;
+  const p=entry.p;
+  const code = type==='acu' ? p.c : 'Oreille';
+  const nomBase = type==='acu' ? p.n : p.c;
+  const label = nomBase+' — recette ⚡ '+entry.sources[0];
+  addLibrePointDirect(code, label, btn);
+}
+
+function addAllUrgencePoints(type){
+  const list = type==='acu' ? _urgLastAcu : _urgLastAuri;
+  if(!list.length){ showToast('Aucun point à ajouter'); return; }
+  const btns = document.querySelectorAll('#urg-'+type+'-list button');
+  list.forEach((e,i)=>addUrgencePointByIndex(type,i,btns[i]));
+}
+
+function resetUrgence(){
+  const m=document.getElementById('urg-motif'); if(m) m.value='';
+  const c=document.getElementById('urg-chirurgie'); if(c) c.value='';
+  _urgLastAcu=[]; _urgLastAuri=[];
+  const empty=document.getElementById('urg-empty'); if(empty) empty.style.display='';
+  const result=document.getElementById('urg-result'); if(result) result.style.display='none';
+}
+
+// Points « Mode Urgence » demandés avant qu'un patient ne soit sélectionné : la recette reste
+// consultable librement (aucun patient requis pour voir/comparer les points), mais l'ajout au
+// dossier est mis en attente et complété automatiquement dès qu'un patient est choisi ou créé.
+let _urgPendingPoints = []; // {code, nom, btn}
+
+function addLibrePointDirect(code, nom, btn){
+  if(!curPt){
+    _urgPendingPoints.push({code, nom, btn});
+    if(btn){ btn.textContent='⏳ En attente de patient…'; btn.disabled=true; btn.classList.remove('bg'); }
+    showToast('Sélectionnez ou créez un patient — ce point sera ajouté automatiquement à son dossier');
+    navTo('patients');
+    return;
+  }
+  _reallyAddLibrePoint(code, nom, btn);
+}
+
+function _reallyAddLibrePoint(code, nom, btn){
+  const list=document.getElementById('pts-libres-list');
+  if(!list){ showToast('Erreur : liste des points introuvable'); return; }
+  const div=document.createElement('div');
+  div.style.cssText='display:flex;align-items:center;gap:8px;padding:4px 0;font-size:12px;border-bottom:1px solid var(--border)';
+  div.innerHTML = '<input type="checkbox" class="libre-chk" data-code="'+code+'" data-nom="'+nom+'" checked onchange="syncRealises()" style="width:14px;height:14px;flex-shrink:0">'
+    + '<span style="font-weight:700;color:var(--jade);min-width:50px">'+code+'</span>'
+    + '<span style="color:var(--slate)">'+nom+'</span>'
+    + '<button onclick="this.parentElement.remove();syncRealises()" style="border:none;background:none;color:#ccc;cursor:pointer;font-size:16px;padding:0;margin-left:auto">×</button>';
+  list.appendChild(div);
+  setTimeout(syncRealises, 50);
+  markDirty();
+  showToast('Point ajouté : '+code+(nom?' — '+nom:''));
+  if(btn){ btn.textContent='✓ Ajouté'; btn.disabled=true; btn.classList.remove('bg'); }
+}
+
+// Appelé après sélection/création d'un patient : complète l'ajout des points « Mode Urgence »
+// mis en attente. navigateBack=true ramène directement sur l'onglet Mode Urgence (cas d'un
+// patient existant déjà identifié) ; navigateBack=false laisse l'utilisateur sur la fiche
+// d'identité pour un nouveau patient (le point est déjà ajouté, rien n'est perdu).
+function _flushUrgPending(navigateBack){
+  if(!_urgPendingPoints.length || !curPt) return;
+  const pts=_urgPendingPoints.splice(0);
+  pts.forEach(pt=>_reallyAddLibrePoint(pt.code, pt.nom, pt.btn));
+  if(navigateBack){
+    navTo('urgence');
+    showToast(pts.length>1 ? pts.length+' points ajoutés à la séance ⚡' : 'Point ajouté à la séance ⚡');
+  } else {
+    showToast((pts.length>1 ? pts.length+' points ajoutés' : 'Point ajouté')+' — complétez l\'identité du patient puis Enregistrer');
+  }
+}
 </script>
 
 <!-- ÉCRAN DE CONNEXION -->
