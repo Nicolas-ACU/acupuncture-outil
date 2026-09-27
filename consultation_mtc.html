@@ -56,9 +56,20 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
 .tr{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px;margin-bottom:4px}
 .tg{font-size:11px;padding:3px 8px;border-radius:20px;background:var(--cream2);color:var(--slate);cursor:pointer;border:1px solid transparent;transition:all .1s;user-select:none}
 .tg:hover,.tg.on{background:var(--jade-lt);color:var(--jade);border-color:var(--jade)}
-.ear-zone{cursor:pointer;transition:fill .15s}
+.ear-zone{cursor:pointer;transition:fill .15s;fill:none}
 .ear-zone:hover{fill:var(--jade-lt) !important}
-.ear-zone.on{fill:var(--vermil) !important;stroke:var(--vermil) !important}
+.ear-zone.on{fill:var(--vermil) !important;stroke:var(--vermil) !important;fill-opacity:.55}
+.ear-pt{fill:transparent;stroke:none;cursor:pointer;transition:fill .12s,stroke .12s}
+.ear-pt:hover{fill:rgba(212,53,53,.28)}
+.ear-pt.hl{fill:rgba(212,53,53,.4)}
+.ear-pt.on{fill:var(--vermil);fill-opacity:.45;stroke:var(--vermil);stroke-width:2}
+.ear-pt-master.hl,.ear-pt-master:hover{stroke:#1B4B8A;stroke-width:2}
+.ear-pt-lbl{font-size:15px;fill:#fff;text-anchor:middle;pointer-events:none;font-weight:700}
+.lgd-item{cursor:pointer;border-radius:3px;padding:1px 3px;transition:background .12s}
+.lgd-item.hl,.lgd-item:hover{background:var(--jade-lt);color:var(--ink)}
+.lgd-item b{color:var(--jade)}
+.lgd-item.lgd-master{color:#1B4B8A}
+.lgd-item.lgd-master b{color:#1B4B8A}
 .pt-item{background:#fff;border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:8px;cursor:pointer;display:flex;align-items:center;gap:12px;transition:all .15s;box-shadow:0 2px 8px rgba(26,58,42,.08)}
 .pt-item.selected{border-color:var(--jade);background:var(--jade-lt);border-left:4px solid var(--jade)}
 .pt-item:hover{border-color:var(--jade);background:var(--jade-lt)}
@@ -166,11 +177,12 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
   <div id="sb-top"><h1>MTC Consult</h1><div class="sub">Acupuncture · Dossiers</div></div>
   <div id="pi"><div class="pn" id="pi-name">Aucun patient</div><div class="ps" id="pi-sub">Sélectionnez un patient</div></div>
   <nav>
+    <div class="nsep">Accès rapide</div>
+    <div class="ni" data-pg="urgence"><span>⚡</span><span>Mode Urgence</span></div>
+    <div class="ni" onclick="event.stopImmediatePropagation();startTestPatient()" title="Consultation complète sans aucun archivage — rien n'est écrit dans la base de données"><span>🧪</span><span>Patient test (non archivé)</span></div>
     <div class="nsep">Dossiers</div>
     <div class="ni on" data-pg="patients"><span>🗂</span><span>Patients</span></div>
     <div class="ni" data-pg="fiche"><span>👤</span><span>Identité</span></div>
-    <div class="nsep">Accès rapide</div>
-    <div class="ni" data-pg="urgence"><span>⚡</span><span>Mode Urgence</span></div>
     <div class="nsep">Séance</div>
     <div class="ni" data-pg="dix"><span>📋</span><span>10+1 Questions</span></div>
     <div class="ni" data-pg="examen"><span>🔬</span><span>Examen</span></div>
@@ -179,6 +191,8 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
     <div class="ni" data-pg="synthese"><span>✨</span><span>Synthèse</span></div>
     <div class="nsep">Historique</div>
     <div class="ni" data-pg="seances"><span>📅</span><span>Séances</span></div>
+    <div class="nsep">Aide</div>
+    <div class="ni" data-pg="guide"><span>📖</span><span>Mode d'emploi</span></div>
   </nav>
   <div id="sb-bot">
     <button class="btn bg" onclick="newPatient()">➕ <span>Nouveau patient</span></button>
@@ -191,12 +205,17 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
     <div style="font-size:11px;color:var(--jade);font-weight:600;flex-shrink:0" id="prat-name"></div>
     <div style="display:flex;gap:6px;margin-left:auto;flex-wrap:wrap">
       <button class="btn" id="btn-ns" style="display:none" onclick="newSeance()">➕ Nouvelle séance</button>
+      <button class="btn" id="btn-brouillon" style="display:none;border-color:var(--jade);color:var(--jade)" onclick="saveCCMQOnly()" title="Sauvegarde tout le contenu sans marquer la séance comme réalisée — reprenez-la plus tard">💾 Enregistrer le brouillon</button>
       <button class="btn bg" id="btn-ss" style="display:none" onclick="saveSeance()">💾 Enregistrer</button>
       <button class="btn bg" id="btn-ex" style="display:none" onclick="exportPatient()">⬇ Excel</button>
       <button class="btn" title="Exporter tous les dossiers en JSON (sauvegarde / transfert navigateur)" onclick="exportAllJSON()" style="font-size:11px">📤 JSON</button>
       <button class="btn" onclick="logout()" style="font-size:11px;display:none" id="btn-logout" title="Se déconnecter">⎋ Quitter</button>
       <button class="btn" title="Importer des dossiers depuis un fichier JSON" onclick="importAllJSON()" style="font-size:11px">📥 JSON</button>
     </div>
+  </div>
+  <div id="test-banner" style="display:none;background:#FEF3C7;color:#92400E;padding:7px 16px;font-size:12px;font-weight:600;text-align:center;border-bottom:1px solid #F59E0B;align-items:center;justify-content:center;gap:10px">
+    <span>🧪 Mode test — cette consultation n'est pas archivée, aucune donnée n'est enregistrée.</span>
+    <button onclick="exitTestMode()" style="border:1px solid #92400E;background:transparent;color:#92400E;border-radius:6px;padding:2px 10px;cursor:pointer;font-size:11px;font-weight:600">Quitter le mode test</button>
   </div>
   <div id="mic-bar">
     <div id="tbox" contenteditable="true" spellcheck="false">Saisissez ou collez du texte ici…</div>
@@ -310,6 +329,88 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
         </div>
       </div>
     </div>
+
+    <!-- MODE D'EMPLOI & JOURNAL DES ÉVOLUTIONS -->
+    <div class="pg" id="pg-guide">
+      <div class="sh"><h2>📖 Mode d'emploi & journal des évolutions</h2><span class="zh">使用说明</span></div>
+
+      <div class="card" style="background:#E8F0EA;border-color:var(--jade)">
+        <div style="font-size:12px;color:var(--ink);line-height:1.6">
+          <strong>Bêta-test en cours.</strong> Cette application est en cours d'amélioration continue. Une phase de test élargie est ouverte au groupe de formation en acupuncture de la <strong>Faculté de Bobigny</strong> : toute remarque, bug rencontré ou idée d'amélioration est la bienvenue. Vos retours sont ce qui fait avancer l'outil.
+        </div>
+        <div style="margin-top:8px">
+          <a class="btn bg" style="font-size:12px;text-decoration:none;display:inline-block" href="mailto:dr.blanchard.acupuncture@gmail.com?subject=MTC%20Consult%20—%20Retour%20b%C3%AAta-test">✉️ Envoyer un retour / signaler un bug</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="ct">Vue d'ensemble — comment circuler dans le dossier</div>
+        <div style="font-size:12px;color:var(--ink);line-height:1.75">
+          <div><strong style="color:var(--jade)">🗂 Patients</strong> — liste, recherche et sélection du dossier patient. Ouvrez un patient pour activer les autres onglets.</div>
+          <div><strong style="color:var(--jade)">👤 Identité</strong> — état civil, antécédents, motif général, terrain.</div>
+          <div><strong style="color:var(--jade)">⚡ Mode Urgence</strong> — sans passer par l'analyse fine MTC : à partir d'un motif en texte libre (ou d'un type de chirurgie pour l'épargne morphinique péri-opératoire), propose ~10 points d'acupuncture et 4-5 points d'auriculothérapie prêts à ajouter au dossier. Utilisable même sans patient sélectionné (le point est mis en attente puis rattaché automatiquement).</div>
+          <div><strong style="color:var(--jade)">🧪 Patient test (non archivé)</strong> — donne accès à TOUTES les fonctionnalités de consultation (10+1, examen, CCMQ, points, auriculothérapie, synthèse) sans jamais rien enregistrer dans la base de données : aucun dossier n'est créé, rien n'apparaît dans « Patients » ni dans les exports. Un bandeau jaune permanent le rappelle. Idéal pour tester rapidement une recherche de points, ou pour une consultation ponctuelle sans enjeu de suivi.</div>
+          <div><strong style="color:var(--jade)">📋 10+1 Questions</strong> — interrogatoire MTC structuré ; le motif de la séance en cours se saisit ici (« Nouveau motif de séance ») et alimente automatiquement l'analyse des syndromes, l'auriculothérapie et la synthèse.</div>
+          <div><strong style="color:var(--jade)">🔬 Examen</strong> — langue, pouls, palpation abdominale et auriculaire (schéma classique cliquable, 78 points positionnés par le Dr Blanchard), Ba Gang.</div>
+          <div><strong style="color:var(--jade)">🏮 CCMQ</strong> — questionnaire constitutionnel (valable 3 mois) ; peut être renvoyé par le patient par courriel, reçu sur dr.blanchard.acupuncture@gmail.com.</div>
+          <div><strong style="color:var(--jade)">📍 Points</strong> — syndromes retenus, prescription de points (syndrome, EBM, gynéco, libres), auriculothérapie suggérée. Ajoutez un point libre en tapant son <strong>code puis Entrée</strong> — le curseur reste actif pour enchaîner plusieurs points sans reprendre la souris.</div>
+          <div><strong style="color:var(--jade)">✨ Synthèse</strong> — compte-rendu de séance, principe de traitement, conseils, prochain rendez-vous. L'outil IA « Analyse à partir du motif » y extrait automatiquement les points cités dans la réponse de l'IA pour les cocher en un clic dans « Points réalisés ».</div>
+          <div><strong style="color:var(--jade)">📅 Séances</strong> — historique, séances « 🕐 en préparation » (brouillon) vs « ✅ réalisées », suppression possible.</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="ct">Astuces pratiques</div>
+        <div style="font-size:12px;color:var(--ink);line-height:1.75">
+          <div>• <strong>Séance en préparation :</strong> après une séance, si le patient donne des nouvelles par courriel, ouvrez « Nouvelle séance », notez vos réflexions dans le bandeau « 10+1 Questions » (champ notes de préparation), puis cliquez <strong>💾 Enregistrer le brouillon</strong> — la séance reste « en préparation » tant qu'elle n'est pas finalisée.</div>
+          <div>• <strong>Nouveau motif à chaque séance :</strong> le motif et les syndromes ne sont jamais recopiés automatiquement d'une séance à l'autre (sécurité patient) — seul le CCMQ, s'il est encore valide (&lt; 3 mois), est réutilisé.</div>
+          <div>• <strong>Suppression d'une séance :</strong> possible via l'icône 🗑 dans l'historique, même si elle n'a pas été finalisée.</div>
+          <div>• <strong>Schéma auriculaire :</strong> cliquez une zone ou un point numéroté pour signaler une zone douloureuse à la palpation — cela renforce automatiquement les points suggérés en auriculothérapie.</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="ct">Journal des évolutions</div>
+        <div style="font-size:11px;color:var(--slate);font-style:italic;margin-bottom:8px">Cette liste s'enrichit à chaque amélioration de l'application — vous pouvez vérifier ici ce qui a changé depuis votre dernière utilisation.</div>
+        <div id="guide-changelog" style="font-size:12px;color:var(--ink);line-height:1.8">
+          <div style="margin-bottom:10px"><strong style="color:var(--jade)">27 sept. 2026 (5)</strong>
+            <div>— Mise à jour du schéma auriculaire vers la version 2 fournie par le Dr Blanchard (fichier oreille_classique.png remplacé) : les 10 points auparavant non localisés le sont désormais (Point Antidépresseur n°10, Point de réactivité/Bourdiol n°17, Sous-cortex n°27) et le point Détoxification a été identifié comme étant le point Rein (n°38, renommé « Rein (SHEN) / Détoxification »). Le point Nerf sciatique (n°20) a été repositionné, sa position précédente étant erronée.</div>
+            <div>— 7 points ont changé d'identité anatomique : Point Analgésie (4) → Clavicule, Vaisseau Gouverneur (5) → Coude, Détoxification (44) → Poignet, Immunité (48) → Doigts, Point Hormonal (50) → Cheville, Nerf Grand Auriculaire (56) → Orteils, Zone du nerf trijumeau (59) → Talon.</div>
+            <div>— 13 nouveaux points ajoutés : Pelvis (64), Duodénum (65), Rachis dorsal (66), Abdomen et Cardia (67, deux emplacements distincts sous le même numéro), Fesse et Oesophage (68, deux emplacements distincts), Bouche (69), Rectum (70), Mâchoire (71), Langue (72), Dents (73), Oreille interne (74), Amygdales (75), Pharynx/Larynx (76, point caché). Le schéma compte désormais 78 points positionnés au total (aucun point restant sans position).</div>
+            <div>— Les points Cardia et Oesophage, qui partageaient respectivement les numéros 67 et 68 avec Abdomen et Fesse, ont été renumérotés 77 et 78 à la demande du Dr Blanchard afin que chaque point du schéma ait un numéro propre (67 = Abdomen seul, 68 = Fesse seul).</div>
+          </div>
+          <div style="margin-bottom:10px"><strong style="color:var(--jade)">27 sept. 2026 (4)</strong>
+            <div>— Refonte complète du schéma auriculaire à partir du dessin classique annoté transmis par le Dr Blanchard (fichier PO.png → oreille_classique.png, à conserver dans le même dossier que l'application, remplace oreille_pavillon.png). 53 des 63 points ont été recalés aux coordonnées exactes du dessin ; les points maîtres (★, texte bleu sur le dessin) et les points cachés sous l'ourlet/tragus/anti-tragus (†, soulignés sur le dessin) sont désormais identifiés dans le schéma et la légende.</div>
+            <div>— 10 points restent sans position sur le schéma, faute de repère fiable transmis : Point Analgésie (4), Vaisseau Gouverneur (5), Point Antidépresseur (10), Point de réactivité/Bourdiol (17), Sous-cortex (27), Détoxification (44), Immunité (48), Point Hormonal (50), Nerf Grand Auriculaire (56), Zone du nerf trijumeau (59). Six d'entre eux avaient été explicitement signalés par le Dr Blanchard comme incertains ; les quatre autres (5, 10, 48, 59) n'apparaissaient pas non plus sur le dessin fourni — à confirmer avec lui avant de les ajouter.</div>
+            <div>— La palpation auriculaire se fait maintenant point par point (et non plus par grande zone anatomique) : cliquer un point le marque directement comme « palpé », ce qui alimente le moteur de suggestion d'auriculothérapie par correspondance exacte de nom plutôt que par mots-clés approximatifs. Les 10 anciennes zones rectangulaires ont été retirées car leurs contours ne correspondaient plus aux nouvelles positions des points.</div>
+            <div>— Chaque point listé dans Points → ③ Auriculothérapie affiche désormais son numéro sur le schéma (badge « N°X », en bleu ★ pour les points maîtres) pour retrouver facilement sa position.</div>
+          </div>
+          <div style="margin-bottom:10px"><strong style="color:var(--jade)">27 sept. 2026 (3)</strong>
+            <div>— Nouveau « Patient test (non archivé) » dans le side bar (sous Mode Urgence) : ouvre une consultation complète — 10+1 questions, examen, CCMQ, points, auriculothérapie, synthèse — sans jamais écrire dans la base de données de l'application. Un bandeau jaune rappelle en permanence que rien n'est archivé, avec un bouton « Quitter le mode test ». Utile pour tester rapidement une recherche de points sans créer de dossier, et pressenti comme mode de diffusion privilégié pour la formation (Bobigny) afin d'éviter toute question de conservation de données de santé (RGPD).</div>
+          </div>
+          <div style="margin-bottom:10px"><strong style="color:var(--jade)">27 sept. 2026 (2)</strong>
+            <div>— Recalage des points auriculaires sur un schéma classique de référence transmis par le Dr Blanchard (oreille gauche) : Épaule et Sein déplacés dans la zone Hélix, Cervicales déplacé dans la zone Anthélix — branche inférieure, et Occipital + Hypertension (HTA) réintégrés comme points visibles (zone Lobe), 63 points au total désormais. Les points maîtres/réflexes supplémentaires visibles sur ce schéma de référence (Talon, Orteil, Doigt, Hélix n°1-6, Corps amygdalien, etc.) seront ajoutés dans une prochaine étape.</div>
+          </div>
+          <div style="margin-bottom:10px"><strong style="color:var(--jade)">27 sept. 2026</strong>
+            <div>— Le schéma auriculaire utilise maintenant le dessin d'oreille fourni par le Dr Blanchard comme calque de fond (fichier oreille_pavillon.png, à conserver dans le même dossier que l'application) ; les 10 zones et 61 points sont recalés dessus, en contours pointillés transparents pour ne pas masquer le trait.</div>
+            <div>— Ajout de ce Mode d'emploi, alimenté à chaque évolution de l'application.</div>
+            <div>— Refonte complète du schéma auriculaire : silhouette anatomique réaliste (hélix, anthélix en Y avec fosse triangulaire, conque, tragus, lobule) au lieu des formes simplifiées précédentes, avec 61 points repères numérotés et une légende par zone.</div>
+            <div>— Ajout de 17 « points maîtres » classiques (Nogier, Bourdiol, Bossy) à la base auriculaire : Point Zéro', Point du PCS, Shen Men et zone du nerf trijumeau, Point merveilleux, Point de décussation, Point maître sensoriel, Point d'allergie, Point de réactivité (Bourdiol), Point de Bosch, Point maître d'élimination, Point maître des organes abdominaux, Point maxillo-dentaire, Point oméga, Point maître de Darwin, Point maître de la peau, Point maître de l'audition, Point maître des articulations — sélectionnables aussi en filtre de catégorie dans l'onglet Points.</div>
+            <div>— Saisie des points réalisés simplifiée : taper le code puis Entrée, sans repasser par la souris.</div>
+          </div>
+          <div style="margin-bottom:10px"><strong style="color:var(--jade)">Améliorations précédentes</strong>
+            <div>— Nouveau « Mode Urgence » : recettes de points (acupuncture + auriculothérapie) à partir d'un motif libre ou d'un type de chirurgie, pour les bobos du quotidien et l'épargne morphinique péri-opératoire.</div>
+            <div>— Séance « en préparation » (brouillon) : possibilité de préparer une consultation à l'avance et d'y noter les nouvelles reçues par courriel du patient, sans risquer de « finaliser » la séance par erreur.</div>
+            <div>— Correction d'un bug de sécurité important : la réponse de l'outil IA (analyse à partir du motif) pouvait rester affichée d'un dossier patient à l'autre ; elle est maintenant systématiquement réinitialisée au changement de patient/séance, et réellement enregistrée dans le compte-rendu.</div>
+            <div>— Les points proposés par l'IA sont désormais listés et peuvent être ajoutés en un clic aux « Points réalisés ».</div>
+            <div>— Correction du motif de séance qui ne se répercutait pas dans la synthèse pour une séance de suivi.</div>
+            <div>— Suppression possible d'une séance non finalisée ; alerte en cas de séance en préparation oubliée avant d'en créer une nouvelle.</div>
+            <div>— Adresse de réception des questionnaires CCMQ mise à jour vers dr.blanchard.acupuncture@gmail.com.</div>
+            <div>— Lancement de l'application stabilisé (attente active du serveur, nouvelle fenêtre systématique, journal de diagnostic).</div>
+          </div>
+        </div>
+      </div>
+    </div>
     <!-- 10+1 QUESTIONS -->
 
     <div class="pg" id="pg-dix">
@@ -325,6 +426,12 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
               oninput="onMotifChange()">
           </div>
           <button class="btn" style="font-size:11px;flex-shrink:0;border-color:var(--jade);color:var(--jade)" onclick="newCCMQ()">🏮 Nouveau CCMQ</button>
+        </div>
+        <div class="f" style="margin-top:8px">
+          <label style="font-size:10px;font-weight:700;color:var(--jade);text-transform:uppercase;letter-spacing:.3px">📧 Retour du patient (mail) / Notes de préparation</label>
+          <textarea id="dix-prep-notes" rows="3" placeholder="Collez ici les nouvelles reçues par mail depuis la dernière séance, et vos points de réflexion pour la prochaine consultation…"
+            style="font-size:12px;border:1px solid var(--jade-md);border-radius:5px;padding:6px 8px;background:#fff;font-family:inherit;width:100%;box-sizing:border-box;resize:vertical"
+            oninput="markDirty()"></textarea>
         </div>
       </div>
       <div id="ten-q"></div>
@@ -829,27 +936,98 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
           <div style="font-size:11px;font-weight:700;color:var(--jade);text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px">Palpation auriculaire 耳診 — Zones réactives</div>
           <div style="font-size:10px;color:var(--slate);font-style:italic;margin-bottom:8px">Cliquez sur les zones du pavillon sensibles/douloureuses à la palpation (recherche de points Ah Shi auriculaires — rougeur, chaleur, dépression cutanée, sensibilité). Ces zones alimentent les propositions d'auriculothérapie (③).</div>
           <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start">
-            <svg viewBox="0 0 220 300" style="width:150px;height:205px;flex-shrink:0" id="ear-svg">
-              <ellipse cx="110" cy="155" rx="78" ry="138" fill="#FBF6EC" stroke="var(--border)" stroke-width="1.5"/>
-              <path class="ear-zone" data-zone="Hélix" onclick="togEarZone(this,'Hélix')" d="M140,25 L170,58 L182,118 L179,182 L162,232 L146,262 L124,256 L141,224 L157,180 L161,120 L149,64 L128,34 Z" fill="#F4ECD8" stroke="var(--border)" stroke-width="1"><title>Hélix — bord externe : points spécifiques, apex (anti-inflammatoire)</title></path>
-              <ellipse class="ear-zone" data-zone="Apex" onclick="togEarZone(this,'Apex')" cx="118" cy="34" rx="17" ry="13" fill="#F4ECD8" stroke="var(--border)" stroke-width="1"><title>Apex (sommet) — anti-inflammatoire, anti-allergique</title></ellipse>
-              <path class="ear-zone" data-zone="Anthélix" onclick="togEarZone(this,'Anthélix')" d="M100,205 L122,205 L122,148 L146,98 L136,88 L112,127 L108,127 L84,88 L74,98 L98,148 Z" fill="#F4ECD8" stroke="var(--border)" stroke-width="1"><title>Anthélix — colonne vertébrale, membres (branche sup. = MI, branche inf. = MS)</title></path>
-              <path class="ear-zone" data-zone="Fosse triangulaire" onclick="togEarZone(this,'Fosse triangulaire')" d="M111,78 L92,52 L130,52 Z" fill="#F4ECD8" stroke="var(--border)" stroke-width="1"><title>Fosse triangulaire — Shen Men, organes génitaux, Utérus</title></path>
-              <ellipse class="ear-zone" data-zone="Conque supérieure" onclick="togEarZone(this,'Conque supérieure')" cx="101" cy="178" rx="27" ry="21" fill="#F4ECD8" stroke="var(--border)" stroke-width="1"><title>Conque supérieure — Rate, Estomac, Rein, Foie, Triple Réchauffeur</title></ellipse>
-              <ellipse class="ear-zone" data-zone="Conque inférieure" onclick="togEarZone(this,'Conque inférieure')" cx="95" cy="227" rx="23" ry="19" fill="#F4ECD8" stroke="var(--border)" stroke-width="1"><title>Conque inférieure — Cœur, Poumon, Foie, Vésicule biliaire</title></ellipse>
-              <ellipse class="ear-zone" data-zone="Tragus" onclick="togEarZone(this,'Tragus')" cx="76" cy="217" rx="13" ry="17" fill="#F4ECD8" stroke="var(--border)" stroke-width="1"><title>Tragus — Nez, Surrénale, Faim, Endocrine</title></ellipse>
-              <ellipse class="ear-zone" data-zone="Lobe" onclick="togEarZone(this,'Lobe')" cx="115" cy="270" rx="34" ry="28" fill="#F4ECD8" stroke="var(--border)" stroke-width="1"><title>Lobe — Œil, visage, dents, Shen (émotionnel)</title></ellipse>
+            <svg viewBox="0 0 970 1356" style="width:260px;height:363px;flex-shrink:0" id="ear-svg">
+              <image href="oreille_classique.png" x="0" y="0" width="970" height="1356" preserveAspectRatio="xMidYMid meet"/>
+              <!-- Points recalés le 27 sept. 2026 sur le schéma classique annoté par le Dr Blanchard (oreille gauche).
+                   Les numéros et libellés sont déjà visibles sur l'image de fond : les cercles ci-dessous sont
+                   des zones cliquables (quasi transparentes) qui s'éclairent au survol/sélection.
+                   ★ = point maître (fond bleu sur le schéma). † = point caché sous l'ourlet/tragus/anti-tragus. -->
+              <g id="ear-points" font-family="inherit" onmouseover="onEarPointHover(event)" onmouseout="onEarPointOut(event)" style="cursor:pointer">
+                <circle class="ear-pt" id="ep-1" data-num="1" data-name="Apex (Pointe)" cx="519.9" cy="92.9" r="17" onclick="togEarZone(this,'Apex (Pointe)')"><title>1. Apex (Pointe)</title></circle>
+                <circle class="ear-pt ear-pt-master" id="ep-2" data-num="2" data-name="Point Zéro" cx="480.4" cy="685.3" r="17" onclick="togEarZone(this,'Point Zéro')"><title>2. Point Zéro</title></circle>
+                <circle class="ear-pt" id="ep-3" data-num="3" data-name="Trachée" cx="333.9" cy="808.3" r="17" onclick="togEarZone(this,'Trachée')"><title>3. Trachée</title></circle>
+                <circle class="ear-pt" id="ep-4" data-num="4" data-name="Clavicule" cx="672.0" cy="868.9" r="17" onclick="togEarZone(this,'Clavicule')"><title>4. Clavicule</title></circle>
+                <circle class="ear-pt" id="ep-5" data-num="5" data-name="Coude" cx="747.1" cy="605.6" r="17" onclick="togEarZone(this,'Coude')"><title>5. Coude</title></circle>
+                <circle class="ear-pt ear-pt-master" id="ep-6" data-num="6" data-name="Point maître d'élimination" cx="518.4" cy="176.2" r="17" onclick="togEarZone(this,'Point maître d\'élimination')"><title>6. Point maître d'élimination</title></circle>
+                <circle class="ear-pt ear-pt-master" id="ep-7" data-num="7" data-name="Point maître de Darwin" cx="775.1" cy="345.0" r="17" onclick="togEarZone(this,'Point maître de Darwin')"><title>7. Point maître de Darwin</title></circle>
+                <circle class="ear-pt" id="ep-8" data-num="8" data-name="Épaule" cx="723.0" cy="736.7" r="17" onclick="togEarZone(this,'Épaule')"><title>8. Épaule</title></circle>
+                <circle class="ear-pt" id="ep-9" data-num="9" data-name="Sein" cx="653.5" cy="756.1" r="17" onclick="togEarZone(this,'Sein')"><title>9. Sein</title></circle>
+                <circle class="ear-pt" id="ep-10" data-num="10" data-name="Point Antidépresseur" cx="199.2" cy="954.7" r="17" onclick="togEarZone(this,'Point Antidépresseur')"><title>10. Point Antidépresseur</title></circle>
+                <circle class="ear-pt" id="ep-11" data-num="11" data-name="Gros intestin" cx="387.9" cy="542.8" r="17" onclick="togEarZone(this,'Gros intestin')"><title>11. Gros intestin</title></circle>
+                <circle class="ear-pt" id="ep-12" data-num="12" data-name="Urètre" cx="311.7" cy="515.9" r="17" onclick="togEarZone(this,'Urètre')"><title>12. Urètre</title></circle>
+                <circle class="ear-pt" id="ep-13" data-num="13" data-name="Point Zéro'" cx="186.1" cy="791.9" r="17" onclick="togEarZone(this,'Point Zéro\'')"><title>13. Point Zéro'</title></circle>
+                <circle class="ear-pt" id="ep-14" data-num="14" data-name="Point du PCS" cx="777.1" cy="955.9" r="17" onclick="togEarZone(this,'Point du PCS')"><title>14. Point du PCS</title></circle>
+                <circle class="ear-pt" id="ep-15" data-num="15" data-name="Point de décussation" cx="847.8" cy="807.6" r="17" onclick="togEarZone(this,'Point de décussation')"><title>15. Point de décussation</title></circle>
+                <circle class="ear-pt ear-pt-master" id="ep-16" data-num="16" data-name="Genou" cx="591.2" cy="346.9" r="17" onclick="togEarZone(this,'Genou')"><title>16. Genou</title></circle>
+                <circle class="ear-pt" id="ep-17" data-num="17" data-name="Point de réactivité (Bourdiol)" cx="331.4" cy="641.4" r="17" onclick="togEarZone(this,'Point de réactivité (Bourdiol)')"><title>17. Point de réactivité (Bourdiol)</title></circle>
+                <circle class="ear-pt" id="ep-18" data-num="18" data-name="Lombaires" cx="654.3" cy="544.0" r="17" onclick="togEarZone(this,'Lombaires')"><title>18. Lombaires</title></circle>
+                <circle class="ear-pt" id="ep-19" data-num="19" data-name="Hanche" cx="620.4" cy="427.8" r="17" onclick="togEarZone(this,'Hanche')"><title>19. Hanche</title></circle>
+                <circle class="ear-pt" id="ep-20" data-num="20" data-name="Nerf sciatique" cx="399.3" cy="472.2" r="17" onclick="togEarZone(this,'Nerf sciatique')"><title>20. Nerf sciatique</title></circle>
+                <circle class="ear-pt" id="ep-21" data-num="21" data-name="Cervicales" cx="638.5" cy="853.9" r="17" onclick="togEarZone(this,'Cervicales')"><title>21. Cervicales</title></circle>
+                <circle class="ear-pt ear-pt-master" id="ep-22" data-num="22" data-name="Point merveilleux" cx="604.7" cy="770.4" r="17" onclick="togEarZone(this,'Point merveilleux')"><title>22. Point merveilleux</title></circle>
+                <circle class="ear-pt ear-pt-master" id="ep-23" data-num="23" data-name="Point maître sensoriel" cx="425.1" cy="1060.3" r="17" onclick="togEarZone(this,'Point maître sensoriel')"><title>23. Point maître sensoriel</title></circle>
+                <circle class="ear-pt ear-pt-master" id="ep-24" data-num="24" data-name="Point maître des organes abdominaux" cx="494.5" cy="606.4" r="17" onclick="togEarZone(this,'Point maître des organes abdominaux')"><title>24. Point maître des organes abdominaux</title></circle>
+                <circle class="ear-pt ear-pt-master" id="ep-25" data-num="25" data-name="Point de Bosch" cx="311.2" cy="559.1" r="17" onclick="togEarZone(this,'Point de Bosch')"><title>25. Point de Bosch</title></circle>
+                <circle class="ear-pt ear-pt-master" id="ep-26" data-num="26" data-name="Shen Men" cx="494.6" cy="397.3" r="17" onclick="togEarZone(this,'Shen Men')"><title>26. Shen Men</title></circle>
+                <circle class="ear-pt" id="ep-27" data-num="27" data-name="Sous-cortex" cx="123.7" cy="1100.7" r="17" onclick="togEarZone(this,'Sous-cortex')"><title>27. Sous-cortex</title></circle>
+                <circle class="ear-pt ear-pt-master" id="ep-28" data-num="28" data-name="Thalamus (Analgésie)" cx="494.7" cy="912.3" r="17" onclick="togEarZone(this,'Thalamus (Analgésie)')"><title>28. Thalamus (Analgésie)</title></circle>
+                <circle class="ear-pt" id="ep-29" data-num="29" data-name="Utérus (ZIGONG)" cx="290.0" cy="324.2" r="17" onclick="togEarZone(this,'Utérus (ZIGONG)')"><title>29. Utérus (ZIGONG) (point caché — sous l'ourlet/tragus/anti-tragus)</title></circle>
+                <circle class="ear-pt" id="ep-30" data-num="30" data-name="Ovaires" cx="289.8" cy="428.2" r="17" onclick="togEarZone(this,'Ovaires')"><title>30. Ovaires (point caché — sous l'ourlet/tragus/anti-tragus)</title></circle>
+                <circle class="ear-pt" id="ep-31" data-num="31" data-name="Prostate" cx="289.4" cy="376.0" r="17" onclick="togEarZone(this,'Prostate')"><title>31. Prostate (point caché — sous l'ourlet/tragus/anti-tragus)</title></circle>
+                <circle class="ear-pt ear-pt-master" id="ep-32" data-num="32" data-name="Sympathique" cx="308.7" cy="448.3" r="17" onclick="togEarZone(this,'Sympathique')"><title>32. Sympathique (point caché — sous l'ourlet/tragus/anti-tragus)</title></circle>
+                <circle class="ear-pt" id="ep-33" data-num="33" data-name="Point d'allergie" cx="519.8" cy="135.5" r="17" onclick="togEarZone(this,'Point d\'allergie')"><title>33. Point d'allergie (point caché — sous l'ourlet/tragus/anti-tragus)</title></circle>
+                <circle class="ear-pt" id="ep-34" data-num="34" data-name="Rate (PI)" cx="587.2" cy="808.7" r="17" onclick="togEarZone(this,'Rate (PI)')"><title>34. Rate (PI)</title></circle>
+                <circle class="ear-pt" id="ep-35" data-num="35" data-name="Estomac (WEI)" cx="535.4" cy="736.2" r="17" onclick="togEarZone(this,'Estomac (WEI)')"><title>35. Estomac (WEI)</title></circle>
+                <circle class="ear-pt" id="ep-36" data-num="36" data-name="Intestin grêle" cx="442.0" cy="586.3" r="17" onclick="togEarZone(this,'Intestin grêle')"><title>36. Intestin grêle</title></circle>
+                <circle class="ear-pt" id="ep-37" data-num="37" data-name="Triple Réchauffeur" cx="332.1" cy="881.2" r="17" onclick="togEarZone(this,'Triple Réchauffeur')"><title>37. Triple Réchauffeur</title></circle>
+                <circle class="ear-pt" id="ep-38" data-num="38" data-name="Rein (SHEN) / Détoxification" cx="501.2" cy="559.4" r="17" onclick="togEarZone(this,'Rein (SHEN) / Détoxification')"><title>38. Rein (SHEN) / Détoxification</title></circle>
+                <circle class="ear-pt" id="ep-39" data-num="39" data-name="Vessie (PANG)" cx="442.4" cy="544.2" r="17" onclick="togEarZone(this,'Vessie (PANG)')"><title>39. Vessie (PANG)</title></circle>
+                <circle class="ear-pt" id="ep-40" data-num="40" data-name="Vésicule biliaire" cx="546.4" cy="630.3" r="17" onclick="togEarZone(this,'Vésicule biliaire')"><title>40. Vésicule biliaire</title></circle>
+                <circle class="ear-pt" id="ep-41" data-num="41" data-name="Pancréas" cx="543.7" cy="605.9" r="17" onclick="togEarZone(this,'Pancréas')"><title>41. Pancréas</title></circle>
+                <circle class="ear-pt" id="ep-42" data-num="42" data-name="Cœur (CO)" cx="426.0" cy="809.5" r="17" onclick="togEarZone(this,'Cœur (CO)')"><title>42. Cœur (CO)</title></circle>
+                <circle class="ear-pt" id="ep-43" data-num="43" data-name="Foie (GAN)" cx="587.4" cy="686.3" r="17" onclick="togEarZone(this,'Foie (GAN)')"><title>43. Foie (GAN)</title></circle>
+                <circle class="ear-pt" id="ep-44" data-num="44" data-name="Poignet" cx="736.9" cy="482.5" r="17" onclick="togEarZone(this,'Poignet')"><title>44. Poignet</title></circle>
+                <circle class="ear-pt" id="ep-45" data-num="45" data-name="Poumon (FEI)" cx="500.4" cy="842.2" r="17" onclick="togEarZone(this,'Poumon (FEI)')"><title>45. Poumon (FEI)</title></circle>
+                <circle class="ear-pt" id="ep-46" data-num="46" data-name="Endocrine" cx="271.6" cy="941.2" r="17" onclick="togEarZone(this,'Endocrine')"><title>46. Endocrine</title></circle>
+                <circle class="ear-pt" id="ep-47" data-num="47" data-name="Faim (Appétit)" cx="237.0" cy="864.0" r="17" onclick="togEarZone(this,'Faim (Appétit)')"><title>47. Faim (Appétit)</title></circle>
+                <circle class="ear-pt" id="ep-48" data-num="48" data-name="Doigts" cx="673.1" cy="342.0" r="17" onclick="togEarZone(this,'Doigts')"><title>48. Doigts</title></circle>
+                <circle class="ear-pt" id="ep-49" data-num="49" data-name="Surrénal (ACTH)" cx="271.8" cy="493.2" r="17" onclick="togEarZone(this,'Surrénal (ACTH)')"><title>49. Surrénal (ACTH)</title></circle>
+                <circle class="ear-pt" id="ep-50" data-num="50" data-name="Cheville" cx="548.5" cy="289.0" r="17" onclick="togEarZone(this,'Cheville')"><title>50. Cheville</title></circle>
+                <circle class="ear-pt" id="ep-51" data-num="51" data-name="Thyroïde" cx="310.5" cy="947.5" r="17" onclick="togEarZone(this,'Thyroïde')"><title>51. Thyroïde</title></circle>
+                <circle class="ear-pt" id="ep-52" data-num="52" data-name="Glande surrénale" cx="238.5" cy="911.1" r="17" onclick="togEarZone(this,'Glande surrénale')"><title>52. Glande surrénale</title></circle>
+                <circle class="ear-pt ear-pt-master" id="ep-53" data-num="53" data-name="Point maître de la peau" cx="268.0" cy="812.0" r="17" onclick="togEarZone(this,'Point maître de la peau')"><title>53. Point maître de la peau (point caché — sous l'ourlet/tragus/anti-tragus)</title></circle>
+                <circle class="ear-pt ear-pt-master" id="ep-54" data-num="54" data-name="Point maître de l'audition" cx="268.0" cy="793.0" r="17" onclick="togEarZone(this,'Point maître de l\'audition')"><title>54. Point maître de l'audition</title></circle>
+                <circle class="ear-pt ear-pt-master" id="ep-55" data-num="55" data-name="Point maître des articulations" cx="552.8" cy="926.1" r="17" onclick="togEarZone(this,'Point maître des articulations')"><title>55. Point maître des articulations</title></circle>
+                <circle class="ear-pt" id="ep-56" data-num="56" data-name="Orteils" cx="509.9" cy="251.0" r="17" onclick="togEarZone(this,'Orteils')"><title>56. Orteils</title></circle>
+                <circle class="ear-pt" id="ep-57" data-num="57" data-name="Œil (YAN)" cx="424.3" cy="1111.9" r="17" onclick="togEarZone(this,'Œil (YAN)')"><title>57. Œil (YAN)</title></circle>
+                <circle class="ear-pt" id="ep-58" data-num="58" data-name="Nez interne" cx="262.0" cy="855.0" r="17" onclick="togEarZone(this,'Nez interne')"><title>58. Nez interne (point caché — sous l'ourlet/tragus/anti-tragus)</title></circle>
+                <circle class="ear-pt" id="ep-59" data-num="59" data-name="Talon" cx="452.4" cy="265.2" r="17" onclick="togEarZone(this,'Talon')"><title>59. Talon</title></circle>
+                <circle class="ear-pt" id="ep-60" data-num="60" data-name="Point maxillo-dentaire" cx="238.5" cy="1016.0" r="17" onclick="togEarZone(this,'Point maxillo-dentaire')"><title>60. Point maxillo-dentaire</title></circle>
+                <circle class="ear-pt ear-pt-master" id="ep-61" data-num="61" data-name="Point oméga" cx="216.4" cy="1112.9" r="17" onclick="togEarZone(this,'Point oméga')"><title>61. Point oméga</title></circle>
+                <circle class="ear-pt" id="ep-62" data-num="62" data-name="Occipital" cx="534.2" cy="998.3" r="17" onclick="togEarZone(this,'Occipital')"><title>62. Occipital</title></circle>
+                <circle class="ear-pt" id="ep-63" data-num="63" data-name="Hypertension (HTA)" cx="163.4" cy="926.4" r="17" onclick="togEarZone(this,'Hypertension (HTA)')"><title>63. Hypertension (HTA)</title></circle>
+                <circle class="ear-pt" id="ep-64" data-num="64" data-name="Pelvis" cx="508.8" cy="447.4" r="17" onclick="togEarZone(this,'Pelvis')"><title>64. Pelvis</title></circle>
+                <circle class="ear-pt" id="ep-65" data-num="65" data-name="Duodénum" cx="496.0" cy="642.0" r="17" onclick="togEarZone(this,'Duodénum')"><title>65. Duodénum</title></circle>
+                <circle class="ear-pt" id="ep-66" data-num="66" data-name="Rachis dorsal" cx="690.5" cy="688.8" r="17" onclick="togEarZone(this,'Rachis dorsal')"><title>66. Rachis dorsal</title></circle>
+                <circle class="ear-pt" id="ep-67" data-num="67" data-name="Abdomen" cx="602.9" cy="587.4" r="17" onclick="togEarZone(this,'Abdomen')"><title>67. Abdomen</title></circle>
+                <circle class="ear-pt" id="ep-77" data-num="77" data-name="Cardia" cx="478.8" cy="742.2" r="17" onclick="togEarZone(this,'Cardia')"><title>77. Cardia</title></circle>
+                <circle class="ear-pt" id="ep-68" data-num="68" data-name="Fesse" cx="510.2" cy="511.2" r="17" onclick="togEarZone(this,'Fesse')"><title>68. Fesse</title></circle>
+                <circle class="ear-pt" id="ep-78" data-num="78" data-name="Oesophage" cx="436.0" cy="731.4" r="17" onclick="togEarZone(this,'Oesophage')"><title>78. Oesophage</title></circle>
+                <circle class="ear-pt" id="ep-69" data-num="69" data-name="Bouche" cx="397.9" cy="704.0" r="17" onclick="togEarZone(this,'Bouche')"><title>69. Bouche</title></circle>
+                <circle class="ear-pt" id="ep-70" data-num="70" data-name="Rectum" cx="363.0" cy="587.1" r="17" onclick="togEarZone(this,'Rectum')"><title>70. Rectum</title></circle>
+                <circle class="ear-pt" id="ep-71" data-num="71" data-name="Mâchoire" cx="621.7" cy="1022.9" r="17" onclick="togEarZone(this,'Mâchoire')"><title>71. Mâchoire</title></circle>
+                <circle class="ear-pt" id="ep-72" data-num="72" data-name="Langue" cx="425.9" cy="1023.5" r="17" onclick="togEarZone(this,'Langue')"><title>72. Langue</title></circle>
+                <circle class="ear-pt" id="ep-73" data-num="73" data-name="Dents" cx="276.5" cy="1033.7" r="17" onclick="togEarZone(this,'Dents')"><title>73. Dents</title></circle>
+                <circle class="ear-pt" id="ep-74" data-num="74" data-name="Oreille interne" cx="586.6" cy="1117.1" r="17" onclick="togEarZone(this,'Oreille interne')"><title>74. Oreille interne</title></circle>
+                <circle class="ear-pt" id="ep-75" data-num="75" data-name="Amygdales" cx="363.9" cy="1214.2" r="17" onclick="togEarZone(this,'Amygdales')"><title>75. Amygdales</title></circle>
+                <circle class="ear-pt" id="ep-76" data-num="76" data-name="Pharynx / Larynx" cx="305.6" cy="720.9" r="17" onclick="togEarZone(this,'Pharynx / Larynx')"><title>76. Pharynx / Larynx (point caché — sous l'ourlet/tragus/anti-tragus)</title></circle>
+              </g>
             </svg>
-            <div style="flex:1;min-width:160px">
-              <div style="font-size:10px;color:var(--slate);line-height:1.7">
-                <div><strong style="color:var(--jade)">Hélix</strong> — points spécifiques, Apex (anti-inflammatoire)</div>
-                <div><strong style="color:var(--jade)">Anthélix</strong> — colonne vertébrale, membres</div>
-                <div><strong style="color:var(--jade)">Fosse triangulaire</strong> — Shen Men, génital, Utérus</div>
-                <div><strong style="color:var(--jade)">Conque sup.</strong> — Rate, Estomac, Rein, Foie</div>
-                <div><strong style="color:var(--jade)">Conque inf.</strong> — Cœur, Poumon, VB</div>
-                <div><strong style="color:var(--jade)">Tragus</strong> — Nez, Surrénale, Faim</div>
-                <div><strong style="color:var(--jade)">Lobe</strong> — Œil, visage, Shen</div>
+            <div style="flex:1;min-width:300px">
+              <div style="font-size:9px;color:var(--slate);line-height:1.9;column-width:250px;column-gap:16px" onmouseover="onEarLegendHover(event)" onmouseout="onEarLegendOut(event)">
+                <span class="lgd-item" id="lgd-1" data-num="1"><b>1</b> Apex (Pointe)</span> · <span class="lgd-item lgd-master" id="lgd-2" data-num="2">★ <b>2</b> Point Zéro</span> · <span class="lgd-item" id="lgd-3" data-num="3"><b>3</b> Trachée</span> · <span class="lgd-item" id="lgd-4" data-num="4"><b>4</b> Clavicule</span> · <span class="lgd-item" id="lgd-5" data-num="5"><b>5</b> Coude</span> · <span class="lgd-item lgd-master" id="lgd-6" data-num="6">★ <b>6</b> Point maître d'élimination</span> · <span class="lgd-item lgd-master" id="lgd-7" data-num="7">★ <b>7</b> Point maître de Darwin</span> · <span class="lgd-item" id="lgd-8" data-num="8"><b>8</b> Épaule</span> · <span class="lgd-item" id="lgd-9" data-num="9"><b>9</b> Sein</span> · <span class="lgd-item" id="lgd-10" data-num="10"><b>10</b> Point Antidépresseur</span> · <span class="lgd-item" id="lgd-11" data-num="11"><b>11</b> Gros intestin</span> · <span class="lgd-item" id="lgd-12" data-num="12"><b>12</b> Urètre</span> · <span class="lgd-item" id="lgd-13" data-num="13"><b>13</b> Point Zéro'</span> · <span class="lgd-item" id="lgd-14" data-num="14"><b>14</b> Point du PCS</span> · <span class="lgd-item" id="lgd-15" data-num="15"><b>15</b> Point de décussation</span> · <span class="lgd-item lgd-master" id="lgd-16" data-num="16">★ <b>16</b> Genou</span> · <span class="lgd-item" id="lgd-17" data-num="17"><b>17</b> Point de réactivité (Bourdiol)</span> · <span class="lgd-item" id="lgd-18" data-num="18"><b>18</b> Lombaires</span> · <span class="lgd-item" id="lgd-19" data-num="19"><b>19</b> Hanche</span> · <span class="lgd-item" id="lgd-20" data-num="20"><b>20</b> Nerf sciatique</span> · <span class="lgd-item" id="lgd-21" data-num="21"><b>21</b> Cervicales</span> · <span class="lgd-item lgd-master" id="lgd-22" data-num="22">★ <b>22</b> Point merveilleux</span> · <span class="lgd-item lgd-master" id="lgd-23" data-num="23">★ <b>23</b> Point maître sensoriel</span> · <span class="lgd-item lgd-master" id="lgd-24" data-num="24">★ <b>24</b> Point maître des organes abdominaux</span> · <span class="lgd-item lgd-master" id="lgd-25" data-num="25">★ <b>25</b> Point de Bosch</span> · <span class="lgd-item lgd-master" id="lgd-26" data-num="26">★ <b>26</b> Shen Men</span> · <span class="lgd-item" id="lgd-27" data-num="27"><b>27</b> Sous-cortex</span> · <span class="lgd-item lgd-master" id="lgd-28" data-num="28">★ <b>28</b> Thalamus (Analgésie)</span> · <span class="lgd-item" id="lgd-29" data-num="29"><b>29</b> Utérus (ZIGONG) <span style="opacity:.6">†</span></span> · <span class="lgd-item" id="lgd-30" data-num="30"><b>30</b> Ovaires <span style="opacity:.6">†</span></span> · <span class="lgd-item" id="lgd-31" data-num="31"><b>31</b> Prostate <span style="opacity:.6">†</span></span> · <span class="lgd-item lgd-master" id="lgd-32" data-num="32">★ <b>32</b> Sympathique <span style="opacity:.6">†</span></span> · <span class="lgd-item" id="lgd-33" data-num="33"><b>33</b> Point d'allergie <span style="opacity:.6">†</span></span> · <span class="lgd-item" id="lgd-34" data-num="34"><b>34</b> Rate (PI)</span> · <span class="lgd-item" id="lgd-35" data-num="35"><b>35</b> Estomac (WEI)</span> · <span class="lgd-item" id="lgd-36" data-num="36"><b>36</b> Intestin grêle</span> · <span class="lgd-item" id="lgd-37" data-num="37"><b>37</b> Triple Réchauffeur</span> · <span class="lgd-item" id="lgd-38" data-num="38"><b>38</b> Rein (SHEN) / Détoxification</span> · <span class="lgd-item" id="lgd-39" data-num="39"><b>39</b> Vessie (PANG)</span> · <span class="lgd-item" id="lgd-40" data-num="40"><b>40</b> Vésicule biliaire</span> · <span class="lgd-item" id="lgd-41" data-num="41"><b>41</b> Pancréas</span> · <span class="lgd-item" id="lgd-42" data-num="42"><b>42</b> Cœur (CO)</span> · <span class="lgd-item" id="lgd-43" data-num="43"><b>43</b> Foie (GAN)</span> · <span class="lgd-item" id="lgd-44" data-num="44"><b>44</b> Poignet</span> · <span class="lgd-item" id="lgd-45" data-num="45"><b>45</b> Poumon (FEI)</span> · <span class="lgd-item" id="lgd-46" data-num="46"><b>46</b> Endocrine</span> · <span class="lgd-item" id="lgd-47" data-num="47"><b>47</b> Faim (Appétit)</span> · <span class="lgd-item" id="lgd-48" data-num="48"><b>48</b> Doigts</span> · <span class="lgd-item" id="lgd-49" data-num="49"><b>49</b> Surrénal (ACTH)</span> · <span class="lgd-item" id="lgd-50" data-num="50"><b>50</b> Cheville</span> · <span class="lgd-item" id="lgd-51" data-num="51"><b>51</b> Thyroïde</span> · <span class="lgd-item" id="lgd-52" data-num="52"><b>52</b> Glande surrénale</span> · <span class="lgd-item lgd-master" id="lgd-53" data-num="53">★ <b>53</b> Point maître de la peau <span style="opacity:.6">†</span></span> · <span class="lgd-item lgd-master" id="lgd-54" data-num="54">★ <b>54</b> Point maître de l'audition</span> · <span class="lgd-item lgd-master" id="lgd-55" data-num="55">★ <b>55</b> Point maître des articulations</span> · <span class="lgd-item" id="lgd-56" data-num="56"><b>56</b> Orteils</span> · <span class="lgd-item" id="lgd-57" data-num="57"><b>57</b> Œil (YAN)</span> · <span class="lgd-item" id="lgd-58" data-num="58"><b>58</b> Nez interne <span style="opacity:.6">†</span></span> · <span class="lgd-item" id="lgd-59" data-num="59"><b>59</b> Talon</span> · <span class="lgd-item" id="lgd-60" data-num="60"><b>60</b> Point maxillo-dentaire</span> · <span class="lgd-item lgd-master" id="lgd-61" data-num="61">★ <b>61</b> Point oméga</span> · <span class="lgd-item" id="lgd-62" data-num="62"><b>62</b> Occipital</span> · <span class="lgd-item" id="lgd-63" data-num="63"><b>63</b> Hypertension (HTA)</span> · <span class="lgd-item" id="lgd-64" data-num="64"><b>64</b> Pelvis</span> · <span class="lgd-item" id="lgd-65" data-num="65"><b>65</b> Duodénum</span> · <span class="lgd-item" id="lgd-66" data-num="66"><b>66</b> Rachis dorsal</span> · <span class="lgd-item" id="lgd-67" data-num="67"><b>67</b> Abdomen</span> · <span class="lgd-item" id="lgd-68" data-num="68"><b>68</b> Fesse</span> · <span class="lgd-item" id="lgd-69" data-num="69"><b>69</b> Bouche</span> · <span class="lgd-item" id="lgd-70" data-num="70"><b>70</b> Rectum</span> · <span class="lgd-item" id="lgd-71" data-num="71"><b>71</b> Mâchoire</span> · <span class="lgd-item" id="lgd-72" data-num="72"><b>72</b> Langue</span> · <span class="lgd-item" id="lgd-73" data-num="73"><b>73</b> Dents</span> · <span class="lgd-item" id="lgd-74" data-num="74"><b>74</b> Oreille interne</span> · <span class="lgd-item" id="lgd-75" data-num="75"><b>75</b> Amygdales</span> · <span class="lgd-item" id="lgd-76" data-num="76"><b>76</b> Pharynx / Larynx <span style="opacity:.6">†</span></span> · <span class="lgd-item" id="lgd-77" data-num="77"><b>77</b> Cardia</span> · <span class="lgd-item" id="lgd-78" data-num="78"><b>78</b> Oesophage</span>
               </div>
+              <div style="font-size:9px;color:var(--slate);font-style:italic;margin-top:6px">★ point maître · † point caché sous l'ourlet/tragus/anti-tragus (non visible de face, mais cliquable au même repère). Cliquer un point le sélectionne comme point palpé.</div>
               <input id="palp-oreille" style="display:none" oninput="markDirty()">
               <div id="palp-oreille-disp" class="pouls-display empty" style="margin-top:8px">—</div>
             </div>
@@ -1252,6 +1430,13 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
             </div>
           </div>
           <div id="ai-motif-result" style="display:none;margin-top:10px;padding:10px 13px;background:#EBF5FB;border-left:3px solid #1A5276;border-radius:6px;font-size:12px;line-height:1.7;white-space:pre-wrap"></div>
+          <div id="ai-motif-points-box" style="display:none;margin-top:8px;padding:10px;border:1px solid var(--border);border-radius:8px">
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:6px">
+              <div style="font-size:11px;font-weight:700;color:#1A5276;text-transform:uppercase;letter-spacing:.5px">Points détectés dans la réponse — cochez ceux réalisés</div>
+              <button class="btn" style="font-size:10px;padding:3px 9px" onclick="addAllAIExtractedPoints()">➕ Tout ajouter</button>
+            </div>
+            <div id="ai-motif-points-list"></div>
+          </div>
         </div>
       </div>
 
@@ -1341,8 +1526,8 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
             <textarea id="pts-nl" rows="2" placeholder="Ex : LV3 dispersion, moxa CV4 15 min, ST36 tonification…" oninput="markDirty()" style="font-size:12px"></textarea>
           </div>
           <div style="display:flex;gap:8px;margin-top:6px;align-items:center;flex-wrap:wrap">
-            <input id="pts-libre-code" placeholder="Code (ex: ST36)" style="width:90px;font-size:12px;padding:6px 8px;border:1px solid var(--border);border-radius:6px;font-family:inherit">
-            <input id="pts-libre-nom" placeholder="Nom (ex: Zusanli)" style="flex:1;font-size:12px;padding:6px 8px;border:1px solid var(--border);border-radius:6px;font-family:inherit;min-width:120px">
+            <input id="pts-libre-code" placeholder="Code (ex: ST36) puis ↵" style="width:110px;font-size:12px;padding:6px 8px;border:1px solid var(--border);border-radius:6px;font-family:inherit" onkeydown="if(event.key==='Enter'){event.preventDefault();addLibrePoint();}">
+            <input id="pts-libre-nom" placeholder="Nom (facultatif)" style="flex:1;font-size:12px;padding:6px 8px;border:1px solid var(--border);border-radius:6px;font-family:inherit;min-width:120px" onkeydown="if(event.key==='Enter'){event.preventDefault();addLibrePoint();}">
             <button class="btn" onclick="addLibrePoint()" style="font-size:11px">+ Ajouter point libre</button>
           </div>
           <div id="pts-libres-list" style="margin-top:6px"></div>
@@ -1376,19 +1561,20 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
               <option>Douleur / Locomoteur</option>
               <option>Hormonal / Gynécologie</option>
               <option>Endocrinien / Métabolique</option>
+              <option>Points maîtres / Réflexes</option>
             </select>
           </div>
           <div class="f" style="flex:1;min-width:140px"><label>Motif</label>
             <div id="auri-motif-label" style="font-size:11px;color:var(--ink);padding:7px 9px;border:1px solid var(--border);border-radius:6px;background:#fff">—</div>
           </div>
-          <div class="f" style="flex:1;min-width:140px"><label>Zones oreille douloureuses</label>
+          <div class="f" style="flex:1;min-width:140px"><label>Points oreille palpés (douloureux)</label>
             <div id="auri-zones-label" style="font-size:11px;color:var(--vermil);padding:7px 9px;border:1px solid var(--border);border-radius:6px;background:#FDECEA">—</div>
           </div>
           <div class="f" style="flex:1;min-width:140px"><label>Syndrome (appui secondaire)</label>
             <div id="auri-synd-label" style="font-size:11px;color:var(--jade);padding:7px 9px;border:1px solid var(--border);border-radius:6px;background:var(--jade-lt)">—</div>
           </div>
         </div>
-        <p style="font-size:10px;color:var(--slate);margin-bottom:8px;font-style:italic">Triés par pertinence : 🔴 zone douloureuse retrouvée · 🔵 mot-clé du motif · 🟢 syndrome · cochez les points réalisés</p>
+        <p style="font-size:10px;color:var(--slate);margin-bottom:8px;font-style:italic">Triés par pertinence : 🔴 point palpé douloureux (schéma ②) · 🔵 mot-clé du motif · 🟢 syndrome · ★ point maître · cochez les points réalisés</p>
         <div id="auri-list" style="margin-bottom:8px"></div>
         <div class="f"><label style="font-size:11px">Notes auriculothérapie</label>
           <textarea id="auri-notes" rows="2" placeholder="Aiguilles semi-permanentes, vaccariae, électrostimulation…" oninput="markDirty()" style="font-size:12px"></textarea>
@@ -1508,9 +1694,23 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
 // Liste des praticiens autorisés — modifier pour ajouter/supprimer des accès
 // Format : { code: 'CODE_SECRET', nom: 'Prénom Nom', titre: 'Dr / Mme / M.' }
 const PRATICIENS = [
-  { code: 'ADMIN2024',  nom: 'Nicolas',          titre: 'Dr',  role: 'admin' },
-  { code: 'MTCprat01',  nom: 'Praticien 1',       titre: '',    role: 'user'  },
-  { code: 'MTCprat02',  nom: 'Praticien 2',       titre: '',    role: 'user'  },
+  { code: 'ADMIN2024',       nom: 'Nicolas Blanchard',      titre: 'Dr',  role: 'admin' },
+  { code: 'BerasoaAcu2024!', nom: 'Todizara Berasoa',       titre: 'Dr',  role: 'user'  },
+  { code: 'BorreAcu2024!',   nom: 'Pauline Borre',          titre: 'Mme', role: 'user'  },
+  { code: 'BouchetBadelAcu2024!', nom: 'Marie Bouchet-Badel', titre: 'Dr', role: 'user' },
+  { code: 'ChaneLaiAcu2024!', nom: 'Caroline Chane-Laï',    titre: 'Dr',  role: 'user'  },
+  { code: 'GuidoumDeniaAcu2024!', nom: 'Saïda Guidoum Denia', titre: 'Dr', role: 'user' },
+  { code: 'HengAcu2024!',    nom: 'Lucie Heng',             titre: 'Dr',  role: 'user'  },
+  { code: 'HippolyteAcu2024!', nom: 'Fériel Hippolyte',     titre: 'Dr',  role: 'user'  },
+  { code: 'LafontAcu2024!',  nom: 'Mathilde Lafont',        titre: 'Dr',  role: 'user'  },
+  { code: 'LawWanAcu2024!',  nom: 'Johan Law-Wan',          titre: 'Dr',  role: 'user'  },
+  { code: 'MoquetAcu2024!',  nom: 'Maylis Moquet',          titre: 'Mme', role: 'user'  },
+  { code: 'NguyenAcu2024!',  nom: 'Hien-Anh Nguyen',        titre: 'Dr',  role: 'user'  },
+  { code: 'NhanAcu2024!',    nom: 'Tâm Nhan',               titre: 'Dr',  role: 'user'  },
+  { code: 'PouyfauconAcu2024!', nom: 'Margaux Pouyfaucon',  titre: 'Dr',  role: 'user'  },
+  { code: 'RomandAcu2024!',  nom: 'Elsa Romand',            titre: 'Mme', role: 'user'  },
+  { code: 'SarazinAcu2024!', nom: 'Clara Sarazin',          titre: 'Mme', role: 'user'  },
+  { code: 'TaiebAcu2024!',   nom: 'Alix Taieb',             titre: 'Mme', role: 'user'  },
   // Ajoutez des praticiens ici :
   // { code: 'CODE',    nom: 'Prénom Nom',         titre: 'Dr',  role: 'user'  },
 ];
@@ -2258,6 +2458,9 @@ function dbGet(id){return new Promise((r,j)=>{const q=dbt().get(id);q.onsuccess=
 function dbAll(){return new Promise((r,j)=>{const q=dbt().getAll();q.onsuccess=()=>r(q.result);q.onerror=()=>j(q.error);});}
 function dbPut(o){
   return new Promise((r,j)=>{
+    // Mode test (patient sans archivage) : ne JAMAIS écrire en base, quelle que soit
+    // la fonction appelante (savePatient/saveSeance/saveCCMQOnly...).
+    if(o && o._test){ r(o.id); return; }
     // Si id est undefined, le supprimer pour laisser autoIncrement fonctionner
     const obj = Object.assign({}, o);
     if(obj.id === undefined) delete obj.id;
@@ -2272,9 +2475,9 @@ let curPt=null,curScIdx=null,isDirty=false;
 const PG_T={patients:'Patients',fiche:'Identité & antécédents',dix:'10+1 Questions',
   examen:'Examen clinique MTC',ccmq:'CCMQ — Constitution MTC',
   points:'Prescription de points',realises:'Points réalisés',synthese:'Synthèse & traitement',seances:'Historique séances',
-  urgence:'Mode Urgence — Recettes symptomatiques'};
+  urgence:'Mode Urgence — Recettes symptomatiques',guide:'Mode d\'emploi & journal des évolutions'};
 function mkPt(){return{id:undefined,nom:'',prenom:'',ddn:'',age:'',sexe:'',prof:'',tel:'',email:'',motif:'',praticien:'',atcd:'',traitement:'',allergies:'',vie:'',seances:[]};}
-function mkSc(){return{date:new Date().toISOString().slice(0,10),statut:'preparation',q:{},ex:{},ccmq:{},pts:{syndrome:'',realises:[],auriRealises:[],auriNotes:'',notesLibres:''},syn:{motif:'',syndromes:'',principe:'',points:'',tech:'',duree:'',react:'',conseils:'',cr:'',rdv:''}};}
+function mkSc(){return{date:new Date().toISOString().slice(0,10),statut:'preparation',q:{},ex:{},ccmq:{},pts:{syndrome:'',realises:[],auriRealises:[],auriNotes:'',notesLibres:''},syn:{motif:'',syndromes:'',principe:'',points:'',tech:'',duree:'',react:'',conseils:'',cr:'',rdv:'',prepNotes:''}};}
 // ══════ INIT ══════
 document.addEventListener('DOMContentLoaded',async()=>{
   await openDB();
@@ -2498,6 +2701,9 @@ function resetPrescription(){
   const bg = document.getElementById('bagang-result');
   if(bg) bg.innerHTML='<span style="color:var(--slate);font-style:italic">Remplissez les 10 questions et l\'examen clinique puis cliquez Calculer.</span>';
 
+  // Motif clinique — IA (prompt/réponse collée), pour éviter tout mélange avec une autre analyse
+  _clearAImotifFields();
+
   syncRealises();
   markDirty();
   showToast('✅ Prescription remise à zéro — repartez sur une base propre');
@@ -2580,9 +2786,16 @@ function navTo(pg){
   const t=document.getElementById('pg-'+pg);if(t)t.classList.add('on');
   document.getElementById('tb-title').textContent=PG_T[pg]||pg;
   const hp=!!curPt,hs=curScIdx!==null;
-  document.getElementById('btn-ns').style.display=(hp&&pg!=='patients'&&pg!=='fiche')?'':'none';
+  const curSc=(hs&&curPt&&curPt.seances)?curPt.seances[curScIdx]:null;
+  const isRealisee=!!(curSc&&curSc.statut==='realisee');
+  document.getElementById('btn-ns').style.display=(hp&&pg!=='patients'&&pg!=='fiche'&&pg!=='guide')?'':'none';
+  // « Enregistrer le brouillon » : visible dès qu'un patient est sélectionné, tant que la séance
+  // en cours n'est pas déjà marquée réalisée (sinon ce bouton la repasserait par erreur en préparation).
+  document.getElementById('btn-brouillon').style.display=(hp&&!isRealisee&&['dix','examen','ccmq','points','synthese','urgence'].includes(pg))?'':'none';
   document.getElementById('btn-ss').style.display=(hs&&['dix','examen','ccmq','points','synthese','urgence'].includes(pg))?'':'none';
-  document.getElementById('btn-ex').style.display=hp&&pg!=='patients'?'':'none';
+  document.getElementById('btn-ex').style.display=(hp&&pg!=='patients'&&pg!=='guide')?'':'none';
+  const tBanner=document.getElementById('test-banner');
+  if(tBanner) tBanner.style.display=(hp&&curPt._test)?'flex':'none';
   if(pg==='patients')renderPatients();
   if(pg==='seances')renderSeances();
   if(pg==='realises') setTimeout(syncRealises, 50);
@@ -2645,9 +2858,9 @@ async function openPt(id){
 }
 function updSb(){
   if(!curPt)return;
-  document.getElementById('pi-name').textContent=`${curPt.prenom} ${curPt.nom}`;
+  document.getElementById('pi-name').textContent=curPt._test?'🧪 Patient test':`${curPt.prenom} ${curPt.nom}`;
   const nb=(curPt.seances||[]).length;
-  document.getElementById('pi-sub').textContent=`${nb} séance${nb>1?'s':''}`;
+  document.getElementById('pi-sub').textContent=curPt._test?'Non archivé':`${nb} séance${nb>1?'s':''}`;
   document.getElementById('btn-dp').style.display=curPt.id?'':'none';
 }
 function newPatient(){
@@ -2661,6 +2874,37 @@ function newPatient(){
   document.getElementById('pi-sub').textContent='0 séance';
   navTo('fiche');
   _flushUrgPending(false);
+}
+
+// ══════ MODE TEST (patient sans archivage) ══════
+// Accès complet à toutes les fonctionnalités de consultation (10+1, examen, CCMQ, points,
+// auriculothérapie, synthèse) sans jamais écrire dans IndexedDB — voir dbPut() qui court-circuite
+// toute écriture pour un objet marqué _test:true. Utile pour tester rapidement une recherche de
+// points sans créer de dossier, et pressenti comme mode de diffusion privilégié (formation Bobigny)
+// pour éviter les questions de conservation de données de santé (RGPD).
+function startTestPatient(){
+  clearForms();
+  resetPoints();
+  curPt=mkPt();
+  curPt._test=true;
+  // Vider le CCMQ pour cette consultation test
+  document.querySelectorAll('[id^="c-"]').forEach(el=>{ if(el.tagName==='INPUT'||el.tagName==='SELECT') el.value=''; });
+  const ccqRes=document.getElementById('ccq-result');if(ccqRes)ccqRes.innerHTML='';
+  updSb();
+  document.getElementById('btn-dp').style.display='none';
+  document.getElementById('pi-name').textContent='🧪 Patient test';
+  document.getElementById('pi-sub').textContent='Non archivé';
+  navTo('fiche');
+  _flushUrgPending(false);
+  showToast('🧪 Mode test activé — rien ne sera archivé');
+}
+function exitTestMode(){
+  curPt=null;curScIdx=null;
+  clearForms();
+  document.getElementById('pi-name').textContent='Aucun patient';
+  document.getElementById('pi-sub').textContent='Sélectionnez un patient';
+  navTo('patients');
+  showToast('Mode test terminé');
 }
 
 function loadFiche(){
@@ -2682,12 +2926,17 @@ async function savePatient(){
   curPt.atcd=g('p-atcd');curPt.traitement=g('p-traitement');curPt.allergies=g('p-allergies');curPt.vie=g('p-vie');
   if(!curPt.seances)curPt.seances=[];
   const id=await dbPut(curPt);if(!curPt.id)curPt.id=id;
-  updSb();isDirty=false;showToast('Patient enregistré');
+  updSb();isDirty=false;
+  showToast(curPt._test?'🧪 Mode test — identité non archivée':'Patient enregistré');
 }
 async function deletePtById(id, nom){
   if(!confirm(`Supprimer définitivement le dossier de ${nom} et toutes ses séances ?`)) return;
   await dbDel(id);
-  if(curPt && curPt.id===id){ curPt=null; curScIdx=null; document.getElementById('pi-name').textContent='Aucun patient'; document.getElementById('pi-sub').textContent='Sélectionnez un patient'; }
+  if(curPt && curPt.id===id){
+    curPt=null; curScIdx=null;
+    clearForms(); // sécurité : vider motif/10+1/examen — sinon les champs de l'ex-patient restent affichés (et faussent l'auriculothérapie) tant qu'aucun nouveau patient n'est ouvert
+    document.getElementById('pi-name').textContent='Aucun patient'; document.getElementById('pi-sub').textContent='Sélectionnez un patient';
+  }
   await renderPatients();
   showToast('Patient supprimé');
 }
@@ -2855,6 +3104,7 @@ function loadSeance(sc){
   s('s-motif',syn.motif);s('s-syndromes',syn.syndromes);s('s-principe',syn.principe);
   s('s-points',syn.points);s('s-tech',syn.tech);s('s-duree',syn.duree);
   s('s-react',syn.react);s('s-conseils',syn.conseils);s('s-cr',syn.cr);s('s-rdv',syn.rdv);
+  s('dix-prep-notes',syn.prepNotes);
   // Sync motif vers la bannière 10+1 Questions
   const motifInp=document.getElementById('dix-motif-input');
   if(motifInp) motifInp.value=syn.motif||curPt?.motif||'';
@@ -2910,7 +3160,8 @@ function collectSc(){
   const sEl=document.getElementById('s-motif');if(sEl&&motifVal)sEl.value=motifVal;
   sc.syn={motif:motifVal,syndromes:g('s-syndromes'),principe:g('s-principe'),
     points:g('s-points'),tech:g('s-tech'),duree:g('s-duree'),
-    react:g('s-react'),conseils:g('s-conseils'),cr:g('s-cr'),rdv:g('s-rdv')};
+    react:g('s-react'),conseils:g('s-conseils'),cr:g('s-cr'),rdv:g('s-rdv'),
+    prepNotes:g('dix-prep-notes')};
   return sc;
 }
 async function saveSeance(){
@@ -2935,14 +3186,14 @@ async function saveSeance(){
   }
   await dbPut(curPt);
   updSb();isDirty=false;syncPts();
-  showToast('✅ Séance N°'+(curScIdx+1)+' enregistrée');
+  showToast(curPt._test?'🧪 Séance test terminée — non archivée':'✅ Séance N°'+(curScIdx+1)+' enregistrée');
   renderSeances();
 }
 
 async function saveCCMQOnly(){
   try {
     if(!curPt){showToast('Créez d\'abord un patient dans Identité');return;}
-    if(!curPt.id){
+    if(!curPt.id&&!curPt._test){
       await savePatient();
       if(!curPt.id){showToast('Enregistrez d\'abord l\'identité du patient');return;}
     }
@@ -2958,7 +3209,7 @@ async function saveCCMQOnly(){
     }
     await dbPut(curPt);
     updSb();isDirty=false;
-    showToast('✅ Préparation sauvegardée (tout le contenu)');
+    showToast(curPt._test?'🧪 Mode test — non archivé':'✅ Préparation sauvegardée (tout le contenu)');
   } catch(e){
     showToast('Erreur : '+e.message);
     console.error('saveCCMQOnly:',e);
@@ -3440,6 +3691,7 @@ function addLibrePoint(){
   const nEl = document.getElementById('pts-libre-nom');
   if(cEl) cEl.value='';
   if(nEl) nEl.value='';
+  if(cEl) cEl.focus(); // le curseur reste sur le champ Code : taper le code suivant puis ↵, sans reprendre la souris
   setTimeout(syncRealises, 50);
   showToast('Point ajouté : '+label);
 }
@@ -4335,11 +4587,7 @@ function copyMotifPromptForAI(){
 function resetAImotif(){
   // À utiliser si le motif change ou si le raisonnement clinique est repris à zéro :
   // efface le texte libre, le prompt collé, la réponse collée et le résultat affiché.
-  const q = document.getElementById('ai-motif-question'); if(q) q.value='';
-  const paste = document.getElementById('ai-motif-paste'); if(paste) paste.value='';
-  const pasteBlock = document.getElementById('ai-motif-paste-block'); if(pasteBlock) pasteBlock.style.display='none';
-  const resultEl = document.getElementById('ai-motif-result'); if(resultEl){ resultEl.textContent=''; resultEl.style.display='none'; }
-  const statusEl = document.getElementById('ai-pts-status'); if(statusEl) statusEl.innerHTML='';
+  _clearAImotifFields();
   markDirty();
   showToast('Motif IA réinitialisé');
 }
@@ -4350,8 +4598,13 @@ function applyPastedAIResponse(){
   if(!text){ showToast('Collez d\'abord la réponse de l\'IA'); return; }
   const resultEl = document.getElementById('ai-motif-result');
   if(resultEl){ resultEl.textContent = text; resultEl.style.display=''; }
+  // Sans ceci, la réponse n'est jamais enregistrée avec la séance (elle n'apparaît que dans
+  // ce panneau temporaire) : on l'intègre au compte-rendu, qui lui est bien sauvegardé.
+  const crEl = document.getElementById('s-cr');
+  if(crEl) crEl.value = (crEl.value ? crEl.value+'\n\n' : '') + '— Réponse IA (motif) —\n' + text;
+  renderAIPointsChecklist(text);
   markDirty();
-  showToast('Réponse IA appliquée');
+  showToast('Réponse IA appliquée et intégrée au compte-rendu de la séance');
 }
 
 async function askAIpoints(){
@@ -4391,6 +4644,10 @@ Contexte patient : ${p.prenom||''} ${p.nom||''}, ${p.age||'?'} ans, ${p.sexe||''
     const data = await res.json();
     const text = data.content[0].text.trim();
     if(resultEl){ resultEl.textContent=text; resultEl.style.display=''; }
+    // Intégrer au compte-rendu, seul champ réellement sauvegardé avec la séance.
+    const crEl = document.getElementById('s-cr');
+    if(crEl) crEl.value = (crEl.value ? crEl.value+'\n\n' : '') + '— Réponse IA (motif) —\n' + text;
+    renderAIPointsChecklist(text);
     if(statusEl) statusEl.innerHTML = '<span style="color:var(--jade);font-size:11px">✅ Réponse reçue</span>';
     setTimeout(()=>{ if(statusEl)statusEl.innerHTML=''; }, 3000);
     showToast('Proposition IA générée');
@@ -7230,6 +7487,60 @@ const ADB = [
   {c:'Sympathique',cat:'Endocrinien / Métabolique',synd:['Anxiété-stress','Bi (obstruction-douleur)'],
    a:'Régulation neuro-végétative, spasmes viscéraux, vasodilatation.',
    loc:'Triangle de la fosse — extrémité de la branche inférieure de l\'anthélix'},
+
+  // POINTS MAÎTRES / RÉFLEXES (points classiques de la littérature française d'auriculothérapie —
+  // Nogier, Bourdiol, Bossy — complémentaires aux points d'organes ci-dessus)
+  {c:'Point Zéro\'',cat:'Points maîtres / Réflexes',synd:[],
+   a:'Variante externe du Point Zéro, homéostasie générale.',
+   loc:'Hélix, racine — variante externe, près du tubercule de l\'hélix'},
+  {c:'Point du PCS',cat:'Points maîtres / Réflexes',synd:[],
+   a:'Point du plexus cervical superficiel — cervicalgies, névralgies cervicales.',
+   loc:'Hélix, racine — jonction hélix/lobe, trajet du plexus cervical superficiel'},
+  {c:'Zone du nerf trijumeau',cat:'Points maîtres / Réflexes',synd:['Bi (obstruction-douleur)'],
+   a:'Névralgies faciales, algies dentaires, douleurs de la face.',
+   loc:'Lobe — bord antérieur du lobule, trajet du nerf trijumeau'},
+  {c:'Point merveilleux',cat:'Points maîtres / Réflexes',synd:[],
+   a:'Point d\'action générale, décrit par Nogier — régulation globale.',
+   loc:'Anthélix — branche inférieure, versant conque'},
+  {c:'Point de décussation',cat:'Points maîtres / Réflexes',synd:[],
+   a:'Point de croisement des voies, effet régulateur général.',
+   loc:'Hélix, racine — jonction hélix/anthélix inférieur'},
+  {c:'Point maître sensoriel',cat:'Points maîtres / Réflexes',synd:[],
+   a:'Régulation des perceptions sensorielles.',
+   loc:'Anthélix — branche inférieure, partie basse'},
+  {c:'Point d\'allergie',cat:'Points maîtres / Réflexes',synd:['Vent-Froid externe','Humidité-Chaleur'],
+   a:'Terrain allergique, urticaire, rhinite allergique, asthme.',
+   loc:'Fosse triangulaire — bord supérieur, jonction avec l\'hélix'},
+  {c:'Point de réactivité (Bourdiol)',cat:'Points maîtres / Réflexes',synd:['Fatigue chronique'],
+   a:'Évalue et stimule la réactivité générale du terrain (Bourdiol).',
+   loc:'Anthélix — branche supérieure, versant fosse triangulaire'},
+  {c:'Point de Bosch',cat:'Points maîtres / Réflexes',synd:['Dysménorrhée par stase'],
+   a:'Sphère génitale (pénis, clitoris) — troubles sexuels fonctionnels.',
+   loc:'Anthélix — branche inférieure, versant fosse triangulaire, proche Utérus'},
+  {c:'Point maître d\'élimination',cat:'Points maîtres / Réflexes',synd:['Glaires-Humidité','Humidité-Chaleur'],
+   a:'Stimule les émonctoires, drainage général (sous l\'ourlet de l\'hélix).',
+   loc:'Hélix — sous le bord de l\'hélix, tiers supérieur'},
+  {c:'Point maître des organes abdominaux',cat:'Points maîtres / Réflexes',synd:[],
+   a:'Action globale sur la sphère abdominale (spasmes, ballonnements diffus).',
+   loc:'Anthélix — branche inférieure, versant conque supérieure'},
+  {c:'Point maxillo-dentaire',cat:'Points maîtres / Réflexes',synd:['Bi (obstruction-douleur)'],
+   a:'Algies dentaires, troubles de l\'articulé maxillaire.',
+   loc:'Lobe — zone antéro-supérieure du lobule, près du tragus'},
+  {c:'Point oméga',cat:'Points maîtres / Réflexes',synd:[],
+   a:'Point de régulation générale décrit en fin de traitement (Nogier).',
+   loc:'Lobe — partie inférieure du lobule'},
+  {c:'Point maître de Darwin',cat:'Points maîtres / Réflexes',synd:[],
+   a:'Point du tubercule de Darwin — action réflexe générale.',
+   loc:'Hélix — tubercule auriculaire (tubercule de Darwin), tiers supérieur'},
+  {c:'Point maître de la peau',cat:'Points maîtres / Réflexes',synd:['Vent-Froid externe','Humidité-Chaleur'],
+   a:'Affections cutanées (sous-tragal) — eczéma, prurit, acné.',
+   loc:'Tragus — face postérieure, zone sous-tragale'},
+  {c:'Point maître de l\'audition',cat:'Points maîtres / Réflexes',synd:[],
+   a:'Acouphènes, hypoacousie fonctionnelle.',
+   loc:'Tragus — bord postérieur, près de l\'incisure intertragique'},
+  {c:'Point maître des articulations',cat:'Points maîtres / Réflexes',synd:['Bi (obstruction-douleur)'],
+   a:'Action générale anti-inflammatoire articulaire, polyarthralgies.',
+   loc:'Tragus — bord postérieur, au-dessus du point maître de l\'audition'},
 ];
 
 // Mapping syndrome corps → points auriculaires prioritaires
@@ -7266,31 +7577,27 @@ const SYND_TO_AURI_KEY = {
   'Stagnation du Qi du Foie':'Stagnation Qi Foie', 'Stase de Sang':'Stase du Sang',
 };
 
-// Mots-clés (normalisés, sans accent) permettant de relier une zone du pavillon auriculaire
-// (palpée en examen clinique) au texte de localisation (loc) de chaque point ADB — les deux
-// vocabulaires ne sont pas rédigés à l'identique (ex: "Fosse triangulaire" / "Triangle de la fosse").
-const EAR_ZONE_KEYWORDS = {
-  'Hélix': ['helix'],
-  'Anthélix': ['anthelix'],
-  'Fosse triangulaire': ['triangle de la fosse','fosse triangulaire'],
-  'Conque supérieure': ['conque superieure'],
-  'Conque inférieure': ['conque inferieure'],
-  'Tragus': ['tragus'],
-  'Lobe': ['lobe'],
-  'Apex': ['apex','sommet du pavillon','apical'],
-};
 const AURI_STOPWORDS = new Set(['dans','avec','pour','depuis','chez','sans','vers','tres','plus','moins','cette','etre','avoir','tout','tous','toute','toutes','quand','comme','mais','donc','alors','aussi','encore','deja','entre','sous','leur','leurs','notre','votre','depuis','apres','avant']);
+// Correspondance nom de point (ADB.c) → numéro du schéma auriculaire (② Examen), pour affichage
+// croisé dans la liste de suggestion ci-dessous. Mis à jour le 27 sept. 2026 : schéma v2 à 78 points
+// (points 64-76 ajoutés, 4/5/44/48/50/56/59 remplacés, 10/17/27 positionnés, 38 renommé, 20 déplacé).
+const EAR_PT_NUM = {'Apex (Pointe)':1,'Point Zéro':2,'Trachée':3,'Clavicule':4,'Coude':5,'Point maître d\'élimination':6,'Point maître de Darwin':7,'Épaule':8,'Sein':9,'Point Antidépresseur':10,'Gros intestin':11,'Urètre':12,'Point Zéro\'':13,'Point du PCS':14,'Point de décussation':15,'Genou':16,'Point de réactivité (Bourdiol)':17,'Lombaires':18,'Hanche':19,'Nerf sciatique':20,'Cervicales':21,'Point merveilleux':22,'Point maître sensoriel':23,'Point maître des organes abdominaux':24,'Point de Bosch':25,'Shen Men':26,'Sous-cortex':27,'Thalamus (Analgésie)':28,'Utérus (ZIGONG)':29,'Ovaires':30,'Prostate':31,'Sympathique':32,'Point d\'allergie':33,'Rate (PI)':34,'Estomac (WEI)':35,'Intestin grêle':36,'Triple Réchauffeur':37,'Rein (SHEN) / Détoxification':38,'Vessie (PANG)':39,'Vésicule biliaire':40,'Pancréas':41,'Cœur (CO)':42,'Foie (GAN)':43,'Poignet':44,'Poumon (FEI)':45,'Endocrine':46,'Faim (Appétit)':47,'Doigts':48,'Surrénal (ACTH)':49,'Cheville':50,'Thyroïde':51,'Glande surrénale':52,'Point maître de la peau':53,'Point maître de l\'audition':54,'Point maître des articulations':55,'Orteils':56,'Œil (YAN)':57,'Nez interne':58,'Talon':59,'Point maxillo-dentaire':60,'Point oméga':61,'Occipital':62,'Hypertension (HTA)':63,'Pelvis':64,'Duodénum':65,'Rachis dorsal':66,'Abdomen':67,'Fesse':68,'Bouche':69,'Rectum':70,'Mâchoire':71,'Langue':72,'Dents':73,'Oreille interne':74,'Amygdales':75,'Pharynx / Larynx':76,'Cardia':77,'Oesophage':78};
+const EAR_PT_MASTER = new Set([2,6,7,16,22,23,24,25,26,28,32,53,54,55,61]);
 
 function renderAuriRows(scored, savedRealises){
   return scored.map(({p,why,isPrio}) => {
     const isR = savedRealises.some(r => r.startsWith('AURI:'+p.c));
+    const earNum = EAR_PT_NUM[p.c];
+    const earBadge = earNum
+      ? `<span title="Repère sur le schéma auriculaire (②)" style="font-size:9px;font-weight:700;padding:1px 6px;border-radius:20px;margin-left:5px;${EAR_PT_MASTER.has(earNum)?'background:#E8EEFB;color:#1B4B8A':'background:var(--cream2);color:var(--slate)'}">${EAR_PT_MASTER.has(earNum)?'★ ':''}N°${earNum}</span>`
+      : '';
     return `<div class="auri-row">
       <input type="checkbox" class="auri-chk" data-code="${p.c}" ${isR?'checked':''} onchange="onAuriChk(this)">
       <div class="auri-code${isR?' ck':''}" style="${isPrio?'background:#6B2A2A;':''}">
         ${isPrio?'★ ':''}${p.c}
       </div>
       <div class="auri-txt">
-        <div class="auri-nom">${p.c} <span class="auri-cat-badge">${p.cat.split(' / ')[0]}</span></div>
+        <div class="auri-nom">${p.c} <span class="auri-cat-badge">${p.cat.split(' / ')[0]}</span>${earBadge}</div>
         <div class="auri-act">${p.a}</div>
         <div class="auri-loc">📍 ${p.loc}</div>
         ${why.length?`<div style="font-size:10px;color:var(--jade);margin-top:2px">${why.join(' · ')}</div>`:''}
@@ -7311,14 +7618,18 @@ function showAuri(syndrome, savedRealises=[]) {
   if (syndLabel) syndLabel.textContent = syndrome || '—';
 
   // ── Signal principal 1 : motif de consultation (texte libre → mots-clés) ──
+  // Sécurité : sans patient sélectionné, ne jamais lire les champs motif — ils peuvent
+  // encore contenir le texte de l'ex-patient si le formulaire n'a pas été explicitement vidé.
   const pt = curPt||{};
-  const motifBrut = [(document.getElementById('dix-motif-input')||{}).value,(document.getElementById('s-motif')||{}).value, pt.motif||''].filter(Boolean).join(' ');
+  const motifBrut = curPt ? [(document.getElementById('dix-motif-input')||{}).value,(document.getElementById('s-motif')||{}).value, pt.motif||''].filter(Boolean).join(' ') : '';
   const motifTokens = _normTxt(motifBrut).split(/[^a-z0-9]+/i).filter(w=>w.length>=4 && !AURI_STOPWORDS.has(w));
   if (motifLabel) motifLabel.textContent = motifBrut.trim() ? motifBrut.trim() : '—';
 
-  // ── Signal principal 2 : zones douloureuses retrouvées à la palpation de l'oreille (Ah Shi) ──
-  const earZones = ((document.getElementById('palp-oreille')||{}).value||'').split(',').map(v=>v.trim()).filter(Boolean);
-  if (zonesLabel) zonesLabel.textContent = earZones.length ? earZones.join(', ') : '—';
+  // ── Signal principal 2 : points douloureux retrouvés à la palpation de l'oreille (Ah Shi) ──
+  // Depuis le recalage du schéma (27 sept. 2026), la palpation se fait point par point : la valeur
+  // stockée est le nom exact du point cliqué (dataset.name), comparable directement au nom ADB (p.c).
+  const earPts = ((document.getElementById('palp-oreille')||{}).value||'').split(',').map(v=>v.trim()).filter(Boolean);
+  if (zonesLabel) zonesLabel.textContent = earPts.length ? earPts.join(', ') : '—';
 
   // ── Signal secondaire : syndrome Zang-Fu actif (simple appui, pas le critère principal) ──
   const syndKey = syndrome ? (SYND_TO_AURI_KEY[syndrome] || normalizeSynd(syndrome)) : '';
@@ -7326,9 +7637,8 @@ function showAuri(syndrome, savedRealises=[]) {
 
   let scored = ADB.filter(p => !cat || p.cat === cat).map(p => {
     let sc = 0; const why = [];
-    const locN = _normTxt(p.loc);
-    const zoneHit = earZones.find(z => (EAR_ZONE_KEYWORDS[z]||[]).some(kw => locN.includes(kw)));
-    if (zoneHit) { sc += 5; why.push('🔴 Zone douloureuse : '+zoneHit); }
+    const zoneHit = earPts.includes(p.c);
+    if (zoneHit) { sc += 5; why.push('🔴 Point palpé : '+p.c); }
     const txtN = _normTxt(p.c+' '+p.a);
     const motifHit = motifTokens.find(t => txtN.includes(t));
     if (motifHit) { sc += 3; why.push('🔵 Motif : '+motifHit); }
@@ -7502,16 +7812,43 @@ function togEx(el, inputId) {
 }
 
 // ══════ PALPATION AURICULAIRE (carte SVG) ══════
-function togEarZone(el, zoneName){
+function setEarHL(num,on){
+  // Surbrillance croisée schéma <-> légende : survoler un point allume son intitulé écrit (et inversement)
+  const pt=document.getElementById('ep-'+num);
+  if(pt){ pt.classList.toggle('hl', on); pt.setAttribute('r', on?'20':'17'); }
+  const lgd=document.getElementById('lgd-'+num);
+  if(lgd) lgd.classList.toggle('hl', on);
+}
+function onEarPointHover(e){
+  const t=e.target; if(!t||t.tagName!=='circle'||!t.dataset.num) return;
+  setEarHL(t.dataset.num, true);
+}
+function onEarPointOut(e){
+  const t=e.target; if(!t||t.tagName!=='circle'||!t.dataset.num) return;
+  setEarHL(t.dataset.num, false);
+}
+function onEarLegendHover(e){
+  const t=e.target.closest('.lgd-item'); if(!t) return;
+  setEarHL(t.dataset.num, true);
+}
+function onEarLegendOut(e){
+  const t=e.target.closest('.lgd-item'); if(!t) return;
+  setEarHL(t.dataset.num, false);
+}
+// Depuis le recalage du 27 sept. 2026 sur le schéma classique du Dr Blanchard, la palpation se fait
+// point par point (et non plus par grande zone rectangulaire) : chaque point cliqué se marque lui-même
+// « palpé » via son propre nom (dataset.name), ce qui est à la fois plus précis et directement exploitable
+// par le moteur de suggestion d'auriculothérapie (correspondance exacte avec le nom du point dans ADB).
+function togEarZone(el, pointName){
   el.classList.toggle('on');
   const svg = el.closest('svg');
   const inp = document.getElementById('palp-oreille');
   const disp = document.getElementById('palp-oreille-disp');
   if(!svg || !inp) return;
-  const selected = Array.from(svg.querySelectorAll('.ear-zone.on')).map(z=>z.dataset.zone);
+  const selected = Array.from(svg.querySelectorAll('.ear-pt.on')).map(z=>z.dataset.name);
   inp.value = selected.join(', ');
   if(disp){
-    disp.textContent = selected.length ? 'Zones douloureuses : '+selected.join(', ') : '—';
+    disp.textContent = selected.length ? 'Points palpés : '+selected.join(', ') : '—';
     disp.classList.toggle('empty', !selected.length);
   }
   markDirty();
@@ -7521,14 +7858,14 @@ function togEarZone(el, zoneName){
 function restoreEarZones(val){
   const svg = document.getElementById('ear-svg');
   if(!svg) return;
-  const zones = (val||'').split(',').map(v=>v.trim()).filter(Boolean);
-  svg.querySelectorAll('.ear-zone').forEach(z=>{
-    z.classList.toggle('on', zones.includes(z.dataset.zone));
+  const pts = (val||'').split(',').map(v=>v.trim()).filter(Boolean);
+  svg.querySelectorAll('.ear-pt').forEach(z=>{
+    z.classList.toggle('on', pts.includes(z.dataset.name));
   });
   const disp = document.getElementById('palp-oreille-disp');
   if(disp){
-    disp.textContent = zones.length ? 'Zones douloureuses : '+zones.join(', ') : '—';
-    disp.classList.toggle('empty', !zones.length);
+    disp.textContent = pts.length ? 'Points palpés : '+pts.join(', ') : '—';
+    disp.classList.toggle('empty', !pts.length);
   }
 }
 
@@ -7676,6 +8013,77 @@ function resetPoints(){
   const aiRes=document.getElementById('ai-pts-res');if(aiRes)aiRes.textContent='';
   // Suggestions syndrome
   const suggEl=document.getElementById('synd-suggestions');if(suggEl)suggEl.style.display='none';
+  // Motif clinique — IA (① prompt/réponse) : sans ceci, le prompt/réponse d'une séance ou
+  // d'un patient précédent reste affiché en changeant de patient/séance (bug de mélange).
+  _clearAImotifFields();
+}
+
+// Vide silencieusement le bloc IA de « ① Motif clinique » (prompt, réponse collée, résultat).
+// Appelé automatiquement par resetPoints()/resetPrescription() à chaque changement de patient
+// ou de séance. resetAImotif() (bouton manuel) l'appelle aussi, en ajoutant toast + markDirty.
+function _clearAImotifFields(){
+  const q = document.getElementById('ai-motif-question'); if(q) q.value='';
+  const paste = document.getElementById('ai-motif-paste'); if(paste) paste.value='';
+  const pasteBlock = document.getElementById('ai-motif-paste-block'); if(pasteBlock) pasteBlock.style.display='none';
+  const resultEl = document.getElementById('ai-motif-result'); if(resultEl){ resultEl.textContent=''; resultEl.style.display='none'; }
+  const statusEl = document.getElementById('ai-pts-status'); if(statusEl) statusEl.innerHTML='';
+  _aiExtractedPoints=[];
+  const ptsBox=document.getElementById('ai-motif-points-box'); if(ptsBox) ptsBox.style.display='none';
+  const ptsList=document.getElementById('ai-motif-points-list'); if(ptsList) ptsList.innerHTML='';
+}
+
+// ── Extraction des points d'acupuncture cités dans une réponse IA (texte libre) ──
+// Repère les codes de points au format WHO (ex: ST36, LI4, GV20, EX-HN3) pour permettre de
+// les cocher/ajouter en un clic dans « Points réalisés », plutôt que de les ressaisir à la main.
+let _aiExtractedPoints = [];
+
+function extractAIPoints(text){
+  if(!text) return [];
+  const codeRe = /\b(EX-(?:HN|LE|UE|B|CA)\d{1,2}|(?:LI|LU|ST|SP|HT|SI|BL|KD|PC|SJ|GB|LV|GV|CV)\d{1,2})\b/g;
+  const found = new Map();
+  text.split('\n').forEach(line=>{
+    codeRe.lastIndex = 0;
+    let m;
+    while((m = codeRe.exec(line))){
+      const code = m[1];
+      if(found.has(code)) continue;
+      let ctx = line.slice(m.index + code.length).trim();
+      ctx = ctx.replace(/^[\s:\-–—()•.,]+/, '').trim();
+      ctx = ctx.split(/[.;]\s|—|–/)[0].trim();
+      // Nettoie une parenthèse fermante orpheline (ex: "Nom) : indication" après découpe)
+      ctx = ctx.replace(/^([^()]*)\)/, '$1').trim();
+      if(ctx.length > 70) ctx = ctx.slice(0,70).trim()+'…';
+      found.set(code, ctx);
+    }
+  });
+  return Array.from(found.entries()).map(([code,ctx])=>({code, ctx}));
+}
+
+function renderAIPointsChecklist(text){
+  const box = document.getElementById('ai-motif-points-box');
+  const list = document.getElementById('ai-motif-points-list');
+  if(!box || !list) return;
+  _aiExtractedPoints = extractAIPoints(text);
+  if(!_aiExtractedPoints.length){ box.style.display='none'; list.innerHTML=''; return; }
+  box.style.display='';
+  list.innerHTML = _aiExtractedPoints.map((e,i)=>`<div class="pt-row">
+    <div class="pt-code" style="min-width:44px">${e.code}</div>
+    <div class="pt-txt"><div class="pt-nom">${e.ctx || '—'}</div></div>
+    <button class="btn bg" style="font-size:11px;flex-shrink:0;margin-left:auto" onclick="addAIExtractedPoint(${i},this)">➕ Ajouter</button>
+  </div>`).join('');
+}
+
+function addAIExtractedPoint(idx, btn){
+  const e = _aiExtractedPoints[idx];
+  if(!e) return;
+  const label = e.ctx ? e.ctx+' — proposé par IA (motif)' : 'Proposé par IA (motif)';
+  addLibrePointDirect(e.code, label, btn);
+}
+
+function addAllAIExtractedPoints(){
+  if(!_aiExtractedPoints.length){ showToast('Aucun point détecté'); return; }
+  const btns = document.querySelectorAll('#ai-motif-points-list button');
+  _aiExtractedPoints.forEach((e,i)=>addAIExtractedPoint(i, btns[i]));
 }
 
 function clearForms(){
