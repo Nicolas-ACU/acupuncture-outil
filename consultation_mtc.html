@@ -176,6 +176,27 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
   .fg,.cg,.rg{grid-template-columns:1fr}
   .ci:nth-child(even){border-right:1px solid var(--border)}
 }
+/* ── Schéma auriculaire agrandi (zoom, déplacement, recherche) ── */
+#ear-zoom{position:fixed;inset:0;background:rgba(20,24,22,.6);z-index:9000;display:none;align-items:center;justify-content:center}
+#ear-zoom.open{display:flex}
+.ez-box{background:#fff;border-radius:10px;width:min(96vw,980px);height:min(95vh,1100px);display:flex;flex-direction:column;overflow:hidden;box-shadow:0 10px 40px rgba(0,0,0,.35)}
+.ez-bar{display:flex;gap:6px;align-items:center;padding:8px 10px;border-bottom:1px solid var(--border);flex-wrap:wrap;background:var(--cream,#FBF8F2)}
+.ez-bar .btn{font-size:13px;padding:4px 10px;min-width:34px}
+.ez-bar input:not([type=checkbox]){flex:1;min-width:150px;font-size:13px;padding:5px 8px}
+.ez-bar input[type=checkbox]{width:auto;min-width:0;flex:none;margin:0}
+.ez-stage{flex:1;position:relative;overflow:hidden;touch-action:none;background:#fff;cursor:grab}
+.ez-stage.drag{cursor:grabbing}
+.ez-stage svg{width:100%;height:100%;display:block;user-select:none}
+.ez-stage .ear-pt{stroke:rgba(27,75,138,.45);stroke-width:2}
+.ez-stage .ear-pt.on,.ez-stage .ear-pt-sugg{stroke-width:3}
+.ez-lbl{fill:#12355E;font-weight:600;paint-order:stroke;stroke:#fff;stroke-width:4px;stroke-linejoin:round;pointer-events:none;display:none}
+.ez-labels .ez-lbl{display:inline}
+.ez-hint{font-size:10px;color:var(--slate);padding:4px 10px;border-top:1px solid var(--border)}
+.ear-pt-pulse{animation:ezpulse .9s ease-in-out 4}
+@keyframes ezpulse{0%,100%{stroke:#1B4B8A;stroke-width:3}50%{stroke:#1B4B8A;stroke-width:16}}
+.ez-open-btn{font-size:11px;padding:3px 9px;margin-top:4px}
+.ez-tab{font-size:12px!important}
+.ez-tab.on{background:var(--jade);color:#fff;border-color:var(--jade)}
 </style>
 </head>
 <body>
@@ -309,12 +330,21 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
               <option value="urologique">Urologique</option>
             </select>
           </div>
+          <div class="f" style="flex:1;min-width:220px">
+            <label>Protocole auriculaire d'analgésie (optionnel)</label>
+            <select id="urg-proto" onchange="searchUrgence()">
+              <option value="">— Aucun —</option>
+              <option value="bfa">Battlefield Acupuncture (BFA)</option>
+              <option value="cheng">CHENG — per-opératoire PTH / PTG</option>
+            </select>
+          </div>
           <button class="btn" onclick="resetUrgence()" style="font-size:12px">🔄 Réinitialiser</button>
         </div>
         <div id="urg-empty" style="text-align:center;padding:20px;color:var(--slate);font-size:13px">
           Décrivez le motif ou choisissez un type de chirurgie pour obtenir une proposition de points.
         </div>
         <div id="urg-result" style="display:none">
+          <div class="card" id="urg-proto-result" style="display:none;border-left:4px solid #6C3483;padding:10px;margin:0 0 8px"></div>
           <div class="card" style="border-left:4px solid var(--jade);padding:10px;margin:0 0 8px">
             <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:6px">
               <div style="font-size:11px;font-weight:700;color:var(--slate);text-transform:uppercase;letter-spacing:.4px">Points d'acupuncture proposés (max 10)</div>
@@ -1075,7 +1105,8 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
           <div style="font-size:11px;font-weight:700;color:var(--jade);text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px">Palpation auriculaire 耳診 — Zones réactives</div>
           <div style="font-size:10px;color:var(--slate);font-style:italic;margin-bottom:8px">Cliquez sur les zones du pavillon sensibles/douloureuses à la palpation (recherche de points Ah Shi auriculaires — rougeur, chaleur, dépression cutanée, sensibilité). Ces zones alimentent les propositions d'auriculothérapie (③).</div>
           <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start">
-            <svg viewBox="0 0 970 1356" style="width:260px;height:363px;flex-shrink:0" id="ear-svg">
+            <div style="flex-shrink:0;text-align:center">
+            <svg viewBox="0 0 970 1356" style="width:260px;height:363px;flex-shrink:0" id="ear-svg" ondblclick="openEarZoom()">
               <image href="oreille_classique.png" x="0" y="0" width="970" height="1356" preserveAspectRatio="xMidYMid meet"/>
               <!-- Points recalés le 27 sept. 2026 sur le schéma classique annoté (oreille gauche).
                    Les numéros et libellés sont déjà visibles sur l'image de fond : les cercles ci-dessous sont
@@ -1161,6 +1192,24 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
                 <text class="ear-pt-num" x="474.0" y="998.0">82</text>
                 <circle class="ear-pt" id="ep-83" data-num="83" data-name="Feng Xi" cx="705.0" cy="412.0" r="17" onclick="togEarZone(this,'Feng Xi')"><title>83. Feng Xi — Scapha, entre Doigts et Poignet (ajouté le 30/09/2026)</title></circle>
                 <text class="ear-pt-num" x="724.0" y="420.0">83</text>
+                <circle class="ear-pt" id="ep-84" data-num="84" data-name="Cortex cingulaire" cx="262.0" cy="985.0" r="17" onclick="togEarZone(this,'Cortex cingulaire')"><title>84. Cortex cingulaire — Incisure intertragique, centre (Oleson 143.e, IT 1)</title></circle>
+                <text class="ear-pt-num" x="281.0" y="993.0">84</text>
+                <circle class="ear-pt" id="ep-85" data-num="85" data-name="Oméga 2" cx="465.0" cy="150.0" r="17" onclick="togEarZone(this,'Oméga 2')"><title>85. Oméga 2 — Hélix supérieur, en dedans du point d'allergie (Oleson 188.e, HX 6)</title></circle>
+                <text class="ear-pt-num" x="484.0" y="158.0">85</text>
+                <circle class="ear-pt" id="ep-86" data-num="86" data-name="Hypothalamus" cx="372.0" cy="912.0" r="17" onclick="togEarZone(this,'Hypothalamus')"><title>86. Hypothalamus — Conque inférieure, près de l'incisure intertragique (Oleson 136.e, IC 2)</title></circle>
+                <text class="ear-pt-num" x="391.0" y="920.0">86</text>
+                <circle class="ear-pt" id="ep-87" data-num="87" data-name="Amygdale" cx="340.0" cy="1030.0" r="17" onclick="togEarZone(this,'Amygdale')"><title>87. Amygdale — Haut du lobe, à la jonction avec l'incisure intertragique (Oleson 141.e, LO 2/AT 1)</title></circle>
+                <text class="ear-pt-num" x="359.0" y="1038.0">87</text>
+                <circle class="ear-pt" id="ep-88" data-num="88" data-name="Hippocampe" cx="500.0" cy="1040.0" r="17" onclick="togEarZone(this,'Hippocampe')"><title>88. Hippocampe — Haut du lobe, juste sous l'antitragus (Oleson 140.e, LO 6/LO 8)</title></circle>
+                <text class="ear-pt-num" x="519.0" y="1048.0">88</text>
+                <circle class="ear-pt" id="ep-89" data-num="89" data-name="Cortex préfrontal" cx="215.0" cy="1060.0" r="17" onclick="togEarZone(this,'Cortex préfrontal')"><title>89. Cortex préfrontal — Lobe, bord antérieur (jonction avec la face) (Oleson 151.e, LO 1)</title></circle>
+                <text class="ear-pt-num" x="234.0" y="1068.0">89</text>
+                <circle class="ear-pt" id="ep-90" data-num="90" data-name="Zone du nerf trijumeau" cx="668.0" cy="1085.0" r="17" onclick="togEarZone(this,'Zone du nerf trijumeau')"><title>90. Zone du nerf trijumeau — Bord périphérique du lobe (Oleson 116.e, LO 5)</title></circle>
+                <text class="ear-pt-num" x="687.0" y="1093.0">90</text>
+                <circle class="ear-pt" id="ep-91" data-num="91" data-name="Interféron" cx="300.0" cy="680.0" r="17" onclick="togEarZone(this,'Interféron')"><title>91. Interféron — Bord du supratragus, contre la racine de l'hélix (Oleson 210.e, TG 5/HX 1)</title></circle>
+                <text class="ear-pt-num" x="319.0" y="688.0">91</text>
+                <circle class="ear-pt" id="ep-92" data-num="92" data-name="Nerf vague" cx="372.0" cy="770.0" r="17" onclick="togEarZone(this,'Nerf vague')"><title>92. Nerf vague — Conque inférieure, contre le conduit auditif (Oleson 113.e, IC 3)</title></circle>
+                <text class="ear-pt-num" x="391.0" y="778.0">92</text>
                 <circle class="ear-pt" id="ep-69" data-num="69" data-name="Bouche" cx="397.9" cy="704.0" r="17" onclick="togEarZone(this,'Bouche')"><title>69. Bouche</title></circle>
                 <circle class="ear-pt" id="ep-70" data-num="70" data-name="Rectum" cx="363.0" cy="587.1" r="17" onclick="togEarZone(this,'Rectum')"><title>70. Rectum</title></circle>
                 <circle class="ear-pt" id="ep-71" data-num="71" data-name="Mâchoire" cx="621.7" cy="1022.9" r="17" onclick="togEarZone(this,'Mâchoire')"><title>71. Mâchoire</title></circle>
@@ -1171,9 +1220,12 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
                 <circle class="ear-pt" id="ep-76" data-num="76" data-name="Pharynx / Larynx" cx="305.6" cy="720.9" r="17" onclick="togEarZone(this,'Pharynx / Larynx')"><title>76. Pharynx / Larynx (point caché — sous l'ourlet/tragus/anti-tragus)</title></circle>
               </g>
             </svg>
+            <button type="button" class="btn ez-open-btn" onclick="openEarZoom()" title="Agrandir le schéma (zoom, recherche de point)">🔍 Agrandir le schéma</button>
+            <button type="button" class="btn ez-open-btn" onclick="openEarZoom('post')" title="Face postérieure de l'oreille (sillon hypotenseur, racines, points du dos)">↩ Face postérieure</button>
+            </div>
             <div style="flex:1;min-width:300px">
               <div style="font-size:9px;color:var(--slate);line-height:1.9;column-width:250px;column-gap:16px" onmouseover="onEarLegendHover(event)" onmouseout="onEarLegendOut(event)">
-                <span class="lgd-item" id="lgd-1" data-num="1"><b>1</b> Apex (Pointe)</span> · <span class="lgd-item lgd-master" id="lgd-2" data-num="2">★ <b>2</b> Point Zéro</span> · <span class="lgd-item" id="lgd-3" data-num="3"><b>3</b> Trachée</span> · <span class="lgd-item" id="lgd-4" data-num="4"><b>4</b> Clavicule</span> · <span class="lgd-item" id="lgd-5" data-num="5"><b>5</b> Coude</span> · <span class="lgd-item lgd-master" id="lgd-6" data-num="6">★ <b>6</b> Point maître d'élimination</span> · <span class="lgd-item lgd-master" id="lgd-7" data-num="7">★ <b>7</b> Point maître de Darwin</span> · <span class="lgd-item" id="lgd-8" data-num="8"><b>8</b> Épaule</span> · <span class="lgd-item" id="lgd-9" data-num="9"><b>9</b> Sein</span> · <span class="lgd-item" id="lgd-10" data-num="10"><b>10</b> Point Antidépresseur</span> · <span class="lgd-item" id="lgd-11" data-num="11"><b>11</b> Gros intestin</span> · <span class="lgd-item" id="lgd-12" data-num="12"><b>12</b> Urètre</span> · <span class="lgd-item" id="lgd-13" data-num="13"><b>13</b> Point Zéro'</span> · <span class="lgd-item" id="lgd-14" data-num="14"><b>14</b> Point du PCS</span> · <span class="lgd-item" id="lgd-15" data-num="15"><b>15</b> Point de décussation</span> · <span class="lgd-item lgd-master" id="lgd-16" data-num="16">★ <b>16</b> Genou</span> · <span class="lgd-item" id="lgd-17" data-num="17"><b>17</b> Point de réactivité (Bourdiol)</span> · <span class="lgd-item" id="lgd-18" data-num="18"><b>18</b> Lombaires</span> · <span class="lgd-item" id="lgd-19" data-num="19"><b>19</b> Hanche</span> · <span class="lgd-item" id="lgd-20" data-num="20"><b>20</b> Nerf sciatique</span> · <span class="lgd-item" id="lgd-21" data-num="21"><b>21</b> Cervicales</span> · <span class="lgd-item lgd-master" id="lgd-22" data-num="22">★ <b>22</b> Point merveilleux</span> · <span class="lgd-item lgd-master" id="lgd-23" data-num="23">★ <b>23</b> Point maître sensoriel</span> · <span class="lgd-item lgd-master" id="lgd-24" data-num="24">★ <b>24</b> Point maître des organes abdominaux</span> · <span class="lgd-item lgd-master" id="lgd-25" data-num="25">★ <b>25</b> Point de Bosch</span> · <span class="lgd-item lgd-master" id="lgd-26" data-num="26">★ <b>26</b> Shen Men</span> · <span class="lgd-item" id="lgd-27" data-num="27"><b>27</b> Sous-cortex</span> · <span class="lgd-item lgd-master" id="lgd-28" data-num="28">★ <b>28</b> Thalamus (Analgésie)</span> · <span class="lgd-item" id="lgd-29" data-num="29"><b>29</b> Utérus (ZIGONG) <span style="opacity:.6">†</span></span> · <span class="lgd-item" id="lgd-30" data-num="30"><b>30</b> Ovaires <span style="opacity:.6">†</span></span> · <span class="lgd-item" id="lgd-31" data-num="31"><b>31</b> Prostate <span style="opacity:.6">†</span></span> · <span class="lgd-item lgd-master" id="lgd-32" data-num="32">★ <b>32</b> Sympathique <span style="opacity:.6">†</span></span> · <span class="lgd-item" id="lgd-33" data-num="33"><b>33</b> Point d'allergie <span style="opacity:.6">†</span></span> · <span class="lgd-item" id="lgd-34" data-num="34"><b>34</b> Rate (PI)</span> · <span class="lgd-item" id="lgd-35" data-num="35"><b>35</b> Estomac (WEI)</span> · <span class="lgd-item" id="lgd-36" data-num="36"><b>36</b> Intestin grêle</span> · <span class="lgd-item" id="lgd-37" data-num="37"><b>37</b> Triple Réchauffeur</span> · <span class="lgd-item" id="lgd-38" data-num="38"><b>38</b> Rein (SHEN) / Détoxification</span> · <span class="lgd-item" id="lgd-39" data-num="39"><b>39</b> Vessie (PANG)</span> · <span class="lgd-item" id="lgd-40" data-num="40"><b>40</b> Vésicule biliaire</span> · <span class="lgd-item" id="lgd-41" data-num="41"><b>41</b> Pancréas</span> · <span class="lgd-item" id="lgd-42" data-num="42"><b>42</b> Cœur (CO)</span> · <span class="lgd-item" id="lgd-43" data-num="43"><b>43</b> Foie (GAN)</span> · <span class="lgd-item" id="lgd-44" data-num="44"><b>44</b> Poignet</span> · <span class="lgd-item" id="lgd-45" data-num="45"><b>45</b> Poumon (FEI)</span> · <span class="lgd-item" id="lgd-46" data-num="46"><b>46</b> Endocrine</span> · <span class="lgd-item" id="lgd-47" data-num="47"><b>47</b> Faim (Appétit)</span> · <span class="lgd-item" id="lgd-48" data-num="48"><b>48</b> Doigts</span> · <span class="lgd-item" id="lgd-49" data-num="49"><b>49</b> Surrénal (ACTH)</span> · <span class="lgd-item" id="lgd-50" data-num="50"><b>50</b> Cheville</span> · <span class="lgd-item" id="lgd-51" data-num="51"><b>51</b> Thyroïde</span> · <span class="lgd-item" id="lgd-52" data-num="52"><b>52</b> Glande surrénale</span> · <span class="lgd-item lgd-master" id="lgd-53" data-num="53">★ <b>53</b> Point maître de la peau <span style="opacity:.6">†</span></span> · <span class="lgd-item lgd-master" id="lgd-54" data-num="54">★ <b>54</b> Point maître de l'audition</span> · <span class="lgd-item lgd-master" id="lgd-55" data-num="55">★ <b>55</b> Point maître des articulations</span> · <span class="lgd-item" id="lgd-56" data-num="56"><b>56</b> Orteils</span> · <span class="lgd-item" id="lgd-57" data-num="57"><b>57</b> Œil (YAN)</span> · <span class="lgd-item" id="lgd-58" data-num="58"><b>58</b> Nez interne <span style="opacity:.6">†</span></span> · <span class="lgd-item" id="lgd-59" data-num="59"><b>59</b> Talon</span> · <span class="lgd-item" id="lgd-60" data-num="60"><b>60</b> Point maxillo-dentaire</span> · <span class="lgd-item lgd-master" id="lgd-61" data-num="61">★ <b>61</b> Point oméga</span> · <span class="lgd-item" id="lgd-62" data-num="62"><b>62</b> Occipital</span> · <span class="lgd-item" id="lgd-63" data-num="63"><b>63</b> Hypertension (HTA)</span> · <span class="lgd-item" id="lgd-64" data-num="64"><b>64</b> Pelvis</span> · <span class="lgd-item" id="lgd-65" data-num="65"><b>65</b> Duodénum</span> · <span class="lgd-item" id="lgd-66" data-num="66"><b>66</b> Rachis dorsal</span> · <span class="lgd-item" id="lgd-67" data-num="67"><b>67</b> Abdomen</span> · <span class="lgd-item" id="lgd-68" data-num="68"><b>68</b> Fesse</span> · <span class="lgd-item" id="lgd-69" data-num="69"><b>69</b> Bouche</span> · <span class="lgd-item" id="lgd-70" data-num="70"><b>70</b> Rectum</span> · <span class="lgd-item" id="lgd-71" data-num="71"><b>71</b> Mâchoire</span> · <span class="lgd-item" id="lgd-72" data-num="72"><b>72</b> Langue</span> · <span class="lgd-item" id="lgd-73" data-num="73"><b>73</b> Dents</span> · <span class="lgd-item" id="lgd-74" data-num="74"><b>74</b> Oreille interne</span> · <span class="lgd-item" id="lgd-75" data-num="75"><b>75</b> Amygdales</span> · <span class="lgd-item" id="lgd-76" data-num="76"><b>76</b> Pharynx / Larynx <span style="opacity:.6">†</span></span> · <span class="lgd-item" id="lgd-77" data-num="77"><b>77</b> Cardia</span> · <span class="lgd-item" id="lgd-78" data-num="78"><b>78</b> Oesophage</span> · <span class="lgd-item lgd-master" id="lgd-79" data-num="79">★ <b>79</b> Point Analgésie <span style="opacity:.6">†</span></span> · <span class="lgd-item" id="lgd-80" data-num="80"><b>80</b> Hypotension</span> · <span class="lgd-item" id="lgd-81" data-num="81"><b>81</b> Front</span> · <span class="lgd-item" id="lgd-82" data-num="82"><b>82</b> Tempe</span> · <span class="lgd-item" id="lgd-83" data-num="83"><b>83</b> Feng Xi</span>
+                <span class="lgd-item" id="lgd-1" data-num="1"><b>1</b> Apex (Pointe)</span> · <span class="lgd-item lgd-master" id="lgd-2" data-num="2">★ <b>2</b> Point Zéro</span> · <span class="lgd-item" id="lgd-3" data-num="3"><b>3</b> Trachée</span> · <span class="lgd-item" id="lgd-4" data-num="4"><b>4</b> Clavicule</span> · <span class="lgd-item" id="lgd-5" data-num="5"><b>5</b> Coude</span> · <span class="lgd-item lgd-master" id="lgd-6" data-num="6">★ <b>6</b> Point maître d'élimination</span> · <span class="lgd-item lgd-master" id="lgd-7" data-num="7">★ <b>7</b> Point maître de Darwin</span> · <span class="lgd-item" id="lgd-8" data-num="8"><b>8</b> Épaule</span> · <span class="lgd-item" id="lgd-9" data-num="9"><b>9</b> Sein</span> · <span class="lgd-item" id="lgd-10" data-num="10"><b>10</b> Point Antidépresseur</span> · <span class="lgd-item" id="lgd-11" data-num="11"><b>11</b> Gros intestin</span> · <span class="lgd-item" id="lgd-12" data-num="12"><b>12</b> Urètre</span> · <span class="lgd-item" id="lgd-13" data-num="13"><b>13</b> Point Zéro'</span> · <span class="lgd-item" id="lgd-14" data-num="14"><b>14</b> Point du PCS</span> · <span class="lgd-item" id="lgd-15" data-num="15"><b>15</b> Point de décussation</span> · <span class="lgd-item lgd-master" id="lgd-16" data-num="16">★ <b>16</b> Genou</span> · <span class="lgd-item" id="lgd-17" data-num="17"><b>17</b> Point de réactivité (Bourdiol)</span> · <span class="lgd-item" id="lgd-18" data-num="18"><b>18</b> Lombaires</span> · <span class="lgd-item" id="lgd-19" data-num="19"><b>19</b> Hanche</span> · <span class="lgd-item" id="lgd-20" data-num="20"><b>20</b> Nerf sciatique</span> · <span class="lgd-item" id="lgd-21" data-num="21"><b>21</b> Cervicales</span> · <span class="lgd-item lgd-master" id="lgd-22" data-num="22">★ <b>22</b> Point merveilleux</span> · <span class="lgd-item lgd-master" id="lgd-23" data-num="23">★ <b>23</b> Point maître sensoriel</span> · <span class="lgd-item lgd-master" id="lgd-24" data-num="24">★ <b>24</b> Point maître des organes abdominaux</span> · <span class="lgd-item lgd-master" id="lgd-25" data-num="25">★ <b>25</b> Point de Bosch</span> · <span class="lgd-item lgd-master" id="lgd-26" data-num="26">★ <b>26</b> Shen Men</span> · <span class="lgd-item" id="lgd-27" data-num="27"><b>27</b> Sous-cortex</span> · <span class="lgd-item lgd-master" id="lgd-28" data-num="28">★ <b>28</b> Thalamus (Analgésie)</span> · <span class="lgd-item" id="lgd-29" data-num="29"><b>29</b> Utérus (ZIGONG) <span style="opacity:.6">†</span></span> · <span class="lgd-item" id="lgd-30" data-num="30"><b>30</b> Ovaires <span style="opacity:.6">†</span></span> · <span class="lgd-item" id="lgd-31" data-num="31"><b>31</b> Prostate <span style="opacity:.6">†</span></span> · <span class="lgd-item lgd-master" id="lgd-32" data-num="32">★ <b>32</b> Sympathique <span style="opacity:.6">†</span></span> · <span class="lgd-item" id="lgd-33" data-num="33"><b>33</b> Point d'allergie <span style="opacity:.6">†</span></span> · <span class="lgd-item" id="lgd-34" data-num="34"><b>34</b> Rate (PI)</span> · <span class="lgd-item" id="lgd-35" data-num="35"><b>35</b> Estomac (WEI)</span> · <span class="lgd-item" id="lgd-36" data-num="36"><b>36</b> Intestin grêle</span> · <span class="lgd-item" id="lgd-37" data-num="37"><b>37</b> Triple Réchauffeur</span> · <span class="lgd-item" id="lgd-38" data-num="38"><b>38</b> Rein (SHEN) / Détoxification</span> · <span class="lgd-item" id="lgd-39" data-num="39"><b>39</b> Vessie (PANG)</span> · <span class="lgd-item" id="lgd-40" data-num="40"><b>40</b> Vésicule biliaire</span> · <span class="lgd-item" id="lgd-41" data-num="41"><b>41</b> Pancréas</span> · <span class="lgd-item" id="lgd-42" data-num="42"><b>42</b> Cœur (CO)</span> · <span class="lgd-item" id="lgd-43" data-num="43"><b>43</b> Foie (GAN)</span> · <span class="lgd-item" id="lgd-44" data-num="44"><b>44</b> Poignet</span> · <span class="lgd-item" id="lgd-45" data-num="45"><b>45</b> Poumon (FEI)</span> · <span class="lgd-item" id="lgd-46" data-num="46"><b>46</b> Endocrine</span> · <span class="lgd-item" id="lgd-47" data-num="47"><b>47</b> Faim (Appétit)</span> · <span class="lgd-item" id="lgd-48" data-num="48"><b>48</b> Doigts</span> · <span class="lgd-item" id="lgd-49" data-num="49"><b>49</b> Surrénal (ACTH)</span> · <span class="lgd-item" id="lgd-50" data-num="50"><b>50</b> Cheville</span> · <span class="lgd-item" id="lgd-51" data-num="51"><b>51</b> Thyroïde</span> · <span class="lgd-item" id="lgd-52" data-num="52"><b>52</b> Glande surrénale</span> · <span class="lgd-item lgd-master" id="lgd-53" data-num="53">★ <b>53</b> Point maître de la peau <span style="opacity:.6">†</span></span> · <span class="lgd-item lgd-master" id="lgd-54" data-num="54">★ <b>54</b> Point maître de l'audition</span> · <span class="lgd-item lgd-master" id="lgd-55" data-num="55">★ <b>55</b> Point maître des articulations</span> · <span class="lgd-item" id="lgd-56" data-num="56"><b>56</b> Orteils</span> · <span class="lgd-item" id="lgd-57" data-num="57"><b>57</b> Œil (YAN)</span> · <span class="lgd-item" id="lgd-58" data-num="58"><b>58</b> Nez interne <span style="opacity:.6">†</span></span> · <span class="lgd-item" id="lgd-59" data-num="59"><b>59</b> Talon</span> · <span class="lgd-item" id="lgd-60" data-num="60"><b>60</b> Point maxillo-dentaire</span> · <span class="lgd-item lgd-master" id="lgd-61" data-num="61">★ <b>61</b> Point oméga</span> · <span class="lgd-item" id="lgd-62" data-num="62"><b>62</b> Occipital</span> · <span class="lgd-item" id="lgd-63" data-num="63"><b>63</b> Hypertension (HTA)</span> · <span class="lgd-item" id="lgd-64" data-num="64"><b>64</b> Pelvis</span> · <span class="lgd-item" id="lgd-65" data-num="65"><b>65</b> Duodénum</span> · <span class="lgd-item" id="lgd-66" data-num="66"><b>66</b> Rachis dorsal</span> · <span class="lgd-item" id="lgd-67" data-num="67"><b>67</b> Abdomen</span> · <span class="lgd-item" id="lgd-68" data-num="68"><b>68</b> Fesse</span> · <span class="lgd-item" id="lgd-69" data-num="69"><b>69</b> Bouche</span> · <span class="lgd-item" id="lgd-70" data-num="70"><b>70</b> Rectum</span> · <span class="lgd-item" id="lgd-71" data-num="71"><b>71</b> Mâchoire</span> · <span class="lgd-item" id="lgd-72" data-num="72"><b>72</b> Langue</span> · <span class="lgd-item" id="lgd-73" data-num="73"><b>73</b> Dents</span> · <span class="lgd-item" id="lgd-74" data-num="74"><b>74</b> Oreille interne</span> · <span class="lgd-item" id="lgd-75" data-num="75"><b>75</b> Amygdales</span> · <span class="lgd-item" id="lgd-76" data-num="76"><b>76</b> Pharynx / Larynx <span style="opacity:.6">†</span></span> · <span class="lgd-item" id="lgd-77" data-num="77"><b>77</b> Cardia</span> · <span class="lgd-item" id="lgd-78" data-num="78"><b>78</b> Oesophage</span> · <span class="lgd-item lgd-master" id="lgd-79" data-num="79">★ <b>79</b> Point Analgésie <span style="opacity:.6">†</span></span> · <span class="lgd-item" id="lgd-80" data-num="80"><b>80</b> Hypotension</span> · <span class="lgd-item" id="lgd-81" data-num="81"><b>81</b> Front</span> · <span class="lgd-item" id="lgd-82" data-num="82"><b>82</b> Tempe</span> · <span class="lgd-item" id="lgd-83" data-num="83"><b>83</b> Feng Xi</span> · <span class="lgd-item" id="lgd-84" data-num="84"><b>84</b> Cortex cingulaire</span> · <span class="lgd-item" id="lgd-85" data-num="85"><b>85</b> Oméga 2</span> · <span class="lgd-item" id="lgd-86" data-num="86"><b>86</b> Hypothalamus</span> · <span class="lgd-item" id="lgd-87" data-num="87"><b>87</b> Amygdale</span> · <span class="lgd-item" id="lgd-88" data-num="88"><b>88</b> Hippocampe</span> · <span class="lgd-item" id="lgd-89" data-num="89"><b>89</b> Cortex préfrontal</span> · <span class="lgd-item" id="lgd-90" data-num="90"><b>90</b> Zone du nerf trijumeau</span> · <span class="lgd-item" id="lgd-91" data-num="91"><b>91</b> Interféron</span> · <span class="lgd-item" id="lgd-92" data-num="92"><b>92</b> Nerf vague</span> · <span style="color:#6B3A2E;font-style:italic">Face postérieure :</span> <span class="lgd-item" id="lgd-93" data-num="93"><b>93</b> Sillon post-anthélix</span> · <span class="lgd-item" id="lgd-94" data-num="94"><b>94</b> Nerf Grand Auriculaire</span> · <span class="lgd-item" id="lgd-95" data-num="95"><b>95</b> Insula</span> · <span class="lgd-item" id="lgd-96" data-num="96"><b>96</b> Cœur (dos)</span> · <span class="lgd-item" id="lgd-97" data-num="97"><b>97</b> Poumon (dos)</span> · <span class="lgd-item" id="lgd-98" data-num="98"><b>98</b> Rate (dos)</span> · <span class="lgd-item" id="lgd-99" data-num="99"><b>99</b> Foie (dos)</span> · <span class="lgd-item" id="lgd-100" data-num="100"><b>100</b> Rein (dos)</span> · <span class="lgd-item" id="lgd-101" data-num="101"><b>101</b> Racine supérieure</span> · <span class="lgd-item" id="lgd-102" data-num="102"><b>102</b> Racine du vague</span> · <span class="lgd-item" id="lgd-103" data-num="103"><b>103</b> Racine inférieure</span>
               </div>
               <div style="font-size:9px;color:var(--slate);font-style:italic;margin-top:6px">★ point maître · † point caché sous l'ourlet/tragus/anti-tragus (non visible de face, mais cliquable au même repère). Cliquer un point le sélectionne comme point palpé.</div>
               <input id="palp-oreille" style="display:none" oninput="markDirty()">
@@ -1736,7 +1788,7 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
         <p style="font-size:10px;color:var(--slate);margin-bottom:8px;font-style:italic">Triés par pertinence : 🔴 point palpé douloureux (schéma ②) · 🔵 mot-clé du motif · 🟢 syndrome · ★ point maître · cochez les points réalisés</p>
         <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:flex-start">
           <div style="flex-shrink:0">
-            <svg viewBox="0 0 970 1356" style="width:170px;height:238px" id="ear-svg-2">
+            <svg viewBox="0 0 970 1356" style="width:170px;height:238px" id="ear-svg-2" ondblclick="openEarZoom()">
               <image href="oreille_classique.png" x="0" y="0" width="970" height="1356" preserveAspectRatio="xMidYMid meet"/>
               <g id="ear-points-2" onmouseover="onEarPointHover(event)" onmouseout="onEarPointOut(event)" style="cursor:pointer">
                 <circle class="ear-pt" id="ep2-1" data-num="1" data-name="Apex (Pointe)" cx="519.9" cy="92.9" r="17" onclick="togEarZone(this,'Apex (Pointe)')"><title>1. Apex (Pointe)</title></circle>
@@ -1818,6 +1870,24 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
                 <text class="ear-pt-num" x="474.0" y="998.0">82</text>
                 <circle class="ear-pt" id="ep2-83" data-num="83" data-name="Feng Xi" cx="705.0" cy="412.0" r="17" onclick="togEarZone(this,'Feng Xi')"><title>83. Feng Xi — Scapha, entre Doigts et Poignet (ajouté le 30/09/2026)</title></circle>
                 <text class="ear-pt-num" x="724.0" y="420.0">83</text>
+                <circle class="ear-pt" id="ep2-84" data-num="84" data-name="Cortex cingulaire" cx="262.0" cy="985.0" r="17" onclick="togEarZone(this,'Cortex cingulaire')"><title>84. Cortex cingulaire — Incisure intertragique, centre (Oleson 143.e, IT 1)</title></circle>
+                <text class="ear-pt-num" x="281.0" y="993.0">84</text>
+                <circle class="ear-pt" id="ep2-85" data-num="85" data-name="Oméga 2" cx="465.0" cy="150.0" r="17" onclick="togEarZone(this,'Oméga 2')"><title>85. Oméga 2 — Hélix supérieur, en dedans du point d'allergie (Oleson 188.e, HX 6)</title></circle>
+                <text class="ear-pt-num" x="484.0" y="158.0">85</text>
+                <circle class="ear-pt" id="ep2-86" data-num="86" data-name="Hypothalamus" cx="372.0" cy="912.0" r="17" onclick="togEarZone(this,'Hypothalamus')"><title>86. Hypothalamus — Conque inférieure, près de l'incisure intertragique (Oleson 136.e, IC 2)</title></circle>
+                <text class="ear-pt-num" x="391.0" y="920.0">86</text>
+                <circle class="ear-pt" id="ep2-87" data-num="87" data-name="Amygdale" cx="340.0" cy="1030.0" r="17" onclick="togEarZone(this,'Amygdale')"><title>87. Amygdale — Haut du lobe, à la jonction avec l'incisure intertragique (Oleson 141.e, LO 2/AT 1)</title></circle>
+                <text class="ear-pt-num" x="359.0" y="1038.0">87</text>
+                <circle class="ear-pt" id="ep2-88" data-num="88" data-name="Hippocampe" cx="500.0" cy="1040.0" r="17" onclick="togEarZone(this,'Hippocampe')"><title>88. Hippocampe — Haut du lobe, juste sous l'antitragus (Oleson 140.e, LO 6/LO 8)</title></circle>
+                <text class="ear-pt-num" x="519.0" y="1048.0">88</text>
+                <circle class="ear-pt" id="ep2-89" data-num="89" data-name="Cortex préfrontal" cx="215.0" cy="1060.0" r="17" onclick="togEarZone(this,'Cortex préfrontal')"><title>89. Cortex préfrontal — Lobe, bord antérieur (jonction avec la face) (Oleson 151.e, LO 1)</title></circle>
+                <text class="ear-pt-num" x="234.0" y="1068.0">89</text>
+                <circle class="ear-pt" id="ep2-90" data-num="90" data-name="Zone du nerf trijumeau" cx="668.0" cy="1085.0" r="17" onclick="togEarZone(this,'Zone du nerf trijumeau')"><title>90. Zone du nerf trijumeau — Bord périphérique du lobe (Oleson 116.e, LO 5)</title></circle>
+                <text class="ear-pt-num" x="687.0" y="1093.0">90</text>
+                <circle class="ear-pt" id="ep2-91" data-num="91" data-name="Interféron" cx="300.0" cy="680.0" r="17" onclick="togEarZone(this,'Interféron')"><title>91. Interféron — Bord du supratragus, contre la racine de l'hélix (Oleson 210.e, TG 5/HX 1)</title></circle>
+                <text class="ear-pt-num" x="319.0" y="688.0">91</text>
+                <circle class="ear-pt" id="ep2-92" data-num="92" data-name="Nerf vague" cx="372.0" cy="770.0" r="17" onclick="togEarZone(this,'Nerf vague')"><title>92. Nerf vague — Conque inférieure, contre le conduit auditif (Oleson 113.e, IC 3)</title></circle>
+                <text class="ear-pt-num" x="391.0" y="778.0">92</text>
                 <circle class="ear-pt" id="ep2-69" data-num="69" data-name="Bouche" cx="397.9" cy="704.0" r="17" onclick="togEarZone(this,'Bouche')"><title>69. Bouche</title></circle>
                 <circle class="ear-pt" id="ep2-70" data-num="70" data-name="Rectum" cx="363.0" cy="587.1" r="17" onclick="togEarZone(this,'Rectum')"><title>70. Rectum</title></circle>
                 <circle class="ear-pt" id="ep2-71" data-num="71" data-name="Mâchoire" cx="621.7" cy="1022.9" r="17" onclick="togEarZone(this,'Mâchoire')"><title>71. Mâchoire</title></circle>
@@ -1828,6 +1898,7 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
                 <circle class="ear-pt" id="ep2-76" data-num="76" data-name="Pharynx / Larynx" cx="305.6" cy="720.9" r="17" onclick="togEarZone(this,'Pharynx / Larynx')"><title>76. Pharynx / Larynx (point caché — sous l'ourlet/tragus/anti-tragus)</title></circle>
               </g>
             </svg>
+            <div><button type="button" class="btn ez-open-btn" onclick="openEarZoom()" title="Agrandir le schéma (zoom, recherche de point)">🔍 Agrandir</button> <button type="button" class="btn ez-open-btn" onclick="openEarZoom('post')" title="Face postérieure de l'oreille">↩ Dos</button></div>
             <div style="font-size:9px;color:var(--slate);font-style:italic;margin-top:4px;max-width:170px">🟠 point actuellement proposé ci-contre · 🔴 point palpé (②). Cliquer un point le marque comme palpé, synchronisé avec l'examen clinique.</div>
           </div>
           <div id="auri-list" style="flex:1;min-width:260px;margin-bottom:8px"></div>
@@ -9086,7 +9157,7 @@ const ADB = [
    loc:'Conque inférieure, centre (fosse centrale de la conque)'},
   {c:'Nerf Grand Auriculaire',cat:'Shen / Psycho-émotionnel',synd:['Anxiété-stress'],
    a:'Sédation profonde, anxiété sévère, névralgie.',
-   loc:'Lobe de l\'oreille, partie centrale inférieure'},
+   loc:'Face postérieure, bas du lobe près de la racine inférieure (territoire du nerf grand auriculaire) — n° 94 ; emplacement approximatif'},
   {c:'Point Antidépresseur',cat:'Shen / Psycho-émotionnel',synd:['Anxiété-stress','Stagnation Qi Foie'],
    a:'Dépression, anhédonie, manque de motivation.',
    loc:'Hélix — jonction hélix/lobe, face antérieure'},
@@ -9160,7 +9231,7 @@ const ADB = [
    loc:'Face antérieure du lobe — zone 1 de Nogier'},
   {c:'Immunité (Rate-Poumon)',cat:'Poumon / Défenses',synd:['Particulière','Vide Qi Poumon'],
    a:'Renforce les défenses immunitaires, infections répétées, allergies.',
-   loc:'Tragus — bord supérieur du tragus, face antérieure'},
+   loc:'≈ point Interféron d\'Oleson (n° 91) : bord du supratragus contre la racine de l\'hélix'},
   {c:'Surrénal (ACTH)',cat:'Poumon / Défenses',synd:['Particulière','Vide Yang Rein','Bi (obstruction-douleur)'],
    a:'Anti-inflammatoire, anti-allergique, stress, renforce Yang.',
    loc:'Tragus — extrémité inférieure du bord libre du tragus'},
@@ -9173,11 +9244,11 @@ const ADB = [
    a:'Point spécifique HTA, vertiges d\'origine cardio-vasculaire.',
    loc:'Bord antérieur du tragus, devant l\'incisure intertragique (n° 63 du schéma) — à distinguer du sillon hypotenseur post-anthélix'},
   {c:'Sillon post-anthélix',cat:'Cœur / Circulation',synd:['Stase du Sang'],
-   a:'Hypotenseur, anti-spastique vasculaire, saignée possible.',
-   loc:'Face postérieure de l\'oreille — sillon post-anthélix, lignes de saignée'},
+   a:'Sillon hypotenseur (Er Bei Gou) : hypertension artérielle, prurit cutané.',
+   loc:'Face postérieure : gouttière anthélicine (dos de l\'anthélix), partie basse — n° 93 (onglet Face postérieure)'},
   {c:'Vaisseau Gouverneur (VG)',cat:'Cœur / Circulation',synd:['Vide Yang Rein','Fatigue chronique'],
    a:'Tonification Yang général, vitalité, colonne vertébrale.',
-   loc:'Hélix supérieur — point de l\'anthélix, apex'},
+   loc:'Zone du tragus (Oleson : le tragus représente Ren Mai en avant et Du Mai en arrière) — zone, pas un point'},
 
   // DOULEUR / LOCOMOTEUR
   {c:'Thalamus (Analgésie)',cat:'Douleur / Locomoteur',synd:['Bi (obstruction-douleur)'],
@@ -9214,7 +9285,7 @@ const ADB = [
    loc:'Conque inférieure — intertragus, face interne'},
   {c:'Point Hormonal',cat:'Hormonal / Gynécologie',synd:['Dysménorrhée par stase','Aménorrhée-oligoménorrhée'],
    a:'SPM, bouffées de chaleur, dérèglements hormonaux.',
-   loc:'Tragus — face postérieure du tragus, zone médiane'},
+   loc:'= Endocrine (n° 46) : « Master Endocrine Point » d\'Oleson, incisure intertragique (IT 2)'},
   {c:'Sein',cat:'Hormonal / Gynécologie',synd:['Stagnation Qi Foie'],
    a:'Mastodynie, kystes, galactorrhée.',
    loc:'Conque — face antérieure, zone entre Estomac et Poumon'},
@@ -9249,7 +9320,7 @@ const ADB = [
    loc:'Hélix, racine — jonction hélix/lobe, trajet du plexus cervical superficiel'},
   {c:'Zone du nerf trijumeau',cat:'Points maîtres / Réflexes',synd:['Bi (obstruction-douleur)'],
    a:'Névralgies faciales, algies dentaires, douleurs de la face.',
-   loc:'Lobe — bord antérieur du lobule, trajet du nerf trijumeau'},
+   loc:'Bord périphérique du lobe (Oleson 116.e, LO 5) — n° 90'},
   {c:'Point merveilleux',cat:'Points maîtres / Réflexes',synd:[],
    a:'Point d\'action générale, décrit par Nogier — régulation globale.',
    loc:'Anthélix — branche inférieure, versant conque'},
@@ -9341,6 +9412,59 @@ const ADB = [
   {c:'Poignet',cat:'Douleur / Locomoteur',synd:['Bi (obstruction-douleur)'],
    a:'Douleur du poignet, canal carpien.',
    loc:'Scapha, sous les Doigts — n° 44'},
+  // ── Ajouts d'après Oleson (Auriculotherapy Manual) : points des protocoles BFA et CHENG ──
+  {c:'Cortex cingulaire',cat:'Douleur / Locomoteur',synd:['Bi (obstruction-douleur)','Anxiété-stress'],
+   a:'Composante émotionnelle et affective de la douleur, douleur chronique, souffrance émotionnelle (1er point de la Battlefield Acupuncture).',
+   loc:'Incisure intertragique, centre (Oleson 143.e, IT 1) — n° 84'},
+  {c:'Oméga 2',cat:'Douleur / Locomoteur',synd:['Bi (obstruction-douleur)'],
+   a:'« Point maître de l\'inflammation » : stress somatique, douleurs et inflammations des membres (Battlefield Acupuncture).',
+   loc:'Hélix supérieur, en dedans du point d\'allergie (Oleson 188.e, HX 6) — n° 85'},
+  {c:'Hypothalamus',cat:'Endocrinien / Métabolique',synd:[],
+   a:'Régulation neuro-végétative : sédation parasympathique, tension artérielle, thermorégulation, sudation (protocole CHENG).',
+   loc:'Conque inférieure, près de l\'incisure intertragique (Oleson 136.e, IC 2) — n° 86'},
+  {c:'Amygdale',cat:'Shen / Psycho-émotionnel',synd:['Anxiété-stress'],
+   a:'« Cerveau émotionnel » : colère, irritabilité, agressivité, peur, anxiété (protocole CHENG).',
+   loc:'Haut du lobe, à la jonction avec l\'incisure intertragique (Oleson 141.e, LO 2/AT 1) — n° 87'},
+  {c:'Hippocampe',cat:'Shen / Psycho-émotionnel',synd:[],
+   a:'Mémoire, mémoire émotionnelle des événements vécus (protocole CHENG).',
+   loc:'Haut du lobe, juste sous l\'antitragus (Oleson 140.e, LO 6/LO 8) — n° 88'},
+  {c:'Cortex préfrontal',cat:'Shen / Psycho-émotionnel',synd:[],
+   a:'« Cerveau exécutif », point maître cérébral : concentration, ruminations, inquiétude (protocole CHENG).',
+   loc:'Lobe, bord antérieur (jonction avec la face) (Oleson 151.e, LO 1) — n° 89'},
+  {c:'Insula',cat:'Shen / Psycho-émotionnel',synd:[],
+   a:'Intéroception et perception de la douleur (protocole CHENG).',
+   loc:'Face postérieure, haut du lobe sous l\'éminence conchale inférieure (Bourdiol, in Nogier, Auriculotherapy, fig. 48a) — n° 95'},
+  {c:'Nerf vague',cat:'Shen / Psycho-émotionnel',synd:['Anxiété-stress'],
+   a:'Contrôle parasympathique des organes internes : anxiété, palpitations, diarrhée (protocole CHENG).',
+   loc:'Conque inférieure, contre le conduit auditif (Oleson 113.e, IC 3) — n° 92'},
+  {c:'Interféron',cat:'Poumon / Défenses',synd:['Vent-Chaleur Poumon'],
+   a:'Défenses immunitaires, fièvre, réponse anti-inflammatoire.',
+   loc:'Bord du supratragus, contre la racine de l\'hélix (Oleson 210.e, TG 5/HX 1) — n° 91'},
+  // ── Face postérieure : points classiques de la nomenclature chinoise normalisée (GB/T 13734-2008) [cl.] ──
+  {c:'Cœur (dos)',cat:'Cœur / Circulation',synd:['Vide Qi Coeur','Vide Sang Coeur','Insomnie'],
+   a:'Palpitations, insomnie, rêves abondants (Er Bei Xin).',
+   loc:'Face postérieure, partie supérieure (éminence scaphoïde) — n° 96'},
+  {c:'Poumon (dos)',cat:'Poumon / Défenses',synd:['Vide Qi Poumon'],
+   a:'Toux, asthme, prurit cutané (Er Bei Fei).',
+   loc:'Face postérieure, partie moyenne interne (près de l\'attache) — n° 97'},
+  {c:'Rate (dos)',cat:'Rate / Estomac / Digestion',synd:['Vide Qi Rate'],
+   a:'Douleur gastrique, dyspepsie, perte d\'appétit (Er Bei Pi).',
+   loc:'Face postérieure, centre (éminence conchale) — n° 98'},
+  {c:'Foie (dos)',cat:'Foie / Vésicule biliaire',synd:['Stagnation Qi Foie'],
+   a:'Cholécystite, lithiase biliaire, douleur des hypochondres (Er Bei Gan).',
+   loc:'Face postérieure, partie moyenne externe (près du bord libre) — n° 99'},
+  {c:'Rein (dos)',cat:'Rein / Vessie',synd:['Vide Yin Rein'],
+   a:'Vertiges, céphalées, neurasthénie (Er Bei Shen).',
+   loc:'Face postérieure, partie inférieure — n° 100'},
+  {c:'Racine supérieure',cat:'Points maîtres / Réflexes',synd:[],
+   a:'Épistaxis ; céphalées (Shang Er Gen).',
+   loc:'Face postérieure, racine supérieure de l\'auricule (attache haute) — n° 101'},
+  {c:'Racine du vague',cat:'Points maîtres / Réflexes',synd:['Qi Ni Estomac'],
+   a:'Cholécystite, lithiase biliaire, douleurs abdominales, diarrhée, congestion nasale, tachycardie (Er Mi Gen).',
+   loc:'Face postérieure, sillon de la racine de l\'hélix, à l\'attache — n° 102'},
+  {c:'Racine inférieure',cat:'Cœur / Circulation',synd:[],
+   a:'Hypotension, paralysie des membres inférieurs (Xia Er Gen).',
+   loc:'Face postérieure, racine inférieure de l\'auricule (attache du lobe) — n° 103'},
 ];
 
 // Mapping syndrome corps → points auriculaires prioritaires
@@ -9440,8 +9564,8 @@ const AURI_MOTIF_MAP = {
   'urticaire':         ['Feng Xi','Apex (Pointe)','Shen Men','Poumon (FEI)'],
   'prurit':            ['Feng Xi','Shen Men','Poumon (FEI)'],
   // Circulation / urinaire / état général
-  'hypertension artérielle': ['Shen Men','Sympathique','Sous-cortex','Point Zéro','Hypertension (HTA)'],
-  'hypotension':       ['Hypotension','Glande surrénale','Cœur (CO)','Sous-cortex'],   // [cl.] point d'augmentation de la tension
+  'hypertension artérielle': ['Shen Men','Sympathique','Sous-cortex','Point Zéro','Hypertension (HTA)','Sillon post-anthélix'],
+  'hypotension':       ['Hypotension','Glande surrénale','Cœur (CO)','Sous-cortex','Racine inférieure'],   // [cl.] point d'augmentation de la tension
   'cystite':           ['Vessie (PANG)','Urètre','Rein (SHEN)','Shen Men'],   // [cl.]
   'fatigue':           ['Point Zéro','Rein (SHEN)','Poumon (FEI)','Sous-cortex'],
 };
@@ -9466,7 +9590,13 @@ const AURI_STOPWORDS = new Set(['dans','avec','pour','depuis','chez','sans','ver
 // (points 64-76 ajoutés, 4/5/44/48/50/56/59 remplacés, 10/17/27 positionnés, 38 renommé, 20 déplacé).
 const EAR_PT_NUM = {'Apex (Pointe)':1,'Point Zéro':2,'Trachée':3,'Clavicule':4,'Coude':5,'Point maître d\'élimination':6,'Point maître de Darwin':7,'Épaule':8,'Sein':9,'Point Antidépresseur':10,'Gros intestin':11,'Urètre':12,'Point Zéro\'':13,'Point du PCS':14,'Point de décussation':15,'Genou':16,'Point de réactivité (Bourdiol)':17,'Lombaires':18,'Hanche':19,'Nerf sciatique':20,'Cervicales':21,'Point merveilleux':22,'Point maître sensoriel':23,'Point maître des organes abdominaux':24,'Point de Bosch':25,'Shen Men':26,'Sous-cortex':27,'Thalamus (Analgésie)':28,'Utérus (ZIGONG)':29,'Ovaires':30,'Prostate':31,'Sympathique':32,'Point d\'allergie':33,'Rate (PI)':34,'Estomac (WEI)':35,'Intestin grêle':36,'Triple Réchauffeur':37,'Rein (SHEN) / Détoxification':38,'Vessie (PANG)':39,'Vésicule biliaire':40,'Pancréas':41,'Cœur (CO)':42,'Foie (GAN)':43,'Poignet':44,'Poumon (FEI)':45,'Endocrine':46,'Faim (Appétit)':47,'Doigts':48,'Surrénal (ACTH)':49,'Cheville':50,'Thyroïde':51,'Glande surrénale':52,'Point maître de la peau':53,'Point maître de l\'audition':54,'Point maître des articulations':55,'Orteils':56,'Œil (YAN)':57,'Nez interne':58,'Talon':59,'Point maxillo-dentaire':60,'Point oméga':61,'Occipital':62,'Hypertension (HTA)':63,'Pelvis':64,'Duodénum':65,'Rachis dorsal':66,'Abdomen':67,'Fesse':68,'Bouche':69,'Rectum':70,'Mâchoire':71,'Langue':72,'Dents':73,'Oreille interne':74,'Amygdales':75,'Pharynx / Larynx':76,'Cardia':77,'Oesophage':78,'Point Analgésie':79,
   // Ajoutés le 30/09/2026 (schéma chinois annoté + « L'auriculothérapie simplifiée ») : cercles + numéro vert sur le schéma
-  'Hypotension':80,'Front':81,'Tempe':82,'Feng Xi':83};
+  'Hypotension':80,'Front':81,'Tempe':82,'Feng Xi':83,
+  // Ajoutés d'après Oleson, Auriculotherapy Manual (protocoles BFA / CHENG, points sans repère)
+  'Cortex cingulaire':84,'Oméga 2':85,'Hypothalamus':86,'Amygdale':87,'Hippocampe':88,'Cortex préfrontal':89,
+  'Zone du nerf trijumeau':90,'Interféron':91,'Nerf vague':92,
+  // Face postérieure (schéma « vue mastoïdienne », fenêtre agrandie, onglet Face postérieure)
+  'Sillon post-anthélix':93,'Nerf Grand Auriculaire':94,'Insula':95,'Cœur (dos)':96,'Poumon (dos)':97,'Rate (dos)':98,
+  'Foie (dos)':99,'Rein (dos)':100,'Racine supérieure':101,'Racine du vague':102,'Racine inférieure':103};
 const EAR_PT_MASTER = new Set([2,6,7,16,22,23,24,25,26,28,32,53,54,55,61,79]);
 
 function renderAuriRows(scored, savedRealises){
@@ -9709,6 +9839,166 @@ function togEx(el, inputId) {
   }
 }
 
+// ══════ SCHÉMA AURICULAIRE AGRANDI ══════
+// Copie du schéma ② (mêmes classes .ear-pt et data-name) : togEarZone() et markSuggestedEarPoints()
+// agissent sur tous les .ear-pt du document, donc la copie reste synchronisée sans code de liaison.
+// Numéros des points placés sur la face postérieure (les autres sont sur la face antérieure)
+const EAR_PT_POST = new Set([93,94,95,96,97,98,99,100,101,102,103]);
+const _ez = {vb:[0,0,970,1356], full:[0,0,970,1356], svg:null, ptrs:new Map(), drag:null, moved:false, pinch:null};
+function _ezBuild(){
+  const stage=document.getElementById('ez-stage'), src=document.getElementById('ear-svg');
+  if(!stage||!src) return;
+  const svg=src.cloneNode(true);
+  svg.removeAttribute('id'); svg.removeAttribute('style'); svg.removeAttribute('ondblclick');
+  svg.setAttribute('id','ez-svg');
+  svg.querySelectorAll('[id]').forEach(el=>{ el.id='ez-'+el.id; });
+  // Étiquettes de nom (affichées en zoomant ou avec la case « Noms »)
+  const g=document.createElementNS('http://www.w3.org/2000/svg','g'); g.setAttribute('class','ez-lbls');
+  svg.querySelectorAll('.ear-pt').forEach(c=>{
+    const t=document.createElementNS('http://www.w3.org/2000/svg','text');
+    t.setAttribute('class','ez-lbl'); t.setAttribute('data-num',c.dataset.num);
+    t.setAttribute('x',(+c.getAttribute('cx')+20)); t.setAttribute('y',(+c.getAttribute('cy')-16));
+    t.textContent=c.dataset.num+'. '+c.dataset.name; g.appendChild(t);
+  });
+  svg.appendChild(g);
+  stage.innerHTML=''; stage.appendChild(svg); _ez.svg=svg; _ez.ant=svg;
+  // Face postérieure (depuis le modèle) + étiquettes de nom
+  const tpl=document.getElementById('ear-post-tpl');
+  if(tpl){
+    const post=document.importNode(tpl.content.firstElementChild, true);  // importNode : gestionnaires onclick actifs
+    const g2=document.createElementNS('http://www.w3.org/2000/svg','g'); g2.setAttribute('class','ez-lbls');
+    post.querySelectorAll('.ear-pt').forEach(c=>{
+      const t=document.createElementNS('http://www.w3.org/2000/svg','text');
+      t.setAttribute('class','ez-lbl'); t.setAttribute('data-num',c.dataset.num);
+      t.setAttribute('x',(+c.getAttribute('cx')+20)); t.setAttribute('y',(+c.getAttribute('cy')-16));
+      t.textContent=c.dataset.num+'. '+c.dataset.name; g2.appendChild(t);
+    });
+    post.appendChild(g2); post.style.display='none';
+    stage.appendChild(post); _ez.post=post;
+  }
+  const dl=document.getElementById('ez-search-list');
+  if(dl) dl.innerHTML=Object.entries(EAR_PT_NUM).sort((a,b)=>a[1]-b[1]).map(([n,num])=>`<option value="${num}. ${n}">`).join('');
+  _ezBindStage(stage);
+}
+function openEarZoom(face){
+  if(!_ez.svg) _ezBuild();
+  // Resynchroniser les états : palpé = coché sur un schéma de la page OU enregistré dans la palpation ;
+  // proposé = dernière liste de markSuggestedEarPoints.
+  const palp=((document.getElementById('palp-oreille')||{}).value||'').split(',').map(v=>v.trim()).filter(Boolean);
+  const onPage=new Set([...document.querySelectorAll('#ear-svg .ear-pt.on, #ear-svg-2 .ear-pt.on')].map(c=>c.dataset.name));
+  document.querySelectorAll('#ez-stage .ear-pt').forEach(c=>{
+    c.classList.toggle('on', onPage.has(c.dataset.name) || (!onPage.size && palp.includes(c.dataset.name)) || (c.closest('#ez-svg-post') && palp.includes(c.dataset.name)));
+    c.classList.toggle('ear-pt-sugg', !!(window._earSugg && window._earSugg.has(c.dataset.name)));
+  });
+  document.getElementById('ear-zoom').classList.add('open');
+  earZoomFace(face==='post'?'post':'ant');
+  document.addEventListener('keydown',_ezKey);
+}
+// Bascule face antérieure / postérieure dans la fenêtre agrandie
+function earZoomFace(face){
+  if(!_ez.svg) _ezBuild();
+  const post = face==='post' && _ez.post;
+  if(_ez.ant) _ez.ant.style.display = post ? 'none' : '';
+  if(_ez.post) _ez.post.style.display = post ? '' : 'none';
+  _ez.svg = post ? _ez.post : _ez.ant; _ez.face = post ? 'post' : 'ant';
+  const ta=document.getElementById('ez-tab-ant'), tp=document.getElementById('ez-tab-post');
+  if(ta) ta.classList.toggle('on', !post); if(tp) tp.classList.toggle('on', !!post);
+  earZoomReset();
+}
+function closeEarZoom(){
+  document.getElementById('ear-zoom').classList.remove('open');
+  document.removeEventListener('keydown',_ezKey);
+}
+function _ezKey(e){ if(e.key==='Escape') closeEarZoom(); }
+function _ezApply(){
+  if(!_ez.svg) return;
+  _ez.svg.setAttribute('viewBox',_ez.vb.map(v=>Math.round(v*10)/10).join(' '));
+  // Taille des noms constante à l'écran (~12 px) quel que soit le zoom
+  const stage=document.getElementById('ez-stage');
+  const px=Math.max(stage.clientWidth/_ez.vb[2], stage.clientHeight/_ez.vb[3]) || 1;
+  const scale=Math.min(stage.clientWidth/_ez.vb[2], stage.clientHeight/_ez.vb[3]) || px;
+  _ez.svg.querySelectorAll('.ez-lbl').forEach(t=>{ t.setAttribute('font-size',(11/scale).toFixed(1)); t.style.strokeWidth=(4/scale).toFixed(1)+'px'; });
+  const auto = _ez.vb[2] <= 520;  // à partir d'un zoom ×1,9 environ (vue de 520 px de large sur 970)
+  const chk=document.getElementById('ez-labels-chk');
+  stage.classList.toggle('ez-labels', auto || (chk&&chk.checked));
+}
+function earZoomReset(){ _ez.vb=[..._ez.full]; _ezApply(); }
+function _ezClamp(){
+  const [x,y,w,h]=_ez.vb, F=_ez.full;
+  _ez.vb[0]=Math.min(Math.max(x, F[0]-w*0.25), F[0]+F[2]-w*0.75);
+  _ez.vb[1]=Math.min(Math.max(y, F[1]-h*0.25), F[1]+F[3]-h*0.75);
+}
+// factor < 1 : zoom avant. (cx, cy) : point fixe en coordonnées du schéma (centre par défaut).
+function earZoomBy(factor, cx, cy){
+  const [x,y,w,h]=_ez.vb;
+  const nw=Math.min(Math.max(w*factor, 110), _ez.full[2]*1.6), f=nw/w, nh=h*f;
+  if(cx===undefined){ cx=x+w/2; cy=y+h/2; }
+  _ez.vb=[cx-(cx-x)*f, cy-(cy-y)*f, nw, nh];
+  _ezClamp(); _ezApply();
+}
+function _ezToSvg(clientX, clientY){
+  const pt=_ez.svg.createSVGPoint(); pt.x=clientX; pt.y=clientY;
+  const m=_ez.svg.getScreenCTM(); return m ? pt.matrixTransform(m.inverse()) : {x:0,y:0};
+}
+function _ezBindStage(stage){
+  stage.addEventListener('wheel',e=>{
+    e.preventDefault();
+    const p=_ezToSvg(e.clientX,e.clientY);
+    earZoomBy(e.deltaY>0?1.15:1/1.15, p.x, p.y);
+  },{passive:false});
+  stage.addEventListener('pointerdown',e=>{
+    _ez.ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});
+    if(_ez.ptrs.size===1){ _ez.drag={x:e.clientX,y:e.clientY,vb:[..._ez.vb]}; _ez.moved=false; }
+    if(_ez.ptrs.size===2){
+      const [a,b]=[..._ez.ptrs.values()];
+      _ez.pinch={d:Math.hypot(a.x-b.x,a.y-b.y), vb:[..._ez.vb], c:_ezToSvg((a.x+b.x)/2,(a.y+b.y)/2)}; _ez.drag=null;
+    }
+  });
+  stage.addEventListener('pointermove',e=>{
+    if(!_ez.ptrs.has(e.pointerId)) return;
+    _ez.ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});
+    if(_ez.pinch && _ez.ptrs.size===2){
+      const [a,b]=[..._ez.ptrs.values()], d=Math.hypot(a.x-b.x,a.y-b.y);
+      _ez.vb=[..._ez.pinch.vb]; earZoomBy(_ez.pinch.d/Math.max(d,1), _ez.pinch.c.x, _ez.pinch.c.y); _ez.moved=true; return;
+    }
+    if(_ez.drag){
+      const dx=e.clientX-_ez.drag.x, dy=e.clientY-_ez.drag.y;
+      if(!_ez.moved && Math.hypot(dx,dy)<6) return;
+      if(!_ez.moved){ _ez.moved=true; stage.classList.add('drag'); try{stage.setPointerCapture(e.pointerId);}catch(_){} }
+      const m=_ez.svg.getScreenCTM(); const k=m?1/m.a:1;
+      _ez.vb=[_ez.drag.vb[0]-dx*k, _ez.drag.vb[1]-dy*k, _ez.drag.vb[2], _ez.drag.vb[3]];
+      _ezClamp(); _ezApply();
+    }
+  });
+  const end=e=>{ _ez.ptrs.delete(e.pointerId); if(_ez.ptrs.size<2) _ez.pinch=null; if(!_ez.ptrs.size){ _ez.drag=null; stage.classList.remove('drag'); } };
+  stage.addEventListener('pointerup',end); stage.addEventListener('pointercancel',end);
+  // Un glisser ne doit pas cocher le point sur lequel il se termine
+  stage.addEventListener('click',e=>{ if(_ez.moved){ e.stopPropagation(); e.preventDefault(); _ez.moved=false; } },true);
+}
+// Recherche par numéro (« 82 », « 82. Tempe ») ou par nom (sans accents ni casse).
+function earZoomSearch(center){
+  const q=(document.getElementById('ez-search')||{}).value||'';
+  const norm=x=>MTCNorm.strip(x).replace(/[^a-z0-9 ]+/g,' ').replace(/\s+/g,' ').trim();
+  const nq=norm(q); if(!nq||!_ez.svg) return null;
+  const pts=[...document.querySelectorAll('#ez-stage .ear-pt')];  // les deux faces
+  const mNum=nq.match(/^(\d+)\b/);
+  let hit = mNum ? pts.find(c=>c.dataset.num===mNum[1]) : null;
+  if(!hit) hit = pts.find(c=>norm(c.dataset.name)===nq) || pts.find(c=>norm(c.dataset.name).startsWith(nq)) || pts.find(c=>norm(c.dataset.name).includes(nq));
+  if(!hit) return null;
+  const exact = mNum || norm(hit.dataset.name)===nq || /^\d+\. /.test(q);
+  if(center || exact){
+    const onPost = !!hit.closest('#ez-svg-post');
+    if(onPost !== (_ez.face==='post')) earZoomFace(onPost?'post':'ant');
+    const cx=+hit.getAttribute('cx'), cy=+hit.getAttribute('cy'), w=300, h=300*_ez.full[3]/_ez.full[2];
+    _ez.vb=[cx-w/2, cy-h/2, w, h]; _ezClamp(); _ezApply();
+    hit.classList.remove('ear-pt-pulse'); void hit.getBoundingClientRect(); hit.classList.add('ear-pt-pulse'); // relance l'animation
+    setTimeout(()=>hit.classList.remove('ear-pt-pulse'),3800);
+  }
+  return hit;
+}
+
+document.addEventListener('DOMContentLoaded', ()=>{ try{ if(!_ez.svg) _ezBuild(); }catch(e){} });
+
 // ══════ PALPATION AURICULAIRE (carte SVG) ══════
 // Deux schémas existent dans la page (② Examen, id="ear-svg" / ③ Auriculothérapie, id="ear-svg-2") :
 // toutes les fonctions ci-dessous agissent sur les points par data-num/data-name à l'échelle du
@@ -9775,8 +10065,11 @@ function restoreEarZones(val){
 // liste d'auriculothérapie (③), pour un repère visuel immédiat de leur emplacement.
 function markSuggestedEarPoints(pointNames){
   // Alias : noms de la base ADB qui diffèrent du libellé du point sur le schéma
-  const ALIAS = {'Rein (SHEN)':'Rein (SHEN) / Détoxification','Détoxification':'Rein (SHEN) / Détoxification','Appétit / Faim':'Faim (Appétit)'};
+  // Point Hormonal = Endocrine (« Master Endocrine Point » d'Oleson, IT 2) ; Immunité = point Interféron (Oleson 210.e).
+  const ALIAS = {'Rein (SHEN)':'Rein (SHEN) / Détoxification','Détoxification':'Rein (SHEN) / Détoxification','Appétit / Faim':'Faim (Appétit)',
+    'Point Hormonal':'Endocrine','Immunité (Rate-Poumon)':'Interféron'};
   const names = new Set((pointNames||[]).map(n=>ALIAS[n]||n));
+  window._earSugg = names;  // pour la fenêtre agrandie (faces construites plus tard)
   document.querySelectorAll('.ear-pt').forEach(z=>{
     z.classList.toggle('ear-pt-sugg', names.has(z.dataset.name));
   });
@@ -10307,6 +10600,24 @@ const URGENCE_RECIPES = [
 
 // ── Médecine péri-opératoire / épargne morphinique ──
 // Base commune systématique + points additionnels selon le type de chirurgie sélectionné.
+// Protocoles auriculaires d'analgésie codifiés : points dans l'ordre d'application, bilatéraux.
+// BFA : Niemtzow (US Air Force, 2001) ; Oleson, Auriculotherapy Manual (4e éd.), §8 symposium 2012.
+// CHENG : électro-auriculothérapie per-opératoire (prothèses de hanche / de genou), 8 points dérivés de
+// l'Auricular Trauma Protocol ; composition validée par le praticien le 30/09/2026.
+const URGENCE_AURI_PROTOCOLES = {
+  bfa:{ label:'Battlefield Acupuncture (BFA) — analgésie rapide',
+    keywords:['battlefield','bfa','acupuncture du champ de bataille'],
+    points:['Cortex cingulaire','Thalamus (Analgésie)','Oméga 2','Point Zéro','Shen Men'],
+    technique:"Bilatéral. ASP or ou titane laissées 3 à 4 jours. Poser point par point dans l'ordre, une oreille puis l'autre (côté douloureux d'abord) ; faire marcher / mobiliser 20 à 60 s et réévaluer la douleur (EVA) après chaque paire ; arrêter dès que le soulagement est suffisant (souvent 2 à 8 aiguilles).",
+    indications:"Douleur aiguë ou poussée douloureuse intense, douleur post-traumatique ou post-opératoire, patient qui ne peut pas s'allonger." },
+  cheng:{ label:'Protocole CHENG — électro-auriculothérapie per-opératoire (PTH / PTG)',
+    keywords:['cheng','protocole cheng','pth','ptg','prothèse de hanche','prothèse totale de hanche','prothèse de genou','prothèse totale de genou','arthroplastie'],
+    // Dérivé d'une version enrichie de l'Auricular Trauma Protocol (ATP, stress post-traumatique).
+    points:['Hypothalamus','Amygdale','Hippocampe','Cortex préfrontal','Point Zéro','Shen Men','Insula','Nerf vague'],
+    technique:"Bilatéral. Électrostimulation 30 Hz pendant toute la durée de l'intervention (prothèse totale de hanche ou de genou) : électrode positive (+) sur l'Hypothalamus, électrode négative (−) sur Shen Men. L'Insula se pique à la face postérieure du lobe (Bourdiol/Nogier), hors du schéma de face.",
+    indications:"Analgésie per- et post-opératoire des arthroplasties (PTH / PTG), en complément de l'anesthésie. Essai randomisé triple aveugle (484 patients) : réduction significative de la consommation d'opioïdes et des scores de douleur à J1." },
+};
+
 const URGENCE_PERIOP_BASE = {
   acu:[
     {c:'PC6',n:'Neiguan',a:'6MC — Prévention/traitement des nausées post-opératoires, anxiolyse'},
@@ -10399,8 +10710,48 @@ function _doSearchUrgence(){
   const acuList=Array.from(acuMap.values()).sort((a,b)=>b.score-a.score).slice(0,10);
   const auriList=Array.from(auriMap.values()).sort((a,b)=>b.score-a.score).slice(0,5);
 
+  // Protocole auriculaire codifié : choisi dans la liste, ou reconnu dans le motif (« BFA », « PTH »…)
+  let protoKey=(document.getElementById('urg-proto')||{}).value||'';
+  if(!protoKey && motifN){
+    const mt=MTCNorm.tokens(motif);
+    protoKey=Object.keys(URGENCE_AURI_PROTOCOLES).find(k=>URGENCE_AURI_PROTOCOLES[k].keywords.some(kw=>MTCNorm.phraseIn(mt, kw)))||'';
+  }
+  _urgLastProto = protoKey ? URGENCE_AURI_PROTOCOLES[protoKey].points.map(n=>({p:_auriByName(n), sources:[URGENCE_AURI_PROTOCOLES[protoKey].label]})).filter(e=>e.p) : [];
+
   _urgLastAcu=acuList; _urgLastAuri=auriList;
   renderUrgenceResults(acuList, auriList, matchedRecipes, surgLabel);
+  renderUrgenceProtocole(protoKey);
+}
+
+let _urgLastProto=[];
+function renderUrgenceProtocole(key){
+  const el=document.getElementById('urg-proto-result');
+  if(!el) return;
+  const P=URGENCE_AURI_PROTOCOLES[key];
+  if(!P){ el.style.display='none'; el.innerHTML=''; return; }
+  // Si le motif est vide, on affiche quand même le bloc résultat pour que le protocole soit visible
+  const empty=document.getElementById('urg-empty'), result=document.getElementById('urg-result');
+  if(empty) empty.style.display='none';
+  if(result) result.style.display='';
+  el.style.display='';
+  // Protocole seul (ni motif ni chirurgie) : masquer les cadres de points vides
+  ['urg-acu-list','urg-auri-list'].forEach(id=>{ const x=document.getElementById(id); if(x&&x.parentElement&&!x.innerHTML.trim()) x.parentElement.style.display='none'; });
+  el.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:6px">
+      <div style="font-size:11px;font-weight:700;color:#6C3483;text-transform:uppercase;letter-spacing:.4px">🎯 ${P.label}</div>
+      <button class="btn" style="font-size:10px;padding:3px 9px" onclick="addAllUrgencePoints('proto')">➕ Tout ajouter</button>
+    </div>
+    <div style="font-size:11px;color:var(--ink);margin-bottom:4px"><strong>Technique :</strong> ${P.technique}</div>
+    <div style="font-size:11px;color:var(--slate);margin-bottom:8px"><strong>Indications :</strong> ${P.indications}</div>
+    ${_urgLastProto.map((e,i)=>{
+      const num=EAR_PT_NUM[e.p.c];
+      return `<div class="pt-row">
+        <div class="pt-code" style="min-width:56px;background:#6C3483">${i+1}</div>
+        <div class="pt-txt">
+          <div class="pt-nom">${e.p.c}${num?' <span style="font-size:10px;color:var(--slate)">(n° '+num+' du schéma)</span>':' <span style="font-size:10px;color:#B45309">(sans repère sur le schéma)</span>'}</div>
+          <div class="pt-act">${e.p.a}${e.p.loc?' · 📍 '+e.p.loc:''}</div>
+        </div>
+        <button class="btn bg" style="font-size:11px;flex-shrink:0;margin-left:auto" onclick="addUrgencePointByIndex('proto',${i},this)">➕ Ajouter</button>
+      </div>`;}).join('')}`;
 }
 
 function renderUrgenceResults(acuList, auriList, matchedRecipes, surgLabel){
@@ -10409,12 +10760,15 @@ function renderUrgenceResults(acuList, auriList, matchedRecipes, surgLabel){
   if(!acuList.length && !auriList.length){
     if(empty) empty.style.display='';
     if(result) result.style.display='none';
+    // Vider les listes : un protocole auriculaire seul peut ré-afficher le bloc résultat
+    ['urg-acu-list','urg-auri-list','urg-sources'].forEach(id=>{const x=document.getElementById(id); if(x) x.innerHTML='';});
     return;
   }
   if(empty) empty.style.display='none';
   if(result) result.style.display='';
   const acuEl=document.getElementById('urg-acu-list');
   const auriEl=document.getElementById('urg-auri-list');
+  [acuEl,auriEl].forEach(x=>{ if(x&&x.parentElement) x.parentElement.style.display=''; });
   if(acuEl) acuEl.innerHTML = acuList.length ? acuList.map((e,i)=>_urgRow(e,i,'acu')).join('') : '<p style="font-size:12px;color:var(--slate);font-style:italic">Aucun point d\'acupuncture pour cette recherche.</p>';
   if(auriEl) auriEl.innerHTML = auriList.length ? auriList.map((e,i)=>_urgRow(e,i,'auri')).join('') : '<p style="font-size:12px;color:var(--slate);font-style:italic">Aucun point d\'auriculothérapie pour cette recherche.</p>';
   const srcEl=document.getElementById('urg-sources');
@@ -10440,7 +10794,7 @@ function _urgRow(entry, idx, type){
 }
 
 function addUrgencePointByIndex(type, idx, btn){
-  const entry = type==='acu' ? _urgLastAcu[idx] : _urgLastAuri[idx];
+  const entry = type==='acu' ? _urgLastAcu[idx] : type==='proto' ? _urgLastProto[idx] : _urgLastAuri[idx];
   if(!entry) return;
   const p=entry.p;
   const code = type==='acu' ? p.c : 'Oreille';
@@ -10450,16 +10804,18 @@ function addUrgencePointByIndex(type, idx, btn){
 }
 
 function addAllUrgencePoints(type){
-  const list = type==='acu' ? _urgLastAcu : _urgLastAuri;
+  const list = type==='acu' ? _urgLastAcu : type==='proto' ? _urgLastProto : _urgLastAuri;
   if(!list.length){ showToast('Aucun point à ajouter'); return; }
-  const btns = document.querySelectorAll('#urg-'+type+'-list button');
+  const btns = type==='proto' ? document.querySelectorAll('#urg-proto-result .pt-row button') : document.querySelectorAll('#urg-'+type+'-list button');
   list.forEach((e,i)=>addUrgencePointByIndex(type,i,btns[i]));
 }
 
 function resetUrgence(){
   const m=document.getElementById('urg-motif'); if(m) m.value='';
   const c=document.getElementById('urg-chirurgie'); if(c) c.value='';
-  _urgLastAcu=[]; _urgLastAuri=[];
+  const pr=document.getElementById('urg-proto'); if(pr) pr.value='';
+  _urgLastAcu=[]; _urgLastAuri=[]; _urgLastProto=[];
+  renderUrgenceProtocole('');
   const empty=document.getElementById('urg-empty'); if(empty) empty.style.display='';
   const result=document.getElementById('urg-result'); if(result) result.style.display='none';
 }
@@ -10557,6 +10913,65 @@ function _flushUrgPending(navigateBack){
     <div style="margin-top:20px;padding-top:16px;border-top:1px solid #f0f0f0;font-size:10px;color:#bbb">
       Chaque praticien dispose d'un code personnel · Données stockées localement
     </div>
+  </div>
+</div>
+<!-- Schéma auriculaire agrandi : construit à l'ouverture (copie du schéma ②), points synchronisés -->
+<div id="ear-zoom" onclick="if(event.target===this)closeEarZoom()">
+  <div class="ez-box" role="dialog" aria-label="Schéma auriculaire agrandi">
+    <div class="ez-bar">
+      <strong style="font-size:13px;color:var(--jade)">Schéma auriculaire</strong>
+      <button class="btn ez-tab on" id="ez-tab-ant" onclick="earZoomFace('ant')">Face antérieure</button>
+      <button class="btn ez-tab" id="ez-tab-post" onclick="earZoomFace('post')">Face postérieure</button>
+      <input id="ez-search" placeholder="Rechercher un point : nom ou numéro (ex. Tempe, 82)…" oninput="earZoomSearch(false)" onkeydown="if(event.key==='Enter')earZoomSearch(true)" list="ez-search-list">
+      <datalist id="ez-search-list"></datalist>
+      <button class="btn" onclick="earZoomBy(1/1.4)" title="Zoomer">＋</button>
+      <button class="btn" onclick="earZoomBy(1.4)" title="Dézoomer">－</button>
+      <button class="btn" onclick="earZoomReset()" title="Vue entière">⤢</button>
+      <label style="font-size:11px;display:flex;align-items:center;gap:4px;white-space:nowrap"><input type="checkbox" id="ez-labels-chk" onchange="_ezApply()"> Noms</label>
+      <button class="btn" onclick="closeEarZoom()" title="Fermer (Échap)">✕</button>
+    </div>
+    <div class="ez-stage" id="ez-stage"></div>
+    <!-- Face postérieure (vue mastoïdienne) de l'oreille gauche — schéma original ACUconsult, 30/09/2026 -->
+    <template id="ear-post-tpl"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 970 1356" id="ez-svg-post" font-family="Helvetica, Arial, sans-serif">
+<defs><linearGradient id="pp-peau" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F6D7C8"/><stop offset="1" stop-color="#EBC0AC"/></linearGradient><clipPath id="pp-dans"><path d="M 359.8,338.8 C 328.2,276.2 270.5,163.8 197.0,117.5 C 134.0,82.5 76.2,132.5 81.5,245.0 C 89.9,370.0 107.8,570.0 149.8,745.0 C 191.8,907.5 270.5,1045.0 349.2,1145.0 C 407.0,1213.8 475.2,1263.8 506.8,1213.8 C 520.4,1188.8 524.6,1172.5 524.6,1163.8 L 449.0,995.0 C 407.0,845.0 380.8,570.0 359.8,338.8 Z"/></clipPath></defs>
+<rect width="970" height="1356" fill="#fff"/>
+<text x="485" y="38" font-size="28" font-weight="700" fill="#333" text-anchor="middle">Face postérieure (vue mastoïdienne) — oreille gauche</text>
+<path d="M 359.8,338.8 C 328.2,276.2 270.5,163.8 197.0,117.5 C 134.0,82.5 76.2,132.5 81.5,245.0 C 89.9,370.0 107.8,570.0 149.8,745.0 C 191.8,907.5 270.5,1045.0 349.2,1145.0 C 407.0,1213.8 475.2,1263.8 506.8,1213.8 C 520.4,1188.8 524.6,1172.5 524.6,1163.8 L 449.0,995.0 C 407.0,845.0 380.8,570.0 359.8,338.8 Z" fill="url(#pp-peau)"/>
+<path d="M 351.4,426.2 C 270.5,482.5 226.4,622.5 236.9,745.0 C 254.8,876.2 328.2,976.2 449.0,992.5 L 512.0,995.0 L 417.5,420.0 Z" fill="#E2AE98" fill-opacity=".6" stroke="#8E3B2E" stroke-width="3" clip-path="url(#pp-dans)"/>
+<path d="M 359.8,338.8 C 328.2,276.2 270.5,163.8 197.0,117.5 C 134.0,82.5 76.2,132.5 81.5,245.0 C 89.9,370.0 107.8,570.0 149.8,745.0 C 191.8,907.5 270.5,1045.0 349.2,1145.0 C 407.0,1213.8 475.2,1263.8 506.8,1213.8 C 520.4,1188.8 524.6,1172.5 524.6,1163.8 L 449.0,995.0 C 407.0,845.0 380.8,570.0 359.8,338.8 Z" fill="none" stroke="#8E3B2E" stroke-width="5" stroke-linejoin="round"/>
+<path d="M 307.2,301.2 C 260.0,363.8 212.8,457.5 211.7,582.5 C 209.6,720.0 239.0,820.0 296.8,926.2" fill="none" stroke="#6E2A20" stroke-width="6" stroke-linecap="round"/>
+<path d="M 354.5,363.8 C 299.9,385.0 253.7,467.5 232.7,576.2" fill="none" stroke="#6E2A20" stroke-width="4" stroke-linecap="round"/>
+<path d="M 354.5,403.8 C 307.2,426.2 264.2,505.0 239.0,585.0" fill="none" stroke="#6E2A20" stroke-width="4" stroke-linecap="round"/>
+<path d="M 379.7,745.0 C 344.0,747.5 299.9,755.0 260.0,767.5" fill="none" stroke="#6E2A20" stroke-width="3" stroke-dasharray="8 6"/>
+<path d="M 365.0,113.8 C 365.0,232.5 361.9,295.0 361.9,345.0 C 370.2,570.0 401.8,820.0 449.0,995.0 C 475.2,1070.0 512.0,1170.0 559.2,1295.0" fill="none" stroke="#444" stroke-width="4"/>
+<text x="610" y="95" font-size="20" fill="#777" font-style="italic">crâne (mastoïde) →</text>
+<g font-size="19" fill="#5A3A30">
+<circle cx="191.8" cy="273.8" r="3.5" fill="#5A3A30"/><path d="M 191.8 273.8 L 640 273.8" stroke="#9A7A70" stroke-width="1.3" stroke-dasharray="4 4" fill="none"/><text x="646" y="279.8">Éminence scaphoïde</text>
+<circle cx="369.2" cy="330.0" r="3.5" fill="#5A3A30"/><path d="M 369.2 330.0 L 640 330.0" stroke="#9A7A70" stroke-width="1.3" stroke-dasharray="4 4" fill="none"/><text x="646" y="336.0">Racine supérieure de l'auricule</text>
+<circle cx="325.1" cy="405.0" r="3.5" fill="#5A3A30"/><path d="M 325.1 405.0 L 640 405.0" stroke="#9A7A70" stroke-width="1.3" stroke-dasharray="4 4" fill="none"/><text x="646" y="411.0">Éminence fosse triangulaire</text>
+<circle cx="244.2" cy="442.5" r="3.5" fill="#5A3A30"/><path d="M 244.2 442.5 L 640 442.5" stroke="#9A7A70" stroke-width="1.3" stroke-dasharray="4 4" fill="none"/><text x="646" y="448.5">Sillon racine sup. de l'anthélix</text>
+<circle cx="247.4" cy="523.8" r="3.5" fill="#5A3A30"/><path d="M 247.4 523.8 L 640 523.8" stroke="#9A7A70" stroke-width="1.3" stroke-dasharray="4 4" fill="none"/><text x="646" y="529.8">Sillon racine inf. de l'anthélix</text>
+<circle cx="326.1" cy="607.5" r="3.5" fill="#5A3A30"/><path d="M 326.1 607.5 L 640 607.5" stroke="#9A7A70" stroke-width="1.3" stroke-dasharray="4 4" fill="none"/><text x="646" y="613.5">Éminence conchale supérieure</text>
+<circle cx="226.4" cy="627.5" r="3.5" fill="#5A3A30"/><path d="M 226.4 627.5 L 640 639.5" stroke="#9A7A70" stroke-width="1.3" stroke-dasharray="4 4" fill="none"/><text x="646" y="645.5">Gouttière anthélicine</text>
+<circle cx="394.4" cy="655.0" r="3.5" fill="#5A3A30"/><path d="M 394.4 655.0 L 640 671.5" stroke="#9A7A70" stroke-width="1.3" stroke-dasharray="4 4" fill="none"/><text x="646" y="677.5">Sillon auriculaire postérieur</text>
+<circle cx="365.0" cy="742.5" r="3.5" fill="#5A3A30"/><path d="M 365.0 742.5 L 640 742.5" stroke="#9A7A70" stroke-width="1.3" stroke-dasharray="4 4" fill="none"/><text x="646" y="748.5">Sillon de la racine de l'hélix</text>
+<circle cx="365.0" cy="880.0" r="3.5" fill="#5A3A30"/><path d="M 365.0 880.0 L 640 880.0" stroke="#9A7A70" stroke-width="1.3" stroke-dasharray="4 4" fill="none"/><text x="646" y="886.0">Éminence conchale inférieure</text>
+<circle cx="522.5" cy="1166.2" r="3.5" fill="#5A3A30"/><path d="M 522.5 1166.2 L 640 1166.2" stroke="#9A7A70" stroke-width="1.3" stroke-dasharray="4 4" fill="none"/><text x="646" y="1172.2">Racine inférieure de l'auricule</text>
+</g>
+<g id="ear-points-post" onmouseover="onEarPointHover(event)" onmouseout="onEarPointOut(event)" style="cursor:pointer">
+<circle class="ear-pt" id="epp-93" data-num="93" data-name="Sillon post-anthélix" cx="215.9" cy="695.0" r="17" onclick="togEarZone(this,'Sillon post-anthélix')"><title>93. Sillon post-anthélix (face postérieure)</title></circle><text class="ear-pt-num" x="163.9" y="703.0">93</text>
+<circle class="ear-pt" id="epp-94" data-num="94" data-name="Nerf Grand Auriculaire" cx="464.8" cy="1145.0" r="17" onclick="togEarZone(this,'Nerf Grand Auriculaire')"><title>94. Nerf Grand Auriculaire (face postérieure)</title></circle><text class="ear-pt-num" x="412.8" y="1153.0">94</text>
+<circle class="ear-pt" id="epp-95" data-num="95" data-name="Insula" cx="375.5" cy="1045.0" r="17" onclick="togEarZone(this,'Insula')"><title>95. Insula (face postérieure)</title></circle><text class="ear-pt-num" x="323.5" y="1053.0">95</text>
+<circle class="ear-pt" id="epp-96" data-num="96" data-name="Cœur (dos)" cx="184.4" cy="220.0" r="17" onclick="togEarZone(this,'Cœur (dos)')"><title>96. Cœur (dos) (face postérieure)</title></circle><text class="ear-pt-num" x="203.4" y="228.0">96</text>
+<circle class="ear-pt" id="epp-97" data-num="97" data-name="Poumon (dos)" cx="341.9" cy="535.0" r="17" onclick="togEarZone(this,'Poumon (dos)')"><title>97. Poumon (dos) (face postérieure)</title></circle><text class="ear-pt-num" x="289.9" y="543.0">97</text>
+<circle class="ear-pt" id="epp-98" data-num="98" data-name="Rate (dos)" cx="299.9" cy="670.0" r="17" onclick="togEarZone(this,'Rate (dos)')"><title>98. Rate (dos) (face postérieure)</title></circle><text class="ear-pt-num" x="247.89999999999998" y="678.0">98</text>
+<circle class="ear-pt" id="epp-99" data-num="99" data-name="Foie (dos)" cx="157.1" cy="613.8" r="17" onclick="togEarZone(this,'Foie (dos)')"><title>99. Foie (dos) (face postérieure)</title></circle><text class="ear-pt-num" x="176.1" y="621.8">99</text>
+<circle class="ear-pt" id="epp-100" data-num="100" data-name="Rein (dos)" cx="268.4" cy="1001.2" r="17" onclick="togEarZone(this,'Rein (dos)')"><title>100. Rein (dos) (face postérieure)</title></circle><text class="ear-pt-num" x="216.39999999999998" y="1009.2">100</text>
+<circle class="ear-pt" id="epp-101" data-num="101" data-name="Racine supérieure" cx="358.7" cy="340.0" r="17" onclick="togEarZone(this,'Racine supérieure')"><title>101. Racine supérieure (face postérieure)</title></circle><text class="ear-pt-num" x="306.7" y="348.0">101</text>
+<circle class="ear-pt" id="epp-102" data-num="102" data-name="Racine du vague" cx="373.4" cy="745.0" r="17" onclick="togEarZone(this,'Racine du vague')"><title>102. Racine du vague (face postérieure)</title></circle><text class="ear-pt-num" x="321.4" y="753.0">102</text>
+<circle class="ear-pt" id="epp-103" data-num="103" data-name="Racine inférieure" cx="517.2" cy="1166.2" r="17" onclick="togEarZone(this,'Racine inférieure')"><title>103. Racine inférieure (face postérieure)</title></circle><text class="ear-pt-num" x="536.2" y="1174.2">103</text>
+</g></svg></template>
+    <div class="ez-hint">Molette ou pincement : zoom · Glisser : déplacer · Clic sur un point : palpé / non palpé (synchronisé avec les schémas de la page) · 🟠 proposé · 🔴 palpé · Les noms s'affichent automatiquement en zoomant. · Face postérieure : points 93 à 103.</div>
   </div>
 </div>
 </body>
