@@ -69,6 +69,8 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
 .ear-pt-sugg{fill:#F5A623;fill-opacity:.6;stroke:#B8730A;stroke-width:3}
 .ear-pt-sugg.on{fill:var(--vermil);fill-opacity:.6;stroke:#B8730A;stroke-width:3}
 .ear-pt-lbl{font-size:15px;fill:#fff;text-anchor:middle;pointer-events:none;font-weight:700}
+/* Points ajoutés après le schéma de fond (numéro absent de l'image) */
+.ear-pt-num{font-size:24px;font-weight:700;fill:#1E6B3A;pointer-events:none}
 .lgd-item{cursor:pointer;border-radius:3px;padding:1px 3px;transition:background .12s}
 .lgd-item.hl,.lgd-item:hover{background:var(--jade-lt);color:var(--ink)}
 .lgd-item b{color:var(--jade)}
@@ -1151,6 +1153,14 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
                 <circle class="ear-pt" id="ep-68" data-num="68" data-name="Fesse" cx="510.2" cy="511.2" r="17" onclick="togEarZone(this,'Fesse')"><title>68. Fesse</title></circle>
                 <circle class="ear-pt" id="ep-78" data-num="78" data-name="Oesophage" cx="436.0" cy="731.4" r="17" onclick="togEarZone(this,'Oesophage')"><title>78. Oesophage</title></circle>
                 <circle class="ear-pt ear-pt-master" id="ep-79" data-num="79" data-name="Point Analgésie" cx="421.0" cy="193.0" r="17" onclick="togEarZone(this,'Point Analgésie')"><title>79. Point Analgésie (point caché — sous l'ourlet/tragus/anti-tragus)</title></circle>
+                <circle class="ear-pt" id="ep-80" data-num="80" data-name="Hypotension" cx="300.0" cy="990.0" r="17" onclick="togEarZone(this,'Hypotension')"><title>80. Hypotension — Sous l'incisure intertragique, haut du lobe (ajouté le 30/09/2026)</title></circle>
+                <text class="ear-pt-num" x="319.0" y="998.0">80</text>
+                <circle class="ear-pt" id="ep-81" data-num="81" data-name="Front" cx="385.0" cy="988.0" r="17" onclick="togEarZone(this,'Front')"><title>81. Front — Antitragus, partie antérieure (ajouté le 30/09/2026)</title></circle>
+                <text class="ear-pt-num" x="404.0" y="996.0">81</text>
+                <circle class="ear-pt" id="ep-82" data-num="82" data-name="Tempe" cx="455.0" cy="990.0" r="17" onclick="togEarZone(this,'Tempe')"><title>82. Tempe — Antitragus, partie moyenne (ajouté le 30/09/2026)</title></circle>
+                <text class="ear-pt-num" x="474.0" y="998.0">82</text>
+                <circle class="ear-pt" id="ep-83" data-num="83" data-name="Feng Xi" cx="705.0" cy="412.0" r="17" onclick="togEarZone(this,'Feng Xi')"><title>83. Feng Xi — Scapha, entre Doigts et Poignet (ajouté le 30/09/2026)</title></circle>
+                <text class="ear-pt-num" x="724.0" y="420.0">83</text>
                 <circle class="ear-pt" id="ep-69" data-num="69" data-name="Bouche" cx="397.9" cy="704.0" r="17" onclick="togEarZone(this,'Bouche')"><title>69. Bouche</title></circle>
                 <circle class="ear-pt" id="ep-70" data-num="70" data-name="Rectum" cx="363.0" cy="587.1" r="17" onclick="togEarZone(this,'Rectum')"><title>70. Rectum</title></circle>
                 <circle class="ear-pt" id="ep-71" data-num="71" data-name="Mâchoire" cx="621.7" cy="1022.9" r="17" onclick="togEarZone(this,'Mâchoire')"><title>71. Mâchoire</title></circle>
@@ -1163,7 +1173,7 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
             </svg>
             <div style="flex:1;min-width:300px">
               <div style="font-size:9px;color:var(--slate);line-height:1.9;column-width:250px;column-gap:16px" onmouseover="onEarLegendHover(event)" onmouseout="onEarLegendOut(event)">
-                <span class="lgd-item" id="lgd-1" data-num="1"><b>1</b> Apex (Pointe)</span> · <span class="lgd-item lgd-master" id="lgd-2" data-num="2">★ <b>2</b> Point Zéro</span> · <span class="lgd-item" id="lgd-3" data-num="3"><b>3</b> Trachée</span> · <span class="lgd-item" id="lgd-4" data-num="4"><b>4</b> Clavicule</span> · <span class="lgd-item" id="lgd-5" data-num="5"><b>5</b> Coude</span> · <span class="lgd-item lgd-master" id="lgd-6" data-num="6">★ <b>6</b> Point maître d'élimination</span> · <span class="lgd-item lgd-master" id="lgd-7" data-num="7">★ <b>7</b> Point maître de Darwin</span> · <span class="lgd-item" id="lgd-8" data-num="8"><b>8</b> Épaule</span> · <span class="lgd-item" id="lgd-9" data-num="9"><b>9</b> Sein</span> · <span class="lgd-item" id="lgd-10" data-num="10"><b>10</b> Point Antidépresseur</span> · <span class="lgd-item" id="lgd-11" data-num="11"><b>11</b> Gros intestin</span> · <span class="lgd-item" id="lgd-12" data-num="12"><b>12</b> Urètre</span> · <span class="lgd-item" id="lgd-13" data-num="13"><b>13</b> Point Zéro'</span> · <span class="lgd-item" id="lgd-14" data-num="14"><b>14</b> Point du PCS</span> · <span class="lgd-item" id="lgd-15" data-num="15"><b>15</b> Point de décussation</span> · <span class="lgd-item lgd-master" id="lgd-16" data-num="16">★ <b>16</b> Genou</span> · <span class="lgd-item" id="lgd-17" data-num="17"><b>17</b> Point de réactivité (Bourdiol)</span> · <span class="lgd-item" id="lgd-18" data-num="18"><b>18</b> Lombaires</span> · <span class="lgd-item" id="lgd-19" data-num="19"><b>19</b> Hanche</span> · <span class="lgd-item" id="lgd-20" data-num="20"><b>20</b> Nerf sciatique</span> · <span class="lgd-item" id="lgd-21" data-num="21"><b>21</b> Cervicales</span> · <span class="lgd-item lgd-master" id="lgd-22" data-num="22">★ <b>22</b> Point merveilleux</span> · <span class="lgd-item lgd-master" id="lgd-23" data-num="23">★ <b>23</b> Point maître sensoriel</span> · <span class="lgd-item lgd-master" id="lgd-24" data-num="24">★ <b>24</b> Point maître des organes abdominaux</span> · <span class="lgd-item lgd-master" id="lgd-25" data-num="25">★ <b>25</b> Point de Bosch</span> · <span class="lgd-item lgd-master" id="lgd-26" data-num="26">★ <b>26</b> Shen Men</span> · <span class="lgd-item" id="lgd-27" data-num="27"><b>27</b> Sous-cortex</span> · <span class="lgd-item lgd-master" id="lgd-28" data-num="28">★ <b>28</b> Thalamus (Analgésie)</span> · <span class="lgd-item" id="lgd-29" data-num="29"><b>29</b> Utérus (ZIGONG) <span style="opacity:.6">†</span></span> · <span class="lgd-item" id="lgd-30" data-num="30"><b>30</b> Ovaires <span style="opacity:.6">†</span></span> · <span class="lgd-item" id="lgd-31" data-num="31"><b>31</b> Prostate <span style="opacity:.6">†</span></span> · <span class="lgd-item lgd-master" id="lgd-32" data-num="32">★ <b>32</b> Sympathique <span style="opacity:.6">†</span></span> · <span class="lgd-item" id="lgd-33" data-num="33"><b>33</b> Point d'allergie <span style="opacity:.6">†</span></span> · <span class="lgd-item" id="lgd-34" data-num="34"><b>34</b> Rate (PI)</span> · <span class="lgd-item" id="lgd-35" data-num="35"><b>35</b> Estomac (WEI)</span> · <span class="lgd-item" id="lgd-36" data-num="36"><b>36</b> Intestin grêle</span> · <span class="lgd-item" id="lgd-37" data-num="37"><b>37</b> Triple Réchauffeur</span> · <span class="lgd-item" id="lgd-38" data-num="38"><b>38</b> Rein (SHEN) / Détoxification</span> · <span class="lgd-item" id="lgd-39" data-num="39"><b>39</b> Vessie (PANG)</span> · <span class="lgd-item" id="lgd-40" data-num="40"><b>40</b> Vésicule biliaire</span> · <span class="lgd-item" id="lgd-41" data-num="41"><b>41</b> Pancréas</span> · <span class="lgd-item" id="lgd-42" data-num="42"><b>42</b> Cœur (CO)</span> · <span class="lgd-item" id="lgd-43" data-num="43"><b>43</b> Foie (GAN)</span> · <span class="lgd-item" id="lgd-44" data-num="44"><b>44</b> Poignet</span> · <span class="lgd-item" id="lgd-45" data-num="45"><b>45</b> Poumon (FEI)</span> · <span class="lgd-item" id="lgd-46" data-num="46"><b>46</b> Endocrine</span> · <span class="lgd-item" id="lgd-47" data-num="47"><b>47</b> Faim (Appétit)</span> · <span class="lgd-item" id="lgd-48" data-num="48"><b>48</b> Doigts</span> · <span class="lgd-item" id="lgd-49" data-num="49"><b>49</b> Surrénal (ACTH)</span> · <span class="lgd-item" id="lgd-50" data-num="50"><b>50</b> Cheville</span> · <span class="lgd-item" id="lgd-51" data-num="51"><b>51</b> Thyroïde</span> · <span class="lgd-item" id="lgd-52" data-num="52"><b>52</b> Glande surrénale</span> · <span class="lgd-item lgd-master" id="lgd-53" data-num="53">★ <b>53</b> Point maître de la peau <span style="opacity:.6">†</span></span> · <span class="lgd-item lgd-master" id="lgd-54" data-num="54">★ <b>54</b> Point maître de l'audition</span> · <span class="lgd-item lgd-master" id="lgd-55" data-num="55">★ <b>55</b> Point maître des articulations</span> · <span class="lgd-item" id="lgd-56" data-num="56"><b>56</b> Orteils</span> · <span class="lgd-item" id="lgd-57" data-num="57"><b>57</b> Œil (YAN)</span> · <span class="lgd-item" id="lgd-58" data-num="58"><b>58</b> Nez interne <span style="opacity:.6">†</span></span> · <span class="lgd-item" id="lgd-59" data-num="59"><b>59</b> Talon</span> · <span class="lgd-item" id="lgd-60" data-num="60"><b>60</b> Point maxillo-dentaire</span> · <span class="lgd-item lgd-master" id="lgd-61" data-num="61">★ <b>61</b> Point oméga</span> · <span class="lgd-item" id="lgd-62" data-num="62"><b>62</b> Occipital</span> · <span class="lgd-item" id="lgd-63" data-num="63"><b>63</b> Hypertension (HTA)</span> · <span class="lgd-item" id="lgd-64" data-num="64"><b>64</b> Pelvis</span> · <span class="lgd-item" id="lgd-65" data-num="65"><b>65</b> Duodénum</span> · <span class="lgd-item" id="lgd-66" data-num="66"><b>66</b> Rachis dorsal</span> · <span class="lgd-item" id="lgd-67" data-num="67"><b>67</b> Abdomen</span> · <span class="lgd-item" id="lgd-68" data-num="68"><b>68</b> Fesse</span> · <span class="lgd-item" id="lgd-69" data-num="69"><b>69</b> Bouche</span> · <span class="lgd-item" id="lgd-70" data-num="70"><b>70</b> Rectum</span> · <span class="lgd-item" id="lgd-71" data-num="71"><b>71</b> Mâchoire</span> · <span class="lgd-item" id="lgd-72" data-num="72"><b>72</b> Langue</span> · <span class="lgd-item" id="lgd-73" data-num="73"><b>73</b> Dents</span> · <span class="lgd-item" id="lgd-74" data-num="74"><b>74</b> Oreille interne</span> · <span class="lgd-item" id="lgd-75" data-num="75"><b>75</b> Amygdales</span> · <span class="lgd-item" id="lgd-76" data-num="76"><b>76</b> Pharynx / Larynx <span style="opacity:.6">†</span></span> · <span class="lgd-item" id="lgd-77" data-num="77"><b>77</b> Cardia</span> · <span class="lgd-item" id="lgd-78" data-num="78"><b>78</b> Oesophage</span> · <span class="lgd-item lgd-master" id="lgd-79" data-num="79">★ <b>79</b> Point Analgésie <span style="opacity:.6">†</span></span>
+                <span class="lgd-item" id="lgd-1" data-num="1"><b>1</b> Apex (Pointe)</span> · <span class="lgd-item lgd-master" id="lgd-2" data-num="2">★ <b>2</b> Point Zéro</span> · <span class="lgd-item" id="lgd-3" data-num="3"><b>3</b> Trachée</span> · <span class="lgd-item" id="lgd-4" data-num="4"><b>4</b> Clavicule</span> · <span class="lgd-item" id="lgd-5" data-num="5"><b>5</b> Coude</span> · <span class="lgd-item lgd-master" id="lgd-6" data-num="6">★ <b>6</b> Point maître d'élimination</span> · <span class="lgd-item lgd-master" id="lgd-7" data-num="7">★ <b>7</b> Point maître de Darwin</span> · <span class="lgd-item" id="lgd-8" data-num="8"><b>8</b> Épaule</span> · <span class="lgd-item" id="lgd-9" data-num="9"><b>9</b> Sein</span> · <span class="lgd-item" id="lgd-10" data-num="10"><b>10</b> Point Antidépresseur</span> · <span class="lgd-item" id="lgd-11" data-num="11"><b>11</b> Gros intestin</span> · <span class="lgd-item" id="lgd-12" data-num="12"><b>12</b> Urètre</span> · <span class="lgd-item" id="lgd-13" data-num="13"><b>13</b> Point Zéro'</span> · <span class="lgd-item" id="lgd-14" data-num="14"><b>14</b> Point du PCS</span> · <span class="lgd-item" id="lgd-15" data-num="15"><b>15</b> Point de décussation</span> · <span class="lgd-item lgd-master" id="lgd-16" data-num="16">★ <b>16</b> Genou</span> · <span class="lgd-item" id="lgd-17" data-num="17"><b>17</b> Point de réactivité (Bourdiol)</span> · <span class="lgd-item" id="lgd-18" data-num="18"><b>18</b> Lombaires</span> · <span class="lgd-item" id="lgd-19" data-num="19"><b>19</b> Hanche</span> · <span class="lgd-item" id="lgd-20" data-num="20"><b>20</b> Nerf sciatique</span> · <span class="lgd-item" id="lgd-21" data-num="21"><b>21</b> Cervicales</span> · <span class="lgd-item lgd-master" id="lgd-22" data-num="22">★ <b>22</b> Point merveilleux</span> · <span class="lgd-item lgd-master" id="lgd-23" data-num="23">★ <b>23</b> Point maître sensoriel</span> · <span class="lgd-item lgd-master" id="lgd-24" data-num="24">★ <b>24</b> Point maître des organes abdominaux</span> · <span class="lgd-item lgd-master" id="lgd-25" data-num="25">★ <b>25</b> Point de Bosch</span> · <span class="lgd-item lgd-master" id="lgd-26" data-num="26">★ <b>26</b> Shen Men</span> · <span class="lgd-item" id="lgd-27" data-num="27"><b>27</b> Sous-cortex</span> · <span class="lgd-item lgd-master" id="lgd-28" data-num="28">★ <b>28</b> Thalamus (Analgésie)</span> · <span class="lgd-item" id="lgd-29" data-num="29"><b>29</b> Utérus (ZIGONG) <span style="opacity:.6">†</span></span> · <span class="lgd-item" id="lgd-30" data-num="30"><b>30</b> Ovaires <span style="opacity:.6">†</span></span> · <span class="lgd-item" id="lgd-31" data-num="31"><b>31</b> Prostate <span style="opacity:.6">†</span></span> · <span class="lgd-item lgd-master" id="lgd-32" data-num="32">★ <b>32</b> Sympathique <span style="opacity:.6">†</span></span> · <span class="lgd-item" id="lgd-33" data-num="33"><b>33</b> Point d'allergie <span style="opacity:.6">†</span></span> · <span class="lgd-item" id="lgd-34" data-num="34"><b>34</b> Rate (PI)</span> · <span class="lgd-item" id="lgd-35" data-num="35"><b>35</b> Estomac (WEI)</span> · <span class="lgd-item" id="lgd-36" data-num="36"><b>36</b> Intestin grêle</span> · <span class="lgd-item" id="lgd-37" data-num="37"><b>37</b> Triple Réchauffeur</span> · <span class="lgd-item" id="lgd-38" data-num="38"><b>38</b> Rein (SHEN) / Détoxification</span> · <span class="lgd-item" id="lgd-39" data-num="39"><b>39</b> Vessie (PANG)</span> · <span class="lgd-item" id="lgd-40" data-num="40"><b>40</b> Vésicule biliaire</span> · <span class="lgd-item" id="lgd-41" data-num="41"><b>41</b> Pancréas</span> · <span class="lgd-item" id="lgd-42" data-num="42"><b>42</b> Cœur (CO)</span> · <span class="lgd-item" id="lgd-43" data-num="43"><b>43</b> Foie (GAN)</span> · <span class="lgd-item" id="lgd-44" data-num="44"><b>44</b> Poignet</span> · <span class="lgd-item" id="lgd-45" data-num="45"><b>45</b> Poumon (FEI)</span> · <span class="lgd-item" id="lgd-46" data-num="46"><b>46</b> Endocrine</span> · <span class="lgd-item" id="lgd-47" data-num="47"><b>47</b> Faim (Appétit)</span> · <span class="lgd-item" id="lgd-48" data-num="48"><b>48</b> Doigts</span> · <span class="lgd-item" id="lgd-49" data-num="49"><b>49</b> Surrénal (ACTH)</span> · <span class="lgd-item" id="lgd-50" data-num="50"><b>50</b> Cheville</span> · <span class="lgd-item" id="lgd-51" data-num="51"><b>51</b> Thyroïde</span> · <span class="lgd-item" id="lgd-52" data-num="52"><b>52</b> Glande surrénale</span> · <span class="lgd-item lgd-master" id="lgd-53" data-num="53">★ <b>53</b> Point maître de la peau <span style="opacity:.6">†</span></span> · <span class="lgd-item lgd-master" id="lgd-54" data-num="54">★ <b>54</b> Point maître de l'audition</span> · <span class="lgd-item lgd-master" id="lgd-55" data-num="55">★ <b>55</b> Point maître des articulations</span> · <span class="lgd-item" id="lgd-56" data-num="56"><b>56</b> Orteils</span> · <span class="lgd-item" id="lgd-57" data-num="57"><b>57</b> Œil (YAN)</span> · <span class="lgd-item" id="lgd-58" data-num="58"><b>58</b> Nez interne <span style="opacity:.6">†</span></span> · <span class="lgd-item" id="lgd-59" data-num="59"><b>59</b> Talon</span> · <span class="lgd-item" id="lgd-60" data-num="60"><b>60</b> Point maxillo-dentaire</span> · <span class="lgd-item lgd-master" id="lgd-61" data-num="61">★ <b>61</b> Point oméga</span> · <span class="lgd-item" id="lgd-62" data-num="62"><b>62</b> Occipital</span> · <span class="lgd-item" id="lgd-63" data-num="63"><b>63</b> Hypertension (HTA)</span> · <span class="lgd-item" id="lgd-64" data-num="64"><b>64</b> Pelvis</span> · <span class="lgd-item" id="lgd-65" data-num="65"><b>65</b> Duodénum</span> · <span class="lgd-item" id="lgd-66" data-num="66"><b>66</b> Rachis dorsal</span> · <span class="lgd-item" id="lgd-67" data-num="67"><b>67</b> Abdomen</span> · <span class="lgd-item" id="lgd-68" data-num="68"><b>68</b> Fesse</span> · <span class="lgd-item" id="lgd-69" data-num="69"><b>69</b> Bouche</span> · <span class="lgd-item" id="lgd-70" data-num="70"><b>70</b> Rectum</span> · <span class="lgd-item" id="lgd-71" data-num="71"><b>71</b> Mâchoire</span> · <span class="lgd-item" id="lgd-72" data-num="72"><b>72</b> Langue</span> · <span class="lgd-item" id="lgd-73" data-num="73"><b>73</b> Dents</span> · <span class="lgd-item" id="lgd-74" data-num="74"><b>74</b> Oreille interne</span> · <span class="lgd-item" id="lgd-75" data-num="75"><b>75</b> Amygdales</span> · <span class="lgd-item" id="lgd-76" data-num="76"><b>76</b> Pharynx / Larynx <span style="opacity:.6">†</span></span> · <span class="lgd-item" id="lgd-77" data-num="77"><b>77</b> Cardia</span> · <span class="lgd-item" id="lgd-78" data-num="78"><b>78</b> Oesophage</span> · <span class="lgd-item lgd-master" id="lgd-79" data-num="79">★ <b>79</b> Point Analgésie <span style="opacity:.6">†</span></span> · <span class="lgd-item" id="lgd-80" data-num="80"><b>80</b> Hypotension</span> · <span class="lgd-item" id="lgd-81" data-num="81"><b>81</b> Front</span> · <span class="lgd-item" id="lgd-82" data-num="82"><b>82</b> Tempe</span> · <span class="lgd-item" id="lgd-83" data-num="83"><b>83</b> Feng Xi</span>
               </div>
               <div style="font-size:9px;color:var(--slate);font-style:italic;margin-top:6px">★ point maître · † point caché sous l'ourlet/tragus/anti-tragus (non visible de face, mais cliquable au même repère). Cliquer un point le sélectionne comme point palpé.</div>
               <input id="palp-oreille" style="display:none" oninput="markDirty()">
@@ -1800,6 +1810,14 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
                 <circle class="ear-pt" id="ep2-68" data-num="68" data-name="Fesse" cx="510.2" cy="511.2" r="17" onclick="togEarZone(this,'Fesse')"><title>68. Fesse</title></circle>
                 <circle class="ear-pt" id="ep2-78" data-num="78" data-name="Oesophage" cx="436.0" cy="731.4" r="17" onclick="togEarZone(this,'Oesophage')"><title>78. Oesophage</title></circle>
                 <circle class="ear-pt ear-pt-master" id="ep2-79" data-num="79" data-name="Point Analgésie" cx="421.0" cy="193.0" r="17" onclick="togEarZone(this,'Point Analgésie')"><title>79. Point Analgésie (point caché — sous l'ourlet/tragus/anti-tragus)</title></circle>
+                <circle class="ear-pt" id="ep2-80" data-num="80" data-name="Hypotension" cx="300.0" cy="990.0" r="17" onclick="togEarZone(this,'Hypotension')"><title>80. Hypotension — Sous l'incisure intertragique, haut du lobe (ajouté le 30/09/2026)</title></circle>
+                <text class="ear-pt-num" x="319.0" y="998.0">80</text>
+                <circle class="ear-pt" id="ep2-81" data-num="81" data-name="Front" cx="385.0" cy="988.0" r="17" onclick="togEarZone(this,'Front')"><title>81. Front — Antitragus, partie antérieure (ajouté le 30/09/2026)</title></circle>
+                <text class="ear-pt-num" x="404.0" y="996.0">81</text>
+                <circle class="ear-pt" id="ep2-82" data-num="82" data-name="Tempe" cx="455.0" cy="990.0" r="17" onclick="togEarZone(this,'Tempe')"><title>82. Tempe — Antitragus, partie moyenne (ajouté le 30/09/2026)</title></circle>
+                <text class="ear-pt-num" x="474.0" y="998.0">82</text>
+                <circle class="ear-pt" id="ep2-83" data-num="83" data-name="Feng Xi" cx="705.0" cy="412.0" r="17" onclick="togEarZone(this,'Feng Xi')"><title>83. Feng Xi — Scapha, entre Doigts et Poignet (ajouté le 30/09/2026)</title></circle>
+                <text class="ear-pt-num" x="724.0" y="420.0">83</text>
                 <circle class="ear-pt" id="ep2-69" data-num="69" data-name="Bouche" cx="397.9" cy="704.0" r="17" onclick="togEarZone(this,'Bouche')"><title>69. Bouche</title></circle>
                 <circle class="ear-pt" id="ep2-70" data-num="70" data-name="Rectum" cx="363.0" cy="587.1" r="17" onclick="togEarZone(this,'Rectum')"><title>70. Rectum</title></circle>
                 <circle class="ear-pt" id="ep2-71" data-num="71" data-name="Mâchoire" cx="621.7" cy="1022.9" r="17" onclick="togEarZone(this,'Mâchoire')"><title>71. Mâchoire</title></circle>
@@ -3535,13 +3553,14 @@ function viewScIdx(idx){
   let ccmqHtml = '—';
   if(sc.ccmq && Object.keys(sc.ccmq).length > 0){
     // Recalculer pour affichage
+    // Mêmes scores et mêmes seuils que l'onglet CCMQ (auparavant : seuils v.s de 24 à 35 et scores
+    // calculés même sur un questionnaire incomplet).
     const ccmqRes = [];
+    const scC = ccmqScores(n=>sc.ccmq[n]);
     Object.entries(CC).forEach(([k,v])=>{
-      let raw=0,cnt=0;
-      v.items.forEach(n=>{const val=sc.ccmq[n];if(!val)return;let sv=parseInt(val);if(v.inv.includes(n))sv=6-sv;raw+=sv;cnt++;});
-      if(!cnt)return;
-      const norm=Math.round((raw-v.items.length)/(v.items.length*4)*100);
-      if(norm>=v.s) ccmqRes.push(`<span style="font-weight:600;color:${v.col}">${v.lbl} (${norm}/100)</span>`);
+      const vd=ccmqVerdict(k, scC);
+      if(vd==='oui'||vd==='plutot') ccmqRes.push(`<span style="font-weight:600;color:${v.col}">${v.lbl} (${scC[k].norm}/100)</span>`);
+      else if(vd==='tendance') ccmqRes.push(`<span style="color:${v.col}">${v.lbl} — tendance (${scC[k].norm}/100)</span>`);
     });
     ccmqHtml = ccmqRes.length ? ccmqRes.join(', ') : 'Scores importés';
   }
@@ -3742,7 +3761,11 @@ function importCCMQ(){
   const fb=document.getElementById('ccmq-fb');
   if(!raw.trim()){showToast('Collez des scores');return;}
   let scores=[];
-  if(/Q\d+\s*[=:]\s*\d/i.test(raw)){(raw.match(/Q(\d+)\s*[=:]\s*(\d)/gi)||[]).forEach(p=>{const m=p.match(/Q(\d+)\s*[=:]\s*(\d)/i);if(m)scores[parseInt(m[1])-1]=parseInt(m[2]);});}
+  // Code du questionnaire patient (ccmq_patient.html) : 60 chiffres collés, un par question, « 0 » = sans
+  // réponse. L'ancienne lecture (/\b[1-5]\b/) n'y trouvait aucun chiffre isolé → « Aucun score reconnu ».
+  const code60=raw.replace(/[\s.\-]/g,'').match(/(?:^|\D)([0-5]{60})(?:\D|$)/);
+  if(code60){scores=code60[1].split('').map(Number);}
+  else if(/Q\d+\s*[=:]\s*\d/i.test(raw)){(raw.match(/Q(\d+)\s*[=:]\s*(\d)/gi)||[]).forEach(p=>{const m=p.match(/Q(\d+)\s*[=:]\s*(\d)/i);if(m)scores[parseInt(m[1])-1]=parseInt(m[2]);});}
   else{scores=(raw.match(/\b[1-5]\b/g)||[]).map(Number);}
   let filled=0;scores.forEach((v,i)=>{if(v>=1&&v<=5){const e=document.getElementById('c-'+(i+1));if(e){e.value=v;filled++;}}});
   if(!filled){if(fb){fb.textContent='❌ Aucun score reconnu';fb.style.color='var(--vermil)';fb.style.display='';}return;}
@@ -3750,36 +3773,48 @@ function importCCMQ(){
   markDirty();showToast(filled+' scores importés');if(filled>=55)setTimeout(calcCCMQ,300);
 }
 function clearCCMQ(){CQ.forEach(i=>{const e=document.getElementById('c-'+i.n);if(e)e.value='';});const fb=document.getElementById('ccmq-fb');if(fb)fb.style.display='none';const ta=document.getElementById('ccmq-import');if(ta)ta.value='';markDirty();showToast('CCMQ effacé');}
-function calcCCMQ(){
-  // ── Étape 1 : calculer les scores normalisés ──
+// Scores CCMQ transformés (0-100) selon la norme CACM 2009 : (brut − n) / (4n) × 100, items inversés
+// (6 − réponse) pour la constitution Équilibrée. getVal(n) renvoie la réponse 1-5 à la question n.
+// norm = null tant que les items d'une constitution ne sont pas tous renseignés.
+function ccmqScores(getVal){
   const scores={};
   Object.entries(CC).forEach(([k,v])=>{
     let raw=0,cnt=0;
     v.items.forEach(n=>{
-      const e=document.getElementById('c-'+n);
-      if(!e||!e.value)return;
-      let s=parseInt(e.value);
-      if(v.inv.includes(n))s=6-s;
-      raw+=s;cnt++;
+      const s0=parseInt(getVal(n));
+      if(!(s0>=1&&s0<=5))return;
+      raw+=v.inv.includes(n)?6-s0:s0;cnt++;
     });
     const n=v.items.length;
-    const norm=cnt===n?Math.round((raw-n)/(n*4)*100):null; // null si incomplet
-    scores[k]={raw,norm,cnt,complete:cnt===n};
+    scores[k]={raw,cnt,complete:cnt===n,norm:cnt===n?Math.round((raw-n)/(n*4)*100):null};
+  });
+  return scores;
+}
+// Verdict officiel par constitution : 'oui' | 'plutot' | 'tendance' | 'non' | null (incomplet).
+// Équilibrée : oui si ≥60 ET toutes les autres <30 ; plutôt oui si ≥60 ET toutes les autres <40 ; sinon non
+// (elle n'a pas de « tendance »). Autres constitutions : oui ≥40, tendance 30-39, non <30.
+function ccmqVerdict(k, scores){
+  const s=scores[k]; if(!s||s.norm===null) return null;
+  if(k!=='EQ') return s.norm>=40?'oui':s.norm>=30?'tendance':'non';
+  const autres=Object.entries(scores).filter(([x])=>x!=='EQ').map(([,v])=>v.norm);
+  if(s.norm<60 || autres.some(n=>n===null)) return 'non';
+  return autres.every(n=>n<30)?'oui':autres.every(n=>n<40)?'plutot':'non';
+}
+function calcCCMQ(){
+  // ── Étape 1 : calculer les scores normalisés ──
+  const scores=ccmqScores(n=>(document.getElementById('c-'+n)||{}).value);
+  Object.keys(CC).forEach(k=>{
+    const norm=scores[k].norm, verdict=ccmqVerdict(k, scores);
     // Affichage badge individuel
     const rs=document.getElementById('rs-'+k);
     const rb=document.getElementById('rb-'+k);
     if(rs) rs.textContent = norm!==null ? norm : '—';
     if(rb){
-      if(norm===null){rb.textContent='—';rb.className='rcb ba';return;}
-      if(k==='EQ'){
-        if(norm>=60){rb.textContent='✅ Présente';rb.className='rcb bp';}
-        else if(norm>=40){rb.textContent='⚠️ Tendance';rb.className='rcb bt';}
-        else{rb.textContent='— Absente';rb.className='rcb ba';}
-      } else {
-        if(norm>=40){rb.textContent='✅ Présente';rb.className='rcb bp';}
-        else if(norm>=30){rb.textContent='⚠️ Tendance';rb.className='rcb bt';}
-        else{rb.textContent='— Absente';rb.className='rcb ba';}
-      }
+      if(verdict===null){rb.textContent='—';rb.className='rcb ba';}
+      else if(verdict==='oui'){rb.textContent='✅ Présente';rb.className='rcb bp';}
+      else if(verdict==='plutot'){rb.textContent='◑ Plutôt présente';rb.className='rcb bt';}
+      else if(verdict==='tendance'){rb.textContent='⚠️ Tendance';rb.className='rcb bt';}
+      else{rb.textContent='— Absente';rb.className='rcb ba';}
     }
   });
 
@@ -3795,44 +3830,41 @@ function calcCCMQ(){
   let interpretation = '';
   let typeConstitution = '';
 
-  // ── Règle 1 : Constitution équilibrée ──
-  if(eqScore!==null && eqScore>=60){
-    const tousAutresInf30 = autresNorm.every(n=>n<30);
-    if(tousAutresInf30){
-      // Constitution équilibrée pure
-      typeConstitution = 'equilibree_pure';
-    } else {
-      // EQ ≥60 mais certains autres ≥30 → EQ tendancielle + constitutions associées
-      typeConstitution = 'equilibree_mixte';
-    }
-  } else if(presentes.length===0 && tendancielles.length===0){
-    // EQ <60 et rien d'autre → constitution équilibrée présente par défaut
-    const tousAutresInf30 = autresNorm.every(n=>n<30);
-    if(tousAutresInf30 && eqScore!==null && eqScore>=40){
-      typeConstitution = 'equilibree_tendance';
-    } else {
-      typeConstitution = 'indetermine';
-    }
+  // ── Règle 1 : Constitution équilibrée (verdict officiel, voir ccmqVerdict) ──
+  const eqVerdict = ccmqVerdict('EQ', scores);
+  const complet = Object.values(scores).every(s=>s.complete);
+  if(eqVerdict==='oui'){
+    typeConstitution = 'equilibree_pure';
+  } else if(eqVerdict==='plutot'){
+    // ≥60 avec au moins une constitution tendancielle (30-39), aucune ≥40
+    typeConstitution = 'equilibree_mixte';
   } else if(presentes.length>0 || tendancielles.length>0){
     typeConstitution = presentes.length===0 ? 'tendancielle' : (presentes.length===1 ? 'non_eq_isolee' : 'non_eq_mixte');
+  } else {
+    // Équilibrée <60 et toutes les autres <30 : aucune constitution ne se dégage
+    typeConstitution = complet ? 'aucune' : 'indetermine';
   }
 
   // ── Rendu de l'interprétation ──
   const mkBadge = (k) => `<span style="color:${CC[k].col};background:${CC[k].bg};padding:2px 8px;border-radius:12px;font-weight:600;font-size:12px">${CC[k].lbl} (${scores[k].norm}/100)</span>`;
 
-  // Toujours afficher le score EQ en premier si ≥40
-  if(eqScore!==null && eqScore>=40){
-    const eqLabel = eqScore>=60 ? '✅' : '◑';
-    const eqStatus = eqScore>=60 ? 'présente' : 'tendancielle';
+  // Constitution équilibrée affichée en premier, seulement si le verdict officiel la retient
+  if(eqVerdict==='oui' || eqVerdict==='plutot'){
+    const eqLabel = eqVerdict==='oui' ? '✅' : '◑';
+    const eqStatus = eqVerdict==='oui' ? 'présente' : 'plutôt présente';
     interpretation += `<div style="background:#F3E8FF;border-left:3px solid #4A235A;border-radius:6px;padding:8px 12px;margin-bottom:8px">
       <strong style="color:#4A235A">${eqLabel} Constitution Équilibrée ${eqStatus} — ${eqScore}/100</strong>
       ${typeConstitution==='equilibree_pure' ? '<div style="font-size:11px;color:#6D28D9;margin-top:3px">Tous les autres scores &lt;30 — Constitution équilibrée isolée</div>' : ''}
-      ${typeConstitution==='equilibree_mixte' ? '<div style="font-size:11px;color:#7C3AED;margin-top:3px">Constitution équilibrée associée à une ou plusieurs constitutions non équilibrées</div>' : ''}
+      ${typeConstitution==='equilibree_mixte' ? '<div style="font-size:11px;color:#7C3AED;margin-top:3px">Score ≥60 mais au moins une tendance (30-39) : équilibrée « plutôt oui » selon la norme</div>' : ''}
     </div>`;
+  } else if(eqScore!==null && eqScore>=60){
+    interpretation += `<div style="font-size:11px;color:var(--slate);margin-bottom:8px">Équilibrée ${eqScore}/100 non retenue : au moins une constitution non équilibrée est ≥40 (norme CACM 2009).</div>`;
   }
 
   if(typeConstitution==='equilibree_pure'){
     interpretation += `<div style="color:#065F46;font-size:12px">Aucune constitution non équilibrée présente ou tendancielle.</div>`;
+  } else if(typeConstitution==='aucune'){
+    interpretation += `<div style="color:var(--slate);font-size:12px">Aucune constitution ne se dégage nettement : Équilibrée &lt;60 et toutes les autres &lt;30.</div>`;
   } else {
     // Afficher les constitutions non équilibrées
     if(presentes.length>0){
@@ -4055,7 +4087,9 @@ const MTCNorm = (() => {
     'arrive','arrivent','peut','peuvent','dort','dorment','passe','passent','aime','aiment','calme','soulage']);
   const CLAUSE_BREAK = /[.;:!?\n,()\/]|\bmais\b|\bpar contre\b|\bcependant\b|\bet surtout\b/;
   // Formes irrégulières fréquentes en clinique (après suppression des accents).
-  const IRREG = {yeux:'oeil', maux:'mal', genoux:'genou', cheveux:'cheveu', travaux:'travail'};
+  const IRREG = {yeux:'oeil', maux:'mal', genoux:'genou', cheveux:'cheveu', travaux:'travail',
+    // Pluriels trop courts pour la règle générale (> 4 lettres) : « yeux secs » = « œil sec ».
+    secs:'sec', fins:'fin', mous:'mou'};
   // Réduction morphologique légère du français : pluriels -s/-x, -aux → -al (généraux → général).
   // Volontairement prudente : on ne touche pas au féminin (fin ≠ fine en sémiologie du pouls/langue).
   const stem = w => {
@@ -4320,8 +4354,11 @@ function _tagMatch(ruleVals, recordedVals){
   for(const rv of ruleVals){
     const kw=_coreKw(rv);
     if(!MTCNorm.seq(kw).length) continue;
-    for(const val of recordedVals){
-      if(!val) continue;
+    for(const val0 of recordedVals){
+      if(!val0) continue;
+      // Libellés de pouls « Nom — Pinyin (explication) » : seul le nom est un signe. L'explication
+      // (« Fin — Xi (Vide Qi/Sang, Humide) ») faisait passer un pouls fin pour un pouls « Vide — Xu ».
+      const val = val0.includes(' — ') ? val0.split(' — ')[0] : val0;
       // Sens unique : le signe attendu par la règle doit être CONTENU dans le signe observé
       // (« Rouge » ⊂ « Rouge foncé / Cramoisi »). L'inverse n'est plus admis : une langue simplement
       // « Rouge » ne valide plus une règle qui exige « Rouge foncé / Cramoisi ».
@@ -4370,12 +4407,16 @@ function calcBaGang(){
 
   // ── AXE BIAO / LI ──
   const q1t=q.q1_t||[], q2t=q.q2_t||[], q3t=q.q3_t||[];
-  if(q1t.includes('Frissons')||q1t.includes('Fièvre')||q3t.includes('Raideur nuque')||q3t.includes('Courbatures')) scores.biao += 2;
+  // Synthèse 1 (Ba Gang) : Biao = frissons / crainte du froid ou du vent, courbatures, fièvre AVEC
+  // frissons ; Li = fièvre SANS frissons (atteinte profonde). La fièvre seule comptait en Biao.
+  if(q1t.includes('Frissons')||q3t.includes('Raideur nuque')||q3t.includes('Courbatures')) scores.biao += 2;
+  if(q1t.includes('Sensible au vent')) scores.biao += 1;
+  if(q1t.includes('Fièvre') && !q1t.includes('Frissons')) scores.li += 1;
   if(_valMatch(['Uniforme (normal)'], ex.lEnduitDist)) scores.biao += 1;
   if(_valMatch(['Superficiel — Fu'], ex.pqProf)) scores.biao += 2;
-  // Li = signes profonds
-  if((ex.lForme && ex.lForme !== 'Normale') || ex.lCouleur) scores.li += 1;
-  const q4t = q.q4_t||[], q5t = q.q5_t||[], q6t = q.q6_t||[];
+  // Li = signes profonds (une langue de couleur normale n'en est pas un)
+  if((ex.lForme && ex.lForme !== 'Normale') || (ex.lCouleur && !_valMatch(['Normal (rose)'], ex.lCouleur))) scores.li += 1;
+  const q4t = q.q4_t||[], q5t = q.q5_t||[], q6t = q.q6_t||[], q8t = q.q8_t||[];
   if(q4t.length > 0 || q5t.length > 0 || q6t.length > 0) scores.li += 1;
   if(_valMatch(['Profond — Chen'], ex.pqProf)) scores.li += 2;
 
@@ -4388,17 +4429,27 @@ function calcBaGang(){
   if(_valMatch(['Épuisé — Ruo','Vide — Xu','Mou — Ru','Dispersé — San','Creux — Kou'], ex.pqForce)) scores.vide += 2;
   if(_tagMatch(['Vide — Xu','Mou — Ru','Épuisé — Ruo'], posVals)) scores.vide += 1;
   if(_tagMatch(['Fin — Xi'], posVals)) scores.vide += 1;
+  if(_valMatch(['Fin — Xi'], ex.pqForme)) scores.vide += 1; // même signe, saisi dans les qualités globales
   if(_valMatch(['Fine'], ex.lEpaisseur)) scores.vide += 1;
   const q9t = q.q9_t||[], q10t = q.q10_t||[];
   if(q9t.includes('Fatigue permanente')||q9t.includes('Fatigue matinale')) scores.vide += 1;
   if(q5t.includes("Peu d'appétit")) scores.vide += 1;
   if((q6t||[]).some(s=>s.includes("Amélioré par pression"))) scores.vide += 1;
+  // Synthèse 1 — Vide : transpiration spontanée (Vide de Qi / de Yang), langue pâle, selles molles,
+  // pouls retardé (Huan = vide de Qi).
+  if(q2t.includes('Sueurs spontanées diurnes')||q2t.includes("Sueurs à l'effort")) scores.vide += 1;
+  if(_valMatch(['Pâle'], ex.lCouleur)) scores.vide += 1;
+  if(q4t.includes('Selles molles')) scores.vide += 1;
+  if(_valMatch(['Retardé — Huan'], ex.pqFreq)) scores.vide += 1;
   // Plénitude
   if(_valMatch(['Plein — Shi'], ex.pqForce)) scores.plen += 2;
   if(_tagMatch(['Plein — Shi'], posVals)) scores.plen += 1;
   if(_valMatch(['Épaisse'], ex.lEpaisseur)) scores.plen += 1;
   if((q6t||[]).some(s=>s.includes("Aggravé par pression"))) scores.plen += 1;
-  if(_valMatch(['Jaune épais'], ex.lEnduitCouleur)) scores.plen += 1;
+  if(_valMatch(['Jaune épais','Blanc épais'], ex.lEnduitCouleur)) scores.plen += 1; // enduit épais = plénitude (pervers)
+  // Synthèse 1 — Plénitude : pouls glissant, constipation.
+  if(_valMatch(['Glissant — Hua'], ex.pq)) scores.plen += 1;
+  if(q4t.includes('Constipation')) scores.plen += 1;
 
   // ── AXE FROID / CHALEUR ──
   // Froid
@@ -4409,6 +4460,11 @@ function calcBaGang(){
   if((q4t||[]).includes('Urines claires abondantes')||(q4t||[]).includes('Diarrhée matinale (coq)')) scores.froid += 1;
   if(_valMatch(['Lent — Chi'], ex.pqFreq)) scores.froid += 2;
   if(_tagMatch(['Lent — Chi'], posVals)) scores.froid += 1;
+  // Synthèse 1 — Froid : absence de soif, préférence pour le chaud, amélioré par la chaleur, sueurs froides.
+  if(q5t.includes('Pas de soif')||q8t.includes('Pas de soif')) scores.froid += 1;
+  if(q5t.includes('Préfère chaud')||q5t.includes('Soif intense boissons chaudes')||q8t.includes('Soif boissons chaudes')) scores.froid += 1;
+  if(q6t.includes('Amélioré par chaleur')) scores.froid += 1;
+  if(q2t.includes('Sueurs froides')) scores.froid += 1;
   // Chaleur
   if(q1t.includes('Chaleur permanente')||q1t.includes('Bouffées de chaleur')) scores.chaleur += 2;
   if(q1t.includes('Chaleur des 5 centres (paumes/plantes/sternum)')) scores.chaleur += 3; // pathognomonique Vide Yin
@@ -4420,6 +4476,12 @@ function calcBaGang(){
   if(_valMatch(['Rapide — Shu'], ex.pqFreq)) scores.chaleur += 2;
   if(_tagMatch(['Rapide — Shu'], posVals)) scores.chaleur += 1;
   if((q5t||[]).some(s=>s.includes('Goût amer'))) scores.chaleur += 1;
+  // Synthèse 1 — Chaleur : soif de boissons fraîches, préférence pour le frais, aggravé par la chaleur,
+  // selles dures et sèches.
+  if(q5t.includes('Soif intense boissons froides')||q8t.includes('Soif intense boissons froides')) scores.chaleur += 1;
+  if(q5t.includes('Préfère froid')) scores.chaleur += 1;
+  if(q1t.includes('Aggravé par la chaleur')) scores.chaleur += 1;
+  if(q4t.includes('Selles sèches dures')) scores.chaleur += 1;
 
   // ── Douleur : facteurs aggravants/améliorants (souvent le seul signe distinctif net) ──
   const dAggBg = (ex.dAggrave||'').split(',').map(v=>v.trim()).filter(Boolean);
@@ -4445,12 +4507,13 @@ function calcBaGang(){
       <span style="color:var(--slate);font-size:10px">(${domA?a:b} ${domA?pA:pB}% · ${domA?b:a} ${domA?pB:pA}%)</span>`;
   };
 
+  const langueSecheRouge = _valMatch(['Rouge','Rouge foncé / Cramoisi'], ex.lCouleur) && _valMatch(['Sec','Très sec / Brûlé'], ex.lHumidite);
+  const doleurAmelioreeFroid = _tagMatch(['Le froid',"L'application de froid"], dAmelBg);
+  const videYinProbable = q1t.includes('Chaleur des 5 centres (paumes/plantes/sternum)')||q2t.includes('Sueurs nocturnes')||langueSecheRouge||doleurAmelioreeFroid;
+  // Mémorisé pour « → Orienter vers syndrome », qui doit suivre les scores et non le texte affiché.
+  window._baGang = {scores:{...scores}, videYinProbable};
   const chaleurType = () => {
-    const q1t2 = q.q1_t||[];
-    const q2t2 = q.q2_t||[];
-    const langueSecheRouge = _valMatch(['Rouge','Rouge foncé / Cramoisi'], ex.lCouleur) && _valMatch(['Sec','Très sec / Brûlé'], ex.lHumidite);
-    const doleurAmelioreeFroid = _tagMatch(['Le froid',"L'application de froid"], dAmelBg);
-    if(q1t2.includes('Chaleur des 5 centres (paumes/plantes/sternum)')||q2t2.includes('Sueurs nocturnes')||langueSecheRouge||doleurAmelioreeFroid){
+    if(videYinProbable){
       return ' <span style="background:#FADBD8;color:#922B21;font-size:10px;padding:1px 6px;border-radius:10px">⚠️ Vide de Yin probable</span>';
     }
     return '';
@@ -4487,7 +4550,6 @@ function calcBaGang(){
 // Chaleur→clarifier). Purement dérivé du Ba Gang déjà calculé : aucune nouvelle saisie requise.
 function baGangTherapeutique(scores, ex){
   const totVP = scores.vide + scores.plen, totFC = scores.froid + scores.chaleur;
-  if(!totVP && !totFC) return '';
   const parts = [];
   if(totVP){
     parts.push(scores.vide >= scores.plen
@@ -4516,16 +4578,21 @@ function baGangTherapeutique(scores, ex){
 function baGangToSynd(){
   // Oriente vers le syndrome selon Ba Gang
   calcBaGang();
-  const el = document.getElementById('bagang-result');
-  if(!el) return;
-  const text = el.textContent;
+  if(!window._baGang) return;
+  // Ancienne version : lisait le texte affiché, où « Vide », « Froid », « Chaleur » et « Li »
+  // figurent toujours (ligne des scores bruts) → proposait « Vide de Yang des Reins » à tout coup.
+  // On suit désormais le pôle dominant de chaque axe, avec la même règle d'égalité que l'affichage.
+  const {scores:s, videYinProbable} = window._baGang;
+  const vide = s.vide+s.plen>0 && s.vide>=s.plen, plen = s.vide+s.plen>0 && s.plen>s.vide;
+  const froid = s.froid+s.chaleur>0 && s.froid>=s.chaleur, chaleur = s.froid+s.chaleur>0 && s.chaleur>s.froid;
+  const li = s.li>s.biao;
   let suggestion = '';
-  if(text.includes('Vide') && text.includes('Froid')) suggestion = 'Vide de Yang des Reins';
-  else if(text.includes('Vide') && text.includes('Chaleur') && text.includes('Vide de Yin')) suggestion = 'Vide de Yin des Reins';
-  else if(text.includes('Vide') && text.includes('Chaleur')) suggestion = 'Vide de Yin du Foie';
-  else if(text.includes('Plénitude') && text.includes('Chaleur') && text.includes('Li')) suggestion = 'Humidité-Chaleur';
-  else if(text.includes('Plénitude') && text.includes('Froid')) suggestion = 'Vent-Froid externe';
-  else if(text.includes('Vide') && !text.includes('Chaleur')) suggestion = 'Vide de Qi';
+  if(vide && froid) suggestion = 'Vide de Yang des Reins';
+  else if(vide && chaleur && videYinProbable) suggestion = 'Vide de Yin des Reins';
+  else if(vide && chaleur) suggestion = 'Vide de Yin du Foie';
+  else if(plen && chaleur && li) suggestion = 'Humidité-Chaleur';
+  else if(plen && froid && !li) suggestion = 'Vent-Froid externe';
+  else if(vide) suggestion = 'Vide de Qi';
 
   if(suggestion){
     const sel = document.getElementById('synd-sel');
@@ -5411,157 +5478,374 @@ document.addEventListener('click', e => {
   }
 });
 // ══════ MOTEUR DE SUGGESTION DE SYNDROMES ══════
+// Signes exigés (requisTous : chaque groupe doit avoir AU MOINS UN signe présent). Source : Synthèses
+// 1 et 2 du cours de Sorbonne Paris Nord — « Vide de Yang = Vide de Qi + Froid », « Vide de Yin = Vide
+// de Sang + Chaleur interne ». Sans ces garde-fous, un simple Vide de Qi (fatigue, langue pâle) faisait
+// remonter un Vide de Yang à égalité, et une simple sécheresse un Vide de Yin.
+// Types de signe : tags {qN:[…]} · pouls [...] · langue [...] (couleur + localisée) · enduit [...] ·
+// douleur {aggrave|ameliore|type|localisation:[…]} · ccmq 'libellé' (présente ou tendance) ·
+// motifMots [...] (motif de consultation) · q10 'qN' (liste de la règle) · motif true (MOTIF_KEYS).
+const SIGNES_FROID = [
+  {tags:{q1:['Froid permanent','Aggravé par le froid'],q2:['Sueurs froides'],q4:['Urines claires abondantes','Diarrhée matinale (coq)'],
+    q5:['Préfère chaud','Soif intense boissons chaudes'],q6:['Amélioré par chaleur'],q8:['Soif boissons chaudes']}},
+  {pouls:['Lent — Chi']},
+  {douleur:{aggrave:['Le froid'],ameliore:['La chaleur','La chaleur locale']}},
+  {ccmq:'Vide de Yang'},
+  {motifMots:['froid','frilosité','frileux','extrémités froides']},
+];
+const SIGNES_CHALEUR_VIDE = [
+  {tags:{q1:['Chaleur des 5 centres (paumes/plantes/sternum)','Bouffées de chaleur','Chaleur vespérale (après-midi)','Corps chaud la nuit','Fièvre légère chronique'],
+    q2:['Sueurs nocturnes'],q8:['Bouche sèche nocturne','Lèvres rouges et sèches']}},
+  // Langue rouge et pouls rapide ne suffisent pas : ils existent aussi dans la Chaleur plénitude.
+  // Il faut un signe propre au Vide : langue pelée / sans enduit / fissurée, chaleur des 5 centres…
+  {enduit:['Absent (langue miroir)']},
+  {langue:['Fissure médiane','Fissures bords']},
+  {enduitDist:['Pelé zone centrale','Pelé zone racine','Pelé géographique']},
+  {douleur:{ameliore:['Le froid',"L'application de froid"]}},
+  {ccmq:'Vide de Yin'},
+  {motifMots:['bouffée de chaleur','sueur nocturne','ménopause']},
+];
+const SIGNES_CHALEUR = [
+  {tags:{q1:['Chaleur permanente','Aggravé par la chaleur'],q4:['Urines foncées','Brûlures urinaires','Selles sèches dures'],
+    q5:['Soif intense boissons froides','Préfère froid','Goût amer'],q7:['Yeux rouges'],q8:['Soif intense boissons froides','Lèvres rouges et sèches']}},
+  {langue:['Rouge','Rouge foncé / Cramoisi']},
+  {enduit:['Jaune mince','Jaune épais']},
+  {pouls:['Rapide — Shu','Ample — Hong']},
+  {douleur:{aggrave:['La chaleur'],ameliore:['Le froid',"L'application de froid"]}},
+];
+
+// Signes qui démentent une hypothèse (pénalité −3) : la nature d'un syndrome se lit au pouls et à la
+// langue (Synthèse 1, « vrai / faux »). langueG = couleur globale seulement (pas une pointe rouge).
+const CONTRE_FROID = [{langueG:['Rouge','Rouge foncé / Cramoisi']},{pouls:['Rapide — Shu']},{tags:{q5:['Soif intense boissons froides'],q8:['Soif intense boissons froides']}}];
+const CONTRE_CHALEUR = [{langueG:['Pâle']},{pouls:['Lent — Chi']}];
+const CONTRE_VIDE_YIN = [{pouls:['Plein — Shi','Ample — Hong']},{enduit:['Jaune épais','Blanc épais']}];
+const CONTRE_PLENITUDE_CHALEUR = [{enduit:['Absent (langue miroir)']},{enduitDist:['Pelé zone centrale','Pelé zone racine','Pelé géographique']}];
+
 const SYND_RULES = {
+  // ══ RATE / ESTOMAC ══
   'Vide de Qi de Rate': {
     couleur:'🟢',offline:true,
     ccmq:['Vide de Qi'],
     langue:{couleur:['Pâle'],forme:['Gonflée / Œdématiée','Marques de dents'],enduitCouleur:['Blanc mince (normal)','Blanc épais']},
-    pouls:{global:['Vide — Xu','Retardé — Huan','Mou — Ru'],positions:{gG:['Vide — Xu','Mou — Ru'],gD:['Vide — Xu','Mou — Ru']}},
-    q10:{q5:["Peu d'appétit"],q4:['Selles molles','Diarrhée'],q3:['Lourdeur corps'],q9:['Fatigue matinale','Fatigue permanente']},
+    pouls:{global:['Vide — Xu','Retardé — Huan','Mou — Ru','Épuisé — Ruo'],positions:{gG:['Vide — Xu','Mou — Ru'],gD:['Vide — Xu','Mou — Ru']}},
+    q10:{q5:["Peu d'appétit",'Bouche fade','Goût sucré persistant'],q4:['Selles molles','Diarrhée'],q3:['Lourdeur corps','Faiblesse membres'],q9:['Fatigue matinale','Fatigue permanente','Coup de pompe après repas']},
     douleur:{ameliore:['La chaleur','La pression']},
     axe:'racine',
     descr:"Fatigue, selles molles, peu d'appétit, langue pâle avec marques de dents"
-  },
-  'Vide de Qi du Poumon': {
-    couleur:'🟢',offline:true,
-    ccmq:['Vide de Qi'],
-    langue:{couleur:['Pâle'],forme:['Normale','Mince / Maigre']},
-    pouls:{global:['Vide — Xu','Superficiel — Fu','Épuisé — Ruo']},
-    q10:{q2:['Sueurs spontanées'],q9:['Fatigue permanente','Fatigue matinale']},
-    douleur:{},
-    axe:'racine',
-    descr:'Essoufflement, voix faible, sueurs spontanées'
-  },
-  'Qi des Reins non ferme': {
-    couleur:'🟢',offline:true,
-    ccmq:['Vide de Qi'],
-    langue:{couleur:['Pâle'],forme:['Normale']},
-    pouls:{global:['Vide — Xu','Profond — Chen'],positions:{chiG:['Vide — Xu'],chiD:['Vide — Xu']}},
-    q10:{q4:['Pollakiurie nocturne','Urines claires abondantes'],q9:['Fatigue matinale']},
-    douleur:{},
-    axe:'racine',
-    descr:'Fatigue lombaire, pollakiurie nocturne, Chi vide et profond'
-  },
-  'Vide de Yang des Reins': {
-    couleur:'🟢',offline:true,
-    ccmq:['Vide de Yang'],
-    langue:{couleur:['Pâle'],forme:['Gonflée / Œdématiée'],humidite:['Humide / Glissant'],enduitCouleur:['Blanc épais']},
-    pouls:{global:['Profond — Chen','Lent — Chi','Vide — Xu'],positions:{chiG:['Vide — Xu','Lent — Chi'],chiD:['Vide — Xu','Lent — Chi']}},
-    q10:{q1:['Froid permanent','Aggravé par le froid'],q4:['Urines claires abondantes','Pollakiurie nocturne'],q9:['Fatigue matinale']},
-    douleur:{aggrave:['Le froid'],ameliore:['La chaleur']},
-    axe:'racine',
-    descr:'Froid constant, membres froids, langue pâle gonflée, Chi vide et lent'
   },
   'Vide de Yang de Rate': {
     couleur:'🟢',offline:true,
     ccmq:['Vide de Yang'],
     langue:{couleur:['Pâle'],forme:['Gonflée / Œdématiée','Marques de dents'],humidite:['Humide / Glissant']},
-    pouls:{global:['Lent — Chi','Vide — Xu','Mou — Ru'],positions:{gD:['Vide — Xu','Mou — Ru']}},
-    q10:{q1:['Froid permanent'],q4:['Selles molles','Diarrhée'],q5:["Peu d'appétit"]},
+    pouls:{global:['Lent — Chi','Vide — Xu','Mou — Ru','Profond — Chen'],positions:{gD:['Vide — Xu','Mou — Ru']}},
+    q10:{q1:['Froid permanent','Aggravé par le froid'],q4:['Selles molles','Diarrhée'],q5:["Peu d'appétit",'Préfère chaud'],q6:['Amélioré par chaleur']},
     douleur:{ameliore:['La chaleur']},
     axe:'racine',
-    descr:'Froid abdominal, diarrhée, langue gonflée humide'
+    requisTous:[SIGNES_FROID],
+    contre:CONTRE_FROID,
+    descr:'Vide de Qi de Rate + froid : membres froids, selles molles voire lientériques, œdèmes, langue gonflée humide'
   },
-  'Vide de Yin des Reins': {
+  'Effondrement du Qi de Rate': {
     couleur:'🟢',offline:true,
-    ccmq:['Vide de Yin'],
-    langue:{couleur:['Rouge'],forme:['Mince / Maigre','Fissures longitudinales'],humidite:['Sec','Très sec / Brûlé'],enduitCouleur:['Absent (langue miroir)','Jaune mince']},
-    pouls:{global:['Rapide — Shu','Fin — Xi','Profond — Chen'],positions:{chiG:['Rapide — Shu','Fin — Xi'],chiD:['Rapide — Shu','Fin — Xi']}},
-    q10:{q2:['Sueurs nocturnes'],q1:['Bouffées de chaleur','Aggravé par la chaleur'],q8:['Soif intense','Gorge sèche'],q7:['Acouphènes graves']},
-    douleur:{ameliore:['Le froid']},
-    axe:'racine',
-    descr:'Sueurs nocturnes, bouffées de chaleur, langue rouge fissurée, Chi fin et rapide'
-  },
-  'Vide de Yin du Foie': {
-    couleur:'🟢',offline:true,
-    ccmq:['Vide de Yin'],
-    langue:{couleur:['Rouge'],forme:['Mince / Maigre'],humidite:['Sec'],enduitCouleur:['Absent (langue miroir)']},
-    pouls:{global:['Tendu en corde — Xuan','Fin — Xi','Rapide — Shu'],positions:{gG:['Tendu en corde — Xuan','Fin — Xi']}},
-    q10:{q7:['Yeux secs','Vision trouble'],q10:['Irritabilité','Colère'],q2:['Sueurs nocturnes'],q9:['Réveils nocturnes']},
+    ccmq:['Vide de Qi'],
+    langue:{couleur:['Pâle'],forme:['Gonflée / Œdématiée']},
+    pouls:{global:['Épuisé — Ruo','Vide — Xu','Fin — Xi']},
+    q10:{q9:['Fatigue permanente','Coup de pompe après repas'],q4:['Selles molles','Incontinence urinaire'],q5:["Peu d'appétit"]},
     douleur:{},
     axe:'racine',
-    descr:'Yeux secs, vertiges, Guan gauche tendu et fin, langue rouge'
+    requisTous:[[{motifMots:['prolapsus','hémorroïde','incontinence urinaire','sensation de descente']},{tags:{q4:['Incontinence urinaire']}}]],
+    descr:'Vide de Qi de Rate + sensation de descente, prolapsus (estomac, anus, utérus), incontinence'
   },
-  'Vide de Yin du Cœur': {
+  'Qi à contre courant de l\'Estomac': {
     couleur:'🟢',offline:true,
-    ccmq:['Vide de Yin'],
-    langue:{couleur:['Rouge'],forme:['Fissures longitudinales'],enduitCouleur:['Absent (langue miroir)']},
-    pouls:{global:['Rapide — Shu','Fin — Xi','Irrégulier — Jie'],positions:{cunG:['Rapide — Shu','Fin — Xi','Vide — Xu']}},
-    q10:{q9:['Insomnie totale','Réveils nocturnes','Cauchemars'],q10:['Anxiété','Labilité émotionnelle'],q2:['Sueurs nocturnes']},
+    ccmq:[],
+    langue:{},
+    pouls:{global:['Tendu en corde — Xuan']},
+    q10:{q5:['Nausées','Régurgitations','Hoquets','Renvois acides'],q6:['Plénitude épigastrique']},
     douleur:{},
-    axe:'racine',
-    descr:'Insomnie, palpitations, anxiété, Cun gauche fin et rapide'
-  },
-  'Stagnation du Qi du Foie': {
-    couleur:'🟢',offline:true,
-    ccmq:['Stase de Qi'],
-    langue:{couleur:['Normal (rose)','Rouge'],enduitCouleur:['Blanc mince (normal)']},
-    pouls:{global:['Tendu en corde — Xuan'],positions:{gG:['Tendu en corde — Xuan']}},
-    q10:{q6:['Douleur flancs','Distension abdominale','Oppression thoracique'],q10:['Irritabilité','Colère','Tristesse'],q5:['Nausées','Régurgitations']},
-    douleur:{aggrave:['Le stress / émotions'],ameliore:['Le massage','Le mouvement']},
     axe:'branche',
-    descr:"Tension des flancs, irritabilité, Guan gauche tendu en corde"
+    requisUn:[{q10:'q5'},{motif:true}],
+    descr:'Nausées, vomissements, éructations, hoquet, reflux ; pouls tendu'
   },
-  'Stase de Sang': {
-    couleur:'🟢',offline:true,
-    ccmq:['Stagnation Sang'],
-    langue:{couleur:['Violacé','Bleuté','Points rouges (fraises)']},
-    pouls:{global:['Rugueux — Se','Tendu en corde — Xuan']},
-    q10:{q11:['Dysménorrhée','Aménorrhée'],q10:['Labilité émotionnelle']},
-    douleur:{aggrave:['La pression','Le froid'],ameliore:['La chaleur','Le massage'],type:['Fixe / Stabbing']},
-    axe:'branche',
-    descr:'Douleur fixe aggravée à la pression, langue violacée, pouls rugueux'
-  },
-  'Glaires-Humidité': {
-    couleur:'🟢',offline:true,
-    ccmq:['Glaires-Humidité'],
-    langue:{forme:['Gonflée / Œdématiée','Marques de dents'],enduitCouleur:['Blanc épais'],humidite:['Gras / Huileux','Humide / Glissant']},
-    pouls:{global:['Glissant — Hua','Mou — Ru','Lent — Chi']},
-    q10:{q3:['Lourdeur corps','Lourdeur tête'],q5:["Peu d'appétit",'Nausées']},
-    douleur:{aggrave:["L'humidité"],type:['Pesanteur / Lourdeur']},
-    axe:'racine',
-    descr:'Lourdeur, enduit épais et gras, pouls glissant'
-  },
-  'Humidité-Chaleur': {
+  'Feu de l\'Estomac': {
     couleur:'🟢',offline:true,
     ccmq:['Humidité-Chaleur'],
-    langue:{couleur:['Rouge'],enduitCouleur:['Jaune épais','Jaune mince'],humidite:['Gras / Huileux']},
-    pouls:{global:['Rapide — Shu','Glissant — Hua']},
-    q10:{q4:['Selles collantes','Brûlures urinaires','Urines foncées'],q5:['Goût amer'],q1:['Chaleur permanente']},
-    douleur:{aggrave:['La chaleur']},
+    langue:{couleur:['Rouge'],enduitCouleur:['Jaune épais'],humidite:['Sec']},
+    pouls:{global:['Rapide — Shu','Plein — Shi','Ample — Hong'],positions:{gD:['Rapide — Shu','Plein — Shi']}},
+    q10:{q6:['Brûlures épigastriques','Douleur épigastrique'],q5:['Appétit excessif','Faim rapide après repas','Renvois acides','Soif intense boissons froides'],q8:['Halitose','Saignements gingivaux','Aphtes récurrents'],q4:['Constipation','Selles sèches dures']},
+    douleur:{aggrave:['La pression']},
     axe:'branche',
-    descr:'Chaleur, urines foncées, enduit jaune gras, pouls glissant rapide'
+    requisTous:[
+      [{tags:{q6:['Brûlures épigastriques','Douleur épigastrique'],q5:['Appétit excessif','Faim rapide après repas','Renvois acides'],q8:['Halitose','Saignements gingivaux']}},{motif:true}],
+      SIGNES_CHALEUR],
+    contre:[...CONTRE_CHALEUR,...CONTRE_PLENITUDE_CHALEUR],
+    descr:"Brûlure épigastrique, faim constante, soif de boissons fraîches, mauvaise haleine, gencives, langue rouge enduit jaune épais sec"
   },
-  'Vide de Sang': {
-    couleur:'🟡',offline:false,
-    ccmq:['Vide de Yin','Stagnation Sang'],
-    langue:{couleur:['Pâle'],forme:['Mince / Maigre']},
-    pouls:{global:['Fin — Xi','Vide — Xu','Rugueux — Se']},
-    q10:{q7:['Yeux secs','Vision trouble'],q9:['Insomnie totale','Réveils nocturnes'],q3:['Vertiges']},
+  'Vide de Yin de l\'Estomac': {
+    couleur:'🟢',offline:true,
+    ccmq:['Vide de Yin'],
+    langue:{couleur:['Rouge','Fissure médiane'],enduitCouleur:['Absent (langue miroir)']},
+    pouls:{global:['Fin — Xi','Rapide — Shu']},
+    q10:{q6:['Douleur épigastrique','Plénitude épigastrique'],q5:["Peu d'appétit",'Bouche sèche sans soif'],q8:['Bouche sèche nocturne','Gorge sèche'],q4:['Selles sèches dures','Constipation']},
     douleur:{},
     axe:'racine',
-    descr:'Pâleur, vertiges, yeux secs, pouls fin et vide'
+    requisTous:[
+      [{tags:{q6:['Douleur épigastrique','Plénitude épigastrique','Brûlures épigastriques']}},{motif:true}],
+      [...SIGNES_CHALEUR_VIDE,{langue:['Fissure médiane']}]],
+    contre:[...CONTRE_CHALEUR,...CONTRE_VIDE_YIN],
+    descr:"Douleur épigastrique sourde, peu d'appétit, bouche sèche l'après-midi, selles sèches, langue rouge pelée au centre"
   },
-  'Feu du Cœur': {
-    couleur:'🟡',offline:false,
-    ccmq:['Stase de Qi'],
-    langue:{couleur:['Rouge','Points rouges (fraises)'],enduitCouleur:['Jaune mince','Jaune épais']},
-    pouls:{global:['Rapide — Shu','Plein — Shi'],positions:{cunG:['Rapide — Shu','Plein — Shi']}},
-    q10:{q9:['Insomnie totale','Cauchemars'],q10:['Anxiété','Joie excessive'],q4:['Brûlures urinaires','Urines foncées']},
+  // ══ POUMON ══
+  'Vide de Qi du Poumon': {
+    couleur:'🟢',offline:true,
+    ccmq:['Vide de Qi'],
+    langue:{couleur:['Pâle'],forme:['Normale','Mince / Maigre']},
+    pouls:{global:['Vide — Xu','Épuisé — Ruo'],positions:{cunD:['Vide — Xu','Épuisé — Ruo']}},
+    q10:{q2:['Sueurs spontanées',"Sueurs à l'effort"],q9:['Fatigue permanente','Fatigue matinale'],q10:['Tristesse']},
+    douleur:{},
+    axe:'racine',
+    descr:'Essoufflement à l\'effort, voix faible, sueurs spontanées, rhumes fréquents, pouls faible'
+  },
+  'Vide de Yin du Poumon': {
+    couleur:'🟢',offline:true,
+    ccmq:['Vide de Yin'],
+    langue:{couleur:['Rouge'],humidite:['Sec']},
+    pouls:{global:['Fin — Xi','Rapide — Shu'],positions:{cunD:['Fin — Xi','Rapide — Shu']}},
+    q10:{q8:['Gorge sèche','Bouche sèche nocturne'],q2:['Sueurs nocturnes'],q1:['Chaleur vespérale (après-midi)','Chaleur des 5 centres (paumes/plantes/sternum)','Fièvre légère chronique']},
+    douleur:{},
+    axe:'racine',
+    requisTous:[[{motif:true}],SIGNES_CHALEUR_VIDE],
+    contre:[...CONTRE_CHALEUR,...CONTRE_VIDE_YIN],
+    descr:"Toux sèche, gorge sèche, voix rauque, fébricule l'après-midi, sueurs nocturnes, langue rouge sèche"
+  },
+  'Invasion du Poumon par Vent Chaleur': {
+    couleur:'🟢',offline:true,
+    ccmq:[],
+    langue:{couleur:['Rouge','Pointe rouge'],enduitCouleur:['Jaune mince']},
+    pouls:{global:['Superficiel — Fu','Rapide — Shu']},
+    q10:{q1:['Fièvre','Frissons'],q8:['Gorge enflée','Gorge sèche','Soif intense boissons froides'],q2:['Sueurs abondantes']},
     douleur:{},
     axe:'branche',
-    descr:'Agitation, insomnie, urines foncées, langue rouge, Cun gauche rapide et plein'
+    requisTous:[
+      [{tags:{q1:['Fièvre']}},{pouls:['Superficiel — Fu']},{motif:true}],
+      [{langue:['Rouge']},{pouls:['Rapide — Shu']},{tags:{q8:['Gorge enflée','Soif intense boissons froides']}},{motifMots:['mal de gorge']}]],
+    contre:CONTRE_CHALEUR,
+    descr:'Fièvre, gorge douloureuse, soif, légère transpiration, pouls superficiel et rapide'
   },
   'Vent-Froid externe': {
     couleur:'🟢',offline:true,
     ccmq:['Particulière'],
     langue:{enduitCouleur:['Blanc mince (normal)','Blanc épais'],humidite:['Humide / Glissant']},
     pouls:{global:['Superficiel — Fu','Serré — Jin']},
-    q10:{q1:['Frissons','Froid permanent','Aggravé par le froid'],q3:['Céphalées nuque','Courbatures']},
+    // « Froid permanent » retiré : c'est un signe de Vide de Yang (froid interne), pas d'atteinte externe.
+    q10:{q1:['Frissons','Sensible au vent','Aggravé par le froid'],q2:['Pas de transpiration'],q3:['Céphalées nuque','Courbatures','Raideur nuque']},
     douleur:{aggrave:['Le froid'],type:['Contracture']},
     axe:'branche',
-    descr:'Frissons, céphalées de nuque, pouls superficiel et serré'
+    requisTous:[[{tags:{q1:['Frissons','Sensible au vent'],q3:['Courbatures']}},{pouls:['Superficiel — Fu']},{motif:true}]],
+    contre:CONTRE_FROID,
+    descr:'Frissons, céphalées de nuque, pas de transpiration, pouls superficiel et serré'
   },
+  // ══ REIN ══
+  'Qi des Reins non ferme': {
+    couleur:'🟢',offline:true,
+    ccmq:['Vide de Qi'],
+    langue:{couleur:['Pâle'],forme:['Normale']},
+    pouls:{global:['Vide — Xu','Profond — Chen','Épuisé — Ruo'],positions:{chiG:['Vide — Xu'],chiD:['Vide — Xu']}},
+    q10:{q4:['Pollakiurie nocturne','Urines claires abondantes','Incontinence urinaire'],q9:['Fatigue matinale'],q11:['Éjaculation précoce']},
+    douleur:{},
+    axe:'racine',
+    descr:'Mictions fréquentes claires, incontinence, énurésie, éjaculation précoce, lombes faibles, Chi vide et profond'
+  },
+  'Vide de Yang des Reins': {
+    couleur:'🟢',offline:true,
+    ccmq:['Vide de Yang'],
+    langue:{couleur:['Pâle'],forme:['Gonflée / Œdématiée'],humidite:['Humide / Glissant'],enduitCouleur:['Blanc épais']},
+    pouls:{global:['Profond — Chen','Lent — Chi','Vide — Xu'],positions:{chiG:['Vide — Xu','Lent — Chi'],chiD:['Vide — Xu','Lent — Chi']}},
+    q10:{q1:['Froid permanent','Aggravé par le froid'],q4:['Urines claires abondantes','Pollakiurie nocturne','Diarrhée matinale (coq)'],q9:['Fatigue matinale'],q11:['Libido diminuée','Dysfonction érectile','Éjaculation précoce']},
+    douleur:{aggrave:['Le froid'],ameliore:['La chaleur']},
+    axe:'racine',
+    requisTous:[SIGNES_FROID],
+    contre:CONTRE_FROID,
+    descr:'Lombes et genoux froids et douloureux, crainte du froid, urines claires, libido basse, Chi profond et lent'
+  },
+  'Vide de Yin des Reins': {
+    couleur:'🟢',offline:true,
+    ccmq:['Vide de Yin'],
+    langue:{couleur:['Rouge'],forme:['Mince / Maigre','Fissures longitudinales'],humidite:['Sec','Très sec / Brûlé'],enduitCouleur:['Absent (langue miroir)','Jaune mince']},
+    pouls:{global:['Rapide — Shu','Fin — Xi','Profond — Chen'],positions:{chiG:['Rapide — Shu','Fin — Xi'],chiD:['Rapide — Shu','Fin — Xi']}},
+    // « Soif intense » retiré (signe de Chaleur plénitude) : le Vide de Yin donne une soif de boissons tièdes.
+    q10:{q2:['Sueurs nocturnes'],q1:['Chaleur des 5 centres (paumes/plantes/sternum)','Bouffées de chaleur','Chaleur vespérale (après-midi)','Corps chaud la nuit'],
+      q8:['Gorge sèche','Bouche sèche nocturne'],q7:['Acouphènes graves'],q3:['Vertiges']},
+    douleur:{ameliore:['Le froid']},
+    axe:'racine',
+    requisTous:[SIGNES_CHALEUR_VIDE],
+    contre:[...CONTRE_CHALEUR,...CONTRE_VIDE_YIN],
+    descr:'Sueurs nocturnes, chaleur des 5 centres, bouffées de chaleur, acouphènes, langue rouge fissurée, Chi fin et rapide'
+  },
+  // ══ FOIE ══
+  'Stagnation du Qi du Foie': {
+    couleur:'🟢',offline:true,
+    ccmq:['Stase de Qi'],
+    langue:{couleur:['Normal (rose)','Rouge','Bords rouges'],enduitCouleur:['Blanc mince (normal)']},
+    pouls:{global:['Tendu en corde — Xuan'],positions:{gG:['Tendu en corde — Xuan']}},
+    q10:{q6:['Douleur flancs','Distension abdominale','Oppression thoracique'],q10:['Irritabilité','Colère','Frustration','Labilité émotionnelle','Tristesse'],q5:['Nausées','Régurgitations'],q11:['SPM irritabilité/seins'],q4:['Diarrhée après stress']},
+    douleur:{aggrave:['Le stress / émotions'],ameliore:['Le massage','Le mouvement']},
+    axe:'branche',
+    descr:"Distension des flancs, soupirs, labilité émotionnelle, SPM, Guan gauche tendu en corde"
+  },
+  'Feu du Foie': {
+    couleur:'🟢',offline:true,
+    ccmq:[],
+    langue:{couleur:['Rouge','Bords rouges'],enduitCouleur:['Jaune mince','Jaune épais']},
+    pouls:{global:['Tendu en corde — Xuan','Rapide — Shu','Ample — Hong'],positions:{gG:['Tendu en corde — Xuan','Rapide — Shu']}},
+    q10:{q3:['Céphalées temporales','Vertiges'],q7:['Yeux rouges','Acouphènes aigus soudains'],q10:['Colère facile','Irritabilité'],q5:['Goût amer'],q4:['Constipation','Selles sèches dures']},
+    douleur:{aggrave:['Le stress / émotions']},
+    axe:'branche',
+    requisTous:[
+      [{tags:{q3:['Céphalées temporales'],q7:['Yeux rouges','Acouphènes aigus soudains'],q10:['Colère facile','Irritabilité']}},{motif:true}],
+      SIGNES_CHALEUR],
+    contre:[...CONTRE_CHALEUR,...CONTRE_PLENITUDE_CHALEUR],
+    descr:'Céphalée temporale intense, yeux rouges, colère, acouphènes aigus, bouche amère, pouls tendu rapide'
+  },
+  'Vide de Sang du Foie': {
+    couleur:'🟢',offline:true,
+    ccmq:[],
+    langue:{couleur:['Pâle','Bords pâles'],forme:['Mince / Maigre']},
+    pouls:{global:['Fin — Xi','Rugueux — Se'],positions:{gG:['Fin — Xi']}},
+    q10:{q7:['Vision trouble','Yeux secs','Mouches volantes','Baisse acuité visuelle'],q3:['Fourmillements','Vertiges'],q11:['Règles peu abondantes','Oligoménorrhée','Sang pâle dilué'],q9:['Endormissement difficile']},
+    douleur:{},
+    axe:'racine',
+    requisUn:[{q10:'q7'},{q10:'q11'},{tags:{q3:['Fourmillements']}}],
+    descr:'Vision trouble, yeux secs, ongles cassants, fourmillements, crampes, règles peu abondantes, langue pâle, pouls fin'
+  },
+  'Vide de Yin du Foie': {
+    couleur:'🟢',offline:true,
+    ccmq:['Vide de Yin'],
+    langue:{couleur:['Rouge'],forme:['Mince / Maigre'],humidite:['Sec'],enduitCouleur:['Absent (langue miroir)']},
+    pouls:{global:['Tendu en corde — Xuan','Fin — Xi','Rapide — Shu'],positions:{gG:['Tendu en corde — Xuan','Fin — Xi']}},
+    q10:{q7:['Yeux secs','Vision trouble'],q10:['Irritabilité','Colère'],q2:['Sueurs nocturnes'],q9:['Réveils nocturnes','Rêves agités nombreux'],q3:['Vertiges'],q11:['Règles peu abondantes','Oligoménorrhée']},
+    douleur:{},
+    axe:'racine',
+    requisTous:[SIGNES_CHALEUR_VIDE],
+    contre:[...CONTRE_CHALEUR,...CONTRE_VIDE_YIN],
+    descr:'Vide de Sang du Foie + chaleur vide : yeux secs, vertiges, sueurs nocturnes, langue rouge, Guan gauche tendu et fin'
+  },
+  'Vide de Yin du Foie avec montée de Yang': {
+    couleur:'🟢',offline:true,
+    ccmq:['Vide de Yin'],
+    langue:{couleur:['Rouge'],humidite:['Sec'],forme:['Déviation latérale']},
+    pouls:{global:['Tendu en corde — Xuan','Fin — Xi','Rapide — Shu']},
+    q10:{q3:['Céphalées temporales','Céphalées vertex','Vertiges rotatoires','Vertiges'],q7:['Acouphènes aigus soudains','Yeux secs'],q10:['Irritabilité','Colère facile'],q2:['Sueurs nocturnes'],q1:['Chaleur des 5 centres (paumes/plantes/sternum)','Bouffées de chaleur']},
+    douleur:{},
+    axe:'branche',
+    requisTous:[
+      [{tags:{q3:['Céphalées temporales','Céphalées vertex','Vertiges rotatoires','Vertiges'],q7:['Acouphènes aigus soudains']}}],
+      SIGNES_CHALEUR_VIDE],
+    contre:[...CONTRE_CHALEUR,...CONTRE_VIDE_YIN],
+    descr:'Céphalée temporale ou du vertex, vertiges rotatoires, acouphènes aigus, irritabilité, sur fond de Vide de Yin'
+  },
+  // ══ CŒUR ══
+  'Vide de Qi du Cœur': {
+    couleur:'🟢',offline:true,
+    ccmq:['Vide de Qi'],
+    langue:{couleur:['Pâle']},
+    pouls:{global:['Vide — Xu','Épuisé — Ruo'],positions:{cunG:['Vide — Xu','Épuisé — Ruo']}},
+    q10:{q6:['Palpitations'],q2:['Sueurs spontanées',"Sueurs à l'effort"],q9:['Fatigue permanente','Endormissement difficile'],q10:['Tristesse','Labilité émotionnelle']},
+    douleur:{},
+    axe:'racine',
+    requisUn:[{q10:'q6'},{motifMots:['palpitation']}],
+    descr:"Palpitations aggravées par la fatigue et l'effort, sueurs spontanées, asthénie, pouls vide"
+  },
+  'Vide de Sang du Cœur': {
+    couleur:'🟢',offline:true,
+    ccmq:[],
+    langue:{couleur:['Pâle','Pointe pâle'],forme:['Mince / Maigre']},
+    pouls:{global:['Fin — Xi'],positions:{cunG:['Fin — Xi']}},
+    q10:{q6:['Palpitations'],q9:['Endormissement difficile','Rêves agités nombreux'],q10:['Oublis récents','Anxiété'],q3:['Vertiges'],q2:['Pas de transpiration']},
+    douleur:{},
+    axe:'racine',
+    requisUn:[{q10:'q6'},{motifMots:['palpitation']}],
+    descr:"Palpitations, insomnie d'endormissement, rêves, troubles de mémoire, teint pâle terne, pouls fin"
+  },
+  'Vide de Yin du Cœur': {
+    couleur:'🟢',offline:true,
+    ccmq:['Vide de Yin'],
+    langue:{couleur:['Rouge','Pointe rouge'],forme:['Fissures longitudinales'],enduitCouleur:['Absent (langue miroir)']},
+    pouls:{global:['Rapide — Shu','Fin — Xi','Irrégulier — Jie'],positions:{cunG:['Rapide — Shu','Fin — Xi','Vide — Xu']}},
+    q10:{q6:['Palpitations'],q9:['Réveils nocturnes','Rêves agités nombreux','Insomnie totale'],q10:['Anxiété','Irritabilité','Labilité émotionnelle'],q2:['Sueurs nocturnes'],q1:['Chaleur des 5 centres (paumes/plantes/sternum)']},
+    douleur:{},
+    axe:'racine',
+    requisTous:[SIGNES_CHALEUR_VIDE],
+    contre:[...CONTRE_CHALEUR,...CONTRE_VIDE_YIN],
+    descr:'Palpitations et agitation le soir, réveils multiples, chaleur des 5 centres, sueurs nocturnes, Cun gauche fin et rapide'
+  },
+  'Feu du Cœur': {
+    couleur:'🟡',offline:false,
+    ccmq:['Stase de Qi'],
+    langue:{couleur:['Rouge','Points rouges (fraises)','Pointe rouge'],enduitCouleur:['Jaune mince','Jaune épais']},
+    pouls:{global:['Rapide — Shu','Plein — Shi','Ample — Hong'],positions:{cunG:['Rapide — Shu','Plein — Shi']}},
+    q10:{q9:['Insomnie totale','Cauchemars'],q10:['Anxiété','Joie excessive'],q4:['Brûlures urinaires','Urines foncées'],q8:['Aphtes récurrents','Soif intense boissons froides'],q5:['Goût amer'],q6:['Palpitations']},
+    douleur:{},
+    axe:'branche',
+    requisTous:[SIGNES_CHALEUR],
+    contre:[...CONTRE_CHALEUR,...CONTRE_PLENITUDE_CHALEUR],
+    descr:'Palpitations, agitation, aphtes, insomnie et cauchemars, urines foncées, langue rouge pointe, Cun gauche rapide et plein'
+  },
+  // ══ QI / SANG / LIQUIDES ══
+  'Stase de Sang': {
+    couleur:'🟢',offline:true,
+    ccmq:['Stagnation Sang'],
+    langue:{couleur:['Violacé','Bleuté','Points rouges (fraises)']},
+    pouls:{global:['Rugueux — Se','Tendu en corde — Xuan','Noué — Dai']},
+    q10:{q11:['Dysménorrhée','Aménorrhée','Caillots foncés'],q6:['Douleur fixe']},
+    douleur:{aggrave:['La pression','Le froid'],ameliore:['La chaleur','Le massage'],type:['Fixe / Stabbing']},
+    axe:'branche',
+    descr:'Douleur fixe térébrante aggravée à la pression, caillots, langue violacée, pouls rugueux'
+  },
+  'Vide de Sang': {
+    couleur:'🟡',offline:false,
+    ccmq:['Vide de Yin','Stagnation Sang'],
+    langue:{couleur:['Pâle'],forme:['Mince / Maigre']},
+    pouls:{global:['Fin — Xi','Vide — Xu','Rugueux — Se']},
+    q10:{q7:['Yeux secs','Vision trouble'],q9:['Endormissement difficile','Insomnie totale','Réveils nocturnes'],q3:['Vertiges','Fourmillements'],q6:['Palpitations'],q11:['Règles peu abondantes','Sang pâle dilué']},
+    douleur:{},
+    axe:'racine',
+    descr:'Teint, lèvres et ongles ternes, vertiges, palpitations, insomnie d\'endormissement, pouls fin'
+  },
+  'Glaires-Humidité': {
+    couleur:'🟢',offline:true,
+    ccmq:['Glaires-Humidité'],
+    langue:{forme:['Gonflée / Œdématiée','Marques de dents'],enduitCouleur:['Blanc épais'],humidite:['Gras / Huileux','Humide / Glissant']},
+    pouls:{global:['Glissant — Hua','Mou — Ru','Lent — Chi']},
+    q10:{q3:['Lourdeur corps','Lourdeur tête'],q5:["Peu d'appétit",'Nausées','Goût sucré persistant'],q9:['Hypersomnie','Coup de pompe après repas'],q10:['Brouillard mental']},
+    douleur:{aggrave:["L'humidité"],type:['Pesanteur / Lourdeur']},
+    axe:'racine',
+    descr:'Lourdeur, tête « dans du coton », hypersomnie après les repas, enduit épais et gras, pouls glissant'
+  },
+  'Humidité-Chaleur': {
+    couleur:'🟢',offline:true,
+    ccmq:['Humidité-Chaleur'],
+    langue:{couleur:['Rouge'],enduitCouleur:['Jaune épais','Jaune mince'],humidite:['Gras / Huileux']},
+    pouls:{global:['Rapide — Shu','Glissant — Hua']},
+    q10:{q4:['Selles collantes','Brûlures urinaires','Urines foncées','Selles malodorantes'],q5:['Goût amer','Soif sans envie de boire'],q1:['Chaleur permanente']},
+    douleur:{aggrave:['La chaleur']},
+    axe:'branche',
+    contre:[...CONTRE_CHALEUR,...CONTRE_PLENITUDE_CHALEUR],
+    descr:'Chaleur, urines foncées, selles collantes, enduit jaune gras, pouls glissant rapide'
+  },
+  'Chaleur Humidité de la Vessie': {
+    couleur:'🟢',offline:true,
+    ccmq:['Humidité-Chaleur'],
+    langue:{couleur:['Rouge'],enduitCouleur:['Jaune épais','Jaune mince'],humidite:['Gras / Huileux']},
+    pouls:{global:['Glissant — Hua','Rapide — Shu']},
+    q10:{q4:['Brûlures urinaires','Urines foncées','Urines troubles'],q1:['Fièvre']},
+    douleur:{localisation:['Hypogastre']},
+    axe:'branche',
+    requisUn:[{tags:{q4:['Brûlures urinaires','Urines troubles']}},{motif:true}],
+    contre:[...CONTRE_CHALEUR,...CONTRE_PLENITUDE_CHALEUR],
+    descr:'Mictions fréquentes et impérieuses, brûlures mictionnelles, urines foncées ou troubles, fièvre et soif'
+  },
+  // ══ SYMPTÔMES-MOTIFS ══
   'Insomnie': {
     couleur:'🟢',offline:true,
     ccmq:['Vide de Yin','Stase de Qi'],
@@ -5570,6 +5854,8 @@ const SYND_RULES = {
     q10:{q9:['Insomnie totale','Endormissement difficile','Réveils nocturnes','Cauchemars']},
     douleur:{},
     axe:'branche',
+    // Syndrome qui porte le nom d'un symptôme : jamais sans ce symptôme (Q9 ou motif).
+    requisUn:[{q10:'q9'},{motif:true}],
     descr:'Insomnie documentée dans les 10 questions'
   },
   'Anxiété-stress': {
@@ -5580,6 +5866,7 @@ const SYND_RULES = {
     q10:{q10:['Anxiété','Inquiétude','Peur','Rumination'],q6:['Oppression thoracique']},
     douleur:{aggrave:['Le stress / émotions']},
     axe:'branche',
+    requisUn:[{q10:'q10'},{motif:true},{douleur:'aggrave'}],
     descr:'Anxiété, oppression, pouls tendu en corde'
   },
   'Dysménorrhée par stase': {
@@ -5587,14 +5874,14 @@ const SYND_RULES = {
     ccmq:['Stagnation Sang'],
     langue:{couleur:['Violacé','Bleuté']},
     pouls:{global:['Rugueux — Se','Tendu en corde — Xuan']},
-    q10:{q11:['Dysménorrhée','Règles en retard']},
+    q10:{q11:['Dysménorrhée','Règles en retard','Caillots foncés']},
     douleur:{aggrave:['La pression','Le froid'],ameliore:['La chaleur','Le massage'],type:['Fixe / Stabbing','Crampe / Spasme']},
     axe:'branche',
     // Garde-fous : un nom de syndrome qui désigne un symptôme précis (ici des règles douloureuses)
     // ne doit jamais être suggéré sur la seule base de signes généraux de Stase de Sang (langue
     // violacée, pouls rugueux) — il faut que le symptôme lui-même (Q11) soit rapporté, et le
     // syndrome ne concerne que des patientes en âge de procréer/réglées.
-    requis:{q10:'q11'},
+    requisTous:[[{tags:{q11:['Dysménorrhée']}},{motifMots:['dysménorrhée']}]],
     sexeRestrict:'Féminin',
     descr:'Dysménorrhée avec douleur fixe, langue violacée, pouls rugueux'
   },
@@ -5606,6 +5893,7 @@ const SYND_RULES = {
     q10:{q3:['Courbatures'],q1:['Aggravé par le froid','Aggravé par la chaleur']},
     douleur:{aggrave:['Le froid',"L'humidité"],type:['Fixe / Stabbing','Mobile / Migrante'],localisation:['Articulaire']},
     axe:'branche',
+    requisUn:[{douleur:'localisation'},{q10:'q3'},{motif:true}],
     descr:"Douleurs articulaires, aggravation par le froid ou l'humidité"
   },
 };
@@ -5616,8 +5904,10 @@ const SYND_RULES = {
 // de langue n'est qu'un signe secondaire, pas définitoire) serait à tort exclu.
 const SYND_THERMAL_AXIS = new Set([
   'Vide de Yang des Reins','Vide de Yang de Rate',
-  'Vide de Yin des Reins','Vide de Yin du Foie','Vide de Yin du Cœur',
-  'Vent-Froid externe','Humidité-Chaleur','Feu du Cœur'
+  'Vide de Yin des Reins','Vide de Yin du Foie','Vide de Yin du Cœur','Vide de Yin du Poumon','Vide de Yin de l\'Estomac',
+  'Vide de Yin du Foie avec montée de Yang',
+  'Vent-Froid externe','Invasion du Poumon par Vent Chaleur',
+  'Humidité-Chaleur','Chaleur Humidité de la Vessie','Feu du Cœur','Feu du Foie','Feu de l\'Estomac'
 ]);
 
 // Signes des 10+1 Questions attendus par une règle, réellement présents chez le patient.
@@ -5643,7 +5933,7 @@ function suggestSyndromes() {
   const ccmqPres = [];
   Object.entries(CC).forEach(([k,v]) => {
     const rb = document.getElementById('rb-'+k);
-    if (rb && rb.textContent.includes('Présente')) ccmqPres.push(v.lbl);
+    if (rb && /Présente|Plutôt/.test(rb.textContent)) ccmqPres.push(v.lbl);
     if (rb && rb.textContent.includes('Tendance')) ccmqPres.push(v.lbl+'_tendance');
   });
 
@@ -5682,9 +5972,40 @@ function suggestSyndromes() {
     'Anxiété-stress':['anxiété','stress','angoisse','oppression','panique'],
     'Dysménorrhée par stase':['règles','dysménorrhée','douleur menstruelle','cycles'],
     'Bi (obstruction-douleur)':['arthrose','arthrite','polyarthrite','rhumatisme','douleur articulaire','raideur articulaire'],
+    'Effondrement du Qi de Rate':['prolapsus','hémorroïde','incontinence urinaire'],
+    'Qi à contre courant de l\'Estomac':['nausée','vomissement','hoquet','éructation','RGO'],
+    'Feu de l\'Estomac':['RGO','douleur épigastrique','brûlure','halitose','aphte','fringale'],
+    'Vide de Yin de l\'Estomac':['douleur épigastrique','gastrite','estomac'],
+    'Vide de Yin du Poumon':['toux sèche','toux','extinction de voix','bouche sèche'],
+    'Invasion du Poumon par Vent Chaleur':['mal de gorge','fièvre','rhume','grippe'],
+    'Feu du Foie':['migraine','céphalée','colère','œil rouge','acouphène','hypertension artérielle'],
+    'Vide de Sang du Foie':['vision','œil sec','fourmillement','crampe musculaire','oligoménorrhée'],
+    'Vide de Yin du Foie avec montée de Yang':['migraine','céphalée','vertige','acouphène','hypertension artérielle'],
+    'Vide de Qi du Cœur':['palpitation','fatigue','essoufflement'],
+    'Vide de Sang du Cœur':['palpitation','insomnie','trouble de mémoire','anxiété'],
+    'Chaleur Humidité de la Vessie':['cystite','brûlure mictionnelle','pollakiurie'],
   };
 
   const sexeP = curPt ? (curPt.sexe||'') : ((document.getElementById('p-sexe')||{}).value||'');
+  const lCouleurG=tags('l-couleur'), lEnduitDist=tags('l-enduit-dist');
+  const dSrc={aggrave:dAgg, ameliore:dAmel, type:dTyp, localisation:dLoc};
+  // Renvoie le libellé du signe trouvé chez le patient (ou null). Types : voir SIGNES_FROID.
+  const signeTrouve = (r, rule, nom) => {
+    const m1 = (vals, src) => _tagMatch(vals, src);
+    if(r.q10) return _q10Matches(r.q10, (rule.q10||{})[r.q10]||[])[0] || null;
+    if(r.motif) return motifTok.length ? ((MOTIF_KEYS[nom]||[]).find(k=>MTCNorm.phraseIn(motifTok, k)) || null) : null;
+    if(r.motifMots) return motifTok.length ? (r.motifMots.find(k=>MTCNorm.phraseIn(motifTok, k)) || null) : null;
+    if(r.tags){ for(const [qid,vals] of Object.entries(r.tags)){ const m=_q10Matches(qid, vals); if(m.length) return m[0]; } return null; }
+    if(r.pouls) return m1(r.pouls, pGlobal) || Object.values(pPos).map(v=>m1(r.pouls, v)).find(Boolean) || null;
+    if(r.langue) return m1(r.langue, lCouleur);
+    if(r.langueG) return m1(r.langueG, lCouleurG);
+    if(r.enduit) return m1(r.enduit, lEnduit);
+    if(r.enduitDist) return m1(r.enduitDist, lEnduitDist);
+    if(r.ccmq) return (ccmqPres.includes(r.ccmq) || ccmqPres.includes(r.ccmq+'_tendance')) ? 'CCMQ '+r.ccmq : null;
+    if(typeof r.douleur==='string') return m1((rule.douleur||{})[r.douleur], dSrc[r.douleur]||[]);
+    if(r.douleur){ for(const [f,vals] of Object.entries(r.douleur)){ const m=m1(vals, dSrc[f]||[]); if(m) return m; } return null; }
+    return null;
+  };
   const scores = {};
   Object.entries(SYND_RULES).forEach(([nom, rule]) => {
     // Garde-fous préalables : certains syndromes désignent un symptôme précis et ne doivent
@@ -5698,10 +6019,19 @@ function suggestSyndromes() {
       });
       if(!requisOk) return;
     }
+    // Signes exigés : requisUn = un groupe, requisTous = plusieurs groupes (chacun doit être satisfait
+    // par au moins un signe). Types de signe : voir SIGNES_FROID.
+    const groupes = rule.requisTous || (rule.requisUn ? [rule.requisUn] : []);
+    if(groupes.length && !groupes.every(g => g.some(r => signeTrouve(r, rule, nom)))) return;
     let sc = 0; const det = [];
-    // CCMQ +3
-    const cMatch = (rule.ccmq||[]).filter(c => ccmqPres.some(p=>p.includes(c)));
+    // Signes contraires (rule.contre) : un seul suffit à démentir l'hypothèse.
+    const contre = (rule.contre||[]).map(r => signeTrouve(r, rule, nom)).find(Boolean);
+    if(contre){ sc -= 3; det.push('⚠️ Signe contraire : '+contre); }
+    // CCMQ : constitution présente +3 ; simple tendance (30-39) +1 seulement (auparavant +3 aussi).
+    const cMatch = (rule.ccmq||[]).filter(c => ccmqPres.includes(c));
+    const cTend = (rule.ccmq||[]).filter(c => !cMatch.includes(c) && ccmqPres.includes(c+'_tendance'));
     if (cMatch.length) { sc+=3; det.push('CCMQ: '+cMatch.join(', ')); }
+    else if (cTend.length) { sc+=1; det.push('CCMQ (tendance): '+cTend.join(', ')); }
     // Langue — comparaison robuste sur le mot-clé central (voir _tagMatch) : évite les faux
     // négatifs quand le libellé réel est une variante ('Rouge foncé / Cramoisi' pour 'Rouge').
     const lCheck = (arr, src, pts, lbl) => { const m=_tagMatch(arr, src); if(m){sc+=pts;det.push(lbl+': '+m);} };
@@ -5739,7 +6069,7 @@ function suggestSyndromes() {
     // réservée aux syndromes dont l'identité repose sur l'axe Froid/Chaleur ou Yang/Yin
     // (SYND_THERMAL_AXIS). Ex: la règle attend une langue Pâle mais le patient a une langue
     // Rouge → signe opposé présent → l'hypothèse est démentie, pas juste "non confirmée".
-    if(SYND_THERMAL_AXIS.has(nom)){
+    if(SYND_THERMAL_AXIS.has(nom) && !contre){ // déjà pénalisé par un signe contraire : pas de double −3
       const cLangue=_hasOpposite(rule.langue?.couleur, lCouleur);
       const cPouls=cLangue?null:_hasOpposite(rule.pouls?.global, pGlobal);
       const cAggOpp=(cLangue||cPouls)?null:(rule.douleur?.aggrave?_tagMatch(rule.douleur.aggrave, dAmel):null);
@@ -5851,7 +6181,7 @@ const MERIDIANS_DB = {
     code:'E', type:'principal', element:'Terre', couplage:'Rate',
     trajet:'Œil → face → cou → poitrine → abdomen → face externe jambe → 2ème orteil',
     pointsCles:{yuan:'ST42 Chongyang', luo:'ST40 Fenglong', xi:'ST34 Liangqiu', mu:'CV12 Zhongwan', shu:'BL21 Weishu'},
-    symptomes:['Douleur yeux','Épistaxis','Gonflement cou','Paralysie faciale','Jambes pieds froids','Douleur trajet méridien'],
+    symptomes:['Céphalée du front','Douleur yeux','Épistaxis','Gonflement cou','Paralysie faciale','Jambes pieds froids','Douleur trajet méridien'],
     luo_vide:['Flaccidité atrophie muscles jambe','Froid dents supérieures'],
     luo_plen:['Épilepsie','Conduite maniaque dépression','Gorge gonflée douloureuse','Perte voix','Épistaxis'],
     mtm:['Entorse 3ème orteil','Contracture muscles jambe pied','Raideur cuisse','Gonflement aine','Hernie','Spasmes abdomen','Déviation bouche yeux']
@@ -5870,7 +6200,7 @@ const MERIDIANS_DB = {
     code:'C', type:'principal', element:'Feu', couplage:'Intestin Grêle',
     trajet:'Cœur → face interne bras → auriculaire',
     pointsCles:{yuan:'HT7 Shenmen', luo:'HT5 Tongli', xi:'HT6 Yinxi', mu:'CV14 Juque', shu:'BL15 Xinshu'},
-    symptomes:['Douleur yeux','Douleur face interne bras','Douleur le long omoplate'],
+    symptomes:['Palpitations','Douleur yeux','Douleur face interne bras','Douleur le long omoplate'],
     luo_vide:['Aphasie'],
     luo_plen:['Distension plénitude poitrine diaphragme'],
     mtm:['Douleur raideur élongation muscles trajet méridien']
@@ -5897,7 +6227,7 @@ const MERIDIANS_DB = {
     code:'R', type:'principal', element:'Eau', couplage:'Vessie',
     trajet:'Plante pied → face interne jambe → abdomen → poitrine',
     pointsCles:{yuan:'KD3 Taixi', luo:'KD4 Dazhong', xi:'KD5 Shuiquan', mu:'GB25 Jingmen', shu:'BL23 Shenshu'},
-    symptomes:['Douleur lombaire','Douleur plante du pied'],
+    symptomes:['Douleur lombaire','Douleur plante du pied','Acouphènes'],
     luo_vide:['Douleur lombaire'],
     luo_plen:['Agitation mentale','Dépression','Rétention urine','Douleur région Cœur','Distension plénitude poitrine'],
     mtm:['Douleur raideur muscles orteils pied cheville interne','Raideur colonne cou','Impossibilité se pencher avant ou arrière']
@@ -5906,7 +6236,7 @@ const MERIDIANS_DB = {
     code:'MC', type:'principal', element:'Feu', couplage:'Triple Réchauffeur',
     trajet:'Poitrine → face interne bras → médius',
     pointsCles:{yuan:'PC7 Daling', luo:'PC6 Neiguan', xi:'PC4 Ximen', mu:'CV17 Shanzhong', shu:'BL14 Jueyinshu'},
-    symptomes:['Raideur cou','Douleur trajet méridien','Contracture coude main'],
+    symptomes:['Palpitations','Raideur cou','Douleur trajet méridien','Contracture coude main'],
     luo_vide:['Raideur tête'],
     luo_plen:['Douleur région cœur','Agitation mentale'],
     mtm:['Douleur raideur muscles paume bras interne coude aisselle','Douleur région cœur']
@@ -5916,7 +6246,7 @@ const MERIDIANS_DB = {
     note:'Intérêt pour revenir à l\'état originel (reset) — AVC, épuisement profond',
     trajet:'Annulaire → face externe bras → épaule → oreille → œil',
     pointsCles:{yuan:'SJ4 Yangchi', luo:'SJ5 Waiguan', xi:'SJ7 Huizong', mu:'CV5 Shimen', shu:'BL22 Sanjiaoshu'},
-    symptomes:['Engourdissement douleur trajet méridien','Douleur coude','Alternance frissons fièvre','Surdité','Douleur oreille avec écoulement','Douleur haut épaule'],
+    symptomes:['Engourdissement douleur trajet méridien','Douleur coude','Alternance frissons fièvre','Céphalée temporale','Surdité','Acouphènes','Douleur oreille avec écoulement','Douleur haut épaule'],
     luo_vide:['Relâchement articulation épaule'],
     luo_plen:['Contracture coude','Gonflement douleur gorge','Bouche sèche','Douleur face externe bras','Impossibilité lever bras'],
     mtm:['Élongation raideur muscles annulaire poignet coude épaule cou','Langue enroulée']
@@ -5925,7 +6255,7 @@ const MERIDIANS_DB = {
     code:'VB', type:'principal', element:'Bois', couplage:'Foie',
     trajet:'Œil externe → tempe → oreille → épaule → flancs → face latérale jambe → 4ème orteil',
     pointsCles:{yuan:'GB40 Qiuxu', luo:'GB37 Guangming', xi:'GB36 Waiqiu', mu:'GB24 Riyue', shu:'BL19 Danshu'},
-    symptomes:['Alternance frissons fièvre','Céphalées','Surdité','Douleur hanche face latérale jambe','Douleur distension seins'],
+    symptomes:['Alternance frissons fièvre','Céphalées','Céphalée temporale','Surdité','Acouphènes','Douleur hanche face latérale jambe','Douleur distension seins'],
     luo_vide:['Faiblesse flaccidité muscles pied','Pieds froids','Paralysie jambes','Difficultés se tenir debout'],
     luo_plen:['Évanouissements','Douleur hypocondres'],
     mtm:['Douleur raideur muscles 4ème orteil cheville latérale jambe genou','Difficulté fléchir genou','Paralysie jambes','Douleur poitrine hypocondres']
@@ -5934,7 +6264,7 @@ const MERIDIANS_DB = {
     code:'F', type:'principal', element:'Bois', couplage:'Vésicule Biliaire',
     trajet:'Gros orteil → face interne jambe → organes génitaux → flancs → sommet crâne',
     pointsCles:{yuan:'LV3 Taichong', luo:'LV5 Ligou', xi:'LV6 Zhongdu', mu:'LV14 Qimen', shu:'BL18 Ganshu'},
-    symptomes:['Céphalée','Douleur gonflement yeux','Crampes dans les jambes'],
+    symptomes:['Céphalée','Céphalée du vertex','Douleur gonflement yeux','Crampes dans les jambes'],
     luo_vide:['Démangeaison région génitale','Impuissance'],
     luo_plen:['Gonflement douleur testicules','Coliques','Érection anormale','Hernie'],
     mtm:['Douleur raideur muscles gros orteil cheville interne jambe','Impuissance','Contracture scrotum vagin','Priapisme']
@@ -5946,7 +6276,7 @@ const MERIDIANS_DB = {
     pointsCle:'IG3', pointCouple:'V62',
     couplage:'Yang Qiao Mai',
     note:'Gouverneur de tous les Yang. Point clé IG3, point couplé V62. D chez la femme, G chez l\'homme.',
-    symptomes:['Raideur douleur colonne vertébrale','Douleur dos','Faiblesse dos','Cambrure anormale dos','Céphalée','Tremblement','Convulsions','Épilepsie','Prolapsus anus','Sang dans les selles','Miction douloureuse','Pollution nocturne','Impuissance','Règles irrégulières','Difficultés concevoir','Gorge sèche','Mauvaise mémoire','Vertiges','Acouphènes','Dépression','Fièvre frisson','Conduite maniaque']
+    symptomes:['Raideur douleur colonne vertébrale','Douleur dos','Faiblesse dos','Cambrure anormale dos','Céphalée','Céphalée du vertex','Tremblement','Convulsions','Épilepsie','Prolapsus anus','Sang dans les selles','Miction douloureuse','Pollution nocturne','Impuissance','Règles irrégulières','Difficultés concevoir','Gorge sèche','Mauvaise mémoire','Vertiges','Acouphènes','Dépression','Fièvre frisson','Conduite maniaque']
   },
   'Ren Mai (VC)': {
     code:'RM', type:'curieux',
@@ -6040,7 +6370,10 @@ function analyserMeridiens(){
   // Normalisation commune MTCNorm (casse, accents, pluriels genoux→genou, lombaires→lombaire,
   // mots entiers, négation). Mots de 4 lettres et moins exclus (dos, cou, bras, pied… restent
   // trop ambigus seuls face aux fiches méridiens rédigées en phrases).
-  const keep = w => w.length>4 && !MERID_STOPWORDS.has(w);
+  // Exception : mots courts mais sans ambiguïté, qui désignent un signe ou un organe des sens
+  // (« toux » était ignorée : un patient qui tousse ne faisait pas remonter le Poumon).
+  const MERID_SHORT_OK = new Set(['toux','oeil','nez','dent','sein']);
+  const keep = w => (w.length>4 || MERID_SHORT_OK.has(w)) && !MERID_STOPWORDS.has(w);
   const tokenize = s => MTCNorm.seq(s).filter(keep);
   // Vocabulaire plein (mots-clés) du dossier, une seule fois — signes niés exclus.
   const dossierWords = new Set();
@@ -6049,22 +6382,27 @@ function analyserMeridiens(){
   // Scorer chaque méridien — correspondance exacte de mots-clés pleins (pas de sous-chaîne), pour
   // éviter les faux positifs du type "douleurs" ⊃ "douleur" qui gonflaient artificiellement tous
   // les méridiens ayant ce mot très courant dans leur liste, indépendamment de la zone du corps.
-  const scores = {};
+  // Pondération par spécificité : un mot présent dans k fiches vaut 1/k. « Céphalée » (6 fiches) ne
+  // départage rien ; « front » ou « vertex » (1 fiche) désigne le méridien — sans cela toutes les
+  // fiches contenant « céphalée » sortaient à égalité (100 %) quelle que soit la localisation.
+  const vocab = {};
   Object.entries(MERIDIANS_DB).forEach(([nom, m]) => {
-    const allSympt = [
-      ...(m.symptomes||[]),
-      ...(m.luo_vide||[]),
-      ...(m.luo_plen||[]),
-      ...(m.mtm||[]),
-      ...(m.grand_luo||[])
-    ];
-    const matchedWords = new Set();
-    allSympt.forEach(s => tokenize(s).forEach(w => { if(dossierWords.has(w)) matchedWords.add(w); }));
-    if(matchedWords.size > 0) scores[nom] = matchedWords.size;
+    vocab[nom] = new Set();
+    [...(m.symptomes||[]),...(m.luo_vide||[]),...(m.luo_plen||[]),...(m.mtm||[]),...(m.grand_luo||[])]
+      .forEach(s => tokenize(s).forEach(w => vocab[nom].add(w)));
+  });
+  const df = {};
+  Object.values(vocab).forEach(v => v.forEach(w => { df[w] = (df[w]||0) + 1; }));
+  const scores = {};
+  Object.entries(vocab).forEach(([nom, v]) => {
+    let sc = 0;
+    v.forEach(w => { if(dossierWords.has(w)) sc += 1/df[w]; });
+    if(sc > 0) scores[nom] = sc;
   });
 
-  // Trier par score
-  const sorted = Object.entries(scores).sort((a,b) => b[1]-a[1]).slice(0,6);
+  // Trier par score ; à égalité, méridien principal avant méridien curieux.
+  const rang = nom => MERIDIANS_DB[nom].type === 'curieux' ? 1 : 0;
+  const sorted = Object.entries(scores).sort((a,b) => (b[1]-a[1]) || (rang(a[0])-rang(b[0]))).slice(0,6);
 
   if(!sorted.length){
     el.innerHTML = '<p style="color:var(--slate);font-size:12px;font-style:italic">Remplissez les 10 questions et le motif pour obtenir une analyse méridienne.</p>';
@@ -8833,7 +9171,7 @@ const ADB = [
    loc:'Conque inférieure, centre (fosse centrale de la conque)'},
   {c:'Hypertension (HTA)',cat:'Cœur / Circulation',synd:['Vide Yin Rein','Stagnation Qi Foie'],
    a:'Point spécifique HTA, vertiges d\'origine cardio-vasculaire.',
-   loc:'Face postérieure de l\'anthélix, zone sillon post-anthélix'},
+   loc:'Bord antérieur du tragus, devant l\'incisure intertragique (n° 63 du schéma) — à distinguer du sillon hypotenseur post-anthélix'},
   {c:'Sillon post-anthélix',cat:'Cœur / Circulation',synd:['Stase du Sang'],
    a:'Hypotenseur, anti-spastique vasculaire, saignée possible.',
    loc:'Face postérieure de l\'oreille — sillon post-anthélix, lignes de saignée'},
@@ -8942,8 +9280,8 @@ const ADB = [
   {c:'Point oméga',cat:'Points maîtres / Réflexes',synd:[],
    a:'Point de régulation générale décrit en fin de traitement (Nogier).',
    loc:'Lobe — partie inférieure du lobule'},
-  {c:'Point maître de Darwin',cat:'Points maîtres / Réflexes',synd:[],
-   a:'Point du tubercule de Darwin — action réflexe générale.',
+  {c:'Point maître de Darwin',cat:'Points maîtres / Réflexes',synd:['Feu Foie','Vide Yin Foie Yang'],
+   a:'Tubercule de Darwin = « Yang du Foie » (Gan Yang) des schémas chinois : montée du Yang du Foie, irritabilité, sensation de pression, vertiges, hypertension.',
    loc:'Hélix — tubercule auriculaire (tubercule de Darwin), tiers supérieur'},
   {c:'Point maître de la peau',cat:'Points maîtres / Réflexes',synd:['Vent-Froid externe','Humidité-Chaleur'],
    a:'Affections cutanées (sous-tragal) — eczéma, prurit, acné.',
@@ -8954,6 +9292,55 @@ const ADB = [
   {c:'Point maître des articulations',cat:'Points maîtres / Réflexes',synd:['Bi (obstruction-douleur)'],
    a:'Action générale anti-inflammatoire articulaire, polyarthralgies.',
    loc:'Tragus — bord postérieur, au-dessus du point maître de l\'audition'},
+  // ── Ajouts du 30/09/2026 : points du schéma désormais proposables + protocoles « L'auriculothérapie simplifiée » ──
+  {c:'Hypotension',cat:'Cœur / Circulation',synd:[],
+   a:'Point d\'augmentation de la tension : hypotension, malaise orthostatique, asthénie avec tension basse.',
+   loc:'Sous l\'incisure intertragique, haut du lobe (entre Glandes endocrines et Globe oculaire) — n° 80'},
+  {c:'Front',cat:'Douleur / Locomoteur',synd:[],
+   a:'Céphalée frontale, sinus, vertiges, insomnie.',
+   loc:'Antitragus, partie antérieure-inférieure — n° 81'},
+  {c:'Tempe',cat:'Douleur / Locomoteur',synd:['Feu Foie'],
+   a:'Céphalée temporale et migraine, céphalée de tension ; névralgie du trijumeau.',
+   loc:'Antitragus, partie moyenne, entre Front et Occipital — n° 82'},
+  {c:'Feng Xi',cat:'Poumon / Défenses',synd:['Vent-Chaleur Poumon'],
+   a:'Point anti-allergique (« ruisseau du vent ») : urticaire, prurit, rhinite allergique, asthme ; agitation interne, migraine avec agitation.',
+   loc:'Scapha, entre les zones Doigts et Poignet — n° 83'},
+  {c:'Oreille interne',cat:'Douleur / Locomoteur',synd:['Vide Yin Rein'],
+   a:'Acouphènes, hypoacousie, vertiges d\'origine labyrinthique.',
+   loc:'Lobe, secteur postérieur moyen — n° 74'},
+  {c:'Cardia',cat:'Rate / Estomac / Digestion',synd:['Qi Ni Estomac'],
+   a:'Reflux, nausées, vomissements, spasme du cardia.',
+   loc:'Conque, racine de l\'hélix, entre Œsophage et Estomac — n° 77'},
+  {c:'Oesophage',cat:'Rate / Estomac / Digestion',synd:['Qi Ni Estomac'],
+   a:'Dysphagie, reflux, boule œsophagienne.',
+   loc:'Conque, sous la racine de l\'hélix — n° 78'},
+  {c:'Bouche',cat:'Rate / Estomac / Digestion',synd:['Feu Estomac'],
+   a:'Aphtes, ulcérations buccales, paralysie faciale, sevrage tabagique.',
+   loc:'Conque, près de l\'orifice du conduit auditif — n° 69'},
+  {c:'Rectum',cat:'Rate / Estomac / Digestion',synd:['Effondrement Qi Rate'],
+   a:'Constipation, diarrhée, hémorroïdes, prolapsus anal.',
+   loc:'Racine de l\'hélix, extrémité antérieure — n° 70'},
+  {c:'Pharynx / Larynx',cat:'Poumon / Défenses',synd:['Vent-Chaleur Poumon','Vide Yin Poumon'],
+   a:'Mal de gorge, pharyngite, voix rauque, toux sèche.',
+   loc:'Face interne du tragus (point caché) — n° 76'},
+  {c:'Amygdales',cat:'Poumon / Défenses',synd:['Vent-Chaleur Poumon'],
+   a:'Angine, amygdalite, pharyngite aiguë.',
+   loc:'Lobe, partie inférieure — n° 75'},
+  {c:'Langue',cat:'Shen / Psycho-émotionnel',synd:['Feu du Cœur'],
+   a:'Aphtes et ulcérations de la langue (Feu du Cœur), troubles de la parole.',
+   loc:'Lobe, secteur moyen supérieur — n° 72'},
+  {c:'Dents',cat:'Douleur / Locomoteur',synd:[],
+   a:'Odontalgie, douleur post-extraction, analgésie dentaire.',
+   loc:'Lobe, secteur antérieur supérieur — n° 73'},
+  {c:'Mâchoire',cat:'Douleur / Locomoteur',synd:[],
+   a:'Douleur de l\'ATM, bruxisme, névralgie du trijumeau.',
+   loc:'Lobe, secteur postérieur supérieur — n° 71'},
+  {c:'Coude',cat:'Douleur / Locomoteur',synd:['Bi (obstruction-douleur)'],
+   a:'Épicondylite, douleur du coude.',
+   loc:'Scapha, partie moyenne — n° 5'},
+  {c:'Poignet',cat:'Douleur / Locomoteur',synd:['Bi (obstruction-douleur)'],
+   a:'Douleur du poignet, canal carpien.',
+   loc:'Scapha, sous les Doigts — n° 44'},
 ];
 
 // Mapping syndrome corps → points auriculaires prioritaires
@@ -8963,7 +9350,7 @@ const AURI_SYND_MAP = {
   'Vide Qi Rein':       ['Rein (SHEN)','Vessie (PANG)','Lombaires','Shen Men','Point Zéro'],
   'Vide Yang Rein':     ['Rein (SHEN)','Glande surrénale','Lombaires','Shen Men','Vaisseau Gouverneur (VG)'],
   'Vide Yang Rate':     ['Rate (PI)','Estomac (WEI)','Rein (SHEN)','Point Zéro','Triple Réchauffeur'],
-  'Vide Yin Rein':      ['Rein (SHEN)','Cœur (CO)','Shen Men','Hypotension (HTA)','Ovaires'],
+  'Vide Yin Rein':      ['Rein (SHEN)','Cœur (CO)','Shen Men','Endocrine','Oreille interne'],
   'Vide Yin Foie':      ['Foie (GAN)','Rein (SHEN)','Œil (YAN)','Shen Men','Cœur (CO)'],
   'Vide Yin Coeur':     ['Cœur (CO)','Shen Men','Rein (SHEN)','Nerf Grand Auriculaire','Occipital'],
   'Stagnation Qi Foie': ['Foie (GAN)','Shen Men','Point Antidépresseur','Vésicule biliaire','Sympathique'],
@@ -8977,6 +9364,22 @@ const AURI_SYND_MAP = {
   'Dysménorrhée par stase':       ['Utérus (ZIGONG)','Ovaires','Point Hormonal','Shen Men','Thalamus (Analgésie)'],
   'Aménorrhée-oligoménorrhée':    ['Utérus (ZIGONG)','Ovaires','Endocrine','Point Hormonal','Rein (SHEN)'],
   'Bi (obstruction-douleur)':     ['Thalamus (Analgésie)','Shen Men','Sous-cortex','Surrénal (ACTH)','Point Analgésie'],
+  // Ajouts du 30/09/2026 — syndromes d'organe (Synthèse 2) ; principe du PDF « L'auriculothérapie simplifiée » :
+  // 1-2 points d'organe + 1-2 régulateurs (Shen Men, Sympathique, Sous-cortex, Point Zéro) ; Apex si Chaleur.
+  'Effondrement Qi Rate':  ['Rate (PI)','Estomac (WEI)','Point Zéro','Sous-cortex','Rectum'],
+  'Qi Ni Estomac':         ['Estomac (WEI)','Cardia','Oesophage','Shen Men','Sympathique'],
+  'Feu Estomac':           ['Estomac (WEI)','Apex (Pointe)','Bouche','Sympathique','Shen Men'],
+  'Vide Yin Estomac':      ['Estomac (WEI)','Rate (PI)','Endocrine','Sympathique','Point Zéro'],
+  'Vide Yin Poumon':       ['Poumon (FEI)','Rein (SHEN)','Pharynx / Larynx','Endocrine','Shen Men'],
+  'Vent-Chaleur Poumon':   ['Poumon (FEI)','Apex (Pointe)','Pharynx / Larynx','Amygdales','Feng Xi'],
+  'Feu Foie':              ['Foie (GAN)','Apex (Pointe)','Point maître de Darwin','Tempe','Shen Men'],
+  'Vide Sang Foie':        ['Foie (GAN)','Rate (PI)','Œil (YAN)','Endocrine','Cœur (CO)'],
+  'Vide Yin Foie Yang':    ['Point maître de Darwin','Foie (GAN)','Rein (SHEN)','Hypertension (HTA)','Shen Men'],
+  'Vide Qi Coeur':         ['Cœur (CO)','Shen Men','Point Zéro','Sous-cortex','Poumon (FEI)'],
+  'Vide Sang Coeur':       ['Cœur (CO)','Rate (PI)','Shen Men','Sous-cortex','Endocrine'],
+  'Chaleur Humidité Vessie':['Vessie (PANG)','Urètre','Rein (SHEN)','Apex (Pointe)','Sympathique'],
+  'Feu du Cœur':           ['Cœur (CO)','Apex (Pointe)','Shen Men','Langue','Sous-cortex'],
+  'Vide de Sang':          ['Rate (PI)','Foie (GAN)','Cœur (CO)','Endocrine','Point Zéro'],
 };
 
 // Les noms de syndromes de SYND_RULES (② analyse Zang-Fu) diffèrent des clés courtes utilisées
@@ -8984,13 +9387,63 @@ const AURI_SYND_MAP = {
 // cette table, le signal "syndrome" ne matchait jamais rien en auriculothérapie.
 // Motifs fréquents → points d'auriculothérapie classiques (noms = ADB.c). Mots entiers, accents/casse neutralisés.
 const AURI_MOTIF_MAP = {
-  'migraine':          ['Shen Men','Thalamus (Analgésie)','Occipital','Vésicule biliaire','Foie (GAN)','Point Analgésie'],
-  'céphalée':          ['Shen Men','Thalamus (Analgésie)','Occipital','Cervicales','Sympathique'],
-  'lombalgie':         ['Lombaires','Shen Men','Thalamus (Analgésie)','Sous-cortex','Nerf sciatique'],
+  // Motif → points classiques (+3). Protocoles du PDF « L'auriculothérapie simplifiée » (AcuPro, module 7) :
+  // 1-2 points de la zone concernée + 1-2 régulateurs ; Apex de l'oreille si Chaleur. [cl.] = correspondance
+  // classique des schémas chinois, absente du PDF. À relire cliniquement.
+  // Douleur / céphalées
+  'migraine':          ['Shen Men','Sympathique','Sous-cortex','Thalamus (Analgésie)','Tempe','Foie (GAN)'],
+  'céphalée':          ['Shen Men','Sympathique','Tempe','Front','Occipital','Thalamus (Analgésie)'],
+  'lombalgie':         ['Lombaires','Shen Men','Sympathique','Thalamus (Analgésie)','Nerf sciatique'],
   'sciatique':         ['Nerf sciatique','Lombaires','Thalamus (Analgésie)','Shen Men'],
-  'insomnie':          ['Shen Men','Point Zéro','Cœur (CO)','Sous-cortex'],
-  'anxiété':           ['Shen Men','Point Zéro','Cœur (CO)','Sympathique'],
-  'sevrage tabagique': ['Shen Men','Poumon (FEI)','Point Zéro','Sous-cortex']
+  'douleur hanche':    ['Hanche','Lombaires','Shen Men','Sympathique'],
+  'douleur cervicale': ['Cervicales','Shen Men','Sympathique'],
+  'douleur épaule':    ['Épaule','Shen Men','Sympathique'],
+  'douleur coude':     ['Coude','Shen Men','Sympathique'],
+  'douleur poignet':   ['Poignet','Shen Men','Sympathique'],
+  'douleur genou':     ['Genou','Shen Men','Sympathique'],
+  'névralgie faciale': ['Mâchoire','Tempe','Sous-cortex','Foie (GAN)'],
+  'odontalgie':        ['Dents','Mâchoire','Shen Men','Thalamus (Analgésie)'],   // [cl.]
+  // Psychisme / sommeil
+  'insomnie':          ['Shen Men','Sous-cortex','Cœur (CO)','Point Zéro'],
+  'anxiété':           ['Shen Men','Sympathique','Sous-cortex','Point Zéro','Cœur (CO)'],
+  'stress':            ['Shen Men','Sympathique','Sous-cortex','Point Zéro'],
+  'crise de panique':  ['Shen Men','Sympathique','Sous-cortex','Cœur (CO)'],
+  'dépression':        ['Shen Men','Sympathique','Sous-cortex','Point Antidépresseur','Foie (GAN)'],
+  'vertige':           ['Shen Men','Sympathique','Sous-cortex','Point maître de Darwin','Oreille interne'],
+  'acouphène':         ['Oreille interne','Rein (SHEN)','Shen Men','Sous-cortex'],   // [cl.]
+  // Addictions
+  'sevrage tabagique': ['Poumon (FEI)','Shen Men','Sympathique','Foie (GAN)','Rein (SHEN)'],
+  'fringale':          ['Faim (Appétit)','Shen Men','Sympathique','Endocrine'],
+  // Digestif
+  'nausée':            ['Shen Men','Sympathique','Estomac (WEI)','Cardia'],
+  'vomissement':       ['Shen Men','Sympathique','Estomac (WEI)','Cardia'],
+  'RGO':               ['Oesophage','Cardia','Estomac (WEI)','Sympathique','Shen Men'],   // [cl.]
+  'syndrome du côlon irritable': ['Shen Men','Sympathique','Sous-cortex','Gros intestin','Rate (PI)'],
+  'constipation':      ['Gros intestin','Rectum','Sympathique','Shen Men','Sous-cortex'],
+  'diarrhée':          ['Gros intestin','Rate (PI)','Sympathique','Shen Men'],
+  'hémorroïde':        ['Rectum','Gros intestin','Point Zéro'],   // [cl.]
+  // Gynécologie / andrologie
+  'syndrome prémenstruel': ['Shen Men','Sympathique','Endocrine','Foie (GAN)'],
+  'dysménorrhée':      ['Sympathique','Endocrine','Foie (GAN)','Rate (PI)','Rein (SHEN)','Utérus (ZIGONG)'],
+  'aménorrhée':        ['Shen Men','Endocrine','Point Zéro','Utérus (ZIGONG)'],
+  'oligoménorrhée':    ['Shen Men','Endocrine','Point Zéro','Utérus (ZIGONG)'],
+  'ménorragie':        ['Shen Men','Endocrine','Point Zéro','Utérus (ZIGONG)'],
+  'infertilité':       ['Shen Men','Endocrine','Rein (SHEN)','Utérus (ZIGONG)'],
+  'bouffée de chaleur':['Shen Men','Endocrine','Sous-cortex','Apex (Pointe)'],
+  'ménopause':         ['Shen Men','Endocrine','Sous-cortex','Apex (Pointe)'],
+  'dysfonction érectile': ['Shen Men','Sympathique','Endocrine','Rein (SHEN)'],
+  'prostate':          ['Shen Men','Sympathique','Prostate','Rein (SHEN)'],
+  // Respiratoire / immunité / ORL
+  'rhinite allergique':['Shen Men','Sympathique','Poumon (FEI)','Apex (Pointe)','Feng Xi'],
+  'asthme':            ['Shen Men','Sympathique','Poumon (FEI)','Sous-cortex'],
+  'mal de gorge':      ['Pharynx / Larynx','Amygdales','Apex (Pointe)','Poumon (FEI)'],   // [cl.]
+  'urticaire':         ['Feng Xi','Apex (Pointe)','Shen Men','Poumon (FEI)'],
+  'prurit':            ['Feng Xi','Shen Men','Poumon (FEI)'],
+  // Circulation / urinaire / état général
+  'hypertension artérielle': ['Shen Men','Sympathique','Sous-cortex','Point Zéro','Hypertension (HTA)'],
+  'hypotension':       ['Hypotension','Glande surrénale','Cœur (CO)','Sous-cortex'],   // [cl.] point d'augmentation de la tension
+  'cystite':           ['Vessie (PANG)','Urètre','Rein (SHEN)','Shen Men'],   // [cl.]
+  'fatigue':           ['Point Zéro','Rein (SHEN)','Poumon (FEI)','Sous-cortex'],
 };
 const SYND_TO_AURI_KEY = {
   'Vide de Qi de Rate':'Vide Qi Rate', 'Vide de Qi du Poumon':'Vide Qi Poumon',
@@ -8998,13 +9451,22 @@ const SYND_TO_AURI_KEY = {
   'Vide de Yang de Rate':'Vide Yang Rate', 'Vide de Yin des Reins':'Vide Yin Rein',
   'Vide de Yin du Foie':'Vide Yin Foie', 'Vide de Yin du Cœur':'Vide Yin Coeur',
   'Stagnation du Qi du Foie':'Stagnation Qi Foie', 'Stase de Sang':'Stase du Sang',
+  'Effondrement du Qi de Rate':'Effondrement Qi Rate', 'Qi à contre courant de l\'Estomac':'Qi Ni Estomac',
+  'Feu de l\'Estomac':'Feu Estomac', 'Vide de Yin de l\'Estomac':'Vide Yin Estomac',
+  'Vide de Yin du Poumon':'Vide Yin Poumon', 'Invasion du Poumon par Vent Chaleur':'Vent-Chaleur Poumon',
+  'Feu du Foie':'Feu Foie', 'Vide de Sang du Foie':'Vide Sang Foie',
+  'Vide de Yin du Foie avec montée de Yang':'Vide Yin Foie Yang',
+  'Vide de Qi du Cœur':'Vide Qi Coeur', 'Vide de Sang du Cœur':'Vide Sang Coeur',
+  'Chaleur Humidité de la Vessie':'Chaleur Humidité Vessie',
 };
 
 const AURI_STOPWORDS = new Set(['dans','avec','pour','depuis','chez','sans','vers','tres','plus','moins','cette','etre','avoir','tout','tous','toute','toutes','quand','comme','mais','donc','alors','aussi','encore','deja','entre','sous','leur','leurs','notre','votre','depuis','apres','avant']);
 // Correspondance nom de point (ADB.c) → numéro du schéma auriculaire (② Examen), pour affichage
 // croisé dans la liste de suggestion ci-dessous. Mis à jour le 27 sept. 2026 : schéma v2 à 78 points
 // (points 64-76 ajoutés, 4/5/44/48/50/56/59 remplacés, 10/17/27 positionnés, 38 renommé, 20 déplacé).
-const EAR_PT_NUM = {'Apex (Pointe)':1,'Point Zéro':2,'Trachée':3,'Clavicule':4,'Coude':5,'Point maître d\'élimination':6,'Point maître de Darwin':7,'Épaule':8,'Sein':9,'Point Antidépresseur':10,'Gros intestin':11,'Urètre':12,'Point Zéro\'':13,'Point du PCS':14,'Point de décussation':15,'Genou':16,'Point de réactivité (Bourdiol)':17,'Lombaires':18,'Hanche':19,'Nerf sciatique':20,'Cervicales':21,'Point merveilleux':22,'Point maître sensoriel':23,'Point maître des organes abdominaux':24,'Point de Bosch':25,'Shen Men':26,'Sous-cortex':27,'Thalamus (Analgésie)':28,'Utérus (ZIGONG)':29,'Ovaires':30,'Prostate':31,'Sympathique':32,'Point d\'allergie':33,'Rate (PI)':34,'Estomac (WEI)':35,'Intestin grêle':36,'Triple Réchauffeur':37,'Rein (SHEN) / Détoxification':38,'Vessie (PANG)':39,'Vésicule biliaire':40,'Pancréas':41,'Cœur (CO)':42,'Foie (GAN)':43,'Poignet':44,'Poumon (FEI)':45,'Endocrine':46,'Faim (Appétit)':47,'Doigts':48,'Surrénal (ACTH)':49,'Cheville':50,'Thyroïde':51,'Glande surrénale':52,'Point maître de la peau':53,'Point maître de l\'audition':54,'Point maître des articulations':55,'Orteils':56,'Œil (YAN)':57,'Nez interne':58,'Talon':59,'Point maxillo-dentaire':60,'Point oméga':61,'Occipital':62,'Hypertension (HTA)':63,'Pelvis':64,'Duodénum':65,'Rachis dorsal':66,'Abdomen':67,'Fesse':68,'Bouche':69,'Rectum':70,'Mâchoire':71,'Langue':72,'Dents':73,'Oreille interne':74,'Amygdales':75,'Pharynx / Larynx':76,'Cardia':77,'Oesophage':78,'Point Analgésie':79};
+const EAR_PT_NUM = {'Apex (Pointe)':1,'Point Zéro':2,'Trachée':3,'Clavicule':4,'Coude':5,'Point maître d\'élimination':6,'Point maître de Darwin':7,'Épaule':8,'Sein':9,'Point Antidépresseur':10,'Gros intestin':11,'Urètre':12,'Point Zéro\'':13,'Point du PCS':14,'Point de décussation':15,'Genou':16,'Point de réactivité (Bourdiol)':17,'Lombaires':18,'Hanche':19,'Nerf sciatique':20,'Cervicales':21,'Point merveilleux':22,'Point maître sensoriel':23,'Point maître des organes abdominaux':24,'Point de Bosch':25,'Shen Men':26,'Sous-cortex':27,'Thalamus (Analgésie)':28,'Utérus (ZIGONG)':29,'Ovaires':30,'Prostate':31,'Sympathique':32,'Point d\'allergie':33,'Rate (PI)':34,'Estomac (WEI)':35,'Intestin grêle':36,'Triple Réchauffeur':37,'Rein (SHEN) / Détoxification':38,'Vessie (PANG)':39,'Vésicule biliaire':40,'Pancréas':41,'Cœur (CO)':42,'Foie (GAN)':43,'Poignet':44,'Poumon (FEI)':45,'Endocrine':46,'Faim (Appétit)':47,'Doigts':48,'Surrénal (ACTH)':49,'Cheville':50,'Thyroïde':51,'Glande surrénale':52,'Point maître de la peau':53,'Point maître de l\'audition':54,'Point maître des articulations':55,'Orteils':56,'Œil (YAN)':57,'Nez interne':58,'Talon':59,'Point maxillo-dentaire':60,'Point oméga':61,'Occipital':62,'Hypertension (HTA)':63,'Pelvis':64,'Duodénum':65,'Rachis dorsal':66,'Abdomen':67,'Fesse':68,'Bouche':69,'Rectum':70,'Mâchoire':71,'Langue':72,'Dents':73,'Oreille interne':74,'Amygdales':75,'Pharynx / Larynx':76,'Cardia':77,'Oesophage':78,'Point Analgésie':79,
+  // Ajoutés le 30/09/2026 (schéma chinois annoté + « L'auriculothérapie simplifiée ») : cercles + numéro vert sur le schéma
+  'Hypotension':80,'Front':81,'Tempe':82,'Feng Xi':83};
 const EAR_PT_MASTER = new Set([2,6,7,16,22,23,24,25,26,28,32,53,54,55,61,79]);
 
 function renderAuriRows(scored, savedRealises){
@@ -9049,9 +9511,10 @@ function showAuri(syndrome, savedRealises=[]) {
   const _ebmMotif = ['ebm-sel','gyno-motif','ai-motif-question'].map(id=>((document.getElementById(id)||{}).value||'').trim()).filter(Boolean);
   const motifBrut = curPt ? [(document.getElementById('dix-motif-input')||{}).value,(document.getElementById('s-motif')||{}).value, pt.motif||'', ..._ebmMotif].filter(Boolean).join(' ') : '';
   // Points auriculaires classiques associés à un motif choisi (signal fort, +3)
-  const _mNorm = ' '+MTCNorm.seq(motifBrut).join(' ')+' ';
+  // phraseIn (et non plus une recherche de sous-chaîne) : « pas de migraine » ne propose plus le protocole migraine.
+  const _mTok = MTCNorm.tokens(motifBrut);
   const motifMapPts = new Set();
-  Object.entries(AURI_MOTIF_MAP).forEach(([kw,pts])=>{ if(_mNorm.includes(' '+MTCNorm.seq(kw).join(' ')+' ')) pts.forEach(x=>motifMapPts.add(x)); });
+  Object.entries(AURI_MOTIF_MAP).forEach(([kw,pts])=>{ if(MTCNorm.phraseIn(_mTok, kw)) pts.forEach(x=>motifMapPts.add(x)); });
   // MTCNorm : mots entiers réduits (pluriels), signes niés exclus (« sans nausées »).
   const motifTokens = [...new Set(MTCNorm.tokens(motifBrut).filter(t=>!t.neg && t.w.length>=4 && !AURI_STOPWORDS.has(t.w)).map(t=>t.w))];
   if (motifLabel) motifLabel.textContent = motifBrut.trim() ? motifBrut.trim() : '—';
