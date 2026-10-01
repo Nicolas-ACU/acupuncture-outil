@@ -468,7 +468,7 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
             <div style="margin:2px 0 0 14px">4. Cliquez <strong>Calculer les résultats →</strong> pour obtenir l'interprétation constitutionnelle.</div>
             <div style="margin:2px 0 0 14px;color:var(--slate)">Seuils de la norme CACM 2009 : constitution non équilibrée <em>présente</em> ≥ 40, <em>tendance</em> 30-39 ; constitution <em>Équilibrée</em> retenue seulement si ≥ 60 <u>et</u> toutes les autres &lt; 30 (« plutôt présente » si toutes &lt; 40). Une constitution présente compte pour +3 dans l'analyse des syndromes, une tendance pour +1.</div>
           </div>
-          <div style="margin-top:4px"><strong style="color:var(--jade)">📍 Points</strong> — syndromes retenus, prescription de points (syndrome MTC, EBM, Référentiel Sorbonne Paris Nord, libres, auriculothérapie). Ajoutez un point libre en tapant son <strong>code puis Entrée</strong> — le curseur reste actif pour enchaîner plusieurs points sans reprendre la souris. Une fois vos points cochés sur les différents axes, cliquez <strong>✅ Valider et aller vers Synthèse →</strong> pour tout rassembler automatiquement (points, principe de traitement, technique, syndrome retenu) dans le compte-rendu.</div>
+          <div style="margin-top:4px"><strong style="color:var(--jade)">📍 Points</strong> — en tête de page, le panneau <strong>Convergence des points</strong> regroupe tout ce que proposent le syndrome, l'analyse méridienne, le motif (EBM, Mode Urgence, péri-opératoire), le protocole gynécologique et la palpation Shu/Mu, classé par nombre de sources concordantes ; un clic ajoute le socle de séance (6 à 12 points, réglable) et les points d'oreille les plus convergents. Puis syndromes retenus, prescription de points (syndrome MTC, EBM, Référentiel Sorbonne Paris Nord, libres, auriculothérapie). Ajoutez un point libre en tapant son <strong>code puis Entrée</strong> — le curseur reste actif pour enchaîner plusieurs points sans reprendre la souris. Une fois vos points cochés sur les différents axes, cliquez <strong>✅ Valider et aller vers Synthèse →</strong> pour tout rassembler automatiquement (points, principe de traitement, technique, syndrome retenu) dans le compte-rendu.</div>
           <div style="margin-top:4px"><strong style="color:var(--jade)">✨ Synthèse</strong> — compte-rendu de séance, principe de traitement, conseils, prochain rendez-vous. Si vous arrivez ici sans passer par « Valider vers Synthèse », les champs encore vides se remplissent automatiquement depuis ce qui est coché/rempli dans Points. L'outil IA « Analyse à partir du motif » y extrait aussi automatiquement les points cités dans la réponse de l'IA pour les cocher en un clic dans « Points réalisés ».</div>
           <div><strong style="color:var(--jade)">📅 Séances</strong> — historique, séances « 🕐 en préparation » (brouillon) vs « ✅ réalisées », suppression possible.</div>
           <div style="margin-top:4px"><strong style="color:var(--jade)">📚 Référentiel MTC</strong> — catalogue de référence et outil d'apprentissage : transcription des tableaux et associations de points du cours « Règles thérapeutiques » de Sorbonne Paris Nord (principes thérapeutiques, Shu antiques, points Yuan/Luo/Xi/Hui/Mu/Bei Shu, Xia-He, méthodes traditionnelles, localisation de la douleur, indications empiriques, associations de points, table des synonymes). Il <strong>documente</strong> les points mais n'en propose pas automatiquement : on y a recours <strong>en cas d'échec</strong> ou pour affiner un traitement qui traîne, après la méthode des méridiens et des Zang-Fu. Utilisation : tapez un <strong>point</strong> (E36, ST36, RP6, VB 34… toutes notations acceptées) pour voir toutes ses mentions, ou un <strong>symptôme</strong> (insomnie, dysménorrhée…) pour retrouver les tableaux concernés ; cliquez sur n'importe quel code de point pour afficher son index complet. Le menu déroulant permet de se limiter à un chapitre. Dans la fiche d'un méridien, les schémas des Shu antiques sont cliquables pour cocher les points dans « Points réalisés ».</div>
@@ -524,6 +524,7 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
         <div id="guide-changelog" style="font-size:12px;color:var(--ink);line-height:1.8">
           <div style="font-size:12px;line-height:1.65">
             <div style="font-weight:700;color:var(--jade);margin-bottom:4px">1er octobre 2026</div>
+            <div>• <strong>Convergence des points</strong> (onglet 📍 Points) : un seul tableau réunit les points de toutes les sources, en notation unifiée, classés par occurrences ; socle de séance réglable ajouté en un clic, sans doublon — pour limiter le nombre d'aiguilles.</div>
             <div>• <strong>Schémas interactifs</strong> dans l'Examen : langue (+ veines sublinguales), pouls (6 positions), points Shu / Mu et Huatuo, carte de la douleur ; bouton 🔍 Agrandir pour chacun.</div>
             <div>• <strong>Oreille</strong> : 13 points ajoutés sur la face antérieure (hypotension, front, tempe, Feng Xi, cortex cingulaire, Oméga 2, hypothalamus, amygdale, hippocampe, cortex préfrontal, nerf trijumeau, interféron, nerf vague), <strong>face postérieure</strong> (11 points), fenêtre agrandie avec zoom et recherche.</div>
             <div>• <strong>Mode Urgence</strong> : 15 indications péri-opératoires (tableau de synthèse du mémoire) avec compléments selon la constitution CCMQ ; protocoles Battlefield Acupuncture et CHENG.</div>
@@ -1598,6 +1599,18 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
       <div class="sh" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
         <div><h2>Prescription de points</h2><span class="zh">處方選穴</span></div>
         <button onclick="resetPrescription()" style="background:#FEF3C7;border:1px solid #D97706;color:#92400E;border-radius:8px;padding:6px 14px;font-size:12px;font-weight:600;cursor:pointer" title="Vider toutes les sélections et recommencer">🔄 Reset prescription</button>
+      </div>
+
+      <!-- ══ CONVERGENCE DES POINTS ══ -->
+      <div class="card" id="conv-card" style="border-left:4px solid #0E6655;margin-bottom:12px">
+        <div class="ct" style="color:#0E6655;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+          <span>Convergence des points — socle de séance</span>
+          <span style="display:flex;gap:6px;align-items:center;font-size:11px;font-weight:400">Socle
+            <select id="conv-n" onchange="convSetN(this.value)" style="font-size:11px;padding:2px 4px"><option>6</option><option selected>8</option><option>10</option><option>12</option></select>
+            <button class="btn" style="font-size:11px;padding:3px 10px" onclick="renderConvergence()">🔄 Actualiser</button></span>
+        </div>
+        <p style="font-size:11px;color:var(--slate);margin:0 0 8px">Tous les points proposés par le syndrome, l'analyse méridienne, le motif (EBM, Mode Urgence, péri-opératoire), le protocole gynécologique et la palpation Shu/Mu, regroupés et classés par nombre de sources concordantes. Retenir en priorité les points convergents limite le nombre d'aiguilles sans perdre la cohérence du traitement.</p>
+        <div id="conv-result"></div>
       </div>
 
       <!-- ══ BA GANG ══ -->
@@ -3258,6 +3271,7 @@ function navTo(pg){
   if(pg==='patients')renderPatients();
   if(pg==='seances')renderSeances();
   if(pg==='realises') setTimeout(syncRealises, 50);
+  if(pg==='points') setTimeout(renderConvergence, 60);
   if(pg==='fiche') setTimeout(toggleSAfield, 30);
   if(pg==='synthese') setTimeout(autoFillSynthese, 50);
   if(pg==='points'){
@@ -6383,6 +6397,7 @@ function suggestSyndromes() {
   });
 
   const all=Object.entries(scores).sort((a,b)=>b[1].sc-a[1].sc);
+  window._lastSynd = all.map(([nom,d])=>({nom, sc:d.sc, axe:(d.rule||{}).axe}));  // lu par le panneau Convergence
   if(!all.length){
     el.style.display='';
     el.innerHTML='<p style="font-size:12px;color:var(--slate);font-style:italic">Données insuffisantes — renseignez la langue, le pouls et les 10 questions.</p>';
@@ -6527,7 +6542,7 @@ const MERIDIANS_DB = {
     code:'R', type:'principal', element:'Eau', couplage:'Vessie',
     trajet:'Plante pied → face interne jambe → abdomen → poitrine',
     pointsCles:{yuan:'KD3 Taixi', luo:'KD4 Dazhong', xi:'KD5 Shuiquan', mu:'GB25 Jingmen', shu:'BL23 Shenshu'},
-    symptomes:['Douleur lombaire','Douleur plante du pied','Acouphènes'],
+    symptomes:['Douleur lombaire','Douleur plante du pied','Acouphènes','Pollakiurie nocturne'],
     luo_vide:['Douleur lombaire'],
     luo_plen:['Agitation mentale','Dépression','Rétention urine','Douleur région Cœur','Distension plénitude poitrine'],
     mtm:['Douleur raideur muscles orteils pied cheville interne','Raideur colonne cou','Impossibilité se pencher avant ou arrière']
@@ -6713,6 +6728,7 @@ function analyserMeridiens(){
   });
   const sorted = Object.entries(scores).sort((a,b) => (b[1]-a[1]) || (rang(a[0])-rang(b[0]))).slice(0,6);
 
+  window._lastMerid = sorted;  // lu par le panneau Convergence
   if(!sorted.length){
     el.innerHTML = '<p style="color:var(--slate);font-size:12px;font-style:italic">Remplissez les 10 questions et le motif pour obtenir une analyse méridienne.</p>';
     return;
@@ -11904,6 +11920,173 @@ function onMeridChk(cb){
   }
   addLibrePointDirect(code, '[Méridien] '+(label||code));
 }
+
+// ══════ CONVERGENCE DES POINTS ══════
+// Réunit les points proposés par toutes les sources du dossier, unifie la notation (code canonique,
+// affiché en notation française), compte les occurrences (nombre de sources différentes) et classe :
+// d'abord le nombre de sources, puis le poids (point principal > secondaire). Le « socle » = les N
+// premiers, pour limiter le nombre d'aiguilles. Rien n'est ajouté au dossier sans clic du praticien.
+const CONV_SOURCES = {
+  synd:{lbl:'Syndrome', col:'#1E8449'}, merid:{lbl:'Méridien', col:'#117A65'}, ebm:{lbl:'Motif EBM', col:'#1A5276'},
+  gyno:{lbl:'Gynéco SPN', col:'#7D3C98'}, urg:{lbl:'Mode Urgence', col:'#B9770E'}, periop:{lbl:'Péri-op.', col:'#2E4053'},
+  shumu:{lbl:'Shu/Mu palpé', col:'#C0392B'}};
+let _conv = {n:8, body:[], auri:[], ctx:{}};
+
+function _convMotifTok(){
+  const g=id=>((document.getElementById(id)||{}).value||'');
+  return MTCNorm.tokens([g('dix-motif-input'), g('s-motif'), (typeof curPt!=='undefined' && curPt ? curPt.motif||'' : '')].join(' . '));
+}
+// EBM : protocole choisi dans la liste, sinon reconnu dans le motif (segments du titre, synonymes compris)
+function _convEbmKey(mt){
+  const sel=(document.getElementById('ebm-sel')||{}).value||'';
+  if(sel && EBM_DB[sel]) return sel;
+  if(!mt.length) return '';
+  // le titre dont le segment reconnu est le plus précis l'emporte (« lombalgie chronique » > « lumbago »)
+  let best = '', bestN = 0;
+  Object.keys(EBM_DB).forEach(k => k.split(/\s*[\/(),]\s*/).map(x=>x.trim()).filter(x=>x.length>3).forEach(seg => {
+    const n = MTCNorm.tokens(seg).length;
+    if(n > bestN && MTCNorm.phraseIn(mt, seg)){ best = k; bestN = n; } }));
+  return best;
+}
+function computeConvergence(){
+  const pts = new Map(), names = {};
+  const add = (raw, src, w, why, nom) => {
+    let canon = MTCNorm.ptCode(raw||'');
+    if(!/^([A-Z]{1,3}\d+|EX-[A-Z]+\d+)$/.test(canon)){ const f = MTCNorm.findPoints(raw||'')[0]; if(!f) return; canon = f.canon; }
+    if(nom && !names[canon]) names[canon] = nom;
+    const e = pts.get(canon) || {canon, src:{}, score:0};
+    if(!e.src[src] || e.src[src].w < w){ e.score += w - (e.src[src] ? e.src[src].w : 0); e.src[src] = {w, why}; }
+    pts.set(canon, e);
+  };
+  const mt = _convMotifTok(), ctx = {};
+  // 1. Syndrome : celui retenu par le praticien, sinon meilleure Racine + meilleure Branche suggérées
+  let synds = [];
+  const choisi = (typeof getSyndrome==='function' ? getSyndrome() : '') || '';
+  const cle = choisi && typeof findPDBKey==='function' ? (findPDBKey(choisi) || choisi) : '';
+  if(cle && PDB[cle]) synds = [cle];
+  else {
+    if(typeof suggestSyndromes==='function') suggestSyndromes();
+    const L = window._lastSynd || [];
+    synds = [L.find(s=>s.axe==='racine'), L.find(s=>s.axe==='branche')].filter(Boolean).map(s=>s.nom).filter(n=>PDB[n]);
+  }
+  ctx.synds = synds; ctx.syndChoisi = !!(cle && PDB[cle]);
+  synds.forEach(sn => { const d = PDB[sn];
+    (d.pp||[]).forEach(p => add(p.c, 'synd', 1, sn+' (principal)', p.n));
+    (d.ps||[]).forEach(p => add(p.c, 'synd', .6, sn+' (secondaire)', p.n)); });
+  // 2. Méridiens : deux premiers de l'analyse méridienne
+  if(typeof analyserMeridiens==='function') analyserMeridiens();
+  const mer = (window._lastMerid || []).slice(0,2).map(m=>m[0]);
+  ctx.mer = mer;
+  mer.forEach(m => {
+    const r = MERID_RX[m], c = MERID_CURIEUX_RX[m];
+    if(r){ add(r.yuan,'merid',1,m+' — Yuan'); add(r.luo_coupled,'merid',.8,m+' — Luo du couplé');
+      add(r.luo,'merid',.6,m+' — Luo'); add(r.shu,'merid',.5,m+' — Shu'); add(r.jing,'merid',.4,m+' — Jing'); }
+    if(c){ add(c.pointCle,'merid',1,m+' — point clé'); add(c.pointCouple,'merid',.8,m+' — point couplé'); }
+  });
+  // 3. Motif EBM
+  const ek = _convEbmKey(mt); ctx.ebm = ek;
+  if(ek){ (EBM_DB[ek].pp||[]).forEach(p=>add(p.c,'ebm',1,ek+' (principal)',p.n)); (EBM_DB[ek].ps||[]).forEach(p=>add(p.c,'ebm',.6,ek+' (secondaire)',p.n)); }
+  // 4. Protocole gynéco-obstétrical (Référentiel Sorbonne Paris Nord) affiché
+  document.querySelectorAll('#gyno-result .gyno-chk').forEach(cb => add(cb.dataset.code,'gyno',1,'Référentiel SPN',cb.dataset.nom));
+  // 5. Mode Urgence : recettes reconnues dans le motif
+  if(mt.length) URGENCE_RECIPES.forEach(r => {
+    if(r.keywords.some(k=>MTCNorm.phraseIn(mt,k)) && !(r.exclude||[]).some(k=>MTCNorm.phraseIn(mt,k)))
+      r.acu.forEach(p=>add(p.c,'urg',.8,r.nom,p.n)); });
+  // 6. Péri-opératoire : indication reconnue dans le motif
+  const PI = mt.length ? PERIOP_INDICATIONS.find(I=>I.keywords.some(k=>MTCNorm.phraseIn(mt,k))) : null;
+  if(PI){ ctx.periop = PI.label; _periopPts(PI.acu, PI.ea).forEach(c=>add(c,'periop',.8,PI.label)); }
+  // 7. Points Shu et Mu sensibles à la palpation
+  const pv = id => ((document.getElementById(id)||{}).value||'').split(',').map(x=>x.trim()).filter(Boolean);
+  pv('palp-shu').concat(pv('palp-mu')).forEach(t => { const f = MTCNorm.findPoints(t)[0]; if(f) add(f.raw,'shumu',1,'sensible à la palpation'); });
+  // Classement
+  const body = [...pts.values()].map(e => ({...e, n:Object.keys(e.src).length, nom:names[e.canon]||''}))
+    .sort((a,b) => (b.n-a.n) || (b.score-a.score) || a.canon.localeCompare(b.canon));
+  // Oreille : syndrome, motif, palpation, urgence, péri-op
+  const au = new Map();
+  const addA = (nom, src) => { if(!nom || !_auriByName(nom)) return; const e = au.get(nom)||{nom, src:new Set()}; e.src.add(src); au.set(nom, e); };
+  synds.forEach(sn => { const k = SYND_TO_AURI_KEY[sn] || (typeof normalizeSynd==='function' ? normalizeSynd(sn) : sn); (AURI_SYND_MAP[k]||[]).forEach(n=>addA(n,'Syndrome')); });
+  Object.entries(AURI_MOTIF_MAP).forEach(([kw,l]) => { if(mt.length && MTCNorm.phraseIn(mt,kw)) l.forEach(n=>addA(n,'Motif')); });
+  pv('palp-oreille').forEach(n => addA(n,'Palpation'));
+  if(mt.length) URGENCE_RECIPES.forEach(r => { if(r.keywords.some(k=>MTCNorm.phraseIn(mt,k))) (r.auri||[]).forEach(n=>addA(n,'Mode Urgence')); });
+  if(PI) PI.auriPts.forEach(n=>addA(n,'Péri-op.'));
+  const auri = [...au.values()].map(e=>({nom:e.nom, src:[...e.src], n:e.src.size}))
+    .sort((a,b) => (b.n-a.n) || ((b.src.includes('Palpation')?1:0)-(a.src.includes('Palpation')?1:0)) || a.nom.localeCompare(b.nom));
+  _conv = {n:_conv.n, body, auri, ctx};
+  return _conv;
+}
+// Codes déjà retenus dans « Points réalisés » (toutes sections), en code canonique
+function _convDejaRetenus(){
+  const s = new Set();
+  document.querySelectorAll('.pt-chk:checked, .libre-chk:checked').forEach(cb => {
+    const c = MTCNorm.ptCode(cb.dataset.code||''); if(c) s.add(c);
+    MTCNorm.findPoints(cb.dataset.nom||'').forEach(p=>s.add(p.canon)); });
+  return s;
+}
+function renderConvergence(){
+  const el = document.getElementById('conv-result'); if(!el) return;
+  const C = computeConvergence(), deja = _convDejaRetenus(), N = _conv.n;
+  const badge = k => `<span style="font-size:9.5px;font-weight:700;color:#fff;background:${CONV_SOURCES[k].col};border-radius:8px;padding:1px 6px;margin:1px 3px 1px 0;display:inline-block;white-space:nowrap">${CONV_SOURCES[k].lbl}</span>`;
+  const ctx = [];
+  if(C.ctx.synds.length) ctx.push((C.ctx.syndChoisi?'Syndrome retenu : ':'Syndromes suggérés : ')+C.ctx.synds.join(' + '));
+  if(C.ctx.mer.length) ctx.push('Méridiens : '+C.ctx.mer.join(' + '));
+  if(C.ctx.ebm) ctx.push('EBM : '+C.ctx.ebm);
+  if(C.ctx.periop) ctx.push('Péri-op. : '+C.ctx.periop);
+  if(!C.body.length){
+    el.innerHTML = '<p style="font-size:12px;color:var(--slate);font-style:italic">Aucune proposition encore : renseignez le motif, les 10+1 Questions et l\'examen (ou choisissez un syndrome), puis actualisez.</p>';
+    return;
+  }
+  const conv = C.body.filter(p=>p.n>=2).length;
+  const row = (p, i) => {
+    const fr = MTCNorm.ptFR(p.canon), ok = deja.has(p.canon), socle = i < N;
+    const why = Object.entries(p.src).map(([k,v])=>CONV_SOURCES[k].lbl+' : '+v.why).join(' · ');
+    return `<tr style="${socle?'':'opacity:.72'}">
+      <td style="padding:4px 6px;font-weight:700;color:${socle?'#0E6655':'var(--slate)'};white-space:nowrap">${fr}${p.canon!==fr?` <span style="font-weight:400;font-size:10px;color:var(--slate)">${p.canon}</span>`:''}</td>
+      <td style="padding:4px 6px;font-size:11px;color:var(--slate)">${p.nom||''}</td>
+      <td style="padding:4px 6px;text-align:center;font-weight:700;color:${p.n>=3?'#B3121B':p.n===2?'#B9770E':'var(--slate)'}">${'●'.repeat(p.n)}</td>
+      <td style="padding:4px 6px" title="${why.replace(/"/g,'&quot;')}">${Object.keys(p.src).map(badge).join(' ')}</td>
+      <td style="padding:4px 6px;text-align:right">${ok?'<span style="font-size:11px;color:#1E8449;font-weight:700">✓ retenu</span>':`<button class="btn" style="font-size:10px;padding:2px 8px" onclick="convAjouter('${p.canon}',this)">➕</button>`}</td></tr>`;
+  };
+  const socle = C.body.slice(0, N), reste = C.body.slice(N);
+  const aSocle = socle.filter(p=>!deja.has(p.canon)).length;
+  el.innerHTML = `
+    <div style="font-size:11px;color:var(--slate);margin-bottom:6px">${ctx.join(' · ')}</div>
+    <div style="font-size:12px;margin-bottom:6px"><strong>${C.body.length}</strong> points proposés par l'ensemble des sources, dont <strong>${conv}</strong> convergents (≥ 2 sources). Socle proposé : les <strong>${Math.min(N,C.body.length)}</strong> premiers.</div>
+    <table style="width:100%;border-collapse:collapse;font-size:12px">
+      <thead><tr style="font-size:10px;color:var(--slate);text-transform:uppercase;letter-spacing:.3px;text-align:left">
+        <th style="padding:3px 6px">Point</th><th style="padding:3px 6px">Nom</th><th style="padding:3px 6px">Sources</th><th style="padding:3px 6px">Proposé par</th><th></th></tr></thead>
+      <tbody>${socle.map(row).join('')}
+      ${reste.length?`<tr><td colspan="5" style="padding:6px;font-size:11px;color:var(--slate);border-top:1px dashed var(--border)">
+        <a href="#" onclick="document.getElementById('conv-reste').style.display=document.getElementById('conv-reste').style.display==='none'?'':'none';return false" style="color:var(--jade)">▸ ${reste.length} autres points (une seule source ou poids faible)</a></td></tr>`:''}
+      </tbody>
+      <tbody id="conv-reste" style="display:none">${reste.map((p,j)=>row(p,N+j)).join('')}</tbody>
+    </table>
+    <div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+      ${aSocle?`<button class="btn bg" style="font-size:11px" onclick="convAjouterSocle(this)">➕ Ajouter le socle (${aSocle} point${aSocle>1?'s':''})</button>`:'<span style="font-size:11px;color:#1E8449;font-weight:700">✓ Socle entièrement retenu</span>'}
+      <span style="font-size:10px;color:var(--slate);font-style:italic">Survolez les badges pour voir la raison de chaque proposition. Points ajoutés dans « Points réalisés » (section Points libres).</span>
+    </div>
+    ${C.auri.length?`<div style="margin-top:10px;padding-top:8px;border-top:1px dashed var(--border)">
+      <div style="font-size:11px;font-weight:700;color:#8B3A3A;margin-bottom:4px">Oreille — 4 points les plus convergents</div>
+      ${C.auri.slice(0,4).map(a=>`<div style="display:flex;gap:8px;align-items:center;font-size:12px;padding:2px 0">
+        <strong style="min-width:150px">${a.nom}</strong><span style="font-size:10px;color:var(--slate);flex:1">${a.src.join(' · ')}</span>
+        <button class="btn" style="font-size:10px;padding:2px 8px" onclick="convAjouterAuri('${a.nom.replace(/'/g,"\\'")}',this)">➕</button></div>`).join('')}
+    </div>`:''}`;
+}
+function _convLabel(p){ return MTCNorm.ptFR(p.canon)+(p.nom?' '+p.nom:'')+' — convergence ('+Object.keys(p.src).map(k=>CONV_SOURCES[k].lbl).join(' · ')+')'; }
+function convAjouter(canon, btn){
+  const p = _conv.body.find(x=>x.canon===canon); if(!p) return;
+  addLibrePointDirect(MTCNorm.ptFR(canon), _convLabel(p), btn);
+}
+function convAjouterSocle(btn){
+  const deja = _convDejaRetenus();
+  _conv.body.slice(0, _conv.n).filter(p=>!deja.has(p.canon)).forEach(p => addLibrePointDirect(MTCNorm.ptFR(p.canon), _convLabel(p), null));
+  if(btn){ btn.disabled = true; btn.textContent = '✓ Socle ajouté'; }
+  setTimeout(renderConvergence, 120);
+}
+function convAjouterAuri(nom, btn){
+  const a = _conv.auri.find(x=>x.nom===nom); if(!a) return;
+  addLibrePointDirect('Oreille', nom+' — convergence ('+a.src.join(' · ')+')', btn);
+}
+function convSetN(n){ _conv.n = +n || 8; renderConvergence(); }
 
 function addLibrePointDirect(code, nom, btn){
   if(!curPt){
