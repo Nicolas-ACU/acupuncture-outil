@@ -196,17 +196,27 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
 @keyframes ezpulse{0%,100%{stroke:#1B4B8A;stroke-width:3}50%{stroke:#1B4B8A;stroke-width:16}}
 .ez-open-btn{font-size:11px;padding:3px 9px;margin-top:4px}
 .ez-tab{font-size:12px!important}
+#sch-zoom{position:fixed;inset:0;background:rgba(20,24,22,.6);z-index:9000;display:none;align-items:center;justify-content:center}
+#sch-zoom.open{display:flex}
+.sz-stage{flex:1;overflow:auto;background:#fff;padding:8px}
+#sz-inner{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-start;justify-content:center;margin:0 auto}
+#sz-inner .sz-part{flex:1 1 300px}
+#sz-inner .sz-part.sz-small{flex:0 1 240px}
+#sz-inner svg{width:100%;height:auto;display:block}
 /* Schéma de la langue */
 #langue-schema svg,#langue-sous svg{width:100%;height:100%;display:block}
 .lg-zone{cursor:pointer}
 #pouls-schema svg{width:100%;height:100%;display:block}
 #shu-schema svg,#mu-schema svg{width:100%;height:100%;display:block}
+#douleur-schema svg{width:100%;height:100%;display:block}
+.dz-zone{cursor:pointer}
+.dz-zone:hover{fill-opacity:.4}
 .sm-zone{cursor:pointer}
 .sm-zone:hover{fill:rgba(27,75,138,.10)}
 .pq-zone{cursor:pointer}
 .pq-zone:hover{fill:rgba(27,75,138,.12)}
 .lg-zone:hover{fill:rgba(27,75,138,.10)}
-.lg-menu{position:absolute;z-index:50;background:#fff;border:1px solid var(--border);border-radius:8px;box-shadow:0 6px 24px rgba(0,0,0,.18);padding:8px 10px;min-width:230px;max-width:300px}
+.lg-menu{position:fixed;z-index:9600;background:#fff;border:1px solid var(--border);border-radius:8px;box-shadow:0 6px 24px rgba(0,0,0,.18);padding:8px 10px;min-width:230px;max-width:300px}
 .lg-menu h4{margin:0 0 6px;font-size:11px;color:var(--jade);text-transform:uppercase;letter-spacing:.3px}
 .lg-menu label{display:flex;gap:6px;align-items:flex-start;font-size:12px;padding:3px 0;cursor:pointer;line-height:1.3}
 .lg-menu input{width:auto;margin-top:2px;flex:none}
@@ -345,6 +355,10 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
             </select>
           </div>
           <div class="f" style="flex:1;min-width:220px">
+            <label>Indication péri-opératoire (mémoire, tableau 7.4)</label>
+            <select id="urg-periop" onchange="searchUrgence()"><option value="">— Aucune —</option></select>
+          </div>
+          <div class="f" style="flex:1;min-width:220px">
             <label>Protocole auriculaire d'analgésie (optionnel)</label>
             <select id="urg-proto" onchange="searchUrgence()">
               <option value="">— Aucun —</option>
@@ -358,6 +372,7 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
           Décrivez le motif ou choisissez un type de chirurgie pour obtenir une proposition de points.
         </div>
         <div id="urg-result" style="display:none">
+          <div class="card" id="urg-periop-result" style="display:none;border-left:4px solid #1A5276;padding:10px;margin:0 0 8px"></div>
           <div class="card" id="urg-proto-result" style="display:none;border-left:4px solid #6C3483;padding:10px;margin:0 0 8px"></div>
           <div class="card" style="border-left:4px solid var(--jade);padding:10px;margin:0 0 8px">
             <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:6px">
@@ -442,20 +457,33 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
         <div style="font-size:12px;color:var(--ink);line-height:1.75">
           <div><strong style="color:var(--jade)">🗂 Patients</strong> — liste, recherche et sélection du dossier patient. Ouvrez un patient pour activer les autres onglets.</div>
           <div><strong style="color:var(--jade)">👤 Identité</strong> — état civil, antécédents, motif général, terrain.</div>
-          <div><strong style="color:var(--jade)">⚡ Mode Urgence</strong> — sans passer par l'analyse fine MTC : à partir d'un motif en texte libre (ou d'un type de chirurgie pour l'épargne morphinique péri-opératoire), propose ~10 points d'acupuncture et 4-5 points d'auriculothérapie prêts à ajouter au dossier. Utilisable même sans patient sélectionné (le point est mis en attente puis rattaché automatiquement).</div>
+          <div><strong style="color:var(--jade)">⚡ Mode Urgence</strong> — sans passer par l'analyse fine MTC : à partir d'un motif en texte libre, propose ~10 points d'acupuncture et 4-5 points d'auriculothérapie prêts à ajouter au dossier. On y trouve aussi la <strong>médecine péri-opératoire</strong> : <em>type de chirurgie</em> (points de base et spécifiques), <em>indication péri-opératoire</em> (15 lignes du tableau de synthèse du mémoire : anxiété préopératoire, sevrage tabagique, épargne anesthésique, NVPO, iléus, rétention urinaire, delirium… avec acupuncture, auriculothérapie, électroacupuncture/TEAS, niveau de preuve et références, et <em>points complémentaires selon la constitution CCMQ</em> du patient), et <em>protocoles auriculaires d'analgésie</em> (Battlefield Acupuncture, CHENG en chirurgie prothétique). Les indications sont aussi reconnues dans le motif (« NVPO », « sleeve », « prothèse de genou »…). Utilisable même sans patient sélectionné (le point est mis en attente puis rattaché automatiquement).</div>
           <div><strong style="color:var(--jade)">🧪 Patient test (non archivé)</strong> — donne accès à TOUTES les fonctionnalités de consultation (10+1, examen, CCMQ, points, auriculothérapie, synthèse) sans jamais rien enregistrer dans la base de données : aucun dossier n'est créé, rien n'apparaît dans « Patients » ni dans les exports. Un bandeau jaune permanent le rappelle. Idéal pour tester rapidement une recherche de points, ou pour une consultation ponctuelle sans enjeu de suivi.</div>
           <div><strong style="color:var(--jade)">📋 10+1 Questions</strong> — interrogatoire MTC structuré ; le motif de la séance en cours se saisit ici (« Nouveau motif de séance ») et alimente automatiquement l'analyse des syndromes, l'auriculothérapie et la synthèse.</div>
-          <div><strong style="color:var(--jade)">🔬 Examen</strong> — langue, pouls, palpation abdominale et auriculaire (schéma classique cliquable, 79 points positionnés), Ba Gang.</div>
+          <div><strong style="color:var(--jade)">🔬 Examen</strong> — langue, pouls, palpation (points Shu et Mu, Huatuo, membres, oreille), douleur, Ba Gang. Chaque partie a désormais son <strong>schéma interactif</strong> (voir la carte « Schémas interactifs » ci-dessous).</div>
           <div style="margin-top:4px"><strong style="color:var(--jade)">🏮 CCMQ</strong> — questionnaire constitutionnel (valable 3 mois), en 4 étapes :
             <div style="margin:4px 0 0 14px">1. Cliquez <strong>📧 Envoyer questionnaire CCMQ</strong> — ouvre votre client mail avec le lien vers le questionnaire en ligne déjà inséré.</div>
             <div style="margin:2px 0 0 14px">2. Le patient le remplit chez lui (5-10 min) et obtient un <strong>code à 60 chiffres</strong>.</div>
             <div style="margin:2px 0 0 14px">3. Il vous renvoie ce code en répondant simplement au mail — collez-le via <strong>📥 Importer le code CCMQ</strong>.</div>
             <div style="margin:2px 0 0 14px">4. Cliquez <strong>Calculer les résultats →</strong> pour obtenir l'interprétation constitutionnelle.</div>
+            <div style="margin:2px 0 0 14px;color:var(--slate)">Seuils de la norme CACM 2009 : constitution non équilibrée <em>présente</em> ≥ 40, <em>tendance</em> 30-39 ; constitution <em>Équilibrée</em> retenue seulement si ≥ 60 <u>et</u> toutes les autres &lt; 30 (« plutôt présente » si toutes &lt; 40). Une constitution présente compte pour +3 dans l'analyse des syndromes, une tendance pour +1.</div>
           </div>
           <div style="margin-top:4px"><strong style="color:var(--jade)">📍 Points</strong> — syndromes retenus, prescription de points (syndrome MTC, EBM, Référentiel Sorbonne Paris Nord, libres, auriculothérapie). Ajoutez un point libre en tapant son <strong>code puis Entrée</strong> — le curseur reste actif pour enchaîner plusieurs points sans reprendre la souris. Une fois vos points cochés sur les différents axes, cliquez <strong>✅ Valider et aller vers Synthèse →</strong> pour tout rassembler automatiquement (points, principe de traitement, technique, syndrome retenu) dans le compte-rendu.</div>
           <div style="margin-top:4px"><strong style="color:var(--jade)">✨ Synthèse</strong> — compte-rendu de séance, principe de traitement, conseils, prochain rendez-vous. Si vous arrivez ici sans passer par « Valider vers Synthèse », les champs encore vides se remplissent automatiquement depuis ce qui est coché/rempli dans Points. L'outil IA « Analyse à partir du motif » y extrait aussi automatiquement les points cités dans la réponse de l'IA pour les cocher en un clic dans « Points réalisés ».</div>
           <div><strong style="color:var(--jade)">📅 Séances</strong> — historique, séances « 🕐 en préparation » (brouillon) vs « ✅ réalisées », suppression possible.</div>
           <div style="margin-top:4px"><strong style="color:var(--jade)">📚 Référentiel MTC</strong> — catalogue de référence et outil d'apprentissage : transcription des tableaux et associations de points du cours « Règles thérapeutiques » de Sorbonne Paris Nord (principes thérapeutiques, Shu antiques, points Yuan/Luo/Xi/Hui/Mu/Bei Shu, Xia-He, méthodes traditionnelles, localisation de la douleur, indications empiriques, associations de points, table des synonymes). Il <strong>documente</strong> les points mais n'en propose pas automatiquement : on y a recours <strong>en cas d'échec</strong> ou pour affiner un traitement qui traîne, après la méthode des méridiens et des Zang-Fu. Utilisation : tapez un <strong>point</strong> (E36, ST36, RP6, VB 34… toutes notations acceptées) pour voir toutes ses mentions, ou un <strong>symptôme</strong> (insomnie, dysménorrhée…) pour retrouver les tableaux concernés ; cliquez sur n'importe quel code de point pour afficher son index complet. Le menu déroulant permet de se limiter à un chapitre. Dans la fiche d'un méridien, les schémas des Shu antiques sont cliquables pour cocher les points dans « Points réalisés ».</div>
+        </div>
+      </div>
+
+      <div class="card" style="border-left:4px solid #1E6B3A">
+        <div class="ct" style="color:#1E6B3A">🖼 Schémas interactifs (onglet Examen) — cliquer pour noter, lire pour comprendre</div>
+        <div style="font-size:12px;color:var(--ink);line-height:1.7">
+          <div style="margin-bottom:6px">Chaque schéma <strong>remplit les mêmes étiquettes</strong> que la saisie classique (qui reste disponible) : analyses, enregistrement de la séance et synthèse en tiennent compte. Le bouton <strong>🔍 Agrandir</strong> ouvre chaque schéma en grand (zoom + / −) ; on peut y cliquer comme sur la page. Échap pour fermer.</div>
+          <div>👅 <strong>Langue</strong> — dessin « vivant » redessiné à chaque étiquette (couleur, forme, enduit, humidité, signes localisés) et <strong>face inférieure</strong> (veines sublinguales). Cliquez une zone (pointe = Cœur·Poumon, bords = Foie·VB, centre = Rate·Estomac, racine = Rein·Vessie·Intestins, face inférieure) pour y cocher ses signes. Les veines sublinguales distendues ou foncées comptent pour la Stase de Sang.</div>
+          <div>🫀 <strong>Pouls</strong> — deux poignets, 6 positions (Cun, Guan, Chi). Cliquez une position pour noter ses qualités. Lecture : rouge = rapide, bleu = lent ; plein foncé = plein, pointillé pâle = vide ; grand = large, petit = fin, ovale = long ; ▲ superficiel, ▼ profond ; corde, zigzag (serré), perles (glissant), contour rugueux, ⋯ (noué, intermittent, précipité). L'artère reprend les qualités globales.</div>
+          <div>🧍 <strong>Points Shu (dos) et Mu (face)</strong> — cliquez les points sensibles ; bandes Huatuo cliquables le long du rachis. Repères (C7, épine et pointe de l'omoplate, soutien-gorge, crête iliaque, EIPS), ligne externe des Ben Shen et moyens mnémotechniques (T1–T7 + 10, T8 sans Shu, T9–T12 + 9, L + 21, S + 26, Ben Shen = Shu + 29). La lecture signale les organes dont le Shu <em>et</em> le Mu sont sensibles (« concordants ») : +2 aux syndromes de cet organe (+1 si un seul des deux).</div>
+          <div>🎯 <strong>Carte de la douleur</strong> — face et dos, 44 zones, côté du patient indiqué (de face, sa droite est à gauche de l'image). Un clic note la zone, coche sa grande région (« Membres inférieurs », « Articulaire »…) et ajoute ses méridiens à l'analyse méridienne (ex. face latérale de la cuisse → VB ; creux poplité → Vessie, Rein).</div>
+          <div>👂 <strong>Oreille</strong> — face antérieure (92 points) et <strong>face postérieure</strong> (11 points : sillon hypotenseur, racines, points du dos, insula). Cliquez un point palpé douloureux : il renforce les propositions d'auriculothérapie ; les points proposés s'allument en orange. Dans la fenêtre agrandie : onglets Face antérieure / postérieure, molette ou pincement pour zoomer, glisser pour se déplacer, <strong>recherche par nom ou numéro</strong> (« Tempe », « 82 »), noms affichés en zoomant.</div>
         </div>
       </div>
 
@@ -484,7 +512,9 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
           <div>• <strong>Séance en préparation :</strong> après une séance, si le patient donne des nouvelles par courriel, ouvrez « Nouvelle séance », notez vos réflexions dans le bandeau « 10+1 Questions » (champ notes de préparation), puis cliquez <strong>💾 Enregistrer le brouillon</strong> — la séance reste « en préparation » tant qu'elle n'est pas finalisée.</div>
           <div>• <strong>Nouveau motif à chaque séance :</strong> le motif et les syndromes ne sont jamais recopiés automatiquement d'une séance à l'autre (sécurité patient) — seul le CCMQ, s'il est encore valide (&lt; 3 mois), est réutilisé.</div>
           <div>• <strong>Suppression d'une séance :</strong> possible via l'icône 🗑 dans l'historique, même si elle n'a pas été finalisée.</div>
-          <div>• <strong>Schéma auriculaire :</strong> cliquez une zone ou un point numéroté pour signaler une zone douloureuse à la palpation — cela renforce automatiquement les points suggérés en auriculothérapie.</div>
+          <div>• <strong>Schéma auriculaire :</strong> cliquez un point numéroté pour signaler une zone douloureuse à la palpation — cela renforce automatiquement les points suggérés en auriculothérapie. Pour les petits points, utilisez <strong>🔍 Agrandir</strong> ou la recherche.</div>
+          <div>• <strong>Points abrégés :</strong> dans un texte libre, la notation de cours « RM6, 12 » ou « RP4, 6 » est comprise comme RM6 + RM12, RP4 + RP6 (mais « E36, 3 séances » ou « MC6, 30 Hz » ne créent pas de faux point).</div>
+          <div>• <strong>Plusieurs sources, un même point :</strong> un point proposé à la fois par le syndrome, le méridien, le motif et le Mode Urgence est un point « convergent » — à privilégier quand il faut limiter le nombre d'aiguilles.</div>
         </div>
       </div>
 
@@ -492,7 +522,18 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
         <div class="ct">Journal des évolutions</div>
         <div style="font-size:11px;color:var(--slate);font-style:italic;margin-bottom:8px">Cette liste s'enrichit à chaque amélioration de l'application — vous pouvez vérifier ici ce qui a changé depuis votre dernière utilisation. Remise à zéro le 28 sept. 2026, avant la diffusion de l'application aux bêta-testeurs (certains réglages sont encore en cours de finalisation).</div>
         <div id="guide-changelog" style="font-size:12px;color:var(--ink);line-height:1.8">
-          <p style="color:var(--slate);font-style:italic">Aucune évolution enregistrée pour l'instant depuis la remise à zéro — cette liste se remplira à partir de la prochaine mise à jour diffusée au groupe.</p>
+          <div style="font-size:12px;line-height:1.65">
+            <div style="font-weight:700;color:var(--jade);margin-bottom:4px">1er octobre 2026</div>
+            <div>• <strong>Schémas interactifs</strong> dans l'Examen : langue (+ veines sublinguales), pouls (6 positions), points Shu / Mu et Huatuo, carte de la douleur ; bouton 🔍 Agrandir pour chacun.</div>
+            <div>• <strong>Oreille</strong> : 13 points ajoutés sur la face antérieure (hypotension, front, tempe, Feng Xi, cortex cingulaire, Oméga 2, hypothalamus, amygdale, hippocampe, cortex préfrontal, nerf trijumeau, interféron, nerf vague), <strong>face postérieure</strong> (11 points), fenêtre agrandie avec zoom et recherche.</div>
+            <div>• <strong>Mode Urgence</strong> : 15 indications péri-opératoires (tableau de synthèse du mémoire) avec compléments selon la constitution CCMQ ; protocoles Battlefield Acupuncture et CHENG.</div>
+            <div>• <strong>Analyse</strong> : 31 syndromes (12 nouveaux, d'après les Synthèses 1 et 2 du cours de Sorbonne Paris Nord) ; Vide de Yang exige un signe de froid, Vide de Yin un signe de chaleur-vide ; signes contraires pénalisés ; Shu / Mu concordants pris en compte ; Ba Gang enrichi (soif, préférences, sueurs, crainte du vent…) ; analyse méridienne plus précise (céphalée frontale, temporale, du vertex ; palpitations ; acouphènes ; carte de la douleur).</div>
+            <div>• <strong>Auriculothérapie</strong> : 50 motifs (protocoles de « L'auriculothérapie simplifiée »), jeux de points pour tous les syndromes.</div>
+            <div>• <strong>Langue</strong> : nouveaux signes (partiellement gonflée, longue, ulcérations, taches et bords violacés, enduit sans racine, collant, veines sublinguales).</div>
+            <div>• <strong>Pouls</strong> : libellés corrigés « Noué — Jie », « Intermittent — Dai », nouveau « Précipité — Cu » (séances anciennes converties automatiquement).</div>
+            <div>• <strong>CCMQ</strong> : import du code patient à 60 chiffres réparé ; verdict de la constitution Équilibrée conforme à la norme CACM 2009.</div>
+            <div>• <strong>Corrections</strong> : sélections perdues à la réouverture d'une séance pour 12 étiquettes (Fin — Xi, Mou — Ru, Racine épaisse, points Mu) ; questionnaire patient sans destinataire imposé ; notation abrégée « RM6, 12 » comprise.</div>
+          </div>
         </div>
       </div>
     </div>
@@ -636,6 +677,7 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
             <strong style="font-style:normal">Cliquez une zone</strong> (pointe, bords, centre, racine, face inférieure) pour y noter un signe localisé : l'étiquette correspondante est cochée.<br>
             Zones : pointe = Cœur · Poumon ; bords = Foie · VB ; centre = Rate · Estomac ; racine = Rein · Vessie · Intestins.
           </div>
+          <button type="button" class="btn ez-open-btn" style="align-self:flex-start" onclick="openSchemaZoom('langue','Langue — faces supérieure et inférieure')">🔍 Agrandir</button>
           <div id="lg-menu" class="lg-menu" style="display:none"></div>
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
@@ -798,7 +840,8 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
             Cercle plein foncé = plein · pâle en pointillé = vide<br>
             Grand = large / ample · petit = fin · ovale = long<br>
             ▲ superficiel · ▼ profond · ┃ en corde · zigzag = serré<br>
-            perles = glissant · contour rugueux = rugueux · ⋯ = noué / intermittent / précipité
+            perles = glissant · contour rugueux = rugueux · ⋯ = noué / intermittent / précipité<br>
+            <button type="button" class="btn ez-open-btn" onclick="openSchemaZoom('pouls','Pouls — 6 positions')">🔍 Agrandir</button>
           </div>
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
@@ -852,7 +895,7 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
             </table>
 
             <!-- Popup sélecteur de qualités -->
-            <div id="pouls-popup" style="display:none;position:fixed;z-index:200;background:#fff;border:1px solid var(--border);border-radius:10px;box-shadow:0 4px 20px rgba(0,0,0,.15);padding:12px;width:320px">
+            <div id="pouls-popup" style="display:none;position:fixed;z-index:9600;background:#fff;border:1px solid var(--border);border-radius:10px;box-shadow:0 4px 20px rgba(0,0,0,.15);padding:12px;width:320px">
               <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
                 <div id="pouls-popup-title" style="font-size:12px;font-weight:700;color:var(--jade)"></div>
                 <button onclick="closePoulsSelector()" style="border:none;background:none;font-size:16px;cursor:pointer;color:var(--slate);line-height:1">✕</button>
@@ -1078,6 +1121,7 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
 
         <!-- Schémas Shu (dos) et Mu (face) : clic sur un point = étiquette correspondante -->
         <div id="shumu-wrap" style="margin-bottom:14px;padding:8px;background:#FFFBF8;border:1px solid var(--border);border-radius:8px">
+          <div style="text-align:right"><button type="button" class="btn ez-open-btn" onclick="openSchemaZoom('shumu','Points Shu (dos) et Mu (face)')">🔍 Agrandir</button></div>
           <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-start">
             <div id="shu-schema" style="flex:1 1 440px;max-width:620px;aspect-ratio:760/610"></div>
             <div id="mu-schema" style="flex:1 1 320px;max-width:470px;aspect-ratio:620/610"></div>
@@ -1323,6 +1367,17 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
       <!-- DOULEUR -->
       <div class="card" style="margin-top:12px">
         <div class="ct">Exploration de la douleur 痛 — Analyse MTC</div>
+        <!-- Carte de la douleur : zones fines (côté du patient), méridiens et grandes régions associés -->
+        <div id="douleur-wrap" style="display:flex;gap:14px;flex-wrap:wrap;align-items:flex-start;margin-bottom:12px;padding:8px;background:#FFFBF8;border:1px solid var(--border);border-radius:8px">
+          <div id="douleur-schema" style="flex:1 1 360px;max-width:520px;aspect-ratio:640/680"></div>
+          <div style="flex:1 1 220px;font-size:11px;line-height:1.6">
+            <div style="color:var(--slate);font-style:italic;font-size:10px;margin-bottom:6px">Cliquez les zones douloureuses (face et dos ; la droite du patient est à gauche de l'image de face, à droite de l'image de dos). La grande région correspondante est cochée ci-dessous et les méridiens de la zone alimentent l'analyse méridienne.</div>
+            <div id="douleur-lecture"></div>
+            <button type="button" class="btn ez-open-btn" onclick="openSchemaZoom('douleur','Carte de la douleur')">🔍 Agrandir</button>
+            <button type="button" class="btn ez-open-btn" onclick="douleurEffacer()">Effacer la carte</button>
+          </div>
+          <input id="d-zones" style="display:none" oninput="markDirty()">
+        </div>
 
         <!-- Localisation et caractère général -->
         <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px">
@@ -3491,6 +3546,7 @@ function loadSeance(sc){
   });
   if(typeof renderLangueSchema==='function') renderLangueSchema();
   if(typeof renderShuMu==='function') renderShuMu();
+  s('d-zones', ex.dZones||''); if(typeof renderDouleurMap==='function') renderDouleurMap();
   // Restaurer les zones auriculaires sélectionnées sur la carte SVG (délai pour laisser le DOM se stabiliser)
   setTimeout(()=>restoreEarZones(ex.palpOreille), 80);
   // Déclencher l'analyse douleur si données présentes
@@ -3584,7 +3640,7 @@ function collectSc(){
     palpAhshiT:gT('palp-ahshi-t'),palpAhshi:g('palp-ahshi'),palpNotes:g('palp-notes'),
     palpOreille:gT('palp-oreille'),palpOreilleNotes:g('palp-oreille-notes'),
     dLocalisation:gT('d-localisation'),dType:gT('d-type'),dRythme:gT('d-rythme'),
-    dAggrave:gT('d-aggrave'),dAmeliore:gT('d-ameliore'),dLibre:g('d-libre')};
+    dAggrave:gT('d-aggrave'),dAmeliore:gT('d-ameliore'),dLibre:g('d-libre'),dZones:g('d-zones')};
   sc.ccmq={};CQ.forEach(i=>{const v=g('c-'+i.n);if(v)sc.ccmq[i.n]=v;});
   const syndChk2=document.querySelectorAll('.pt-chk:checked:not(.ebm-chk):not(.auri-chk):not(.gyno-chk):not(.libre-chk)');
   const ebmChk2=document.querySelectorAll('.ebm-chk:checked');
@@ -4373,9 +4429,30 @@ const MTCNorm = (() => {
   const ptFR = canon => { const m=(canon||'').match(/^([A-Z]{2})(\d+)$/); return m&&FR[m[1]] ? FR[m[1]]+m[2] : canon; };
   // Repère tous les codes de points dans un texte libre (notation française ou OMS).
   const PT_RE = /\b(EX[\s\-]?(?:HN|LE|UE|B|CA)[\s\-]?\d{1,2}|(?:REN|RTE|LU|LI|ST|SP|HT|SI|BL|KD|KI|PC|SJ|TE|GB|LV|LR|GV|CV|GI|RP|RT|RN|IG|MC|EC|TR|TF|VB|RM|DM|DU|VG|VC|HM|P|E|C|V|R|F)[\s\-]?\d{1,2})\b/gi;
+  // Abrégés de cours « RM6, 12 » (= RM6 et RM12) ou « RP4, 6 » : après un point, les numéros seuls qui
+  // suivent (séparés par « , » « / » « et ») sont rattachés au même méridien, à trois conditions :
+  // numéro existant sur ce méridien (MAX), et numéro suivi d'une fin de liste (rien, ponctuation, « et »,
+  // un autre point, ou un qualificatif : bilatéral, droit, gauche, moxa) — jamais d'une unité :
+  // « E36, 3 séances », « VB34, 2 cun », « MC6, 30 Hz » restent ignorés.
+  const MAX = {LU:11,LI:20,ST:45,SP:21,HT:9,SI:19,BL:67,KD:27,PC:9,SJ:23,GB:44,LV:14,CV:24,GV:28};
+  const CONT_RE = /^\s*(?:,|\/|&|\bet\b)\s*(\d{1,2})(?=\s*(?:$|[,;.)\]\/&]|\bet\b|\n|(?:bilat[\wÀ-ÿ]*|droite?|gauche|moxa[\wÀ-ÿ]*)(?![\wÀ-ÿ])|(?:EX|REN|RTE|LU|LI|ST|SP|HT|SI|BL|KD|KI|PC|SJ|TE|GB|LV|LR|GV|CV|GI|RP|RT|RN|IG|MC|EC|TR|TF|VB|RM|DM|DU|VG|VC|HM|P|E|C|V|R|F)\s?-?\d))/i;
   const findPoints = text => {
-    const out = [];
-    (text||'').replace(PT_RE, (m0, m1, idx) => { out.push({raw:m1, canon:ptCode(m1), index:idx}); return m0; });
+    const out = [], t = text||'';
+    t.replace(PT_RE, (m0, m1, idx) => {
+      const canon = ptCode(m1);
+      out.push({raw:m1, canon, index:idx});
+      const pre = (canon.match(/^([A-Z]{2})\d+$/)||[])[1];
+      if(pre && MAX[pre]){
+        let pos = idx + m0.length, m;
+        while((m = CONT_RE.exec(t.slice(pos)))){
+          const n = parseInt(m[1],10);
+          if(n < 1 || n > MAX[pre]) break;
+          out.push({raw:m[1], canon:pre+n, index:pos + m[0].length - m[1].length, abrege:true});
+          pos += m[0].length;
+        }
+      }
+      return m0;
+    });
     return out;
   };
   return {strip, stem, words, tokens, rawTokens, seq, phraseIn, labelMatch, ptCode, ptFR, findPoints, setSynonyms, GRAM, NEG};
@@ -4857,6 +4934,7 @@ async function refineAI(){
   ].filter(Boolean).join(' | ')||'non renseigné';
   const douleur=[
     g('d-localisation')?'Localisation: '+g('d-localisation'):'',
+    g('d-zones')?'Zones douloureuses: '+g('d-zones'):'',
     g('d-type')?'Type: '+g('d-type'):'',
     g('d-aggrave')?'Aggravé: '+g('d-aggrave'):'',
     g('d-ameliore')?'Amélioré: '+g('d-ameliore'):''
@@ -5349,6 +5427,7 @@ function buildFullMotifPrompt(motifText){
   ].filter(Boolean).join(' | ') || 'nr';
   const douleur = [
     g('d-localisation')?'Localisation: '+g('d-localisation'):'',
+    g('d-zones')?'Zones douloureuses: '+g('d-zones'):'',
     g('d-type')?'Type: '+g('d-type'):'',
     g('d-aggrave')?'Aggravé: '+g('d-aggrave'):'',
     g('d-ameliore')?'Amélioré: '+g('d-ameliore'):''
@@ -5489,7 +5568,7 @@ function prefillAIquestion(){
   const motif = g('dix-motif-input')||g('s-motif')||p.motif||'';
   const langue = [g('l-couleur'),g('l-couleur-loc'),g('l-enduit-couleur'),g('l-enduit-dist'),g('l-humidite'),g('l-sublinguale')?'veines sublinguales '+g('l-sublinguale'):''].filter(Boolean).join(', ');
   const pouls = [g('pq-freq'),g('pq-prof'),g('pq-force'),g('pq'),g('cun-g'),g('cun-d')].filter(Boolean).join(', ');
-  const douleur = [g('d-localisation'),g('d-type'),g('d-aggrave'),g('d-ameliore')].filter(Boolean).join(', ');
+  const douleur = [g('d-localisation'),g('d-zones'),g('d-type'),g('d-aggrave'),g('d-ameliore')].filter(Boolean).join(', ');
   const palpation = [
     g('palp-huatuo')?'Huatuojiaji: '+g('palp-huatuo'):'',
     g('palp-shu')?'Shu: '+g('palp-shu'):'',
@@ -6094,6 +6173,17 @@ const SYND_RULES = {
   },
 };
 
+// Organe de chaque syndrome d'organe (libellés de SHU_PTS / MU_PTS) : pour le bonus Shu / Mu.
+const SYND_ORGANE = {
+  'Vide de Qi de Rate':'Rate','Vide de Yang de Rate':'Rate','Effondrement du Qi de Rate':'Rate',
+  "Qi à contre courant de l'Estomac":'Estomac',"Feu de l'Estomac":'Estomac',"Vide de Yin de l'Estomac":'Estomac',
+  'Vide de Qi du Poumon':'Poumon','Vide de Yin du Poumon':'Poumon','Invasion du Poumon par Vent Chaleur':'Poumon',
+  'Qi des Reins non ferme':'Rein','Vide de Yang des Reins':'Rein','Vide de Yin des Reins':'Rein',
+  'Stagnation du Qi du Foie':'Foie','Feu du Foie':'Foie','Vide de Sang du Foie':'Foie','Vide de Yin du Foie':'Foie',
+  'Vide de Yin du Foie avec montée de Yang':'Foie',
+  'Vide de Qi du Cœur':'Cœur','Vide de Sang du Cœur':'Cœur','Vide de Yin du Cœur':'Cœur','Feu du Cœur':'Cœur',
+  'Chaleur Humidité de la Vessie':'Vessie'};
+
 // Syndromes dont l'identité même repose sur l'axe Froid/Chaleur ou Yang/Yin : pour ceux-là
 // seulement, un signe carrément opposé (langue, pouls, douleur) doit démentir l'hypothèse
 // plutôt que simplement ne pas la conforter — sinon un syndrome "Vide de Qi" (où la couleur
@@ -6203,6 +6293,15 @@ function suggestSyndromes() {
     if(r.douleur){ for(const [f,vals] of Object.entries(r.douleur)){ const m=m1(vals, dSrc[f]||[]); if(m) return m; } return null; }
     return null;
   };
+  // Organes signalés par la palpation des Shu (dos) et des Mu (face) : un Shu ET le Mu du même organe
+  // sensibles (« concordants ») = +2 aux syndromes de cet organe ; un seul des deux = +1.
+  const _palp = id => ((document.getElementById(id)||{}).value||'').split(',').map(x=>x.trim()).filter(Boolean);
+  const orgShuMu = {};
+  if(typeof SHU_PTS!=='undefined'){
+    const ps=_palp('palp-shu'), pm=_palp('palp-mu');
+    SHU_PTS.filter(x=>x[3]).forEach(([c,,o])=>{ if(ps.some(v=>v.indexOf('BL'+c.slice(1)+' ')===0)) (orgShuMu[o]=orgShuMu[o]||{}).shu=c; });
+    MU_PTS.forEach(([c,o])=>{ if(pm.some(v=>v.indexOf(c+' ')===0)) (orgShuMu[o]=orgShuMu[o]||{}).mu=c; });
+  }
   const scores = {};
   Object.entries(SYND_RULES).forEach(([nom, rule]) => {
     // Garde-fous préalables : certains syndromes désignent un symptôme précis et ne doivent
@@ -6258,6 +6357,9 @@ function suggestSyndromes() {
     dCheck(rule.douleur?.ameliore, dAmel, 'Amélioré');
     dCheck(rule.douleur?.type, dTyp, 'Type');
     dCheck(rule.douleur?.localisation, dLoc, 'Localisation');
+    // Shu / Mu de l'organe du syndrome (SYND_ORGANE)
+    const org = SYND_ORGANE[nom], om = org && orgShuMu[org];
+    if(om){ if(om.shu && om.mu){ sc+=2; det.push('Shu/Mu concordants : '+om.shu+' + '+om.mu); } else { sc+=1; det.push((om.shu?'Shu ':'Mu ')+(om.shu||om.mu)+' sensible'); } }
     // Motif de consultation +1 si mot-clé concordant
     if(motifTok.length && MOTIF_KEYS[nom]){
       const mMatch=MOTIF_KEYS[nom].filter(k=>MTCNorm.phraseIn(motifTok, k));
@@ -6564,7 +6666,11 @@ function analyserMeridiens(){
     // Qualificatifs de la douleur ou de l'évolution : décrivent le COMMENT, pas le OÙ — ils ne
     // doivent pas désigner un méridien (« irradiant » faisait remonter la Rate : « mal de dos irradiant abdomen »).
     'irradiant','irradiante','irradiation','irradie','intense','aigue','legere','permanent','permanente',
-    'intermittent','intermittente','soudain','soudaine','frequent','frequente','chroniques','recidivant','recidivante']);
+    'intermittent','intermittente','soudain','soudaine','frequent','frequente','chroniques','recidivant','recidivante',
+    // Qualités thermiques et termes de région trop larges (1er oct. 2026) : « chaleur des 5 centres » faisait
+    // remonter le Gros Intestin (« Chaleur centre poitrine »), « froid » + « membres inférieurs » le Dai Mai.
+    // La localisation précise vient désormais de la carte de la douleur (zones → méridiens).
+    'chaleur','froid','centre','membre','inferieur','superieur','faiblesse']);
   // Normalisation commune MTCNorm (casse, accents, pluriels genoux→genou, lombaires→lombaire,
   // mots entiers, négation). Mots de 4 lettres et moins exclus (dos, cou, bras, pied… restent
   // trop ambigus seuls face aux fiches méridiens rédigées en phrases).
@@ -6600,6 +6706,11 @@ function analyserMeridiens(){
 
   // Trier par score ; à égalité, méridien principal avant méridien curieux.
   const rang = nom => MERIDIANS_DB[nom].type === 'curieux' ? 1 : 0;
+  // Carte de la douleur : chaque zone désigne ses méridiens (premier cité +1, suivants +0,6).
+  ((ex.dZones||'').split(',').map(v=>v.trim()).filter(Boolean)).forEach(v => {
+    const z = typeof douleurZoneInfo==='function' ? douleurZoneInfo(v) : null; if(!z) return;
+    z.mer.forEach((m,i) => { const nom = MER_CODE[m]; if(nom && MERIDIANS_DB[nom]) scores[nom] = (scores[nom]||0) + (i===0 ? 1 : 0.6); });
+  });
   const sorted = Object.entries(scores).sort((a,b) => (b[1]-a[1]) || (rang(a[0])-rang(b[0]))).slice(0,6);
 
   if(!sorted.length){
@@ -10379,6 +10490,7 @@ function renderShuMu(){
   const shu=v('palp-shu'), mu=v('palp-mu'), hua=v('palp-huatuo');
   if(a) a.innerHTML=shuSVG({shu, huatuo:hua},{interactive:true});
   if(b) b.innerHTML=muSVG({mu},{interactive:true});
+  if(_sz.kind==='shumu') _szRefresh();
   // Lecture : organes signalés par le Shu et/ou le Mu (concordance = argument fort)
   const L=document.getElementById('shumu-lecture'); if(!L) return;
   const org={};
@@ -10394,11 +10506,175 @@ function renderShuMu(){
 }
 document.addEventListener('DOMContentLoaded', ()=>{ try{ renderShuMu(); }catch(e){} });
 
+// ══════ CARTE DE LA DOULEUR (face et dos, zones cliquables) ══════
+// Dessin original (silhouettes en position anatomique). Chaque zone porte ses méridiens (analyse
+// méridienne) et sa grande région (étiquettes « Localisation » existantes). Valeur enregistrée dans
+// d-zones : « Libellé · D » / « Libellé · G » (côté du patient), jamais de virgule.
+const MER_CODE = {P:'Poumon (P)',GI:'Gros Intestin (GI)',E:'Estomac (E)',RP:'Rate (RP)',C:'Cœur (C)',IG:'Intestin Grêle (IG)',
+  V:'Vessie (V)',R:'Rein (R)',MC:'Maître du Cœur (MC)',TR:'Triple Réchauffeur (TR)',VB:'Vésicule Biliaire (VB)',F:'Foie (F)',
+  DM:'Du Mai (VG)',RM:'Ren Mai (VC)'};
+// [libellé, bilatéral, forme (côté gauche de l'image, x/y du modèle 300×640), méridiens, grandes régions]
+// Formes : ['e',cx,cy,rx,ry] ellipse · ['r',x,y,w,h] rectangle arrondi. Les zones bilatérales sont
+// reproduites en miroir (x → 300 − x).
+const DZ_FACE = [
+  ['Front', 0, ['e',150,34,22,11], ['E','GI'], ['Tête / Crâne']],
+  ['Tempe', 1, ['e',123,50,6,12], ['VB','TR'], ['Tête / Crâne']],
+  ['Visage · mâchoire', 0, ['e',150,70,20,13], ['E','GI'], ['Tête / Crâne']],
+  ['Gorge · cou antérieur', 0, ['r',138,88,24,18], ['RM','E','P'], ['Nuque / Cou']],
+  ['Épaule — face antérieure', 1, ['e',99,121,14,13], ['GI','P'], ['Épaules','Articulaire']],
+  ['Poitrine · thorax', 0, ['r',114,110,72,88], ['P','C','MC','RM'], ['Thorax']],
+  ['Hypocondre · flanc', 1, ['r',106,200,26,40], ['F','VB'], ['Flancs / Hypocondres']],
+  ['Épigastre', 0, ['r',134,200,32,46], ['E','RP','RM'], ['Épigastre']],
+  ['Abdomen péri-ombilical', 0, ['r',108,248,84,54], ['RP','E','R'], ['Abdomen']],
+  ['Hypogastre · bas-ventre', 0, ['r',122,304,56,46], ['RM','F','R','V'], ['Hypogastre']],
+  ['Aine', 1, ['r',104,318,16,38], ['F','E','RP'], ['Hanches']],
+  ['Bras — face antérieure', 1, ['r',75,138,22,88], ['P','C','MC'], ['Membres supérieurs']],
+  ['Coude — pli', 1, ['e',85,236,13,9], ['P','MC','C'], ['Membres supérieurs','Articulaire']],
+  ['Avant-bras — face antérieure', 1, ['r',72,248,24,78], ['P','MC','C'], ['Membres supérieurs']],
+  ['Poignet · paume', 1, ['e',82,346,13,18], ['MC','C','P'], ['Membres supérieurs','Articulaire']],
+  ['Cuisse — face latérale', 1, ['r',100,364,12,96], ['VB'], ['Membres inférieurs']],
+  ['Cuisse — face antérieure', 1, ['r',112,364,22,96], ['E'], ['Membres inférieurs']],
+  ['Cuisse — face interne', 1, ['r',134,364,13,96], ['RP','F','R'], ['Membres inférieurs']],
+  ['Genou — face antérieure', 1, ['e',125,470,19,12], ['E','RP'], ['Membres inférieurs','Articulaire']],
+  ['Jambe — face latérale', 1, ['r',106,486,11,92], ['VB'], ['Membres inférieurs']],
+  ['Jambe — face antérieure', 1, ['r',117,486,15,92], ['E'], ['Membres inférieurs']],
+  ['Jambe — face interne', 1, ['r',132,486,13,92], ['RP','F','R'], ['Membres inférieurs']],
+  ['Cheville · dos du pied', 1, ['e',124,598,19,12], ['E','VB','F'], ['Membres inférieurs','Articulaire']],
+  ['Gros orteil', 1, ['e',137,622,7,7], ['RP','F'], ['Membres inférieurs']]];
+const DZ_DOS = [
+  ['Vertex', 0, ['e',150,22,20,9], ['F','DM','V'], ['Tête / Crâne']],
+  ['Occiput', 0, ['e',150,56,24,20], ['V','VB','DM'], ['Tête / Crâne']],
+  ['Nuque', 0, ['r',136,88,28,18], ['V','VB','DM'], ['Nuque / Cou']],
+  ['Épaule — trapèze', 1, ['e',114,112,22,8], ['VB','TR'], ['Épaules']],
+  ['Omoplate', 1, ['r',106,124,32,64], ['IG'], ['Épaules']],
+  ['Dos — entre les omoplates', 0, ['r',140,120,20,80], ['V','DM'], []],
+  ['Dos — région thoracique basse', 0, ['r',108,202,84,58], ['V','DM'], []],
+  ['Lombes', 0, ['r',108,262,84,54], ['V','R','DM'], ['Lombes / Reins']],
+  ['Sacrum · coccyx', 0, ['r',132,318,36,38], ['V','DM'], ['Sacrum / Coccyx']],
+  ['Hanche — face latérale', 1, ['r',97,300,9,52], ['VB'], ['Hanches','Articulaire']],
+  ['Fesse', 1, ['e',116,340,15,18], ['VB','V'], ['Hanches']],
+  ['Bras — face postérieure', 1, ['r',75,138,22,88], ['TR','IG','GI'], ['Membres supérieurs']],
+  ['Coude — face postérieure', 1, ['e',85,236,13,9], ['TR','IG','GI'], ['Membres supérieurs','Articulaire']],
+  ['Avant-bras — face postérieure', 1, ['r',72,248,24,78], ['TR','GI','IG'], ['Membres supérieurs']],
+  ['Poignet · dos de la main', 1, ['e',82,346,13,18], ['TR','GI','IG'], ['Membres supérieurs','Articulaire']],
+  ['Cuisse — face postérieure', 1, ['r',104,366,42,92], ['V'], ['Membres inférieurs']],
+  ['Creux poplité', 1, ['e',125,470,17,10], ['V','R'], ['Membres inférieurs','Articulaire']],
+  ['Mollet', 1, ['r',108,484,36,88], ['V'], ['Membres inférieurs']],
+  ['Talon · tendon d\'Achille', 1, ['e',125,594,12,13], ['V','R'], ['Membres inférieurs','Articulaire']],
+  ['Plante du pied', 1, ['e',125,620,13,7], ['R'], ['Membres inférieurs']]];
+// Silhouette commune (modèle 300×640, centrée en 150)
+const DZ_CORPS = `<ellipse cx="150" cy="50" rx="31" ry="38"/>
+  <path d="M 136 86 L 136 106 L 104 112 C 88 114 76 120 74 134 L 70 236 L 68 330 C 66 350 70 368 82 370 C 94 370 98 352 96 334
+    L 98 248 L 104 168 L 106 300 L 100 330 L 98 462 L 104 584 C 100 600 104 616 118 628 C 134 634 146 630 146 616 L 146 584 L 148 470
+    L 150 372 L 152 470 L 154 584 L 154 616 C 154 630 166 634 182 628 C 196 616 200 600 196 584 L 202 462 L 200 330 L 194 300 L 196 168
+    L 202 248 L 204 334 C 202 352 206 370 218 370 C 230 368 234 350 232 330 L 230 236 L 226 134 C 224 120 212 114 196 112 L 164 106 L 164 86 Z"/>`;
+function douleurSVG(sel, opts){
+  sel = sel || []; opts = opts || {};
+  const o = [];
+  const on = (lbl, side) => sel.includes(side ? lbl+' · '+side : lbl);
+  o.push(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 680" class="dz-svg" font-family="Helvetica, Arial, sans-serif">`);
+  o.push(`<defs><linearGradient id="dz-peau" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#EFCDBD"/><stop offset=".5" stop-color="#F7DFD2"/><stop offset="1" stop-color="#EFCDBD"/></linearGradient></defs>`);
+  [['Face', DZ_FACE, 10, 'D', 'G'], ['Dos', DZ_DOS, 330, 'G', 'D']].forEach(([titre, Z, ox, gauche, droite]) => {
+    // gauche / droite = côté du PATIENT affiché à gauche / à droite de l'image
+    o.push(`<g transform="translate(${ox} 28)">`);
+    o.push(`<text x="150" y="-8" font-size="15" font-weight="700" fill="#333" text-anchor="middle">${titre}</text>`);
+    o.push(`<text x="40" y="-8" font-size="10" fill="#777">${gauche==='D'?'droite':'gauche'}</text><text x="260" y="-8" font-size="10" fill="#777" text-anchor="end">${droite==='D'?'droite':'gauche'}</text>`);
+    o.push(`<g fill="url(#dz-peau)" stroke="#9A5B4C" stroke-width="2">${DZ_CORPS}</g>`);
+    Z.forEach(([lbl, bi, f, mer]) => {
+      const sides = bi ? [[gauche, false], [droite, true]] : [[null, false]];
+      sides.forEach(([side, miroir]) => {
+        let shape;
+        if(f[0]==='e'){ const cx = miroir ? 300-f[1] : f[1]; shape = `<ellipse cx="${cx}" cy="${f[2]}" rx="${f[3]}" ry="${f[4]}"`; }
+        else { const x = miroir ? 300-f[1]-f[3] : f[1]; shape = `<rect x="${x}" y="${f[2]}" width="${f[3]}" height="${f[4]}" rx="5"`; }
+        const act = on(lbl, side), v = side ? lbl+' · '+side : lbl;
+        o.push(`${shape} class="dz-zone${act?' on':''}" data-zone="${v.replace(/"/g,'&quot;')}" fill="${act?'#D2433A':'#C9A99A'}" fill-opacity="${act?.7:.16}" stroke="${act?'#8E1F18':'#9A7A6E'}" stroke-width="${act?1.8:.8}" stroke-dasharray="${act?'':'3 3'}" ${opts.interactive?`onclick="douleurZoneToggle(this.dataset.zone)"`:''}><title>${v} — ${mer.map(m=>MER_CODE[m]).join(', ')}</title>${f[0]==='e'?'</ellipse>':'</rect>'}`);
+      });
+    });
+    o.push(`</g>`);
+  });
+  o.push(`</svg>`);
+  return o.join('\n');
+}
+// Toutes les zones (pour la recherche des méridiens et des régions d'une valeur enregistrée)
+function douleurZoneInfo(val){
+  const lbl = (val||'').replace(/ · [DG]$/,'');
+  const z = DZ_FACE.concat(DZ_DOS).find(x => x[0]===lbl);
+  return z ? {lbl, mer:z[3], regions:z[4]} : null;
+}
+
+
+function _dzVals(){ return ((document.getElementById('d-zones')||{}).value||'').split(',').map(v=>v.trim()).filter(Boolean); }
+// Clic sur une zone : bascule la zone ; à l'ajout, coche aussi sa grande région (sans jamais la décocher).
+function douleurZoneToggle(v){
+  const inp=document.getElementById('d-zones'); if(!inp) return;
+  const cur=_dzVals(), had=cur.includes(v);
+  const next=had ? cur.filter(x=>x!==v) : cur.concat([v]);
+  inp.value=next.join(', '); markDirty();
+  if(!had){ const z=douleurZoneInfo(v);
+    (z?z.regions:[]).forEach(r=>{ const t=[...document.querySelectorAll('.tg')].find(x=>x.textContent===r && (x.getAttribute('onclick')||'').indexOf("'d-localisation'")>0);
+      if(t && !t.classList.contains('on')) togEx(t,'d-localisation'); }); }
+  renderDouleurMap();
+}
+function douleurEffacer(){ const inp=document.getElementById('d-zones'); if(inp){ inp.value=''; markDirty(); } renderDouleurMap(); }
+function renderDouleurMap(){
+  const el=document.getElementById('douleur-schema'); if(!el) return;
+  const sel=_dzVals();
+  el.innerHTML=douleurSVG(sel,{interactive:true});
+  const L=document.getElementById('douleur-lecture');
+  if(L){
+    const sc={};
+    sel.forEach(v=>{ const z=douleurZoneInfo(v); if(z) z.mer.forEach((m,i)=>{ sc[m]=(sc[m]||0)+(i===0?1:.6); }); });
+    const mer=Object.entries(sc).sort((a,b)=>b[1]-a[1]);
+    L.innerHTML = sel.length
+      ? '<strong style="color:var(--jade)">Zones : </strong>'+sel.join(' · ')+'<br><strong style="color:var(--jade)">Méridiens concernés : </strong>'
+        + mer.map(([m,x],i)=>(i===0?'<b>':'')+MER_CODE[m]+(i===0?'</b>':'')).join(' · ')
+      : '<span style="color:var(--slate);font-style:italic">Aucune zone notée.</span>';
+  }
+  if(typeof _sz!=='undefined' && _sz.kind==='douleur') _szRefresh();
+}
+document.addEventListener('DOMContentLoaded', ()=>{ try{ renderDouleurMap(); }catch(e){} });
+// Liste des indications péri-opératoires (Mode Urgence), regroupées par phase
+function _fillPeriopSelect(){
+  const sel=document.getElementById('urg-periop'); if(!sel || sel.options.length>1) return;
+  ['Préopératoire','Peropératoire','Péri-opératoire','Postopératoire'].forEach(ph=>{
+    const g=document.createElement('optgroup'); g.label=ph;
+    PERIOP_INDICATIONS.filter(I=>I.phase===ph).forEach(I=>{ const o=document.createElement('option'); o.value=I.id; o.textContent=I.label; g.appendChild(o); });
+    sel.appendChild(g);
+  });
+}
+document.addEventListener('DOMContentLoaded', ()=>{ try{ _fillPeriopSelect(); }catch(e){} });
+
+// ── Fenêtre agrandie des schémas d'examen ──
+const SZ_SRC = {langue:['langue-schema','langue-sous'], pouls:['pouls-schema'], shumu:['shu-schema','mu-schema'], douleur:['douleur-schema']};
+const _sz = {kind:null, f:1};
+function openSchemaZoom(kind, title){
+  _sz.kind=kind; _sz.f=1;
+  const t=document.getElementById('sz-title'); if(t) t.textContent=title||'Schéma';
+  document.getElementById('sch-zoom').classList.add('open');
+  document.addEventListener('keydown', _szKey);
+  _szRefresh();
+}
+function closeSchemaZoom(){ _sz.kind=null; document.getElementById('sch-zoom').classList.remove('open'); document.removeEventListener('keydown', _szKey); }
+function _szKey(e){ if(e.key==='Escape') closeSchemaZoom(); }
+function schemaZoomBy(f){ _sz.f = f ? Math.min(4, Math.max(.6, _sz.f*f)) : 1; _szRefresh(); }
+// Recopie le schéma de la page (identifiants préfixés « sz- » pour éviter les doublons dans le document).
+function _szRefresh(){
+  if(!_sz.kind) return;
+  const inner=document.getElementById('sz-inner'); if(!inner) return;
+  inner.style.width=(100*_sz.f)+'%';
+  inner.innerHTML=(SZ_SRC[_sz.kind]||[]).map(id=>{
+    const src=document.getElementById(id); if(!src) return '';
+    const html=src.innerHTML.replace(/id="([^"]+)"/g,'id="sz-$1"').replace(/url\(#([^)]+)\)/g,'url(#sz-$1)');
+    return '<div class="sz-part'+(id==='langue-sous'?' sz-small':'')+'">'+html+'</div>';
+  }).join('');
+}
+
 function renderPoulsSchema(){
   const el=document.getElementById('pouls-schema'); if(!el) return;
   const v=id=>((document.getElementById(id)||{}).value||'').split(',').map(x=>x.trim()).filter(Boolean);
   const pos={}; ['cun-g','cun-d','guan-g','guan-d','chi-g','chi-d'].forEach(f=>pos[f]=v(f));
   el.innerHTML=poulsSVG({pos, global:[...v('pq-freq'),...v('pq-prof'),...v('pq-force'),...v('pq-forme'),...v('pq')]},{interactive:true});
+  if(_sz.kind==='pouls') _szRefresh();
 }
 document.addEventListener('DOMContentLoaded', ()=>{ try{ renderPoulsSchema(); }catch(e){} });
 
@@ -10419,6 +10695,7 @@ function renderLangueSchema(){
     enduitCouleur:_lgVals('l-enduit-couleur'), enduitDist:_lgVals('l-enduit-dist'), humidite:_lgVals('l-humidite'), sublinguale:_lgVals('l-sublinguale')};
   if(a) a.innerHTML=langueSVG(st,{id:'lgx',interactive:true});
   if(b) b.innerHTML=langueSousSVG(st,{interactive:true});
+  if(_sz.kind==='langue') _szRefresh();
   const m=document.getElementById('lg-menu');
   if(m && m.style.display!=='none' && m.dataset.zone) _lgMenuFill(m.dataset.zone);
 }
@@ -10434,10 +10711,11 @@ function langueZoneMenu(e, zone){
   const m=document.getElementById('lg-menu'), wrap=document.getElementById('langue-schema-wrap');
   if(!m||!wrap) return;
   _lgMenuFill(zone);
-  const r=wrap.getBoundingClientRect();
-  m.style.left=Math.max(4,Math.min((e.clientX||0)-r.left+8, (r.width||400)-240))+'px';
-  m.style.top=Math.max(4,(e.clientY||0)-r.top+8)+'px';
+  // Position fixe (coordonnées de l'écran) : le menu reste visible aussi dans la fenêtre agrandie.
   m.style.display='';
+  const mh=m.offsetHeight||260, mw=m.offsetWidth||250;
+  m.style.left=Math.max(4,Math.min((e.clientX||0)+8, (window.innerWidth||800)-mw-8))+'px';
+  m.style.top=Math.max(4,Math.min((e.clientY||0)+8, (window.innerHeight||800)-mh-8))+'px';
   if(e.stopPropagation) e.stopPropagation();
 }
 function langueMenuToggle(zone, i){
@@ -10866,7 +11144,7 @@ function extractAIPoints(text){
   text.split('\n').forEach(line=>{
     MTCNorm.findPoints(line).forEach(m=>{
       if(found.has(m.canon)) return;
-      const code = m.raw.replace(/\s+/g,'').toUpperCase();
+      const code = m.abrege ? MTCNorm.ptFR(m.canon) : m.raw.replace(/\s+/g,'').toUpperCase();
       let ctx = line.slice(m.index + m.raw.length).trim();
       ctx = ctx.replace(/^[\s:\-–—()•.,]+/, '').trim();
       ctx = ctx.split(/[.;]\s|—|–/)[0].trim();
@@ -11229,6 +11507,165 @@ const URGENCE_AURI_PROTOCOLES = {
     indications:"Analgésie per- et post-opératoire des arthroplasties (PTH / PTG), en complément de l'anesthésie. Essai randomisé triple aveugle (484 patients) : réduction significative de la consommation d'opioïdes et des scores de douleur à J1." },
 };
 
+// ══════ MÉDECINE PÉRI-OPÉRATOIRE — tableau 7.4 du mémoire (N. Blanchard, Capacité d'acupuncture) ══════
+// Une ligne par indication : points d'acupuncture traditionnelle, d'auriculothérapie (noms de la base
+// auriculaire quand le point existe sur le schéma) et d'électroacupuncture / TEAS, références Vancouver
+// du mémoire. Outil de travail, non opposable : à adapter à l'examen clinique (mémoire §7.4, §6).
+const PERIOP_INDICATIONS = [
+  { id:'anxiete', label:'Anxiété préopératoire', phase:'Préopératoire',
+    keywords:['anxiété préopératoire','angoisse préopératoire','peur de l\'opération','anxiété avant l\'opération'],
+    acu:'EX-HN3 (Yintang), séance unique de 30 min avant l\'intervention',
+    auri:'Rein + Cœur + Shen Men, application < 1 min ou pose semi-permanente ; points de « relaxation » non spécifiques également actifs',
+    auriPts:['Rein (SHEN)','Cœur (CO)','Shen Men'],
+    ea:'Non spécifiquement isolée dans les essais disponibles', refs:'[84] [82] [85] [87]',
+    preuve:'ECR (Wang 2001 : effet en moins d\'une minute)' },
+  { id:'tabac', label:'Sevrage tabagique préopératoire', phase:'Préopératoire',
+    keywords:['sevrage tabagique','arrêt du tabac','tabac préopératoire'],
+    acu:'GI4, F3, Tian Mei (point extraordinaire, en avant de P7)',
+    auri:'Point Zéro, Poumon, Shen Men, Bouche — pose semi-permanente possible pour prolonger la stimulation',
+    auriPts:['Point Zéro','Poumon (FEI)','Shen Men','Bouche'],
+    ea:'Non spécifiquement isolée dans les essais disponibles', refs:'[88] [90] [91]',
+    preuve:'Modeste — en appoint du sevrage nicotinique et comportemental, jamais en substitution' },
+  { id:'epargne', label:'Épargne des agents anesthésiques (peropératoire)', phase:'Peropératoire',
+    keywords:['épargne anesthésique','propofol','rémifentanil','agents anesthésiques'],
+    acu:'GI4 - MC6 - E36, association maintenue pendant l\'intervention',
+    auri:'—', auriPts:[],
+    ea:'MC6 - GI4 - P7 - GI11, fréquence alternée 2/100 Hz ; GI4 - MC6 - E36 en continu, guidé par index bispectral',
+    refs:'[97] [98] [96]', preuve:'Robuste — méta-analyse en réseau, 76 ECR, 5 877 patients' },
+  { id:'analgesie', label:'Analgésie peropératoire adjuvante', phase:'Peropératoire',
+    keywords:['analgésie peropératoire','analgésie adjuvante'],
+    acu:'Protocole individualisé selon le diagnostic MTC : E34, E44, MC6, F2, R3',
+    auri:'—', auriPts:[], ea:'E36 isolé, 2 Hz ou 100 Hz', refs:'[102] [101] [100]',
+    preuve:'Méta-analyse 15 ECR (−21 à −29 % d\'opioïdes) ; individualisation MTC : −71 % de douleur contre −18 % (Maimer)' },
+  { id:'hemodyn', label:'Stabilité hémodynamique peropératoire', phase:'Peropératoire',
+    keywords:['stabilité hémodynamique','hypotension peropératoire','instabilité tensionnelle'],
+    acu:'4 électrodes paravertébrales métamériques + 3 points auriculaires',
+    auri:'Cf. acupuncture traditionnelle (protocole combiné)', auriPts:[],
+    ea:'GI4 bilatéral, 5 Hz d\'un côté / 100-120 Hz de l\'autre, + 2 aiguilles péri-incisionnelles', refs:'[103] [104]',
+    preuve:'Petits essais (Kho ; série neurochirurgicale)' },
+  { id:'auriculo', label:'Auriculothérapie péri-opératoire (analgésie, épargne opioïde)', phase:'Péri-opératoire',
+    keywords:['auriculothérapie périopératoire','épargne opioïde','arthroscopie','ponction ovocytaire','prothèse totale'],
+    acu:'—',
+    auri:'Genou + Shen Men + Poumon, ASP posée avant l\'intervention, retenue jusqu\'au lendemain (arthroscopie du genou) ; Point 29 (Nogier) + Shen Men + Utérus, électrostimulation continue 1 Hz (ponction ovocytaire FIV) ; protocoles Battlefield Acupuncture et CHENG (liste « Protocole auriculaire d\'analgésie »)',
+    auriPts:['Genou','Shen Men','Poumon (FEI)'], protocoles:['bfa','cheng'],
+    ea:'—', refs:'[105] [107] [113] [108] [109] [110] [111] [112]',
+    preuve:'Synthèse EBM : 21 ECR, n = 1 527 ; douleur DM −0,44, antalgiques DMS −0,88, surtout en pose préopératoire ; GRADE très faible' },
+  { id:'obstetrique', label:'Obstétrique péri-opératoire', phase:'Péri-opératoire',
+    keywords:['césarienne','ponction ovocytaire','fiv'],
+    acu:'Césarienne : série française historique, points non détaillés dans la source',
+    auri:'—', auriPts:[],
+    ea:'Ponction ovocytaire (FIV) : efficacité comparable à l\'alfentanil IV ; hypotension de la rachianesthésie : TENS MC5 + MC6 des deux avant-bras', refs:'[9] [115] [116] [117]',
+    preuve:'Essais anciens' },
+  { id:'bariatrique', label:'Chirurgie bariatrique (NVPO, douleur, anxiété)', phase:'Péri-opératoire',
+    keywords:['bariatrique','sleeve','bypass gastrique','anneau gastrique'],
+    acu:'MC6 - GI4 bilatéral + Yintang (NVPO, préop.) ; E25 - RM12 - RP6 - C7 - GI4 en acupression (reprise du transit, douleur, distension post-op.)',
+    auri:'Points auriculaires du protocole d\'anxiolyse standard (Rein, Cœur, Shen Men)', auriPts:['Rein (SHEN)','Cœur (CO)','Shen Men'],
+    ea:'TEAS combinée aux antiémétiques de référence (NVPO)', refs:'[142] [143] [144] [145]',
+    preuve:'4 ECR (2021-2026) dans des revues de chirurgie bariatrique' },
+  { id:'nvpo', label:'NVPO — nausées-vomissements postopératoires', phase:'Postopératoire',
+    keywords:['nvpo','nausée postopératoire','nausées postopératoires','vomissement postopératoire','nausée post opératoire'],
+    acu:'MC6 (Neiguan), aiguille ou acupression, avant l\'induction ou en SSPI',
+    auri:'Estomac + Gros Intestin + Sanjiao (protocole de base) ; module Sympathique - Shen Men ; point Rate en modulation',
+    auriPts:['Estomac (WEI)','Gros intestin','Triple Réchauffeur','Sympathique','Shen Men','Rate (PI)'],
+    ea:'Dispositif portable transcutané MC6 ; TEAS et EA percutanée supérieures à l\'acupuncture manuelle sans antiémétique associé',
+    refs:'[119] [120] [121] [123] [124] [122]',
+    preuve:'La plus robuste de toute la littérature (Cochrane MC6 : 77 ECR, ~10 000 patients ; JAMA Surg 2026 : rémission 77,6 % contre 55,2 % sous métoclopramide)' },
+  { id:'douleurpo', label:'Douleur postopératoire / épargne morphinique', phase:'Postopératoire',
+    keywords:['douleur postopératoire','épargne morphinique','morphine postopératoire'],
+    acu:'—', auri:'Genou + Shen Men + Poumon (chirurgie arthroscopique du genou)', auriPts:['Genou','Shen Men','Poumon (FEI)'],
+    ea:'VB34 - E32 - E36 - RP9, homo- ou controlatéral, protocole minimaliste à 4 points', refs:'[128] [107] [100] [126] [127]',
+    preuve:'Méta-analyses (orthopédie : −21 % de morphine à 24 h)' },
+  { id:'ileus', label:'Iléus postopératoire / reprise du transit', phase:'Postopératoire',
+    keywords:['iléus','reprise du transit','iléus postopératoire','transit postopératoire'],
+    acu:'E36 isolé (voie cholinergique vagale)', auri:'—', auriPts:[],
+    ea:'E36 - RP6 - GI4 - TR6 ; MC6 - E36 - E37 bilatéral, 4 séances de 30 min (réveil, J1, J2, J3)', refs:'[131] [132] [133] [134] [135]',
+    preuve:'ECR multicentrique, 585 patients (Gastroenterology 2025)' },
+  { id:'cpbd', label:'Céphalées post-brèche durale', phase:'Postopératoire',
+    keywords:['brèche durale','céphalée post-brèche','céphalée post brèche','post-rachianesthésie'],
+    acu:'VB14 - VB20 - VB21 + IG12', auri:'—', auriPts:[], ea:'Non étudiée dans cette indication à ce jour', refs:'[136]',
+    preuve:'Un seul ECR (2021)' },
+  { id:'retention', label:'Rétention urinaire postopératoire', phase:'Postopératoire',
+    keywords:['rétention urinaire','rétention urinaire postopératoire','globe vésical'],
+    acu:'RP6 - RP9 - RM4 - RM6 - E36 - V28 - RM3 - V32, débuté à distance de l\'intervention, séances quotidiennes 1 à 3 semaines (hystérectomie radicale)',
+    auri:'5 aiguilles semi-permanentes auriculaires, pose unique (chirurgie thoracique) — points non détaillés dans la source', auriPts:[],
+    ea:'Sans différence démontrée avec l\'acupuncture simple (méta-analyse en sous-groupes)', refs:'[137] [138] [139]',
+    preuve:'Méta-analyse (corpus chinois) + 1 ECR auriculaire (SFAR 2019)' },
+  { id:'prurit', label:'Prurit / agitation / hoquet postopératoires', phase:'Postopératoire',
+    keywords:['prurit postopératoire','prurit morphinique','agitation postopératoire','hoquet'],
+    acu:'GI11 + RP10 (prurit) ; RM22, V17, MC6 (hoquet)',
+    auri:'Shen Men + Diaphragme + Tronc cérébral (agitation)', auriPts:['Shen Men','Point Zéro'],
+    ea:'—', refs:'cf. §5.3.6', preuve:'Données préliminaires' },
+  { id:'delirium', label:'Prévention du delirium postopératoire (sujet âgé)', phase:'Préopératoire',
+    keywords:['delirium','confusion postopératoire','dysfonction cognitive postopératoire'],
+    acu:'—', auri:'—', auriPts:[], ea:'VG20 - E36 - VG14, préconditionnement 30 min avant l\'induction', refs:'[140]',
+    preuve:'ECR' },
+];
+// Tableau 7.5 : points complémentaires selon la constitution CCMQ (hypothèse de travail non validée en péri-opératoire)
+const PERIOP_CCMQ = {
+  'Vide de Qi':{pts:'E36, GI4', ratio:'Tonification du Qi ; points déjà démontrés en analgésie et épargne morphinique'},
+  'Vide de Yang':{pts:'RM4, RM6, V23', ratio:'Réchauffe et tonifie le Yang rénal (moxibustion si besoin) ; patient frileux, hypothermie peropératoire'},
+  'Vide de Yin':{pts:'R3, RP6', ratio:'Tonifie le Yin ; patient déshydraté, muqueuses sèches'},
+  'Glaires-Humidité':{pts:'RP9, E40', ratio:'Draine l\'Humidité ; terrain œdémateux, surcharge pondérale'},
+  'Humidité-Chaleur':{pts:'RP9, E44', ratio:'Draine l\'Humidité-Chaleur ; foyer infectieux associé'},
+  'Stagnation Sang':{pts:'RP10, GI4', ratio:'Active la circulation du Sang ; terrain vasculaire, chirurgie hémorragique'},
+  'Stase de Qi':{pts:'F3, MC6', ratio:'Fait circuler le Qi ; patient anxieux ou somatisant'},
+  'Particulière':{pts:'GI11, RP10', ratio:'Terrain allergique ; à rapprocher des antécédents d\'hypersensibilité'},
+  'Équilibrée':{pts:'', ratio:'Aucun point complémentaire : protocole générique suffisant'},
+};
+
+// Constitutions CCMQ retenues pour le patient (verdicts de l'onglet CCMQ) : présentes et tendances
+function _periopCcmq(){
+  const pres=[], tend=[];
+  Object.entries(CC).forEach(([k,v])=>{ const rb=document.getElementById('rb-'+k); if(!rb) return;
+    if(/Présente|Plutôt/.test(rb.textContent)) pres.push(v.lbl); else if(/Tendance/.test(rb.textContent)) tend.push(v.lbl); });
+  return {pres, tend};
+}
+// Points corporels d'une ou plusieurs colonnes (codes canoniques, sans doublon, ordre d'apparition)
+function _periopPts(...txt){ const seen=new Set(), out=[]; txt.join(' ; ').split(/[;\n]/).forEach(t=>MTCNorm.findPoints(t).forEach(p=>{ if(!seen.has(p.canon)){ seen.add(p.canon); out.push(p.canon); } })); return out; }
+let _periopLast = {key:'', acu:[], auri:[], ccmq:[]};
+function renderUrgencePeriop(key){
+  const el=document.getElementById('urg-periop-result'); if(!el) return;
+  const I=PERIOP_INDICATIONS.find(x=>x.id===key);
+  if(!I){ el.style.display='none'; el.innerHTML=''; _periopLast={key:'',acu:[],auri:[],ccmq:[]}; return; }
+  const empty=document.getElementById('urg-empty'), result=document.getElementById('urg-result');
+  if(empty) empty.style.display='none'; if(result) result.style.display='';
+  el.style.display='';
+  ['urg-acu-list','urg-auri-list'].forEach(id=>{ const x=document.getElementById(id); if(x&&x.parentElement&&!x.innerHTML.trim()) x.parentElement.style.display='none'; });
+  const acu=_periopPts(I.acu, I.ea), auri=I.auriPts.filter(n=>_auriByName(n));
+  const C=_periopCcmq(), comp=[];
+  C.pres.forEach(c=>{ const x=PERIOP_CCMQ[c]; if(x) comp.push({c, ...x, statut:'présente'}); });
+  C.tend.forEach(c=>{ const x=PERIOP_CCMQ[c]; if(x && x.pts) comp.push({c, ...x, statut:'tendance'}); });
+  const ccmqPts=_periopPts(...comp.filter(x=>x.statut==='présente').map(x=>x.pts));
+  _periopLast={key, acu, auri, ccmq:ccmqPts, label:I.label};
+  const fr=c=>MTCNorm.ptFR(c);
+  const cell=(t,v)=>`<div style="flex:1 1 200px;background:#F8FAFC;border:1px solid var(--border);border-radius:6px;padding:6px 8px"><div style="font-size:10px;font-weight:700;color:#1A5276;text-transform:uppercase;letter-spacing:.3px;margin-bottom:3px">${t}</div><div style="font-size:12px">${v}</div></div>`;
+  el.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;margin-bottom:6px">
+      <div style="font-size:11px;font-weight:700;color:#1A5276;text-transform:uppercase;letter-spacing:.4px">🏥 ${I.label} <span style="font-weight:400;text-transform:none">· ${I.phase}</span></div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        ${acu.length?`<button class="btn" style="font-size:10px;padding:3px 9px" onclick="addPeriopPoints('acu',this)">➕ Points corporels (${acu.map(fr).join(', ')})</button>`:''}
+        ${auri.length?`<button class="btn" style="font-size:10px;padding:3px 9px" onclick="addPeriopPoints('auri',this)">➕ Points auriculaires (${auri.length})</button>`:''}
+      </div></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px">
+      ${cell('Acupuncture traditionnelle', I.acu)}${cell('Auriculothérapie', I.auri)}${cell('Électroacupuncture / TEAS', I.ea)}
+    </div>
+    ${(I.protocoles||[]).length?`<div style="font-size:11px;margin-bottom:6px">Protocoles détaillés : ${I.protocoles.map(k=>`<a href="#" onclick="document.getElementById('urg-proto').value='${k}';searchUrgence();return false" style="color:#6C3483;font-weight:700">${URGENCE_AURI_PROTOCOLES[k].label}</a>`).join(' · ')}</div>`:''}
+    <div style="font-size:11px;color:var(--slate)"><strong>Niveau de preuve :</strong> ${I.preuve} · <strong>Références du mémoire :</strong> ${I.refs}</div>
+    <div style="margin-top:8px;padding-top:6px;border-top:1px dashed var(--border);font-size:11px">
+      <strong style="color:#4A235A">Personnalisation selon la constitution (CCMQ, mémoire §7.5)</strong>
+      <span style="color:var(--slate);font-style:italic"> — hypothèse de travail non validée en péri-opératoire</span><br>
+      ${comp.length ? comp.map(x=>`<b>${x.c}</b> (${x.statut}) : ${x.pts||'aucun point complémentaire'} — <span style="color:var(--slate)">${x.ratio}</span>`).join('<br>')
+        + (ccmqPts.length?`<br><button class="btn" style="font-size:10px;padding:3px 9px;margin-top:4px" onclick="addPeriopPoints('ccmq',this)">➕ Compléments CCMQ (${ccmqPts.map(fr).join(', ')})</button>`:'')
+        : '<span style="color:var(--slate)">Pas de CCMQ calculé pour ce patient (onglet CCMQ) : protocole générique seul.</span>'}
+    </div>
+    <div style="font-size:10px;color:var(--slate);font-style:italic;margin-top:6px">Outil de travail du mémoire, non opposable ; adapter le choix des points à l'examen clinique du patient.</div>`;
+}
+function addPeriopPoints(type, btn){
+  const L=_periopLast; if(!L.key) return;
+  if(type==='auri') L.auri.forEach(n=>addLibrePointDirect('Oreille', n+' — péri-op. ⚕ '+L.label, null));
+  else (type==='acu'?L.acu:L.ccmq).forEach(c=>addLibrePointDirect(MTCNorm.ptFR(c), MTCNorm.ptFR(c)+' — péri-op. ⚕ '+L.label+(type==='ccmq'?' (complément CCMQ)':''), null));
+  if(btn){ btn.disabled=true; btn.textContent='✓ Ajoutés'; }
+}
+
 const URGENCE_PERIOP_BASE = {
   acu:[
     {c:'PC6',n:'Neiguan',a:'6MC — Prévention/traitement des nausées post-opératoires, anxiolyse'},
@@ -11329,9 +11766,17 @@ function _doSearchUrgence(){
   }
   _urgLastProto = protoKey ? URGENCE_AURI_PROTOCOLES[protoKey].points.map(n=>({p:_auriByName(n), sources:[URGENCE_AURI_PROTOCOLES[protoKey].label]})).filter(e=>e.p) : [];
 
+  // Indication péri-opératoire : choisie dans la liste, ou reconnue dans le motif
+  let periopKey=(document.getElementById('urg-periop')||{}).value||'';
+  if(!periopKey && motifN){
+    const mt=MTCNorm.tokens(motif);
+    periopKey=(PERIOP_INDICATIONS.find(I=>I.keywords.some(kw=>MTCNorm.phraseIn(mt, kw)))||{}).id||'';
+  }
+
   _urgLastAcu=acuList; _urgLastAuri=auriList;
   renderUrgenceResults(acuList, auriList, matchedRecipes, surgLabel);
   renderUrgenceProtocole(protoKey);
+  renderUrgencePeriop(periopKey);
 }
 
 let _urgLastProto=[];
@@ -11425,6 +11870,8 @@ function resetUrgence(){
   const m=document.getElementById('urg-motif'); if(m) m.value='';
   const c=document.getElementById('urg-chirurgie'); if(c) c.value='';
   const pr=document.getElementById('urg-proto'); if(pr) pr.value='';
+  const po=document.getElementById('urg-periop'); if(po) po.value='';
+  renderUrgencePeriop('');
   _urgLastAcu=[]; _urgLastAuri=[]; _urgLastProto=[];
   renderUrgenceProtocole('');
   const empty=document.getElementById('urg-empty'); if(empty) empty.style.display='';
@@ -11524,6 +11971,20 @@ function _flushUrgPending(navigateBack){
     <div style="margin-top:20px;padding-top:16px;border-top:1px solid #f0f0f0;font-size:10px;color:#bbb">
       Chaque praticien dispose d'un code personnel · Données stockées localement
     </div>
+  </div>
+</div>
+<!-- Schémas d'examen agrandis (langue, pouls, Shu/Mu) : copie du schéma de la page, actualisée à chaque clic -->
+<div id="sch-zoom" onclick="if(event.target===this)closeSchemaZoom()">
+  <div class="ez-box" role="dialog" aria-label="Schéma agrandi">
+    <div class="ez-bar">
+      <strong id="sz-title" style="font-size:13px;color:var(--jade);flex:1">Schéma</strong>
+      <button class="btn" onclick="schemaZoomBy(1.25)" title="Zoomer">＋</button>
+      <button class="btn" onclick="schemaZoomBy(0.8)" title="Dézoomer">－</button>
+      <button class="btn" onclick="schemaZoomBy(0)" title="Taille de la fenêtre">⤢</button>
+      <button class="btn" onclick="closeSchemaZoom()" title="Fermer (Échap)">✕</button>
+    </div>
+    <div class="sz-stage" id="sz-stage"><div id="sz-inner"></div></div>
+    <div class="ez-hint">Les clics fonctionnent comme sur la page (zones de la langue, positions du pouls, points Shu / Mu) · Échap pour fermer.</div>
   </div>
 </div>
 <!-- Schéma auriculaire agrandi : construit à l'ouverture (copie du schéma ②), points synchronisés -->
