@@ -468,7 +468,7 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
             <div style="margin:2px 0 0 14px">4. Cliquez <strong>Calculer les résultats →</strong> pour obtenir l'interprétation constitutionnelle.</div>
             <div style="margin:2px 0 0 14px;color:var(--slate)">Seuils de la norme CACM 2009 : constitution non équilibrée <em>présente</em> ≥ 40, <em>tendance</em> 30-39 ; constitution <em>Équilibrée</em> retenue seulement si ≥ 60 <u>et</u> toutes les autres &lt; 30 (« plutôt présente » si toutes &lt; 40). Une constitution présente compte pour +3 dans l'analyse des syndromes, une tendance pour +1.</div>
           </div>
-          <div style="margin-top:4px"><strong style="color:var(--jade)">📍 Points</strong> — en tête de page, le panneau <strong>Convergence des points</strong> regroupe tout ce que proposent le syndrome, l'analyse méridienne, le motif (EBM, Mode Urgence, péri-opératoire), le protocole gynécologique et la palpation Shu/Mu, classé par nombre de sources concordantes ; un clic ajoute le socle de séance (6 à 12 points, réglable) et les points d'oreille les plus convergents. Puis syndromes retenus, prescription de points (syndrome MTC, EBM, Référentiel Sorbonne Paris Nord, libres, auriculothérapie). Ajoutez un point libre en tapant son <strong>code puis Entrée</strong> — le curseur reste actif pour enchaîner plusieurs points sans reprendre la souris. Une fois vos points cochés sur les différents axes, cliquez <strong>✅ Valider et aller vers Synthèse →</strong> pour tout rassembler automatiquement (points, principe de traitement, technique, syndrome retenu) dans le compte-rendu.</div>
+          <div style="margin-top:4px"><strong style="color:var(--jade)">📍 Points</strong> — en tête de page, le panneau <strong>Convergence des points</strong> regroupe tout ce que proposent le syndrome, l'analyse méridienne, le motif (EBM, Mode Urgence, péri-opératoire), le protocole gynécologique et la palpation Shu/Mu, classé par nombre de sources concordantes ; il s'affiche dès que le motif est saisi ; un clic ajoute le socle de séance (6 à 12 points, réglable) et les points d'oreille les plus convergents. Puis syndromes retenus, prescription de points (syndrome MTC, EBM, Référentiel Sorbonne Paris Nord, libres, auriculothérapie). Ajoutez un point libre en tapant son <strong>code puis Entrée</strong> — le curseur reste actif pour enchaîner plusieurs points sans reprendre la souris. Une fois vos points cochés sur les différents axes, cliquez <strong>✅ Valider et aller vers Synthèse →</strong> pour tout rassembler automatiquement (points, principe de traitement, technique, syndrome retenu) dans le compte-rendu.</div>
           <div style="margin-top:4px"><strong style="color:var(--jade)">✨ Synthèse</strong> — compte-rendu de séance, principe de traitement, conseils, prochain rendez-vous. Si vous arrivez ici sans passer par « Valider vers Synthèse », les champs encore vides se remplissent automatiquement depuis ce qui est coché/rempli dans Points. L'outil IA « Analyse à partir du motif » y extrait aussi automatiquement les points cités dans la réponse de l'IA pour les cocher en un clic dans « Points réalisés ».</div>
           <div><strong style="color:var(--jade)">📅 Séances</strong> — historique, séances « 🕐 en préparation » (brouillon) vs « ✅ réalisées », suppression possible.</div>
           <div style="margin-top:4px"><strong style="color:var(--jade)">📚 Référentiel MTC</strong> — catalogue de référence et outil d'apprentissage : transcription des tableaux et associations de points du cours « Règles thérapeutiques » de Sorbonne Paris Nord (principes thérapeutiques, Shu antiques, points Yuan/Luo/Xi/Hui/Mu/Bei Shu, Xia-He, méthodes traditionnelles, localisation de la douleur, indications empiriques, associations de points, table des synonymes). Il <strong>documente</strong> les points mais n'en propose pas automatiquement : on y a recours <strong>en cas d'échec</strong> ou pour affiner un traitement qui traîne, après la méthode des méridiens et des Zang-Fu. Utilisation : tapez un <strong>point</strong> (E36, ST36, RP6, VB 34… toutes notations acceptées) pour voir toutes ses mentions, ou un <strong>symptôme</strong> (insomnie, dysménorrhée…) pour retrouver les tableaux concernés ; cliquez sur n'importe quel code de point pour afficher son index complet. Le menu déroulant permet de se limiter à un chapitre. Dans la fiche d'un méridien, les schémas des Shu antiques sont cliquables pour cocher les points dans « Points réalisés ».</div>
@@ -520,20 +520,11 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
 
       <div class="card">
         <div class="ct">Journal des évolutions</div>
-        <div style="font-size:11px;color:var(--slate);font-style:italic;margin-bottom:8px">Cette liste s'enrichit à chaque amélioration de l'application — vous pouvez vérifier ici ce qui a changé depuis votre dernière utilisation. Remise à zéro le 28 sept. 2026, avant la diffusion de l'application aux bêta-testeurs (certains réglages sont encore en cours de finalisation).</div>
+        <div style="font-size:11px;color:var(--slate);font-style:italic;margin-bottom:8px">Cette liste s'enrichit à chaque amélioration de l'application — vous pouvez vérifier ici ce qui a changé depuis votre dernière utilisation. Remise à zéro le 1er octobre 2026, au lancement de la bêta.</div>
         <div id="guide-changelog" style="font-size:12px;color:var(--ink);line-height:1.8">
           <div style="font-size:12px;line-height:1.65">
-            <div style="font-weight:700;color:var(--jade);margin-bottom:4px">1er octobre 2026</div>
-            <div>• <strong>Convergence des points</strong> (onglet 📍 Points) : un seul tableau réunit les points de toutes les sources, en notation unifiée, classés par occurrences ; socle de séance réglable ajouté en un clic, sans doublon — pour limiter le nombre d'aiguilles.</div>
-            <div>• <strong>Schémas interactifs</strong> dans l'Examen : langue (+ veines sublinguales), pouls (6 positions), points Shu / Mu et Huatuo, carte de la douleur ; bouton 🔍 Agrandir pour chacun.</div>
-            <div>• <strong>Oreille</strong> : 13 points ajoutés sur la face antérieure (hypotension, front, tempe, Feng Xi, cortex cingulaire, Oméga 2, hypothalamus, amygdale, hippocampe, cortex préfrontal, nerf trijumeau, interféron, nerf vague), <strong>face postérieure</strong> (11 points), fenêtre agrandie avec zoom et recherche.</div>
-            <div>• <strong>Mode Urgence</strong> : 15 indications péri-opératoires (tableau de synthèse du mémoire) avec compléments selon la constitution CCMQ ; protocoles Battlefield Acupuncture et CHENG.</div>
-            <div>• <strong>Analyse</strong> : 31 syndromes (12 nouveaux, d'après les Synthèses 1 et 2 du cours de Sorbonne Paris Nord) ; Vide de Yang exige un signe de froid, Vide de Yin un signe de chaleur-vide ; signes contraires pénalisés ; Shu / Mu concordants pris en compte ; Ba Gang enrichi (soif, préférences, sueurs, crainte du vent…) ; analyse méridienne plus précise (céphalée frontale, temporale, du vertex ; palpitations ; acouphènes ; carte de la douleur).</div>
-            <div>• <strong>Auriculothérapie</strong> : 50 motifs (protocoles de « L'auriculothérapie simplifiée »), jeux de points pour tous les syndromes.</div>
-            <div>• <strong>Langue</strong> : nouveaux signes (partiellement gonflée, longue, ulcérations, taches et bords violacés, enduit sans racine, collant, veines sublinguales).</div>
-            <div>• <strong>Pouls</strong> : libellés corrigés « Noué — Jie », « Intermittent — Dai », nouveau « Précipité — Cu » (séances anciennes converties automatiquement).</div>
-            <div>• <strong>CCMQ</strong> : import du code patient à 60 chiffres réparé ; verdict de la constitution Équilibrée conforme à la norme CACM 2009.</div>
-            <div>• <strong>Corrections</strong> : sélections perdues à la réouverture d'une séance pour 12 étiquettes (Fin — Xi, Mou — Ru, Racine épaisse, points Mu) ; questionnaire patient sans destinataire imposé ; notation abrégée « RM6, 12 » comprise.</div>
+            <div style="font-weight:700;color:var(--jade);margin-bottom:4px">1er octobre 2026 — version de départ de la bêta</div>
+            <div>Point de départ du test. Les modifications faites à partir de vos retours seront listées ici, datées.</div>
           </div>
         </div>
       </div>
@@ -2319,7 +2310,7 @@ const DIX_Q=[
   {id:'q5',n:5,lbl:'Appétit & Goût',zh:'飲食',alt:false,
    hint:'appétit, goût en bouche (diagnostique clé), soif, préférences thermiques, nausées',
    itp:'Peu d\'appétit → Rate xu | Appétit excessif/faim rapide → Feu Estomac | Goût amer → Feu Cœur/VB (pathognomonique) | Goût acide → Chaleur Foie | Goût sucré → Humidité Rate | Goût salé → Rein | Bouche fade → Rate xu | Soif sans envie boire → Humidité | Soif boissons chaudes → Froid interne',
-   tags:['Peu d\'appétit','Appétit excessif','Faim rapide après repas','Pas de soif','Soif intense boissons froides','Soif intense boissons chaudes','Soif sans envie de boire','Bouche sèche sans soif','Préfère chaud','Préfère froid','Goût amer','Goût acide','Goût sucré persistant','Goût salé','Bouche fade','Nausées','Renvois acides','Régurgitations','Hoquets']},
+   tags:['Peu d\'appétit','Appétit excessif','Faim rapide après repas','Soif intense boissons chaudes','Soif sans envie de boire','Préfère chaud','Préfère froid','Goût amer','Goût acide','Goût sucré persistant','Goût salé','Bouche fade','Nausées','Renvois acides','Régurgitations','Hoquets']},
   {id:'q6',n:6,lbl:'Poitrine & Abdomen',zh:'胸腹',alt:false,
    hint:'oppression, palpitations, douleurs (localisation, type, horaire), rapport aux repas',
    itp:'Flancs → Foie/VB, Stase Qi | Épigastre → Estomac/Rate | Hypogastre → Rein/Utérus/VessIe | Douleur fixe → Stase Sang | Mobile → Stase Qi | Amélioré chaleur → Froid | Amélioré pression → Vide',
@@ -3481,7 +3472,10 @@ function newSeance(){
   } else {
     sc.syn.motif=curPt.motif||'';
   }
-  // Réinitialiser complètement l'onglet Points avant de charger la nouvelle séance
+  // Vider tout l'examen de la séance affichée (sauf réponses CCMQ, conservées 3 mois) puis l'onglet Points :
+  // avant le 1er oct. 2026, langue, pouls, palpation et douleur de la séance précédente restaient affichés
+  // et étaient enregistrés dans la nouvelle séance.
+  clearForms(); loadFiche();
   resetPoints();
   loadSeance(sc);navTo('dix');isDirty=false;showToast('Nouvelle séance — tous les champs réinitialisés');
 }
@@ -3514,9 +3508,17 @@ function migrerPoulsLibelles(ex){
   });
   return ex;
 }
+// Étiquettes de soif retirées de Q5 le 01/10/2026 (doublons de Q8 « Soif & Bouche ») : déplacées à l'ouverture.
+const Q5_VERS_Q8 = ['Pas de soif','Soif intense boissons froides','Bouche sèche sans soif'];
+function migrerSoifQ5(q){
+  if(!q || !Array.isArray(q.q5_t)) return;
+  const dep = q.q5_t.filter(t => Q5_VERS_Q8.includes(t)); if(!dep.length) return;
+  q.q5_t = q.q5_t.filter(t => !Q5_VERS_Q8.includes(t));
+  q.q8_t = [...new Set([...(q.q8_t||[]), ...dep])];
+}
 function loadSeance(sc){
   if(!sc)return;
-  migrerPoulsLibelles(sc.ex);
+  migrerPoulsLibelles(sc.ex); migrerSoifQ5(sc.q);
   const s=(id,v)=>{const e=document.getElementById(id);if(e&&v!=null)e.value=v;};
   DIX_Q.forEach(q=>{
     const rep=sc.q[q.id]||'',tags=sc.q[q.id+'_t']||[];
@@ -3565,9 +3567,9 @@ function loadSeance(sc){
     'pq-force':ex.pqForce, 'pq-forme':ex.pqForme,
   };
   Object.entries(INSP_MAP).forEach(([fid, val]) => {
-    if(!val) return;
     const inp = document.getElementById(fid);
     if(!inp) return;
+    val = val || '';   // champ vide dans la séance chargée : on l'efface (rien ne doit rester d'une autre séance)
     inp.value = val;
     const vals = val.split(',').map(v=>v.trim());
     // Chercher le <div class="tr"> précédent (peut ne pas être l'élément directement précédent)
@@ -4257,20 +4259,25 @@ function addLibrePoint(){
   showToast('Point ajouté : '+label);
 }
 
+// Points cochés de toutes les sections, groupés — source unique pour le panneau latéral, l'onglet
+// Points réalisés et le champ Points de la Synthèse (avant le 1er oct. 2026, ces deux derniers ignoraient
+// les points libres : convergence, Mode Urgence, méridiens, saisie libre ; et les points gynéco).
+function _pointsCoches(){
+  const note = cb => { const row = cb.closest('.pt-row,.auri-row'); const n = row ? row.querySelector('.pt-note') : null; return n && n.value ? ' ('+n.value+')' : ''; };
+  const nomSi = cb => (cb.dataset.nom && cb.dataset.nom!==cb.dataset.code ? ' '+cb.dataset.nom : '');
+  const L = sel => [...document.querySelectorAll(sel)];
+  return {
+    synd: L('.pt-chk:checked:not(.ebm-chk):not(.auri-chk):not(.gyno-chk):not(.libre-chk):not(.merid-chk)').map(cb => cb.dataset.code+nomSi(cb)+note(cb)),
+    ebm:  L('.ebm-chk:checked').map(cb => cb.dataset.code+nomSi(cb)+note(cb)),
+    gyno: L('.gyno-chk:checked').map(cb => cb.dataset.code+(cb.dataset.nom&&cb.dataset.nom!==cb.dataset.code?' — '+cb.dataset.nom:'')),
+    libre: L('.libre-chk:checked').map(cb => _libreLabel(cb).replace(/^\[\+\] /,'')),
+    auri: L('.auri-chk:checked').map(cb => cb.dataset.code+note(cb))
+  };
+}
 function syncRealises(){
-  // Collecter tous les points cochés : syndrome + EBM + auriculothérapie
-  const syndChk=document.querySelectorAll('.pt-chk:checked:not(.ebm-chk):not(.auri-chk):not(.gyno-chk):not(.libre-chk):not(.merid-chk)');
-  const ebmChk=document.querySelectorAll('.ebm-chk:checked');
-  const auriChk=document.querySelectorAll('.auri-chk:checked');
-  const gynoChk=document.querySelectorAll('.gyno-chk:checked');
-  const libreChk=document.querySelectorAll('.libre-chk:checked');
-
-  const syndList=[],ebmList=[],auriList=[],gynoList=[],libreList=[];
-  syndChk.forEach(cb=>{const row=cb.closest('.pt-row');const n=row?row.querySelector('.pt-note'):null;syndList.push(cb.dataset.code+' '+cb.dataset.nom+(n&&n.value?' ('+n.value+')':''));});
-  ebmChk.forEach(cb=>{const row=cb.closest('.pt-row');const n=row?row.querySelector('.pt-note'):null;ebmList.push('[EBM] '+cb.dataset.code+' '+cb.dataset.nom+(n&&n.value?' ('+n.value+')':''));});
-  gynoChk.forEach(cb=>{ gynoList.push('[Gynéco] '+cb.dataset.code+(cb.dataset.nom&&cb.dataset.nom!==cb.dataset.code?' — '+cb.dataset.nom:'')); });
-  libreChk.forEach(cb=>{ libreList.push(_libreLabel(cb)); });
-  auriChk.forEach(cb=>{const n=cb.closest('.auri-row').querySelector('.pt-note');auriList.push('[Auri] '+cb.dataset.code+(n&&n.value?' ('+n.value+')':''));});
+  const P = _pointsCoches();
+  const syndList=P.synd, ebmList=P.ebm.map(x=>'[EBM] '+x), gynoList=P.gyno.map(x=>'[Gynéco] '+x),
+    libreList=P.libre.map(x=>'[+] '+x), auriList=P.auri.map(x=>'[Auri] '+x);
 
   const allList=[...syndList,...ebmList,...gynoList,...libreList,...auriList];
 
@@ -4291,24 +4298,18 @@ function syncRealises(){
   syncPts();
 }
 function syncPts(){
-  // Syndrome
-  const syndChk=document.querySelectorAll('.pt-chk:checked:not(.ebm-chk):not(.auri-chk):not(.gyno-chk):not(.libre-chk):not(.merid-chk)');
-  const syndList=[];
-  syndChk.forEach(cb=>{const row=cb.closest('.pt-row');const n=row?row.querySelector('.pt-note'):null;syndList.push(cb.dataset.code+' '+cb.dataset.nom+(n&&n.value?' ('+n.value+')':''));});
-  // EBM
-  const ebmChk=document.querySelectorAll('.ebm-chk:checked');
-  const ebmList=[];
-  ebmChk.forEach(cb=>{const n=cb.closest('.pt-row').querySelector('.pt-note');ebmList.push(cb.dataset.code+' '+cb.dataset.nom+(n&&n.value?' ('+n.value+')':''));});
-  // Auriculothérapie
-  const auriChk=document.querySelectorAll('.auri-chk:checked');
-  const auriList=[];
-  auriChk.forEach(cb=>{const n=cb.closest('.auri-row').querySelector('.pt-note');auriList.push('Auri:'+cb.dataset.code+(n&&n.value?' ('+n.value+')':''));});
+  const P = _pointsCoches();
+  const syndList=P.synd, ebmList=P.ebm, auriList=P.auri.map(x=>'Auri:'+x);
+  // Compte-rendu : sans la justification interne « — convergence (sources) »
+  const libreList=P.libre.map(x=>x.replace(/ — convergence \(.*\)$/,''));
   const nl=(document.getElementById('pts-nl')||{}).value||'';
   const auriN=(document.getElementById('auri-notes')||{}).value||'';
 
   let parts=[];
   if(syndList.length) parts.push('Syndrome: '+syndList.join(' — '));
   if(ebmList.length) parts.push('EBM: '+ebmList.join(' — '));
+  if(P.gyno.length) parts.push('Gynéco: '+P.gyno.join(' — '));
+  if(libreList.length) parts.push('Points: '+libreList.join(' — '));
   if(nl) parts.push(nl);
   if(auriList.length) parts.push('[Auri] '+auriList.join(' · ')+(auriN?' — '+auriN:''));
 
@@ -4755,7 +4756,7 @@ function calcBaGang(){
   if(_valMatch(['Lent — Chi'], ex.pqFreq)) scores.froid += 2;
   if(_tagMatch(['Lent — Chi'], posVals)) scores.froid += 1;
   // Synthèse 1 — Froid : absence de soif, préférence pour le chaud, amélioré par la chaleur, sueurs froides.
-  if(q5t.includes('Pas de soif')||q8t.includes('Pas de soif')) scores.froid += 1;
+  if(q8t.includes('Pas de soif')) scores.froid += 1;
   if(q5t.includes('Préfère chaud')||q5t.includes('Soif intense boissons chaudes')||q8t.includes('Soif boissons chaudes')) scores.froid += 1;
   if(q6t.includes('Amélioré par chaleur')) scores.froid += 1;
   if(q2t.includes('Sueurs froides')) scores.froid += 1;
@@ -4774,7 +4775,7 @@ function calcBaGang(){
   if(_tagMatch(['Longue','Partiellement gonflée'], (ex.lForme||'').split(',').map(v=>v.trim()))) scores.chaleur += 1;
   // Synthèse 1 — Chaleur : soif de boissons fraîches, préférence pour le frais, aggravé par la chaleur,
   // selles dures et sèches.
-  if(q5t.includes('Soif intense boissons froides')||q8t.includes('Soif intense boissons froides')) scores.chaleur += 1;
+  if(q8t.includes('Soif intense boissons froides')) scores.chaleur += 1;
   if(q5t.includes('Préfère froid')) scores.chaleur += 1;
   if(q1t.includes('Aggravé par la chaleur')) scores.chaleur += 1;
   if(q4t.includes('Selles sèches dures')) scores.chaleur += 1;
@@ -5307,24 +5308,13 @@ function updateRealisesPage(){
   const syn = getSyndrome()||'—';
   const sv = document.getElementById('realises-synd-val');
   if(sv) sv.textContent = syn;
-  // Points cochés
+  // Points cochés (toutes sections)
   const listEl = document.getElementById('realises-list-full');
-  const syndChk = document.querySelectorAll('.pt-chk:checked:not(.ebm-chk):not(.auri-chk)');
-  const ebmChk = document.querySelectorAll('.ebm-chk:checked');
-  const auriChk = document.querySelectorAll('.auri-chk:checked');
-  let html = '';
-  if(syndChk.length){
-    html += '<div style="font-size:10px;font-weight:700;color:var(--jade);text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px">Syndrome MTC</div>';
-    syndChk.forEach(cb=>{html+=`<div style="font-size:12px;padding:1px 0">${cb.dataset.code} ${cb.dataset.nom}</div>`;});
-  }
-  if(ebmChk.length){
-    html += '<div style="font-size:10px;font-weight:700;color:#1A5276;text-transform:uppercase;letter-spacing:.4px;margin:5px 0 3px">EBM</div>';
-    ebmChk.forEach(cb=>{html+=`<div style="font-size:12px;padding:1px 0">${cb.dataset.code} ${cb.dataset.nom}</div>`;});
-  }
-  if(auriChk.length){
-    html += '<div style="font-size:10px;font-weight:700;color:#8B3A3A;text-transform:uppercase;letter-spacing:.4px;margin:5px 0 3px">Auriculothérapie</div>';
-    auriChk.forEach(cb=>{html+=`<div style="font-size:12px;padding:1px 0">${cb.dataset.code}</div>`;});
-  }
+  const P = _pointsCoches();
+  const grp = (titre, col, l) => l.length ? `<div style="font-size:10px;font-weight:700;color:${col};text-transform:uppercase;letter-spacing:.4px;margin:5px 0 3px">${titre}</div>`
+    + l.map(x=>`<div style="font-size:12px;padding:1px 0">${x}</div>`).join('') : '';
+  let html = grp('Syndrome MTC','var(--jade)',P.synd) + grp('EBM','#1A5276',P.ebm) + grp('Gynéco-Obstétrical','#117A65',P.gyno)
+    + grp('Points libres','#7D3C98',P.libre) + grp('Auriculothérapie','#8B3A3A',P.auri);
   if(!html) html = '<span style="color:var(--slate);font-style:italic;font-size:11px">Aucun point — cochez des points dans l\u2019onglet Points</span>';
   if(listEl) listEl.innerHTML = html;
   // Notes
@@ -5371,15 +5361,8 @@ function autoFillSynthese(){
 
   // Points cochés si s-points vide
   if(sPoints.value.trim()) return;
-  const all = [];
-  document.querySelectorAll('.pt-chk:checked:not(.auri-chk)').forEach(cb=>{
-    const code = cb.dataset.code||'';
-    const nom  = cb.dataset.nom||'';
-    if(code) all.push(code+(nom&&nom!==code?' '+nom:''));
-  });
-  document.querySelectorAll('.auri-chk:checked').forEach(cb=>{
-    all.push('[Aur] '+(cb.dataset.code||''));
-  });
+  const P = _pointsCoches();
+  const all = [...P.synd, ...P.ebm, ...P.gyno, ...P.libre.map(x=>x.replace(/ — convergence \(.*\)$/,'')), ...P.auri.map(x=>'[Aur] '+x)];
   if(all.length) sPoints.value = all.join(', ');
 }
 
@@ -5817,7 +5800,7 @@ const SIGNES_CHALEUR_VIDE = [
 ];
 const SIGNES_CHALEUR = [
   {tags:{q1:['Chaleur permanente','Aggravé par la chaleur'],q4:['Urines foncées','Brûlures urinaires','Selles sèches dures'],
-    q5:['Soif intense boissons froides','Préfère froid','Goût amer'],q7:['Yeux rouges'],q8:['Soif intense boissons froides','Lèvres rouges et sèches']}},
+    q5:['Préfère froid','Goût amer'],q7:['Yeux rouges'],q8:['Soif intense boissons froides','Lèvres rouges et sèches']}},
   {langue:['Rouge','Rouge foncé / Cramoisi']},
   {enduit:['Jaune mince','Jaune épais']},
   {pouls:['Rapide — Shu','Ample — Hong']},
@@ -5826,7 +5809,7 @@ const SIGNES_CHALEUR = [
 
 // Signes qui démentent une hypothèse (pénalité −3) : la nature d'un syndrome se lit au pouls et à la
 // langue (Synthèse 1, « vrai / faux »). langueG = couleur globale seulement (pas une pointe rouge).
-const CONTRE_FROID = [{langueG:['Rouge','Rouge foncé / Cramoisi']},{pouls:['Rapide — Shu']},{tags:{q5:['Soif intense boissons froides'],q8:['Soif intense boissons froides']}}];
+const CONTRE_FROID = [{langueG:['Rouge','Rouge foncé / Cramoisi']},{pouls:['Rapide — Shu']},{tags:{q8:['Soif intense boissons froides']}}];
 const CONTRE_CHALEUR = [{langueG:['Pâle']},{pouls:['Lent — Chi']}];
 const CONTRE_VIDE_YIN = [{pouls:['Plein — Shi','Ample — Hong']},{enduit:['Jaune épais','Blanc épais']}];
 const CONTRE_PLENITUDE_CHALEUR = [{enduit:['Absent (langue miroir)']},{enduitDist:['Pelé zone centrale','Pelé zone racine','Pelé géographique']}];
@@ -5882,7 +5865,7 @@ const SYND_RULES = {
     ccmq:['Humidité-Chaleur'],
     langue:{couleur:['Rouge'],enduitCouleur:['Jaune épais'],humidite:['Sec']},
     pouls:{global:['Rapide — Shu','Plein — Shi','Ample — Hong'],positions:{gD:['Rapide — Shu','Plein — Shi']}},
-    q10:{q6:['Brûlures épigastriques','Douleur épigastrique'],q5:['Appétit excessif','Faim rapide après repas','Renvois acides','Soif intense boissons froides'],q8:['Halitose','Saignements gingivaux','Aphtes récurrents'],q4:['Constipation','Selles sèches dures']},
+    q10:{q6:['Brûlures épigastriques','Douleur épigastrique'],q5:['Appétit excessif','Faim rapide après repas','Renvois acides'],q8:['Soif intense boissons froides','Halitose','Saignements gingivaux','Aphtes récurrents'],q4:['Constipation','Selles sèches dures']},
     douleur:{aggrave:['La pression']},
     axe:'branche',
     requisTous:[
@@ -5896,7 +5879,7 @@ const SYND_RULES = {
     ccmq:['Vide de Yin'],
     langue:{couleur:['Rouge','Fissure médiane'],enduitCouleur:['Absent (langue miroir)']},
     pouls:{global:['Fin — Xi','Rapide — Shu']},
-    q10:{q6:['Douleur épigastrique','Plénitude épigastrique'],q5:["Peu d'appétit",'Bouche sèche sans soif'],q8:['Bouche sèche nocturne','Gorge sèche'],q4:['Selles sèches dures','Constipation']},
+    q10:{q6:['Douleur épigastrique','Plénitude épigastrique'],q5:["Peu d'appétit"],q8:['Bouche sèche sans soif','Bouche sèche nocturne','Gorge sèche'],q4:['Selles sèches dures','Constipation']},
     douleur:{},
     axe:'racine',
     requisTous:[
@@ -6706,7 +6689,10 @@ function analyserMeridiens(){
     // Qualités thermiques et termes de région trop larges (1er oct. 2026) : « chaleur des 5 centres » faisait
     // remonter le Gros Intestin (« Chaleur centre poitrine »), « froid » + « membres inférieurs » le Dai Mai.
     // La localisation précise vient désormais de la carte de la douleur (zones → méridiens).
-    'chaleur','froid','centre','membre','inferieur','superieur','faiblesse']);
+    'chaleur','froid','centre','membre','inferieur','superieur','faiblesse',
+    // (1er oct. 2026) « Préfère chaud » (signe de Froid) faisait remonter le Poumon via « Paumes et poignets chauds »
+    // (signe de Chaleur) : les qualités thermiques ne désignent jamais un méridien, quelle que soit leur forme.
+    'chaud','chaude','froide','prefere','aggrave','aggravee','ameliore','amelioree']);
   // Normalisation commune MTCNorm (casse, accents, pluriels genoux→genou, lombaires→lombaire,
   // mots entiers, négation). Mots de 4 lettres et moins exclus (dos, cou, bras, pied… restent
   // trop ambigus seuls face aux fiches méridiens rédigées en phrases).
@@ -11980,6 +11966,8 @@ function computeConvergence(){
     pts.set(canon, e);
   };
   const mt = _convMotifTok(), ctx = {};
+  // Pas de motif de consultation : aucune proposition (le terrain CCMQ seul ne suffit pas à choisir des points)
+  if(!mt.length){ _conv = {n:_conv.n, body:[], auri:[], ctx:{synds:[], mer:[], sansMotif:true}}; return _conv; }
   // 1. Syndrome : celui retenu par le praticien, sinon meilleure Racine + meilleure Branche suggérées
   let synds = [];
   const choisi = (typeof getSyndrome==='function' ? getSyndrome() : '') || '';
@@ -11988,7 +11976,9 @@ function computeConvergence(){
   else {
     if(typeof suggestSyndromes==='function') suggestSyndromes();
     const L = window._lastSynd || [];
-    synds = [L.find(s=>s.axe==='racine'), L.find(s=>s.axe==='branche')].filter(Boolean).map(s=>s.nom).filter(n=>PDB[n]);
+    // seuil « Probable » de l'appli (≥ 55 % du meilleur score) : un syndrome seulement « Possible » ne propose pas de points
+    const max = L.length ? L[0].sc : 0;
+    synds = [L.find(s=>s.axe==='racine'), L.find(s=>s.axe==='branche')].filter(s => s && s.sc >= .55*max).map(s=>s.nom).filter(n=>PDB[n]);
   }
   ctx.synds = synds; ctx.syndChoisi = !!(cle && PDB[cle]);
   synds.forEach(sn => { const d = PDB[sn];
@@ -12045,6 +12035,7 @@ function _convDejaRetenus(){
 }
 function renderConvergence(){
   const el = document.getElementById('conv-result'); if(!el) return;
+  const nSel = document.getElementById('conv-n'); if(nSel) nSel.value = String(_conv.n);
   const C = computeConvergence(), deja = _convDejaRetenus(), N = _conv.n;
   const badge = k => `<span style="font-size:9.5px;font-weight:700;color:#fff;background:${CONV_SOURCES[k].col};border-radius:8px;padding:1px 6px;margin:1px 3px 1px 0;display:inline-block;white-space:nowrap">${CONV_SOURCES[k].lbl}</span>`;
   const ctx = [];
@@ -12053,7 +12044,9 @@ function renderConvergence(){
   if(C.ctx.ebm) ctx.push('EBM : '+C.ctx.ebm);
   if(C.ctx.periop) ctx.push('Péri-op. : '+C.ctx.periop);
   if(!C.body.length){
-    el.innerHTML = '<p style="font-size:12px;color:var(--slate);font-style:italic">Aucune proposition encore : renseignez le motif, les 10+1 Questions et l\'examen (ou choisissez un syndrome), puis actualisez.</p>';
+    el.innerHTML = '<p style="font-size:12px;color:var(--slate);font-style:italic">'+(C.ctx.sansMotif
+      ? 'En attente du motif de consultation (bandeau des 10+1 Questions) : les points sont proposés à partir du motif, des signes recueillis et de l\'examen.'
+      : 'Aucune proposition encore : complétez les 10+1 Questions et l\'examen (ou choisissez un syndrome), puis actualisez.')+'</p>';
     return;
   }
   const conv = C.body.filter(p=>p.n>=2).length;
