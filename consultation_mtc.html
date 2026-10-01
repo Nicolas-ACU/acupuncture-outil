@@ -3240,10 +3240,7 @@ function validerVersSynthese(navigate=true){
   // Syndrome retenu
   const sSyndromes = document.getElementById('s-syndromes');
   if(sSyndromes && !sSyndromes.value){
-    const synd = (document.getElementById('synd-libre')||{}).value
-      || (document.getElementById('synd-sel')||{}).value
-      || (document.getElementById('gyno-motif')||{}).value
-      || (document.getElementById('ebm-sel')||{}).value || '';
+    const synd = _syndromePourSynthese();
     if(synd) sSyndromes.value = synd;
   }
 
@@ -3610,13 +3607,28 @@ function loadSeance(sc){
       showPoints(synd,sc.pts.realises||[]);
       showAuri(synd,sc.pts.auriRealises||[]);
     }
+    // Restaurer le protocole Sorbonne Paris Nord et ses points cochés (avant le 1er oct. 2026 : perdus à la réouverture)
+    const gyRe = (sc.pts.realises||[]).filter(r=>r.startsWith('[Gynéco] ')).map(r=>r.replace('[Gynéco] ','').split(' — ')[0].trim());
+    const GYs = sc.pts.gyno;
+    if(GYs && GYs.motif && typeof populateSpnSpecialties==='function'){
+      populateSpnSpecialties();
+      const ss=document.getElementById('spn-spec'); if(ss){ ss.value=GYs.spec||'gyneco'; onSpnSpecChange(); }
+      const sc2=document.getElementById('gyno-cat'); if(sc2){ sc2.value=GYs.cat; spnInitMotifs(); }
+      const sm=document.getElementById('gyno-motif'); if(sm) sm.value=GYs.motif;
+      spnShowProtocole();
+      const vus=new Set();
+      document.querySelectorAll('#gyno-result .gyno-chk').forEach(cb=>{ if(gyRe.includes(cb.dataset.code) && !vus.has(cb.dataset.code)){ cb.checked=true; vus.add(cb.dataset.code); } });
+    }
     // Restaurer les points libres depuis les réalisés sauvegardés
     if(sc.pts.realises && sc.pts.realises.length){
       const libreList = document.getElementById('pts-libres-list');
       if(libreList){
         libreList.innerHTML = '';
-        sc.pts.realises.filter(r=>r.startsWith('[+] ')).forEach(r=>{
-          const code = r.replace('[+] ','').split(' — ')[0];
+        const gyLibres = (!GYs || !GYs.motif) ? sc.pts.realises.filter(r=>r.startsWith('[Gynéco] ')).map(r=>'[+] '+r.replace('[Gynéco] ','')+' — Gynéco SPN') : [];
+        sc.pts.realises.filter(r=>r.startsWith('[+] ')).concat(gyLibres).forEach(r=>{
+          // code = le point en tête du libellé (« RM4 Guanyuan — convergence… » → RM4), sinon la partie avant « — »
+          const tete = r.replace('[+] ','').split(' — ')[0], mot1 = tete.split(' ')[0];
+          const code = /^([A-Z]{1,3}\d+|EX-[A-Z]+-?\d+)$/.test(MTCNorm.ptCode(mot1)) ? mot1 : tete;
           const nom  = r.replace('[+] ','');
           const div = document.createElement('div');
           div.style.cssText='display:flex;align-items:center;gap:8px;padding:3px 0;font-size:12px';
@@ -3633,7 +3645,9 @@ function loadSeance(sc){
   s('dix-prep-notes',syn.prepNotes);
   // Sync motif vers la bannière 10+1 Questions
   const motifInp=document.getElementById('dix-motif-input');
-  if(motifInp) motifInp.value=syn.motif||curPt?.motif||'';
+  // Pas de repli sur le motif initial de la fiche : newSeance le reprend pour la 1re séance seulement
+  // (avant le 1er oct. 2026, toute séance sans motif affichait celui de la fiche — règle : jamais de motif recopié).
+  if(motifInp) motifInp.value=syn.motif||'';
   updDixInfo();
 }
 function loadSeanceNoCalc(sc){
@@ -3647,6 +3661,7 @@ function loadSeanceNoCalc(sc){
 function _libreLabel(cb){
   const c=(cb.dataset.code||'').trim(), n=(cb.dataset.nom||'').trim();
   if(!n || n===c) return '[+] '+c;
+  if(c && n.startsWith(c)) return '[+] '+n;
   if(c && MTCNorm.findPoints(n).some(p=>p.canon===MTCNorm.ptCode(c))) return '[+] '+n;
   return '[+] '+(c ? c+' — ' : '')+n;
 }
@@ -3690,6 +3705,8 @@ function collectSc(){
   libreChk2.forEach(cb=>{ real.push(_libreLabel(cb)); });
   const auriReal = collectAuri();
   sc.pts={syndrome:getSyndrome(),syndLibre:g('synd-libre'),realises:real,auriRealises:auriReal,auriNotes:g('auri-notes'),notesLibres:g('pts-nl')};
+  // Protocole du Référentiel Sorbonne Paris Nord affiché (pour le réafficher et recocher ses points à la réouverture)
+  if(document.querySelector('#gyno-result .gyno-chk')) sc.pts.gyno={spec:g('spn-spec'),cat:g('gyno-cat'),motif:g('gyno-motif')};
   // Motif : priorité au champ de la bannière 10+1 Questions
   const motifVal=g('dix-motif-input')||g('s-motif');
   const sEl=document.getElementById('s-motif');if(sEl&&motifVal)sEl.value=motifVal;
@@ -3947,8 +3964,9 @@ function updDixInfo(){
   const motifInp=document.getElementById('dix-motif-input');
   if(motifInp){
     const motif=sc?.syn?.motif||'';
-    // Pour la 1ère séance sans motif, pré-remplir avec le motif patient
-    if(!motif && curPt?.motif && (!sc||!sc.syn?.motif)){
+    // Pour la 1ère séance sans motif (aucune autre séance dans le dossier), pré-remplir avec le motif patient
+    const premiere = !(curPt?.seances||[]).some(x => x !== sc);
+    if(!motif && curPt?.motif && premiere){
       motifInp.value=curPt.motif;
     } else {
       motifInp.value=motif;
@@ -4943,6 +4961,7 @@ function suggestCCMQ(){
 async function refineAI(){
   // Axe 3 : diagnostic syndromique complet par l'IA à partir de TOUT le dossier
   const key=getApiKey();if(!key){setApiKey();return;}
+  if(!_aiConsentement()) return;
   const p=curPt||{};
   const g=id=>(document.getElementById(id)||{}).value||'';
   const gQ=id=>{const tr=document.getElementById('tr-'+id);const tags=tr?Array.from(tr.querySelectorAll('.tg.on')).map(t=>t.textContent).join(', '):'';return[tags,g('rep-'+id)].filter(Boolean).join(' — ')||'nr';};
@@ -4992,7 +5011,7 @@ async function refineAI(){
   const prompt=`Tu es expert en acupuncture MTC et diagnostic syndromique.
 Analyse ce tableau clinique complet et propose un DIAGNOSTIC SYNDROMIQUE précis.
 
-PATIENT : ${p.prenom||''} ${p.nom||''}, ${p.age||'?'} ans, ${p.sexe||''}
+PATIENT : ${p.age||'?'} ans, ${p.sexe||''}
 MOTIF : ${motif}
 ATCD : ${p.atcd||'aucun'}
 
@@ -5028,7 +5047,7 @@ Sois précis, cliniquement utilisable. Max 400 mots.`;
     const res=await fetch('https://api.anthropic.com/v1/messages',{
       method:'POST',
       headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
-      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:800,messages:[{role:'user',content:prompt}]})
+      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:800,messages:[{role:'user',content:_aiAnonymiser(prompt)}]})
     });
     if(!res.ok)throw new Error((await res.json()).error?.message||res.status);
     const data=await res.json();
@@ -5076,12 +5095,13 @@ function showAImodal(txt){
 // ══════ SYNTHÈSE IA ══════
 async function genSynthAI(){
   const key=getApiKey();if(!key){setApiKey();return;}
+  if(!_aiConsentement()) return;
   const p=curPt||{};const g=id=>(document.getElementById(id)||{}).value||'';
   const gQ=id=>{const rep=g('rep-'+id);const tr=document.getElementById('tr-'+id);const tags=tr?Array.from(tr.querySelectorAll('.tg.on')).map(t=>t.textContent).join(', '):'';return[tags,rep].filter(Boolean).join(' — ')||'nr';};
   setAiSt(ldH());
   const prompt=`Tu es expert en MTC. Synthèse clinique en 4 parties max 300 mots :
 1/ Tableau clinique · 2/ Syndromes retenus · 3/ Principes Zhi Ze · 4/ Points réalisés et justification
-PATIENT : ${p.prenom} ${p.nom}, ${p.age} ans, ${p.sexe} | MOTIF : ${g('s-motif')||p.motif}
+PATIENT : ${p.age||'?'} ans, ${p.sexe||''} | MOTIF : ${g('s-motif')||p.motif}
 ATCD : ${p.atcd||'aucun'}
 10Q : FC=${gQ('q1')} | Transp=${gQ('q2')} | Sommeil=${gQ('q9')} | Selles=${gQ('q4')} | Émotions=${gQ('q10')} | Gynéco=${gQ('q11')}
 LANGUE : couleur=${g('l-couleur')||'nr'} forme=${g('l-forme')||'nr'} enduit=${g('l-enduit-couleur')||'nr'} humidité=${g('l-humidite')||'nr'} ${g('l-obs')||''} | POULS : ${g('pq-freq')||''} ${g('pq-prof')||''} ${g('pq-force')||''} ${g('pq')||''} | Shen=${g('e-shen')||'nr'}
@@ -5089,7 +5109,7 @@ PALPATION : Shu=${g('palp-shu')||'nr'} | Mu=${g('palp-mu')||'nr'} | Huatuojiaji=
 CCMQ : ${(document.getElementById('ccmq-synth')||{}).textContent?.slice(0,200)||'nc'}
 POINTS RÉALISÉS : ${g('s-points')||'non saisi'}`;
   try{
-    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:600,messages:[{role:'user',content:prompt}]})});
+    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:600,messages:[{role:'user',content:_aiAnonymiser(prompt)}]})});
     const data=await res.json();const el=document.getElementById('s-cr');if(el)el.value=data.content[0].text.trim();
     setAiSt('<span style="color:var(--jade);font-size:11px">✅ Synthèse générée</span>');markDirty();showToast('Synthèse générée');setTimeout(()=>setAiSt(''),3000);
   }catch(e){setAiSt('<span style="color:var(--vermil);font-size:11px">❌ '+e.message+'</span>');}
@@ -5097,14 +5117,15 @@ POINTS RÉALISÉS : ${g('s-points')||'non saisi'}`;
 // ══════ AI TRANSCRIPT ══════
 async function analyzeAI(){
   const key=getApiKey();if(!key){setApiKey();return;}
+  if(!_aiConsentement()) return;
   const txt=(document.getElementById('tbox')||{}).textContent?.trim()||'';
   if(!txt||txt==='Saisissez ou collez du texte ici…'){showToast('Aucun texte');return;}
   const pg=document.querySelector('.ni.on')?.dataset?.pg||'';setAiSt(ldH());
   const prompt=pg==='dix'
     ?`Extrais les informations pour les 11 questions MTC. JSON valide uniquement.\nTRANSCRIPTION:"${txt}"\nFORMAT:{"q1":"","q2":"","q3":"","q4":"","q5":"","q6":"","q7":"","q8":"","q9":"","q10":"","q11":""}`
-    :`Extrais les infos patient. JSON valide uniquement.\nTRANSCRIPTION:"${txt}"\nFORMAT:{"nom":"","prenom":"","age":"","sexe":"","profession":"","tel":"","email":"","motif":"","antecedents":"","traitements":"","allergies":"","vie":""}`;
+    :`Extrais les infos cliniques. JSON valide uniquement.\nTRANSCRIPTION:"${txt}"\nFORMAT:{"age":"","sexe":"","profession":"","motif":"","antecedents":"","traitements":"","allergies":"","vie":""}`;
   try{
-    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:700,messages:[{role:'user',content:prompt}]})});
+    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:700,messages:[{role:'user',content:_aiAnonymiser(prompt)}]})});
     if(!res.ok)throw new Error((await res.json()).error?.message||res.status);
     const data=await res.json();const parsed=JSON.parse(data.content[0].text.trim().replace(/```json|```/g,'').trim());
     fillAI(parsed,pg==='dix');setAiSt('<span style="color:var(--jade);font-size:11px">✅ Rempli</span>');showToast('Champs remplis');setTimeout(()=>setAiSt(''),3000);
@@ -5332,11 +5353,7 @@ function autoFillSynthese(){
   if(!sPoints) return;
 
   // Syndromes retenus
-  const syndSel   = (document.getElementById('synd-sel')||{}).value||'';
-  const syndLibre = (document.getElementById('synd-libre')||{}).value||'';
-  const ebmSel    = (document.getElementById('ebm-sel')||{}).value||'';
-  const gynoMotif = (document.getElementById('gyno-motif')||{}).value||'';
-  const synd = syndLibre || syndSel || gynoMotif || ebmSel;
+  const synd = _syndromePourSynthese();
   if(sSyndromes && !sSyndromes.value && synd) sSyndromes.value = synd;
 
   // Principe de traitement depuis pts-principe si vide
@@ -5455,7 +5472,7 @@ function buildFullMotifPrompt(motifText){
 
 MOTIF (texte libre du praticien) : ${motifText}
 
-PATIENT : ${p.prenom||''} ${p.nom||''}, ${p.age||'?'} ans, ${p.sexe||''}
+PATIENT : ${p.age||'?'} ans, ${p.sexe||''}
 ATCD : ${p.atcd||'aucun'}
 
 CCMQ (constitution) : ${ccmq}
@@ -5491,7 +5508,7 @@ function copyMotifPromptForAI(){
   const ta = document.getElementById('ai-motif-question');
   const raw = ((ta||{}).value||'').trim();
   if(!raw){ showToast('Saisissez d\'abord le motif en texte libre'); return; }
-  const prompt = buildFullMotifPrompt(raw);
+  const prompt = _aiAnonymiser(buildFullMotifPrompt(raw));
   navigator.clipboard.writeText(prompt).then(()=>{
     showToast('Prompt copié — collez-le dans votre IA');
     const pasteBlock = document.getElementById('ai-motif-paste-block');
@@ -5525,6 +5542,7 @@ function applyPastedAIResponse(){
 async function askAIpoints(){
   const key = getApiKey();
   if(!key){ setApiKey(); return; }
+  if(!_aiConsentement()) return;
   const question = (document.getElementById('ai-motif-question')||{}).value||'';
   if(!question.trim()){ showToast('Saisissez une question'); return; }
 
@@ -5543,7 +5561,7 @@ Réponds en français. Propose des points d'acupuncture précis avec :
 - Technique (tonification/dispersion/neutre, moxa si indiqué)
 - Niveau de preuve si disponible
 Structure ta réponse clairement. Sois concis et cliniquement utilisable.
-Contexte patient : ${p.prenom||''} ${p.nom||''}, ${p.age||'?'} ans, ${p.sexe||''}.`;
+Contexte patient : ${p.age||'?'} ans, ${p.sexe||''}.`;
 
   try {
     const res = await fetch('https://api.anthropic.com/v1/messages', {
@@ -5551,8 +5569,8 @@ Contexte patient : ${p.prenom||''} ${p.nom||''}, ${p.age||'?'} ans, ${p.sexe||''
       headers: {'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
       body: JSON.stringify({
         model:'claude-sonnet-4-6', max_tokens:800,
-        system: system,
-        messages:[{role:'user', content:question}]
+        system: _aiAnonymiser(system),
+        messages:[{role:'user', content:_aiAnonymiser(question)}]
       })
     });
     if(!res.ok) throw new Error((await res.json()).error?.message||res.status);
@@ -6251,7 +6269,8 @@ function suggestSyndromes() {
   // Motif de consultation
   // Chaque source est tokenisée séparément (la virgule/le point entre deux sources coupe la portée
   // d'une négation) ; mots entiers + pluriels + négation (« aucune douleur abdominale » ne compte pas).
-  const motifTok=MTCNorm.tokens([g('dix-motif-input'),g('s-motif'),curPt?.motif||''].join(' . '));
+  // motif de CETTE séance uniquement (le motif initial de la fiche n'est repris que dans la 1re séance)
+  const motifTok=MTCNorm.tokens([g('dix-motif-input'),g('s-motif')].join(' . '));
   // NB : les clés doivent correspondre EXACTEMENT aux clés de SYND_RULES, sinon le bonus
   // "mot-clé du motif" ne s'applique jamais silencieusement pour ce syndrome.
   const MOTIF_KEYS={
@@ -11228,6 +11247,29 @@ function clearForms(){
   buildCCMQRes();
 }
 function fmtD(d){if(!d)return'';try{return new Date(d+'T00:00:00').toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'});}catch(e){return d;}}
+// ══════ CONFIDENTIALITÉ DES ENVOIS À L'IA (1er oct. 2026) ══════
+// Rien n'identifie le patient dans ce qui part vers un service d'IA : nom et prénom retirés des gabarits,
+// et tout le texte envoyé ou copié pour une IA (y compris notes libres et transcriptions collées) passe par
+// _aiAnonymiser. Première utilisation sur un navigateur : information et accord du praticien (_aiConsentement).
+function _aiConsentement(){
+  try{ if(localStorage.getItem('mtc_ai_ok')==='1') return true; }catch(e){}
+  const ok = confirm('Fonctions IA — confidentialité\n\nLes données cliniques de la séance (motif, signes, examen, âge, sexe) vont être envoyées au service d\'IA Anthropic (États-Unis) pour analyse. Le nom, le prénom, la date de naissance, le téléphone et l\'adresse e-mail du patient sont retirés avant l\'envoi ; évitez d\'écrire d\'autres éléments identifiants dans les notes libres.\n\nVous restez responsable de ce traitement : informez vos patients de l\'usage de cet outil.\n\nContinuer ? (ce message ne s\'affichera plus sur ce navigateur)');
+  if(ok){ try{ localStorage.setItem('mtc_ai_ok','1'); }catch(e){} }
+  return ok;
+}
+function _aiAnonymiser(txt){
+  let t = String(txt||'');
+  const p = (typeof curPt!=='undefined' && curPt) ? curPt : {};
+  t = t.replace(/[\w.+-]+@[\w-]+(\.[\w-]+)+/g, '[e-mail]');
+  t = t.replace(/(\+33[\s.]?|\b0)[1-9]([\s.-]?\d{2}){4}\b/g, '[téléphone]');
+  const esc = m => m.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const sansAccent = m => m.normalize('NFD').replace(/\p{M}/gu, '');
+  [p.nom, p.prenom].filter(Boolean).forEach(n => String(n).trim().split(/[\s-]+/).filter(m => m.length >= 2).flatMap(m => [m, sansAccent(m)]).forEach(m => {
+    t = t.replace(new RegExp('(^|[^\\p{L}])' + esc(m) + '(?![\\p{L}])', 'giu'), '$1[patient]');
+  }));
+  if(p.ddn){ const [y,mo,d] = String(p.ddn).split('-'); [p.ddn, d+'/'+mo+'/'+y, d+'/'+mo+'/'+String(y).slice(2)].forEach(f => { t = t.split(f).join('[date]'); }); }
+  return t;
+}
 function getApiKey(){return localStorage.getItem('mtc_api_key')||'';}
 function setApiKey(){const k=prompt('Clé API Anthropic (sk-ant-…):',getApiKey());if(k!==null){localStorage.setItem('mtc_api_key',k.trim());showToast('Clé enregistrée');}}
 function setAiSt(html){const el=document.getElementById('ai-st');if(el)el.innerHTML=html;}
@@ -11941,19 +11983,47 @@ let _conv = {n:8, body:[], auri:[], ctx:{}};
 
 function _convMotifTok(){
   const g=id=>((document.getElementById(id)||{}).value||'');
-  return MTCNorm.tokens([g('dix-motif-input'), g('s-motif'), (typeof curPt!=='undefined' && curPt ? curPt.motif||'' : '')].join(' . '));
+  return MTCNorm.tokens([g('dix-motif-input'), g('s-motif')].join(' . '));
 }
 // EBM : protocole choisi dans la liste, sinon reconnu dans le motif (segments du titre, synonymes compris)
 function _convEbmKey(mt){
   const sel=(document.getElementById('ebm-sel')||{}).value||'';
   if(sel && EBM_DB[sel]) return sel;
   if(!mt.length) return '';
-  // le titre dont le segment reconnu est le plus précis l'emporte (« lombalgie chronique » > « lumbago »)
+  return _convMeilleurTitre(Object.keys(EBM_DB), mt);
+}
+// Titre de protocole reconnu dans le motif : chaque segment du titre (séparé par / ( ) ,) est cherché
+// en entier, puis sans ses qualificatifs (« Dysménorrhée primaire » est reconnu par « dysménorrhée »).
+// Le segment reconnu le plus précis l'emporte (« lombalgie chronique » > « lumbago »).
+const CONV_QUALIF = new Set(['primaire','chronique','aigue','legere','soutien','effet','secondaire','reeducation','fonctionnelle','fonctionnel','simple']);
+function _convMeilleurTitre(titres, mt){
   let best = '', bestN = 0;
-  Object.keys(EBM_DB).forEach(k => k.split(/\s*[\/(),]\s*/).map(x=>x.trim()).filter(x=>x.length>3).forEach(seg => {
+  titres.forEach(k => k.split(/\s*[\/(),]\s*/).map(x=>x.trim()).filter(x=>x.length>3).forEach(seg => {
     const n = MTCNorm.tokens(seg).length;
-    if(n > bestN && MTCNorm.phraseIn(mt, seg)){ best = k; bestN = n; } }));
+    if(n > bestN && MTCNorm.phraseIn(mt, seg)){ best = k; bestN = n; return; }
+    // variantes : sans qualificatif ; « A et B de C » → « A de C » / « B de C »
+    const court = seg.split(/\s+/).filter(m => !MTCNorm.tokens(m).every(t => CONV_QUALIF.has(t.w))).join(' ');
+    const et = seg.match(/^(.*?)(\S+) et (\S+)(.*)$/);
+    [court, ...(et ? [et[1]+et[2]+et[4], et[1]+et[3]+et[4]] : [])].forEach(v => {
+      const nc = MTCNorm.tokens(v).length - .5;
+      if(v && v !== seg && nc > 0 && nc > bestN && MTCNorm.phraseIn(mt, v)){ best = k; bestN = nc; }
+    });
+  }));
   return best;
+}
+// Référentiel Sorbonne Paris Nord (gynéco-obstétrique, patiente) : motif reconnu → points de base du domaine
+// et du motif, et points communs à tous ses tableaux syndromiques. Utilisé quand aucun protocole n'est affiché.
+function _convGyno(mt, impose){
+  const sexe = curPt ? (curPt.sexe||'') : ((document.getElementById('p-sexe')||{}).value||'');
+  if(typeof GYNO_DB === 'undefined' || (!impose && (sexe !== 'Féminin' || !mt.length))) return null;
+  const titres = []; Object.entries(GYNO_DB).forEach(([c,v]) => Object.keys(v.motifs||{}).forEach(k => titres.push(c+'\u0001'+k)));
+  const hit = impose && titres.some(t=>t.split('\u0001')[1]===impose) ? impose : _convMeilleurTitre(titres.map(t=>t.split('\u0001')[1]), mt);
+  if(!hit) return null;
+  const cat = titres.find(t=>t.split('\u0001')[1]===hit).split('\u0001')[0], C = GYNO_DB[cat], M = C.motifs[hit];
+  const pts = [...(C.pointsBase||[]), ...(C.pointSystematique?[C.pointSystematique]:[]), ...(M.pointsSystematiques||[]), ...(M.pointsBase||[])];
+  const S = (M.syndromes||[]).map(x => (x.pp||[]).map(c => MTCNorm.ptCode(String(c).split(' ')[0])));
+  if(S.length >= 2) S[0].forEach(c => { if(S.every(l => l.includes(c))) pts.push(c); });
+  return {titre:hit, cat, pts};
 }
 function computeConvergence(){
   const pts = new Map(), names = {};
@@ -11974,11 +12044,7 @@ function computeConvergence(){
   const cle = choisi && typeof findPDBKey==='function' ? (findPDBKey(choisi) || choisi) : '';
   if(cle && PDB[cle]) synds = [cle];
   else {
-    if(typeof suggestSyndromes==='function') suggestSyndromes();
-    const L = window._lastSynd || [];
-    // seuil « Probable » de l'appli (≥ 55 % du meilleur score) : un syndrome seulement « Possible » ne propose pas de points
-    const max = L.length ? L[0].sc : 0;
-    synds = [L.find(s=>s.axe==='racine'), L.find(s=>s.axe==='branche')].filter(s => s && s.sc >= .55*max).map(s=>s.nom).filter(n=>PDB[n]);
+    synds = _syndSuggeres().filter(n=>PDB[n]);
   }
   ctx.synds = synds; ctx.syndChoisi = !!(cle && PDB[cle]);
   synds.forEach(sn => { const d = PDB[sn];
@@ -11997,8 +12063,12 @@ function computeConvergence(){
   // 3. Motif EBM
   const ek = _convEbmKey(mt); ctx.ebm = ek;
   if(ek){ (EBM_DB[ek].pp||[]).forEach(p=>add(p.c,'ebm',1,ek+' (principal)',p.n)); (EBM_DB[ek].ps||[]).forEach(p=>add(p.c,'ebm',.6,ek+' (secondaire)',p.n)); }
-  // 4. Protocole gynéco-obstétrical (Référentiel Sorbonne Paris Nord) affiché
-  document.querySelectorAll('#gyno-result .gyno-chk').forEach(cb => add(cb.dataset.code,'gyno',1,'Référentiel SPN',cb.dataset.nom));
+  // 4. Protocole gynéco-obstétrical (Référentiel Sorbonne Paris Nord) : celui affiché, sinon reconnu dans le motif
+  //    (protocole affiché : ses points de base + les points cochés par le praticien, pas tous ses tableaux)
+  const gyAff = document.querySelectorAll('#gyno-result .gyno-chk').length ? ((document.getElementById('gyno-motif')||{}).value||'') : '';
+  const GY = _convGyno(mt, gyAff);
+  if(GY){ ctx.gyno = GY.titre; GY.pts.forEach(c => add(String(c).split(' ')[0],'gyno',1,'Référentiel SPN — '+GY.titre+' (points de base)')); }
+  document.querySelectorAll('#gyno-result .gyno-chk:checked').forEach(cb => add(cb.dataset.code,'gyno',1,'Référentiel SPN — coché',cb.dataset.nom));
   // 5. Mode Urgence : recettes reconnues dans le motif
   if(mt.length) URGENCE_RECIPES.forEach(r => {
     if(r.keywords.some(k=>MTCNorm.phraseIn(mt,k)) && !(r.exclude||[]).some(k=>MTCNorm.phraseIn(mt,k)))
@@ -12025,6 +12095,21 @@ function computeConvergence(){
   _conv = {n:_conv.n, body, auri, ctx};
   return _conv;
 }
+// Syndromes suggérés par l'analyse : 1re Racine + 1re Branche, si au moins « Probables » (seuil de l'appli :
+// ≥ 55 % du meilleur score ; un syndrome seulement « Possible » n'est pas retenu).
+function _syndSuggeres(){
+  if(typeof suggestSyndromes==='function') suggestSyndromes();
+  const L = window._lastSynd || [], max = L.length ? L[0].sc : 0;
+  return [L.find(s=>s.axe==='racine'), L.find(s=>s.axe==='branche')].filter(s => s && s.sc >= .55*max).map(s=>s.nom);
+}
+// Champ « Syndromes retenus » de la Synthèse : le syndrome choisi par le praticien, sinon celui suggéré par
+// l'analyse (signalé comme tel). Plus le motif du référentiel ou de l'EBM, qui n'est pas un syndrome.
+function _syndromePourSynthese(){
+  const choisi = ((document.getElementById('synd-libre')||{}).value||'').trim() || (document.getElementById('synd-sel')||{}).value || '';
+  if(choisi) return choisi;
+  const sug = _syndSuggeres();
+  return sug.length ? sug.join(' + ')+' (suggéré par l\'analyse)' : '';
+}
 // Codes déjà retenus dans « Points réalisés » (toutes sections), en code canonique
 function _convDejaRetenus(){
   const s = new Set();
@@ -12042,6 +12127,7 @@ function renderConvergence(){
   if(C.ctx.synds.length) ctx.push((C.ctx.syndChoisi?'Syndrome retenu : ':'Syndromes suggérés : ')+C.ctx.synds.join(' + '));
   if(C.ctx.mer.length) ctx.push('Méridiens : '+C.ctx.mer.join(' + '));
   if(C.ctx.ebm) ctx.push('EBM : '+C.ctx.ebm);
+  if(C.ctx.gyno) ctx.push('Sorbonne Paris Nord : '+C.ctx.gyno);
   if(C.ctx.periop) ctx.push('Péri-op. : '+C.ctx.periop);
   if(!C.body.length){
     el.innerHTML = '<p style="font-size:12px;color:var(--slate);font-style:italic">'+(C.ctx.sansMotif
