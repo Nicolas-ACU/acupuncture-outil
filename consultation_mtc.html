@@ -2163,29 +2163,33 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
 <script>
 
 // ══════ AUTHENTIFICATION PRATICIENS ══════
-// Liste des praticiens autorisés — modifier pour ajouter/supprimer des accès
-// Format : { code: 'CODE_SECRET', nom: 'Prénom Nom', titre: 'Dr / Mme / M.' }
-const PRATICIENS = [
-  { code: 'ADMIN2024',       nom: 'Nicolas Blanchard',      titre: 'Dr',  role: 'admin' },
-  { code: 'BerasoaAcu2024!', nom: 'Todizara Berasoa',       titre: 'Dr',  role: 'user'  },
-  { code: 'BorreAcu2024!',   nom: 'Pauline Borre',          titre: 'Mme', role: 'user'  },
-  { code: 'BouchetBadelAcu2024!', nom: 'Marie Bouchet-Badel', titre: 'Dr', role: 'user' },
-  { code: 'ChaneLaiAcu2024!', nom: 'Caroline Chane-Laï',    titre: 'Dr',  role: 'user'  },
-  { code: 'GuidoumDeniaAcu2024!', nom: 'Saïda Guidoum Denia', titre: 'Dr', role: 'user' },
-  { code: 'HengAcu2024!',    nom: 'Lucie Heng',             titre: 'Dr',  role: 'user'  },
-  { code: 'HippolyteAcu2024!', nom: 'Fériel Hippolyte',     titre: 'Dr',  role: 'user'  },
-  { code: 'LafontAcu2024!',  nom: 'Mathilde Lafont',        titre: 'Dr',  role: 'user'  },
-  { code: 'LawWanAcu2024!',  nom: 'Johan Law-Wan',          titre: 'Dr',  role: 'user'  },
-  { code: 'MoquetAcu2024!',  nom: 'Maylis Moquet',          titre: 'Mme', role: 'user'  },
-  { code: 'NguyenAcu2024!',  nom: 'Hien-Anh Nguyen',        titre: 'Dr',  role: 'user'  },
-  { code: 'NhanAcu2024!',    nom: 'Tâm Nhan',               titre: 'Dr',  role: 'user'  },
-  { code: 'PouyfauconAcu2024!', nom: 'Margaux Pouyfaucon',  titre: 'Dr',  role: 'user'  },
-  { code: 'RomandAcu2024!',  nom: 'Elsa Romand',            titre: 'Mme', role: 'user'  },
-  { code: 'SarazinAcu2024!', nom: 'Clara Sarazin',          titre: 'Mme', role: 'user'  },
-  { code: 'TaiebAcu2024!',   nom: 'Alix Taieb',             titre: 'Mme', role: 'user'  },
-  // Ajoutez des praticiens ici :
-  // { code: 'CODE',    nom: 'Prénom Nom',         titre: 'Dr',  role: 'user'  },
+// Liste des praticiens autorisés : CHIFFRÉE (ni codes ni noms en clair dans le source publié).
+// Pour ajouter / retirer un praticien : modifier le tableau « Codes ACU MTC.xlsx », puis lancer
+// outils/chiffrer_praticiens.cjs (ou Mettre_a_jour_praticiens.command), puis téléverser ce fichier.
+// ⟦praticiens⟧ — généré par outils/chiffrer_praticiens.cjs le 01/10/2026 14:00:38 (19 praticiens). Ne pas modifier à la main.
+const PRAT_SEL = 'e5Vqy27/kRyISBTeW6jiww==', PRAT_ITER = 200000;
+const PRATICIENS_CHIFFRES = [
+  '/JYJ+DydxxBfcQX3.SQrzxf9+CGalRuUToCc4D6KbiCnIqZ5h+Ii/pQIzejUYk2SHl3a7UBJmmg8llZKZtkEZLvU37Sg4AZHnFqYv6lm+Jw==',
+  '2W62hfmL/XoGdFnS.b1EnqHndWu4s7NuBH8XlNzzkKJf90G7eqpm0EBaDjtJu14jC4i7kFbz1PujprDiVHxzJ56ljAGJc6mhTebwyJw==',
+  '2haqUme+TUneaKyH.fz8+9erUN0QdAXOmkZo85JvNm6mFhOzPCuSqydaN5gjr/Wje9fWeQh1H2YdBbyDgC+VQwZYHEY1Q4hTqI5LKUdkMbQ==',
+  'L0O4GCjjbQdkQExm.sUJPjZGjUi/qnA0pIophhhJ0hRTfsZNA9rdZDO3YqXuoGirHaHfJnorx6kOKpe8Szj6CXbDh1IYYQopmt/SCpNkEKw==',
+  'PKX/AvI8E7nYvfNU.hZJTwwsDFN8Ix89c0UzEYdbHWMKN5Bwj1Tahr/u4xqJamQFbAv8TWS7Df0LZI8rR8Y7Fbo6jPiKs55QQdMz7a/VUQwstbepH',
+  'V4l6lK1P+yxCj+kU.4fywOkItKYM+el4veBysQ2bPRJkybzug1CCPPj04WGYvyFk9/pcmnPafqV/NaOMSTnhl4b+zWp+dGwhDTjl6WO+EjQUTCA==',
+  'a6reObihxYGK2ray.KH7V0BBtypjFdUSZ2QbJpGUe8OIL5+s7y3ZsSWflgh6LCpQE1/g5CLv+amw46YYvlFAfZ/vJUwHTcARXMTE=',
+  'ahL/KA74/5UcVpzX.lyZkMj8bfgqV54+cxWdp6ZAI/w5h2MIA6B+TKrAIuYvYm7BUMyTh5jP9ZTbwtroQVOMLPE2bPHWmyyPnBPCmc3uqRpY0GtA=',
+  'cpALb0v9kzS730iG.okTjQTUjMmPMr08yacN2B17MnG/YnwURtk4h3Tz3pagC/JGeUQTYKMIDrBhQxQGfxly+kHfjSuyz3Hti7IWCv68pzbjPLwE=',
+  'dmeNOZczkk6DbP04.5+x4yVBMSU1QWNnKLbLqz7rDw79Kir8RTZTBje8XCeEgLgc79LUyeAPXk4Bl0DGTkZ6BxMAbvQ+YxhSp6sm8dN4=',
+  'eX2K8bpwCTsPdqjr.i32Z5z+npct7s9JLu2e2gn26obGRDCwP64v0J2nHRu6S0+06eLoa924JZSMoE01VNTvk0iVO3P0v3IdcGaWqGn2bNA==',
+  'hq8qjQ/qy0xQOKXT.of+mVDFIpMfCEuGarxPN/IjoeVg79G2S4VOw1kf2y4gCjmbt6yqLB2gNRv9g3LqGhseXh7dtTDL2xKvuL+i73qE7Jsw=',
+  'k9Xb3TjhSPzzGZxw.eCPS5Jpqd/89cQoUdBmpdap9MoEPdtoXFNoYWsA9Rnxd8FI2r4n15v8s/m9KDBe7tfTlyt+2Qpg+gvlGwLN9nLUR1DLPgNb15w==',
+  'lTUgwgWZTHHxj0vn.vb58P6J/Yei80rUnD7F2tdkdEUdZ4wOrtJR+hIx2OOYZ0OmA7jLMXI3hfRj0Cfz6p+Bao4lphFbh7wwoXfeI',
+  'ooNTEp3e0SpV18gq.SC3+RNw9On88CIppnSYW58DdtB+37XwJP0JM4xusJQH5FDi9nCmog/TR4iCTdtvxeqz1U7FgybmnmU5hC3zy6USG',
+  'pFlOqlftU/JIhMGT.etOz/xgPONRM6uFmSjV96hdG60MHz9eGqBULOiUZmEF4hYhVaJAHTlsurMr0G1hLPNBnYsuwNIs1VEyj9wQNYh4izUxn',
+  'uIbB+d9NVqn7gLcE.O8qIJIX47mem0JQxYutKho8CK/icETh/oTQ3ltNn0PmlcT6TfbloKSTsKb+Z1VzwEHHStPwWdjlHtZOUaH0Gz/VDaTE=',
+  'xNTBQ+v6cuiFq1d5.rf4DBDRRtB/xxhok1vjKA4lCgyL1q1b29xc2svM//IRSQetekUa4PXe8lRD1Jt+Ym899LoMT2ubWtyPwqKH5aWEcpVPjug==',
+  'yUaBZWG87z35meC4.ZrJpxUPxhw8otG+8nL8GlFEHwKXx1cvWD+gvXATZo7J6Qatw4MQVTZ4Mli73//J1PDem6K0o+8URqtS0jxW3hzJ0NBBqkHnc'
 ];
+// ⟦/praticiens⟧
 
 let currentPraticien = null;
 
@@ -2199,10 +2203,27 @@ function hideLogin(){
   if(el) el.style.display = 'none';
 }
 
-function doLogin(){
-  const code = (document.getElementById('login-code')||{}).value||'';
+// Déchiffre la fiche du praticien dont le code est saisi (null si aucun bloc ne s'ouvre avec ce code).
+async function _pratDechiffrer(code){
+  if(!code || !(window.crypto && crypto.subtle)) return null;
+  const u8 = b => Uint8Array.from(atob(b), c => c.charCodeAt(0));
+  const base = await crypto.subtle.importKey('raw', new TextEncoder().encode(code), 'PBKDF2', false, ['deriveKey']);
+  const key = await crypto.subtle.deriveKey({name:'PBKDF2', salt:u8(PRAT_SEL), iterations:PRAT_ITER, hash:'SHA-256'},
+    base, {name:'AES-GCM', length:256}, false, ['decrypt']);
+  for(const bloc of PRATICIENS_CHIFFRES){
+    const [iv, ct] = bloc.split('.');
+    try { return JSON.parse(new TextDecoder().decode(await crypto.subtle.decrypt({name:'AES-GCM', iv:u8(iv)}, key, u8(ct)))); }
+    catch(e){ /* pas ce praticien */ }
+  }
+  return null;
+}
+
+async function doLogin(){
+  const code = ((document.getElementById('login-code')||{}).value||'').trim();
   const errEl = document.getElementById('login-error');
-  const prat = PRATICIENS.find(p => p.code === code.trim());
+  if(errEl) errEl.style.display = 'none';
+  let prat = null;
+  try { prat = await _pratDechiffrer(code); } catch(e){ prat = null; }
   if(!prat){
     if(errEl) errEl.style.display = '';
     const inp = document.getElementById('login-code');
@@ -2222,10 +2243,10 @@ function doLogin(){
 function checkLogin(){
   // Sur localhost : pas de login requis (usage local personnel)
   if(location.hostname === 'localhost' || location.hostname === '127.0.0.1'){
-    currentPraticien = PRATICIENS[0]; // praticien admin par défaut en local
+    currentPraticien = {nom:'', titre:'', role:'admin', local:true}; // usage local : aucun nom affiché
     const logoutBtn = document.getElementById('btn-logout'); if(logoutBtn) logoutBtn.style.display='none';
     const piName = document.getElementById('prat-name');
-    if(piName) piName.textContent = PRATICIENS[0].nom + ' (local)';
+    if(piName) piName.textContent = 'Mode local';
     return;
   }
   // Sur GitHub Pages ou hébergement distant : login requis
