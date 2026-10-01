@@ -199,6 +199,12 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
 /* Schéma de la langue */
 #langue-schema svg,#langue-sous svg{width:100%;height:100%;display:block}
 .lg-zone{cursor:pointer}
+#pouls-schema svg{width:100%;height:100%;display:block}
+#shu-schema svg,#mu-schema svg{width:100%;height:100%;display:block}
+.sm-zone{cursor:pointer}
+.sm-zone:hover{fill:rgba(27,75,138,.10)}
+.pq-zone{cursor:pointer}
+.pq-zone:hover{fill:rgba(27,75,138,.12)}
 .lg-zone:hover{fill:rgba(27,75,138,.10)}
 .lg-menu{position:absolute;z-index:50;background:#fff;border:1px solid var(--border);border-radius:8px;box-shadow:0 6px 24px rgba(0,0,0,.18);padding:8px 10px;min-width:230px;max-width:300px}
 .lg-menu h4{margin:0 0 6px;font-size:11px;color:var(--jade);text-transform:uppercase;letter-spacing:.3px}
@@ -712,7 +718,7 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
             <div style="font-size:10px;color:var(--slate);margin-bottom:4px;font-style:italic">Racine = Rein · Milieu = Rate/Estomac · Pointe = Cœur/Poumon · Bords = Foie/VB</div>
             <div class="tr">
               <span class="tg" onclick="togEx(this,'l-enduit-dist')">Uniforme (normal)</span>
-              <span class="tg" onclick="togEx(this,'l-enduit-dist')">Racine épaisse (Rein, R. inf.)</span>
+              <span class="tg" onclick="togEx(this,'l-enduit-dist')">Racine épaisse (Rein · R. inf.)</span>
               <span class="tg" onclick="togEx(this,'l-enduit-dist')">Milieu épais (Rate-Estomac)</span>
               <span class="tg" onclick="togEx(this,'l-enduit-dist')">Pointe épaisse (Cœur-Poumon)</span>
               <span class="tg" onclick="togEx(this,'l-enduit-dist')">Bords épais (Foie-VB)</span>
@@ -783,6 +789,18 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
       <!-- POULS -->
       <div class="card">
         <div class="ct">Pouls 脈 — Exploration systématique</div>
+        <!-- Schéma vivant des deux poignets : un clic sur une position ouvre son sélecteur de qualités -->
+        <div id="pouls-schema-wrap" style="display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-bottom:10px;padding:8px;background:#FFFBF8;border:1px solid var(--border);border-radius:8px">
+          <div id="pouls-schema" style="width:430px;max-width:100%;aspect-ratio:600/370"></div>
+          <div style="flex:1;min-width:180px;font-size:10px;color:var(--slate);line-height:1.6">
+            <strong style="color:var(--ink)">Cliquez une position</strong> (cercle) pour noter ses qualités ; l'artère reprend les qualités globales (colonne de droite).<br>
+            <span style="color:#D2433A">●</span> rapide · <span style="color:#3A6DB4">●</span> lent · <span style="color:#8C6F5F">●</span> sans indication de fréquence<br>
+            Cercle plein foncé = plein · pâle en pointillé = vide<br>
+            Grand = large / ample · petit = fin · ovale = long<br>
+            ▲ superficiel · ▼ profond · ┃ en corde · zigzag = serré<br>
+            perles = glissant · contour rugueux = rugueux · ⋯ = noué / intermittent / précipité
+          </div>
+        </div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
           <div>
             <div style="font-size:11px;font-weight:700;color:var(--jade);text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px">Positions (Cun / Guan / Chi)</div>
@@ -880,7 +898,7 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
               <span class="tg" onclick="togEx(this,'pq-force')">Caché — Fu (épuis. Zheng Qi)</span>
               <span class="tg" onclick="togEx(this,'pq-force')">Creux — Kou (vide liquides)</span>
               <span class="tg" onclick="togEx(this,'pq-force')">Laborieux — Lao (Froid)</span>
-              <span class="tg" onclick="togEx(this,'pq-force')">Mou — Ru (Yin vide, Yang faible)</span>
+              <span class="tg" onclick="togEx(this,'pq-force')">Mou — Ru (Yin vide · Yang faible)</span>
               <span class="tg" onclick="togEx(this,'pq-force')">Peau de tambour — Gé (Froid/YY)</span>
               <span class="tg" onclick="togEx(this,'pq-force')">Épuisé — Ruo (vide Yang global)</span>
             </div>
@@ -891,7 +909,7 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
               <span class="tg" onclick="togEx(this,'pq-forme')">Long — (Plénitude Qi)</span>
               <span class="tg" onclick="togEx(this,'pq-forme')">Court — (Vide Qi et Sang)</span>
               <span class="tg" onclick="togEx(this,'pq-forme')">Large — (Plénitude Sang/Chaleur)</span>
-              <span class="tg" onclick="togEx(this,'pq-forme')">Fin — Xi (Vide Qi/Sang, Humide)</span>
+              <span class="tg" onclick="togEx(this,'pq-forme')">Fin — Xi (Vide Qi/Sang · Humide)</span>
             </div>
             <input id="pq-forme" style="display:none" oninput="markDirty()">
 
@@ -903,8 +921,9 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
               <span class="tg" onclick="togEx(this,'pq')">Serré — Jin (douleur)</span>
               <span class="tg" onclick="togEx(this,'pq')">Ample — Hong (Chaleur)</span>
               <span class="tg" onclick="togEx(this,'pq')">Ténu — Wei (Vide Qi/Humidité)</span>
-              <span class="tg" onclick="togEx(this,'pq')">Irrégulier — Jie (Vide Cœur)</span>
-              <span class="tg" onclick="togEx(this,'pq')">Noué — Dai (vide Qi organes)</span>
+              <span class="tg" onclick="togEx(this,'pq')">Noué — Jie (Qi bloqué / Froid / Stase)</span>
+              <span class="tg" onclick="togEx(this,'pq')">Intermittent — Dai (Vide Qi/Sang/Yang)</span>
+              <span class="tg" onclick="togEx(this,'pq')">Précipité — Cu (Chaleur / plénitude)</span>
             </div>
             <input id="pq" style="display:none" oninput="markDirty()">
           </div>
@@ -1057,6 +1076,26 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
         <div class="ct">Palpation corporelle 觸診 — Points réactifs</div>
         <div style="font-size:11px;color:var(--slate);font-style:italic;margin-bottom:12px">Après la palpation des pouls : rechercher les zones réactives (tension, induration, chaleur/froid local, sensibilité) sur les points Huatuojiaji, les points Shu-postérieurs et Mu-antérieurs, le trajet des méridiens aux quatre membres en rapport avec l'affection, et les points Ah Shi. Cocher les points retrouvés douloureux à la palpation.</div>
 
+        <!-- Schémas Shu (dos) et Mu (face) : clic sur un point = étiquette correspondante -->
+        <div id="shumu-wrap" style="margin-bottom:14px;padding:8px;background:#FFFBF8;border:1px solid var(--border);border-radius:8px">
+          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-start">
+            <div id="shu-schema" style="flex:1 1 440px;max-width:620px;aspect-ratio:760/610"></div>
+            <div id="mu-schema" style="flex:1 1 320px;max-width:470px;aspect-ratio:620/610"></div>
+          </div>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:8px">
+            <div id="shumu-lecture" style="flex:1 1 260px;font-size:11px;line-height:1.6"></div>
+            <div style="flex:1 1 300px;font-size:10.5px;line-height:1.55;color:var(--ink);background:#fff;border:1px dashed #C9A227;border-radius:6px;padding:7px 10px">
+              <strong style="color:#8A6D10">Moyens mnémotechniques — méridien de la Vessie</strong><br>
+              Points Shu (1,5 cun) : <b>T1–T7 → vertèbre + 10</b> (T3 → V13 Poumon, T5 → V15 Cœur, T7 → V17 Diaphragme) · <b style="color:#B3121B">T8 : pas de Shu</b> ·
+              <b>T9–T12 → + 9</b> (T9 → V18 Foie … T12 → V21 Estomac) · <b>L1–L5 → + 21</b> (L2 → V23 Rein, L4 → V25 Gros Intestin) ·
+              <b>S1–S4 → + 26</b> (S1 → V27 Intestin grêle, S2 → V28 Vessie) · trous sacrés V31–V34 = S + 30.<br>
+              Ligne externe (3 cun) : <b style="color:#1E6B3A">Ben Shen = Shu + 29</b> — V42 Pô (Poumon), V44 Shen (Cœur), V47 Hun (Foie), V49 Yi (Rate), V52 Zhi (Rein).<br>
+              Repères : C7 proéminente · T3 épine de l'omoplate · T7 pointe de l'omoplate · T9 ligne du soutien-gorge · L4-L5 crête iliaque · S1-S2 EIPS.<br>
+              T12 : V21 (Shu de l'Estomac) ↔ RM12 (Mu de l'Estomac), au niveau de E21 · L2 : V23 et V52, DM4 Mingmen sous L2 · S2 : V32 et V53.
+            </div>
+          </div>
+        </div>
+
         <!-- Huatuojiaji -->
         <div style="margin-bottom:14px">
           <div style="font-size:11px;font-weight:700;color:var(--jade);text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px">Points Huatuojiaji 夹脊 (M-BW-35) — 0,5 cun latéral au bord inférieur de l'apophyse épineuse, de C1 à L5</div>
@@ -1092,18 +1131,18 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
           <div>
             <div style="font-size:11px;font-weight:700;color:var(--jade);text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px">Points Mu-antérieurs 募穴 (points Hérauts / Alarme — face antérieure)</div>
             <div class="tr" style="flex-wrap:wrap;gap:4px">
-              <span class="tg" onclick="togEx(this,'palp-mu')">LU1 Zhōngfǔ (Poumon) — 1er EIC, 6 cun latéral à la ligne médiane</span>
-              <span class="tg" onclick="togEx(this,'palp-mu')">CV17 Dànzhōng/Shānzhōng (Maître-Cœur) — ligne médiane, 4e EIC</span>
-              <span class="tg" onclick="togEx(this,'palp-mu')">CV14 Jùquè (Cœur) — ligne médiane, 6 cun au-dessus de l'ombilic</span>
-              <span class="tg" onclick="togEx(this,'palp-mu')">LV14 Qīmén (Foie) — 6e EIC, ligne mamelonnaire</span>
-              <span class="tg" onclick="togEx(this,'palp-mu')">GB24 Rìyuè (Vésicule biliaire) — 7e EIC, ligne mamelonnaire</span>
+              <span class="tg" onclick="togEx(this,'palp-mu')">LU1 Zhōngfǔ (Poumon) — 1er EIC · 6 cun latéral à la ligne médiane</span>
+              <span class="tg" onclick="togEx(this,'palp-mu')">CV17 Dànzhōng/Shānzhōng (Maître-Cœur) — ligne médiane · 4e EIC</span>
+              <span class="tg" onclick="togEx(this,'palp-mu')">CV14 Jùquè (Cœur) — ligne médiane · 6 cun au-dessus de l'ombilic</span>
+              <span class="tg" onclick="togEx(this,'palp-mu')">LV14 Qīmén (Foie) — 6e EIC · ligne mamelonnaire</span>
+              <span class="tg" onclick="togEx(this,'palp-mu')">GB24 Rìyuè (Vésicule biliaire) — 7e EIC · ligne mamelonnaire</span>
               <span class="tg" onclick="togEx(this,'palp-mu')">LV13 Zhāngmén (Rate) — extrémité libre de la 11e côte</span>
-              <span class="tg" onclick="togEx(this,'palp-mu')">CV12 Zhōngwǎn (Estomac) — ligne médiane, 4 cun au-dessus de l'ombilic</span>
-              <span class="tg" onclick="togEx(this,'palp-mu')">CV5 Shímén (Triple Réchauffeur) — ligne médiane, 2 cun sous l'ombilic</span>
+              <span class="tg" onclick="togEx(this,'palp-mu')">CV12 Zhōngwǎn (Estomac) — ligne médiane · 4 cun au-dessus de l'ombilic</span>
+              <span class="tg" onclick="togEx(this,'palp-mu')">CV5 Shímén (Triple Réchauffeur) — ligne médiane · 2 cun sous l'ombilic</span>
               <span class="tg" onclick="togEx(this,'palp-mu')">GB25 Jīngmén (Rein) — extrémité libre de la 12e côte</span>
               <span class="tg" onclick="togEx(this,'palp-mu')">ST25 Tiānshū (Gros Intestin) — 2 cun latéral à l'ombilic</span>
-              <span class="tg" onclick="togEx(this,'palp-mu')">CV4 Guānyuán (Intestin Grêle) — ligne médiane, 3 cun sous l'ombilic</span>
-              <span class="tg" onclick="togEx(this,'palp-mu')">CV3 Zhōngjí (Vessie) — ligne médiane, 4 cun sous l'ombilic</span>
+              <span class="tg" onclick="togEx(this,'palp-mu')">CV4 Guānyuán (Intestin Grêle) — ligne médiane · 3 cun sous l'ombilic</span>
+              <span class="tg" onclick="togEx(this,'palp-mu')">CV3 Zhōngjí (Vessie) — ligne médiane · 4 cun sous l'ombilic</span>
             </div>
             <input id="palp-mu" style="display:none" oninput="markDirty()">
           </div>
@@ -3356,8 +3395,38 @@ function newSeance(){
   resetPoints();
   loadSeance(sc);navTo('dix');isDirty=false;showToast('Nouvelle séance — tous les champs réinitialisés');
 }
+// Anciens libellés du pouls (avant le 01/10/2026) → libellés corrigés. Appliqué à l'ouverture d'une séance.
+const POULS_LIBELLES_MIGR = {
+  'Irrégulier — Jie (Vide Cœur)':'Noué — Jie (Qi bloqué / Froid / Stase)',
+  'Noué — Dai (vide Qi organes)':'Intermittent — Dai (Vide Qi/Sang/Yang)',
+  'Irrégulier — Jie':'Noué — Jie', 'Noué — Dai':'Intermittent — Dai'};
+// Étiquettes qui contenaient une virgule (séparateur des valeurs enregistrées) : elles étaient coupées
+// en deux à la réouverture d'une séance. Renommées le 01/10/2026 (virgule → « · »), conversion ici.
+const LIBELLES_VIRGULE_MIGR = {
+  "CV12 Zhōngwǎn (Estomac) — ligne médiane, 4 cun au-dessus de l'ombilic": "CV12 Zhōngwǎn (Estomac) — ligne médiane · 4 cun au-dessus de l'ombilic",
+  "CV14 Jùquè (Cœur) — ligne médiane, 6 cun au-dessus de l'ombilic": "CV14 Jùquè (Cœur) — ligne médiane · 6 cun au-dessus de l'ombilic",
+  "CV17 Dànzhōng/Shānzhōng (Maître-Cœur) — ligne médiane, 4e EIC": "CV17 Dànzhōng/Shānzhōng (Maître-Cœur) — ligne médiane · 4e EIC",
+  "CV3 Zhōngjí (Vessie) — ligne médiane, 4 cun sous l'ombilic": "CV3 Zhōngjí (Vessie) — ligne médiane · 4 cun sous l'ombilic",
+  "CV4 Guānyuán (Intestin Grêle) — ligne médiane, 3 cun sous l'ombilic": "CV4 Guānyuán (Intestin Grêle) — ligne médiane · 3 cun sous l'ombilic",
+  "CV5 Shímén (Triple Réchauffeur) — ligne médiane, 2 cun sous l'ombilic": "CV5 Shímén (Triple Réchauffeur) — ligne médiane · 2 cun sous l'ombilic",
+  "Fin — Xi (Vide Qi/Sang, Humide)": "Fin — Xi (Vide Qi/Sang · Humide)",
+  "GB24 Rìyuè (Vésicule biliaire) — 7e EIC, ligne mamelonnaire": "GB24 Rìyuè (Vésicule biliaire) — 7e EIC · ligne mamelonnaire",
+  "LU1 Zhōngfǔ (Poumon) — 1er EIC, 6 cun latéral à la ligne médiane": "LU1 Zhōngfǔ (Poumon) — 1er EIC · 6 cun latéral à la ligne médiane",
+  "LV14 Qīmén (Foie) — 6e EIC, ligne mamelonnaire": "LV14 Qīmén (Foie) — 6e EIC · ligne mamelonnaire",
+  "Mou — Ru (Yin vide, Yang faible)": "Mou — Ru (Yin vide · Yang faible)",
+  "Racine épaisse (Rein, R. inf.)": "Racine épaisse (Rein · R. inf.)"};
+function migrerPoulsLibelles(ex){
+  if(!ex) return ex;
+  Object.keys(ex).forEach(k=>{ if(typeof ex[k]==='string' && ex[k].includes(',')) Object.entries(LIBELLES_VIRGULE_MIGR).forEach(([o,n])=>{ if(ex[k].includes(o)) ex[k]=ex[k].split(o).join(n); }); });
+  ['pq','cunG','cunD','guanG','guanD','chiG','chiD'].forEach(k=>{
+    if(!ex[k]) return;
+    ex[k]=ex[k].split(',').map(v=>v.trim()).filter(Boolean).map(v=>POULS_LIBELLES_MIGR[v]||v).join(', ');
+  });
+  return ex;
+}
 function loadSeance(sc){
   if(!sc)return;
+  migrerPoulsLibelles(sc.ex);
   const s=(id,v)=>{const e=document.getElementById(id);if(e&&v!=null)e.value=v;};
   DIX_Q.forEach(q=>{
     const rep=sc.q[q.id]||'',tags=sc.q[q.id+'_t']||[];
@@ -3421,6 +3490,7 @@ function loadSeance(sc){
     }
   });
   if(typeof renderLangueSchema==='function') renderLangueSchema();
+  if(typeof renderShuMu==='function') renderShuMu();
   // Restaurer les zones auriculaires sélectionnées sur la carte SVG (délai pour laisser le DOM se stabiliser)
   setTimeout(()=>restoreEarZones(ex.palpOreille), 80);
   // Déclencher l'analyse douleur si données présentes
@@ -4467,7 +4537,7 @@ function _tagMatch(ruleVals, recordedVals){
     for(const val0 of recordedVals){
       if(!val0) continue;
       // Libellés de pouls « Nom — Pinyin (explication) » : seul le nom est un signe. L'explication
-      // (« Fin — Xi (Vide Qi/Sang, Humide) ») faisait passer un pouls fin pour un pouls « Vide — Xu ».
+      // (« Fin — Xi (Vide Qi/Sang · Humide) ») faisait passer un pouls fin pour un pouls « Vide — Xu ».
       const val = val0.includes(' — ') ? val0.split(' — ')[0] : val0;
       // Sens unique : le signe attendu par la règle doit être CONTENU dans le signe observé
       // (« Rouge » ⊂ « Rouge foncé / Cramoisi »). L'inverse n'est plus admis : une langue simplement
@@ -5465,8 +5535,11 @@ const POULS_QUALITES = [
   // Dynamisme
   {lbl:'Glissant — Hua',cat:'Dynamisme'},{lbl:'Rugueux — Se',cat:'Dynamisme'},
   {lbl:'Tendu en corde — Xuan',cat:'Dynamisme'},{lbl:'Serré — Jin',cat:'Dynamisme'},
-  {lbl:'Ample — Hong',cat:'Dynamisme'},{lbl:'Irrégulier — Jie',cat:'Dynamisme'},
-  {lbl:'Noué — Dai',cat:'Dynamisme'},{lbl:'Peau de tambour — Gé',cat:'Dynamisme'},
+  {lbl:'Ample — Hong',cat:'Dynamisme'},{lbl:'Peau de tambour — Gé',cat:'Dynamisme'},
+  // Rythme : Jie 結 = noué (lent, arrêts irréguliers) ; Dai 代 = intermittent (arrêts réguliers) ;
+  // Cu 促 = précipité (rapide, arrêts irréguliers). Libellés corrigés le 01/10/2026 (anciens :
+  // « Irrégulier — Jie » et « Noué — Dai », convertis à l'ouverture des séances : voir migrerPoulsLibelles).
+  {lbl:'Noué — Jie',cat:'Rythme'},{lbl:'Intermittent — Dai',cat:'Rythme'},{lbl:'Précipité — Cu',cat:'Rythme'},
 ];
 
 const POULS_LABELS = {
@@ -5484,9 +5557,12 @@ function openPoulsSelector(fieldId, cell) {
   const tagsEl = document.getElementById('pouls-popup-tags');
 
   // Position popup near cell
+  // La fenêtre est en position:fixed : coordonnées de l'écran (l'ancien + scrollY la décalait
+  // dès que la page était défilée). Au-dessus de la cellule s'il n'y a pas la place en dessous.
   const rect = cell.getBoundingClientRect();
-  popup.style.top = (rect.bottom + 6 + window.scrollY) + 'px';
-  popup.style.left = Math.min(rect.left, window.innerWidth - 340) + 'px';
+  const below = rect.bottom + 6, h = 430;
+  popup.style.top = Math.max(6, (below + h > window.innerHeight && rect.top - h - 6 > 0) ? rect.top - h - 6 : below) + 'px';
+  popup.style.left = Math.max(6, Math.min(rect.left, window.innerWidth - 340)) + 'px';
 
   title.textContent = POULS_LABELS[fieldId] || fieldId;
 
@@ -5539,6 +5615,7 @@ function updatePoulsField(fieldId) {
   const selected = Array.from(tagsEl.querySelectorAll('.tg.on')).map(t=>t.textContent);
   const inp = document.getElementById(fieldId);
   if (inp) { inp.value = selected.join(', '); markDirty(); }
+  if (typeof renderPoulsSchema==='function') renderPoulsSchema();
   // Update display in cell
   const disp = document.getElementById('disp-'+fieldId);
   if (disp) {
@@ -5560,6 +5637,7 @@ function clearPoulsPosition() {
   if (inp) { inp.value = ''; markDirty(); }
   const disp = document.getElementById('disp-'+_poulsTarget);
   if (disp) { disp.textContent = '—'; disp.classList.add('empty'); }
+  if (typeof renderPoulsSchema==='function') renderPoulsSchema();
 }
 
 function closePoulsSelector() {
@@ -5569,6 +5647,7 @@ function closePoulsSelector() {
 
 function restorePoulsDisplays() {
   // Restore badge display from hidden inputs after loadSeance
+  if (typeof renderPoulsSchema==='function') setTimeout(renderPoulsSchema, 0);
   ['cun-g','cun-d','guan-g','guan-d','chi-g','chi-d'].forEach(fid => {
     const inp = document.getElementById(fid);
     const disp = document.getElementById('disp-'+fid);
@@ -5588,7 +5667,8 @@ function restorePoulsDisplays() {
 document.addEventListener('click', e => {
   const popup = document.getElementById('pouls-popup');
   if (popup && popup.style.display !== 'none') {
-    if (!popup.contains(e.target) && !e.target.closest('.pouls-cell')) {
+    // .pq-zone : positions du schéma des poignets (sinon le sélecteur se refermait aussitôt ouvert)
+    if (!popup.contains(e.target) && !e.target.closest('.pouls-cell, .pq-zone')) {
       closePoulsSelector();
     }
   }
@@ -5865,7 +5945,7 @@ const SYND_RULES = {
     couleur:'🟢',offline:true,
     ccmq:['Vide de Qi'],
     langue:{couleur:['Pâle']},
-    pouls:{global:['Vide — Xu','Épuisé — Ruo'],positions:{cunG:['Vide — Xu','Épuisé — Ruo']}},
+    pouls:{global:['Vide — Xu','Épuisé — Ruo','Intermittent — Dai'],positions:{cunG:['Vide — Xu','Épuisé — Ruo']}},
     q10:{q6:['Palpitations'],q2:['Sueurs spontanées',"Sueurs à l'effort"],q9:['Fatigue permanente','Endormissement difficile'],q10:['Tristesse','Labilité émotionnelle']},
     douleur:{},
     axe:'racine',
@@ -5887,7 +5967,7 @@ const SYND_RULES = {
     couleur:'🟢',offline:true,
     ccmq:['Vide de Yin'],
     langue:{couleur:['Rouge','Pointe rouge'],forme:['Fissures longitudinales'],enduitCouleur:['Absent (langue miroir)']},
-    pouls:{global:['Rapide — Shu','Fin — Xi','Irrégulier — Jie'],positions:{cunG:['Rapide — Shu','Fin — Xi','Vide — Xu']}},
+    pouls:{global:['Rapide — Shu','Fin — Xi','Précipité — Cu'],positions:{cunG:['Rapide — Shu','Fin — Xi','Vide — Xu']}},
     q10:{q6:['Palpitations'],q9:['Réveils nocturnes','Rêves agités nombreux','Insomnie totale'],q10:['Anxiété','Irritabilité','Labilité émotionnelle'],q2:['Sueurs nocturnes'],q1:['Chaleur des 5 centres (paumes/plantes/sternum)']},
     douleur:{},
     axe:'racine',
@@ -5912,7 +5992,7 @@ const SYND_RULES = {
     couleur:'🟢',offline:true,
     ccmq:['Stagnation Sang'],
     langue:{couleur:['Violacé','Bleuté','Points rouges (fraises)','Taches violacées','Bords violacés'],sublinguale:['Distendues','Foncées','Ramifiées']},
-    pouls:{global:['Rugueux — Se','Tendu en corde — Xuan','Noué — Dai']},
+    pouls:{global:['Rugueux — Se','Tendu en corde — Xuan','Noué — Jie']},
     q10:{q11:['Dysménorrhée','Aménorrhée','Caillots foncés'],q6:['Douleur fixe']},
     douleur:{aggrave:['La pression','Le froid'],ameliore:['La chaleur','Le massage'],type:['Fixe / Stabbing']},
     axe:'branche',
@@ -9897,6 +9977,8 @@ function togEx(el, inputId) {
   inp.value = sel.join(', ');
   markDirty();
   updateLangueDiag();
+  if(/^pq/.test(inputId) && typeof renderPoulsSchema==='function') renderPoulsSchema();
+  if(/^palp-(shu|mu|huatuo)$/.test(inputId) && typeof renderShuMu==='function') renderShuMu();
   if(['d-aggrave','d-ameliore','d-type','d-localisation'].includes(inputId)){
     calcDouleurType();
   }
@@ -10071,12 +10153,261 @@ function langueSousSVG(st, opts){
 }
 
 
+// ══════ SCHÉMA DU POULS (deux poignets, 6 positions) ══════
+// Dessin original. Chaque position (Cun, Guan, Chi) est un cercle dont l'aspect traduit les qualités
+// notées : couleur = température (rapide / lent), remplissage = force (plein / vide), taille = largeur
+// (large / fin), flèche = profondeur, motif = dynamisme (corde, glissant, serré, rugueux, irrégulier).
+// L'artère radiale reprend les qualités globales. Clic sur un cercle = sélecteur de la position.
+const POULS_POS = [
+  {id:'cun',  nom:'Cun 寸',  g:'Cœur · IG',          d:'Poumon · GI'},
+  {id:'guan', nom:'Guan 關', g:'Foie · VB',          d:'Rate · Estomac'},
+  {id:'chi',  nom:'Chi 尺',  g:'Rein Yin · Vessie',  d:'Rein Yang · MC'}];
+function _pqHas(list, kw){ return (list||[]).some(v => (v||'').toLowerCase().indexOf(kw.toLowerCase()) === 0); }
+function _pqAspect(q){
+  const a = {col:'#8C6F5F', op:.55, r:20, ry:20, dash:'', fu:false, chen:false, motifs:[]};
+  if(!q.length) return null;
+  if(_pqHas(q,'Rapide') || _pqHas(q,'Pressé') || _pqHas(q,'Remuant')) a.col = '#D2433A';
+  if(_pqHas(q,'Lent') || _pqHas(q,'Retardé')) a.col = '#3A6DB4';
+  if(['Vide','Mou','Épuisé','Dispersé','Creux','Ténu','Caché'].some(k=>_pqHas(q,k))) { a.op = .18; a.dash = '5 4'; }
+  if(['Plein','Ample','Laborieux','Peau de tambour'].some(k=>_pqHas(q,k))) a.op = .88;
+  if(_pqHas(q,'Large') || _pqHas(q,'Ample')) { a.r = 27; a.ry = 27; }
+  if(_pqHas(q,'Fin') || _pqHas(q,'Ténu')) { a.r = 13; a.ry = 13; }
+  if(_pqHas(q,'Court')) a.ry = Math.min(a.ry, 13);
+  if(_pqHas(q,'Long')) a.ry = Math.max(a.ry, 29);
+  a.fu = _pqHas(q,'Superficiel');
+  a.chen = _pqHas(q,'Profond') || _pqHas(q,'Caché');
+  ['Tendu','Glissant','Serré','Rugueux','Noué','Intermittent','Précipité'].forEach(k => { if(_pqHas(q,k)) a.motifs.push(k); });
+  return a;
+}
+function poulsSVG(st, opts){
+  st = st || {}; opts = opts || {};
+  const pos = st.pos || {}, glob = st.global || [];
+  const o = [];
+  o.push(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 370" class="pq-svg" font-family="Helvetica, Arial, sans-serif">`);
+  o.push(`<defs><linearGradient id="pq-peau" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#F1CDBB"/><stop offset=".5" stop-color="#F7DCCD"/><stop offset="1" stop-color="#EEC6B2"/></linearGradient></defs>`);
+  // Artère : qualités globales
+  const ga = _pqAspect(glob) || {col:'#B04A43', op:.55, motifs:[]};
+  const gw = ga.op > .8 ? 7 : ga.op < .3 ? 2.5 : 4.5;
+  [['G',210,-1],['D',390,1]].forEach(([side, cx, sg]) => {
+    // Doigts (paume vers le haut), main, poignet, avant-bras ; pouce et artère du côté radial (extérieur)
+    [-27,-9,9,27].forEach((dx,k) => { const h = [30,40,42,34][sg>0?k:3-k];
+      o.push(`<rect x="${cx+dx-8}" y="${70-h}" width="16" height="${h+14}" rx="8" fill="url(#pq-peau)" stroke="#9A5B4C" stroke-width="1.8"/>`); });
+    o.push(`<path d="M ${cx-50} 360 L ${cx-44} 124 C ${cx-46} 104 ${cx-42} 72 ${cx-36} 64 L ${cx+36} 64 C ${cx+42} 72 ${cx+46} 104 ${cx+44} 124 L ${cx+50} 360 Z" fill="url(#pq-peau)" stroke="#9A5B4C" stroke-width="2"/>`);
+    const tx = cx + sg*42;
+    o.push(`<path d="M ${tx} 118 C ${tx+sg*16} 104 ${tx+sg*30} 82 ${tx+sg*30} 66 C ${tx+sg*30} 56 ${tx+sg*20} 54 ${tx+sg*15} 64 C ${tx+sg*10} 76 ${tx+sg*4} 86 ${tx-sg*2} 92" fill="url(#pq-peau)" stroke="#9A5B4C" stroke-width="1.8"/>`);
+    // Pli du poignet + styloïde radiale
+    o.push(`<path d="M ${cx-44} 126 Q ${cx} 134 ${cx+44} 126" fill="none" stroke="#9A5B4C" stroke-width="1.4" stroke-opacity=".7"/>`);
+    o.push(`<path d="M ${cx+sg*45} 196 q ${sg*9} 12 0 26" fill="none" stroke="#9A5B4C" stroke-width="2"/>`);
+    // Artère radiale (côté pouce)
+    const ax = cx + sg*24;
+    const art = ga.motifs.includes('Tendu') ? `M ${ax} 112 L ${ax} 340` : `M ${ax} 112 C ${ax+sg*4} 170 ${ax-sg*4} 260 ${ax} 340`;
+    o.push(`<path d="${art}" fill="none" stroke="${ga.col}" stroke-opacity=".75" stroke-width="${gw}" stroke-linecap="round"/>`);
+    o.push(`<text x="${cx}" y="352" font-size="12" font-weight="700" fill="#4A2B24" text-anchor="middle">Main ${side==='G'?'gauche':'droite'}</text>`);
+    // Positions
+    POULS_POS.forEach((P, i) => {
+      const fid = P.id + '-' + side.toLowerCase();
+      const q = pos[fid] || [];
+      const a = _pqAspect(q);
+      const y = 166 + i*60, x = ax;
+      const lblX = cx + sg*60, anchor = sg>0 ? 'start' : 'end';
+      if(!a){
+        o.push(`<circle cx="${x}" cy="${y}" r="17" fill="#fff" fill-opacity=".6" stroke="#9A8F86" stroke-width="1.6" stroke-dasharray="3 3"/>`);
+      } else {
+        o.push(`<ellipse cx="${x}" cy="${y}" rx="${a.r}" ry="${a.ry}" fill="${a.col}" fill-opacity="${a.op}" stroke="${a.col}" stroke-width="${a.motifs.includes('Rugueux')?3.5:2.2}" ${a.dash?`stroke-dasharray="${a.dash}"`:''} ${a.motifs.includes('Rugueux')?'stroke-linejoin="miter"':''}/>`);
+        if(a.motifs.includes('Rugueux')) o.push(`<ellipse cx="${x}" cy="${y}" rx="${a.r+3}" ry="${a.ry+3}" fill="none" stroke="${a.col}" stroke-width="1.2" stroke-dasharray="1.5 3"/>`);
+        if(a.motifs.includes('Tendu')) o.push(`<path d="M ${x} ${y-a.ry-9} L ${x} ${y+a.ry+9}" stroke="#2E1E1A" stroke-width="2.4"/><path d="M ${x-5} ${y-a.ry-9} L ${x+5} ${y-a.ry-9} M ${x-5} ${y+a.ry+9} L ${x+5} ${y+a.ry+9}" stroke="#2E1E1A" stroke-width="2"/>`);
+        if(a.motifs.includes('Serré')) o.push(`<path d="M ${x} ${y-a.ry} l 5 6 l -10 6 l 10 6 l -10 6 l 10 6 l -5 6" fill="none" stroke="#2E1E1A" stroke-width="1.8"/>`);
+        if(a.motifs.includes('Glissant')) [-8,0,8].forEach(d => o.push(`<circle cx="${x+d*.6}" cy="${y+d}" r="3.6" fill="#fff" fill-opacity=".9" stroke="${a.col}" stroke-width="1"/>`));
+        if(a.motifs.some(m=>['Noué','Intermittent','Précipité'].includes(m))) o.push(`<path d="M ${x+a.r-2} ${y-6} l 8 0 M ${x+a.r-2} ${y+6} l 8 0" stroke="#fff" stroke-width="5"/><text x="${x-sg*(a.r+10)}" y="${y+4}" font-size="12" font-weight="700" fill="#2E1E1A" text-anchor="middle">⋯</text>`);
+        if(a.fu) o.push(`<path d="M ${x-6} ${y-a.ry-4} l 6 -9 l 6 9" fill="#2E1E1A"/>`);
+        if(a.chen) o.push(`<path d="M ${x-6} ${y+a.ry+4} l 6 9 l 6 -9" fill="#2E1E1A"/>`);
+      }
+      // Étiquettes : position, organe, qualités notées
+      const short = q.map(v => v.split(' — ')[0]).slice(0,3).join(', ') + (q.length>3?'…':'');
+      o.push(`<text x="${lblX}" y="${y-6}" font-size="11" font-weight="700" fill="#3B1E1B" text-anchor="${anchor}">${P.nom}</text>`);
+      o.push(`<text x="${lblX}" y="${y+7}" font-size="10" fill="#1E6B3A" text-anchor="${anchor}">${side==='G'?P.g:P.d}</text>`);
+      o.push(`<text x="${lblX}" y="${y+19}" font-size="9.5" fill="#555" text-anchor="${anchor}">${short||'—'}</text>`);
+      if(opts.interactive) o.push(`<circle class="pq-zone" data-field="${fid}" cx="${x}" cy="${y}" r="26" fill="transparent" onclick="openPoulsSelector('${fid}',this)"><title>${P.nom} ${side==='G'?'gauche':'droit'} — ${side==='G'?P.g:P.d} : cliquer pour noter les qualités</title></circle>`);
+    });
+  });
+  o.push(`</svg>`);
+  return o.join('\n');
+}
+
+
+// ══════ SCHÉMAS SHU (DOS) ET MU (FACE) ══════
+// Dessins originaux d'après le tableau « Méridien Vessie : moyens mnémotechniques » et la planche
+// « Points Shu / Assentiments et points importants du dos » fournis par le praticien.
+// Points cliquables = étiquettes existantes (palp-shu, palp-mu, palp-huatuo) ; les autres points sont
+// affichés pour l'apprentissage (survol = nom et repère).
+const SHU_VERT = (() => {   // ordonnée de chaque vertèbre sur la silhouette de dos
+  const y = {C7:78};
+  for(let i=1;i<=12;i++) y['T'+i] = 78 + i*23;          // T1 101 … T12 354
+  for(let i=1;i<=5;i++)  y['L'+i] = 354 + i*25;         // L1 379 … L5 479
+  for(let i=1;i<=4;i++)  y['S'+i] = 479 + i*18;         // S1 497 … S4 551
+  y.Coccyx = 578; return y;
+})();
+// [code, vertèbre, organe ou rôle, cliquable (étiquette palp-shu)]
+const SHU_PTS = [
+  ['V11','T1','Dazhu (Hui des os)',0],['V12','T2','Fengmen',0],
+  ['V13','T3','Poumon',1],['V14','T4','Maître du Cœur',1],['V15','T5','Cœur',1],['V16','T6','Du Mai',0],
+  ['V17','T7','Diaphragme (Hui du Sang)',0],['V18','T9','Foie',1],['V19','T10','Vésicule biliaire',1],
+  ['V20','T11','Rate',1],['V21','T12','Estomac',1],['V22','L1','Triple Réchauffeur',1],['V23','L2','Rein',1],
+  ['V24','L3','Qihaishu (RM6)',0],['V25','L4','Gros Intestin',1],['V26','L5','Guanyuanshu (RM4)',0],
+  ['V27','S1','Intestin grêle',1],['V28','S2','Vessie',1],['V29','S3','Sacrum',0],['V30','S4','Sphincter',0]];
+// Ligne externe (3 cun) : points Ben Shen = point Shu + 29
+const SHU_EXT = [['V41','T2',''],['V42','T3','Pohu — Pô (âme corporelle)'],['V43','T4','Gaohuang'],
+  ['V44','T5','Shentang — Shen (esprit)'],['V45','T6',''],['V46','T7',''],
+  ['V47','T9','Hunmen — Hun (âme spirituelle)'],['V48','T10',''],['V49','T11','Yishe — Yi (pensée)'],
+  ['V50','T12',''],['V51','L1',''],['V52','L2','Zhishi — Zhi (volonté)'],['V53','S2',''],['V54','S4','']];
+const BEN_SHEN = ['V42','V44','V47','V49','V52'];
+// Du Mai : [code, ordonnée = entre deux vertèbres, libellé]
+const DM_PTS = [['DM14','C7','Dazhui'],['DM13','T1',''],['DM12','T3',''],['DM11','T5',''],['DM10','T6',''],['DM9','T7',''],
+  ['DM8','T9',''],['DM7','T10',''],['DM6','T11',''],['DM5','L1',''],['DM4','L2','Mingmen — porte de la Vie'],['DM3','L4','']];
+const SHU_REPERES = [['C7','C7 — vertèbre proéminente'],['T3','T3 — épine de l\'omoplate'],['T7','T7 — pointe de l\'omoplate'],
+  ['T9','T9 — ligne du soutien-gorge'],['L4','L4-L5 — crête iliaque'],['S2','S1-S2 — EIPS'],['S4','S4 — sommet du pli fessier']];
+// Mu : [code, organe, x relatif au centre (cun ≈ 20 px), y, bilatéral]
+const MU_PTS = [['LU1','Poumon',-112,96,1],['CV17','Maître du Cœur',0,152,0],['CV14','Cœur',0,240,0],
+  ['LV14','Foie',-80,206,1],['GB24','Vésicule biliaire',-80,228,1],['LV13','Rate',-122,300,1],
+  ['CV12','Estomac',0,280,0],['CV5','Triple Réchauffeur',0,400,0],['GB25','Rein',-134,336,1],
+  ['ST25','Gros Intestin',-40,360,1],['CV4','Intestin grêle',0,420,0],['CV3','Vessie',0,440,0]];
+
+function shuSVG(on, opts){
+  on = on || {}; opts = opts || {};
+  const shu = on.shu || [], hua = on.huatuo || [];
+  const cx = 400, Y = SHU_VERT, o = [];
+  const isOn = code => shu.some(v => v.indexOf('BL'+code.slice(1)+' ') === 0);
+  o.push(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 610" class="shu-svg" font-family="Helvetica, Arial, sans-serif">`);
+  o.push(`<defs><linearGradient id="sm-peau" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#EFCDBD"/><stop offset=".5" stop-color="#F7DFD2"/><stop offset="1" stop-color="#EFCDBD"/></linearGradient></defs>`);
+  o.push(`<text x="${cx}" y="16" font-size="13" font-weight="700" fill="#333" text-anchor="middle">Dos — points Shu 背俞穴</text>`);
+  // Silhouette (dos), omoplates, crête iliaque
+  o.push(`<path d="M ${cx-26} 26 C ${cx-26} 50 ${cx-30} 62 ${cx-60} 70 C ${cx-110} 78 ${cx-150} 84 ${cx-160} 110 L ${cx-168} 220 L ${cx-140} 236
+    C ${cx-132} 300 ${cx-118} 360 ${cx-112} 400 C ${cx-118} 440 ${cx-138} 470 ${cx-140} 520 L ${cx-136} 606 L ${cx+136} 606 L ${cx+140} 520
+    C ${cx+138} 470 ${cx+118} 440 ${cx+112} 400 C ${cx+118} 360 ${cx+132} 300 ${cx+140} 236 L ${cx+168} 220 L ${cx+160} 110
+    C ${cx+150} 84 ${cx+110} 78 ${cx+60} 70 C ${cx+30} 62 ${cx+26} 50 ${cx+26} 26 Z" fill="url(#sm-peau)" stroke="#9A5B4C" stroke-width="2"/>`);
+  [-1,1].forEach(sg => {
+    o.push(`<path d="M ${cx+sg*48} ${Y.T2} L ${cx+sg*58} ${Y.T7} L ${cx+sg*130} ${Y.T2+6} Z" fill="#E9C2B0" fill-opacity=".55" stroke="#B07A69" stroke-width="1.3"/>`);
+    o.push(`<path d="M ${cx+sg*50} ${Y.T3} L ${cx+sg*136} ${Y.T2-4}" stroke="#B07A69" stroke-width="2"/>`);
+    o.push(`<path d="M ${cx+sg*38} ${Y.L4+6} C ${cx+sg*70} ${Y.L4-14} ${cx+sg*110} ${Y.L4-18} ${cx+sg*126} ${Y.L4-2}" fill="none" stroke="#B07A69" stroke-width="2"/>`);
+    o.push(`<path d="M ${cx+sg*10} ${Y.S4+24} C ${cx+sg*40} ${Y.S4+10} ${cx+sg*90} ${Y.S4+20} ${cx+sg*120} ${Y.S4+50}" fill="none" stroke="#B07A69" stroke-width="1.5" stroke-opacity=".7"/>`);
+  });
+  // Huatuo (0,5 cun) : bandes cliquables par segment
+  const HUA = [['Cervical (C1–C7)',30,Y.C7+8],['Thoracique haut (T1–T6)',Y.T1-8,Y.T6+8],['Thoracique bas (T7–T12)',Y.T7-8,Y.T12+8],['Lombaire (L1–L5)',Y.L1-8,Y.L5+8]];
+  HUA.forEach(([lbl,y1,y2]) => {
+    const act = hua.includes(lbl);
+    [-1,1].forEach(sg => o.push(`<rect x="${cx+sg*12-4}" y="${y1}" width="8" height="${y2-y1}" rx="4" fill="${act?'#F5A623':'#C9A99A'}" fill-opacity="${act?.85:.35}"/>`));
+    if(opts.interactive) o.push(`<rect class="sm-zone" data-field="palp-huatuo" data-label="${lbl}" x="${cx-20}" y="${y1}" width="40" height="${y2-y1}" fill="transparent" onclick="shuMuToggle('palp-huatuo','${lbl}')"><title>Huatuojiaji ${lbl} — 0,5 cun latéral aux épineuses : cliquer pour noter</title></rect>`);
+  });
+  // Colonne + vertèbres
+  o.push(`<path d="M ${cx} 30 L ${cx} ${Y.Coccyx}" stroke="#9A7A6E" stroke-width="2"/>`);
+  Object.entries(Y).forEach(([v,y]) => { if(v==='Coccyx') return;
+    o.push(`<rect x="${cx-6}" y="${y-4}" width="12" height="8" rx="2" fill="#fff" stroke="#9A7A6E" stroke-width="1.2"/>`);
+    if(v!=='C7') o.push(`<text x="${cx}" y="${y+3}" font-size="6.5" text-anchor="middle" fill="#5A3A30">${v}</text>`); });
+  o.push(`<text x="${cx}" y="${Y.C7+3}" font-size="6.5" text-anchor="middle" fill="#5A3A30">C7</text>`);
+  // Repères (traits pointillés + légende à gauche)
+  SHU_REPERES.forEach(([v,l]) => { const y = Y[v];
+    o.push(`<text x="132" y="${y+3}" font-size="9" font-style="italic" fill="#8A6D10" text-anchor="end">${l} →</text>`); });
+  o.push(`<text x="132" y="${(Y.T7+Y.T9)/2+3}" font-size="9" font-weight="700" fill="#B3121B" text-anchor="end">T8 : pas de point Shu ✕</text>`);
+  // Du Mai (sur la ligne médiane, entre les épineuses)
+  DM_PTS.forEach(([c,v,l]) => { const y = Y[v]+11;
+    o.push(`<circle cx="${cx}" cy="${y}" r="3.2" fill="#6C3483"><title>${c}${l?' '+l:''} — sous l'épineuse de ${v}</title></circle>`);
+    if(l) o.push(`<text x="${cx+70}" y="${y+3}" font-size="9" fill="#6C3483" text-anchor="start" font-weight="700">${c} ${l.split(' — ')[0]}</text><path d="M ${cx+4} ${y} L ${cx+67} ${y}" stroke="#6C3483" stroke-width=".8" stroke-dasharray="2 2"/>`); });
+  // Ligne externe 3 cun (Ben Shen = Shu + 29)
+  SHU_EXT.forEach(([c,v,l]) => { const y = Y[v], bs = BEN_SHEN.includes(c);
+    [-1,1].forEach(sg => o.push(`<circle cx="${cx+sg*64}" cy="${y}" r="${bs?5:3}" fill="${bs?'#1E6B3A':'#8E8E8E'}"><title>${c}${l?' '+l:''} — 3 cun, niveau ${v}${bs?' (Ben Shen = Shu + 29)':''}</title></circle>`));
+    if(bs) o.push(`<text x="${cx+150}" y="${y+3}" font-size="9.5" fill="#1E6B3A" font-weight="700">${c} ${l}</text><path d="M ${cx+70} ${y} L ${cx+146} ${y}" stroke="#1E6B3A" stroke-width=".8" stroke-dasharray="2 2"/>`); });
+  // Trous sacrés (V31-V34 : « +30 »)
+  ['S1','S2','S3','S4'].forEach((v,i) => [-1,1].forEach(sg => o.push(`<circle cx="${cx+sg*20}" cy="${Y[v]}" r="2.6" fill="#8E8E8E"><title>V${31+i} — ${i+1}e trou sacré (S${i+1} + 30)</title></circle>`)));
+  // Points Shu (1,5 cun)
+  SHU_PTS.forEach(([c,v,org,clic]) => { const y = Y[v], act = clic && isOn(c);
+    [-1,1].forEach(sg => o.push(`<circle cx="${cx+sg*34}" cy="${y}" r="${clic?7:4}" fill="${act?'#D2433A':clic?'#fff':'#B9B9B9'}" stroke="${act?'#8E1F18':clic?'#B3121B':'#8E8E8E'}" stroke-width="${clic?2:1}"/>`));
+    o.push(`<text x="${cx-74}" y="${y+3.5}" font-size="${clic?10:9}" fill="${act?'#B3121B':clic?'#3B1E1B':'#777'}" font-weight="${act?700:clic?600:400}" text-anchor="end">${c} ${org}</text>`);
+    if(opts.interactive && clic) o.push(`<rect class="sm-zone" data-field="palp-shu" data-code="${c}" x="${cx-245}" y="${y-9}" width="290" height="18" fill="transparent" onclick="shuMuToggle('palp-shu','${c}')"><title>${c} ${org} — niveau ${v} (1,5 cun) : cliquer pour noter un point sensible</title></rect>`);
+  });
+  o.push(`<text x="${cx-34}" y="${Y.C7-12}" font-size="8.5" text-anchor="middle" fill="#B3121B">1,5 cun</text><text x="${cx+64}" y="${Y.C7-12}" font-size="8.5" text-anchor="middle" fill="#1E6B3A">3 cun</text>`);
+  o.push(`</svg>`);
+  return o.join('\n');
+}
+
+function muSVG(on, opts){
+  on = on || {}; opts = opts || {};
+  const mu = on.mu || [], cx = 310, o = [];
+  const isOn = code => mu.some(v => v.indexOf(code+' ') === 0);
+  o.push(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 610" class="mu-svg" font-family="Helvetica, Arial, sans-serif">`);
+  o.push(`<defs><linearGradient id="sm-peau-f" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#EFCDBD"/><stop offset=".5" stop-color="#F7DFD2"/><stop offset="1" stop-color="#EFCDBD"/></linearGradient></defs>`);
+  o.push(`<text x="${cx}" y="16" font-size="13" font-weight="700" fill="#333" text-anchor="middle">Face — points Mu 募穴</text>`);
+  o.push(`<path d="M ${cx-26} 26 C ${cx-26} 50 ${cx-30} 62 ${cx-60} 70 C ${cx-110} 78 ${cx-150} 84 ${cx-160} 110 L ${cx-168} 220 L ${cx-140} 236
+    C ${cx-134} 300 ${cx-124} 360 ${cx-118} 400 C ${cx-124} 440 ${cx-140} 470 ${cx-140} 520 L ${cx-136} 606 L ${cx+136} 606 L ${cx+140} 520
+    C ${cx+140} 470 ${cx+124} 440 ${cx+118} 400 C ${cx+124} 360 ${cx+134} 300 ${cx+140} 236 L ${cx+168} 220 L ${cx+160} 110
+    C ${cx+150} 84 ${cx+110} 78 ${cx+60} 70 C ${cx+30} 62 ${cx+26} 50 ${cx+26} 26 Z" fill="url(#sm-peau-f)" stroke="#9A5B4C" stroke-width="2"/>`);
+  // Clavicules, sternum, rebords costaux, ombilic, pubis
+  [-1,1].forEach(sg => {
+    o.push(`<path d="M ${cx+sg*8} 80 C ${cx+sg*50} 74 ${cx+sg*100} 76 ${cx+sg*140} 90" fill="none" stroke="#B07A69" stroke-width="2"/>`);
+    o.push(`<path d="M ${cx+sg*10} 200 C ${cx+sg*60} 240 ${cx+sg*110} 280 ${cx+sg*130} 300" fill="none" stroke="#B07A69" stroke-width="1.6"/>`);
+    o.push(`<circle cx="${cx+sg*80}" cy="152" r="4" fill="#C98E7E"/>`);
+  });
+  o.push(`<path d="M ${cx} 82 L ${cx} 200" stroke="#B07A69" stroke-width="5" stroke-linecap="round" stroke-opacity=".6"/>`);
+  o.push(`<circle cx="${cx}" cy="360" r="5" fill="none" stroke="#9A5B4C" stroke-width="1.6"/>`);
+  o.push(`<path d="M ${cx-50} 462 C ${cx-20} 470 ${cx+20} 470 ${cx+50} 462" fill="none" stroke="#B07A69" stroke-width="1.6"/>`);
+  o.push(`<g font-size="8.5" font-style="italic" fill="#8A6D10"><text x="${cx+8}" y="214">xiphoïde</text><text x="${cx+10}" y="356">ombilic</text><text x="${cx+56}" y="474">pubis</text><text x="${cx+70}" y="140">mamelon</text></g>`);
+  // Repères en cun sur la ligne médiane
+  o.push(`<g font-size="8" fill="#777" text-anchor="end">${[[240,'6 cun ↑'],[280,'4 cun ↑'],[400,'2 cun ↓'],[420,'3 cun ↓'],[440,'4 cun ↓']].map(([y,t])=>`<text x="${cx-12}" y="${y+3}">${t}</text>`).join('')}</g>`);
+  // Points Mu
+  MU_PTS.forEach(([c,org,dx,y,bi]) => {
+    const act = isOn(c), xs = bi ? [cx+dx, cx-dx] : [cx];
+    xs.forEach(x => o.push(`<circle cx="${x}" cy="${y}" r="7" fill="${act?'#D2433A':'#fff'}" stroke="${act?'#8E1F18':'#B3121B'}" stroke-width="2"/>`));
+    const lx = bi ? 134 : 486, anchor = bi ? 'end' : 'start';
+    o.push(`<path d="M ${bi?cx+dx-8:cx+8} ${y} L ${bi?lx+4:lx-4} ${y}" stroke="#B3121B" stroke-width=".7" stroke-dasharray="2 2" opacity=".6"/>`);
+    o.push(`<text x="${lx}" y="${y+3.5}" font-size="10" fill="${act?'#B3121B':'#3B1E1B'}" font-weight="${act?700:600}" text-anchor="${anchor}">${c} ${org}</text>`);
+    if(opts.interactive) xs.forEach(x => o.push(`<circle class="sm-zone" data-field="palp-mu" data-code="${c}" cx="${x}" cy="${y}" r="13" fill="transparent" onclick="shuMuToggle('palp-mu','${c}')"><title>${c} ${org} : cliquer pour noter un point sensible</title></circle>`));
+  });
+  o.push(`</svg>`);
+  return o.join('\n');
+}
+
+
+// Clic sur un point du schéma → coche / décoche l'étiquette existante (même chemin qu'un clic sur l'étiquette)
+function _smTag(field, key){
+  return [...document.querySelectorAll('.tg')].find(t => (t.getAttribute('onclick')||'').indexOf("'"+field+"'")>0 &&
+    (field==='palp-huatuo' ? t.textContent===key : field==='palp-shu' ? t.textContent.indexOf('BL'+key.slice(1)+' ')===0 : t.textContent.indexOf(key+' ')===0)) || null;
+}
+function shuMuToggle(field, key){ const t=_smTag(field, key); if(t) togEx(t, field); renderShuMu(); }
+function renderShuMu(){
+  const a=document.getElementById('shu-schema'), b=document.getElementById('mu-schema');
+  if(!a && !b) return;
+  const v=id=>((document.getElementById(id)||{}).value||'').split(',').map(x=>x.trim()).filter(Boolean);
+  const shu=v('palp-shu'), mu=v('palp-mu'), hua=v('palp-huatuo');
+  if(a) a.innerHTML=shuSVG({shu, huatuo:hua},{interactive:true});
+  if(b) b.innerHTML=muSVG({mu},{interactive:true});
+  // Lecture : organes signalés par le Shu et/ou le Mu (concordance = argument fort)
+  const L=document.getElementById('shumu-lecture'); if(!L) return;
+  const org={};
+  SHU_PTS.filter(p=>p[3]).forEach(([c,,o])=>{ if(shu.some(x=>x.indexOf('BL'+c.slice(1)+' ')===0)) (org[o]=org[o]||{}).shu=c; });
+  MU_PTS.forEach(([c,o])=>{ if(mu.some(x=>x.indexOf(c+' ')===0)) (org[o]=org[o]||{}).mu=c; });
+  const ent=Object.entries(org);
+  L.innerHTML = '<strong style="color:var(--jade)">Lecture Shu / Mu</strong><br>' + (ent.length ? ent.map(([o,x])=>
+    (x.shu&&x.mu ? '🔴 <b>'+o+'</b> — Shu '+x.shu+' et Mu '+x.mu+' sensibles : <b>concordants</b>' :
+     x.shu ? '🟠 '+o+' — Shu '+x.shu+' seul (plutôt chronique, Yang / dos)' : '🟠 '+o+' — Mu '+x.mu+' seul (plutôt aigu, Yin / face)')).join('<br>')
+    + '<div style="font-size:10px;color:var(--slate);font-style:italic;margin-top:3px">Un point Shu et le point Mu du même organe tous deux sensibles désignent l\'organe atteint.</div>'
+    : '<span style="color:var(--slate);font-style:italic">Cliquez sur les points sensibles à la palpation (dos et face).</span>')
+    + (hua.length ? '<br>Huatuojiaji sensibles : '+hua.join(', ') : '');
+}
+document.addEventListener('DOMContentLoaded', ()=>{ try{ renderShuMu(); }catch(e){} });
+
+function renderPoulsSchema(){
+  const el=document.getElementById('pouls-schema'); if(!el) return;
+  const v=id=>((document.getElementById(id)||{}).value||'').split(',').map(x=>x.trim()).filter(Boolean);
+  const pos={}; ['cun-g','cun-d','guan-g','guan-d','chi-g','chi-d'].forEach(f=>pos[f]=v(f));
+  el.innerHTML=poulsSVG({pos, global:[...v('pq-freq'),...v('pq-prof'),...v('pq-force'),...v('pq-forme'),...v('pq')]},{interactive:true});
+}
+document.addEventListener('DOMContentLoaded', ()=>{ try{ renderPoulsSchema(); }catch(e){} });
+
 // Signes proposés au clic sur chaque zone : [champ, libellé exact de l'étiquette]
 const LG_ZONES = {
   pointe:{titre:'Pointe — Cœur · Poumon', opts:[['l-couleur-loc','Pointe rouge (Feu Cœur)'],['l-couleur-loc','Pointe pâle (Vide Cœur-Sang)'],['l-couleur-loc','Points rouges pointe (Chaleur Cœur)'],['l-enduit-dist','Pointe épaisse (Cœur-Poumon)'],['l-forme','Ulcérations / aphtes'],['l-forme','Partiellement gonflée (Chaleur)']]},
   bords:{titre:'Bords — Foie · VB', opts:[['l-couleur-loc','Bords rouges (Feu Foie/VB)'],['l-couleur-loc','Bords pâles (Vide Sang Foie)'],['l-couleur-loc','Points rouges bords (Chaleur Foie)'],['l-couleur-loc','Fissures bords (Vide Yin Foie)'],['l-couleur-loc','Bords violacés (Stase Sang Foie)'],['l-couleur-loc','Taches violacées (Stase de Sang)'],['l-enduit-dist','Bords épais (Foie-VB)'],['l-forme','Marques de dents']]},
   centre:{titre:'Centre — Rate · Estomac', opts:[['l-couleur-loc','Milieu rouge (Chaleur Rate-E.)'],['l-couleur-loc','Fissure médiane (Vide Yin Estomac)'],['l-couleur-loc','Taches violacées (Stase de Sang)'],['l-enduit-dist','Milieu épais (Rate-Estomac)'],['l-enduit-dist','Pelé zone centrale (Yin xu Rate-E.)']]},
-  racine:{titre:'Racine — Rein · Vessie · Intestins', opts:[['l-couleur-loc','Racine rouge (Chaleur Rein)'],['l-enduit-dist','Racine épaisse (Rein, R. inf.)'],['l-enduit-dist','Pelé zone racine (Yin xu Rein)']]},
+  racine:{titre:'Racine — Rein · Vessie · Intestins', opts:[['l-couleur-loc','Racine rouge (Chaleur Rein)'],['l-enduit-dist','Racine épaisse (Rein · R. inf.)'],['l-enduit-dist','Pelé zone racine (Yin xu Rein)']]},
   sous:{titre:'Veines sublinguales', opts:[['l-sublinguale','Normales'],['l-sublinguale','Distendues / gonflées (Stase de Sang)'],['l-sublinguale','Foncées / violacées (Stase de Sang)'],['l-sublinguale','Ramifiées / tortueuses (Stase chronique)'],['l-sublinguale','Rouges (Chaleur)'],['l-sublinguale','Pâles et fines (Vide Qi-Sang)']]},
 };
 function _lgVals(id){ return ((document.getElementById(id)||{}).value||'').split(',').map(v=>v.trim()).filter(Boolean); }
