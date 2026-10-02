@@ -2157,28 +2157,28 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
 // Liste des praticiens autorisés : CHIFFRÉE (ni codes ni noms en clair dans le source publié).
 // Pour ajouter / retirer un praticien : modifier le tableau « Codes ACU MTC.xlsx », puis lancer
 // outils/chiffrer_praticiens.cjs (ou Mettre_a_jour_praticiens.command), puis téléverser ce fichier.
-// ⟦praticiens⟧ — généré par outils/chiffrer_praticiens.cjs le 01/10/2026 14:00:38 (19 praticiens). Ne pas modifier à la main.
-const PRAT_SEL = 'e5Vqy27/kRyISBTeW6jiww==', PRAT_ITER = 200000;
+// ⟦praticiens⟧ — généré par outils/chiffrer_praticiens.cjs le 02/10/2026 08:45:22 (19 praticiens). Ne pas modifier à la main.
+const PRAT_SEL = 'wxUFWzpCByYxvl+kVPdA8w==', PRAT_ITER = 200000;
 const PRATICIENS_CHIFFRES = [
-  '/JYJ+DydxxBfcQX3.SQrzxf9+CGalRuUToCc4D6KbiCnIqZ5h+Ii/pQIzejUYk2SHl3a7UBJmmg8llZKZtkEZLvU37Sg4AZHnFqYv6lm+Jw==',
-  '2W62hfmL/XoGdFnS.b1EnqHndWu4s7NuBH8XlNzzkKJf90G7eqpm0EBaDjtJu14jC4i7kFbz1PujprDiVHxzJ56ljAGJc6mhTebwyJw==',
-  '2haqUme+TUneaKyH.fz8+9erUN0QdAXOmkZo85JvNm6mFhOzPCuSqydaN5gjr/Wje9fWeQh1H2YdBbyDgC+VQwZYHEY1Q4hTqI5LKUdkMbQ==',
-  'L0O4GCjjbQdkQExm.sUJPjZGjUi/qnA0pIophhhJ0hRTfsZNA9rdZDO3YqXuoGirHaHfJnorx6kOKpe8Szj6CXbDh1IYYQopmt/SCpNkEKw==',
-  'PKX/AvI8E7nYvfNU.hZJTwwsDFN8Ix89c0UzEYdbHWMKN5Bwj1Tahr/u4xqJamQFbAv8TWS7Df0LZI8rR8Y7Fbo6jPiKs55QQdMz7a/VUQwstbepH',
-  'V4l6lK1P+yxCj+kU.4fywOkItKYM+el4veBysQ2bPRJkybzug1CCPPj04WGYvyFk9/pcmnPafqV/NaOMSTnhl4b+zWp+dGwhDTjl6WO+EjQUTCA==',
-  'a6reObihxYGK2ray.KH7V0BBtypjFdUSZ2QbJpGUe8OIL5+s7y3ZsSWflgh6LCpQE1/g5CLv+amw46YYvlFAfZ/vJUwHTcARXMTE=',
-  'ahL/KA74/5UcVpzX.lyZkMj8bfgqV54+cxWdp6ZAI/w5h2MIA6B+TKrAIuYvYm7BUMyTh5jP9ZTbwtroQVOMLPE2bPHWmyyPnBPCmc3uqRpY0GtA=',
-  'cpALb0v9kzS730iG.okTjQTUjMmPMr08yacN2B17MnG/YnwURtk4h3Tz3pagC/JGeUQTYKMIDrBhQxQGfxly+kHfjSuyz3Hti7IWCv68pzbjPLwE=',
-  'dmeNOZczkk6DbP04.5+x4yVBMSU1QWNnKLbLqz7rDw79Kir8RTZTBje8XCeEgLgc79LUyeAPXk4Bl0DGTkZ6BxMAbvQ+YxhSp6sm8dN4=',
-  'eX2K8bpwCTsPdqjr.i32Z5z+npct7s9JLu2e2gn26obGRDCwP64v0J2nHRu6S0+06eLoa924JZSMoE01VNTvk0iVO3P0v3IdcGaWqGn2bNA==',
-  'hq8qjQ/qy0xQOKXT.of+mVDFIpMfCEuGarxPN/IjoeVg79G2S4VOw1kf2y4gCjmbt6yqLB2gNRv9g3LqGhseXh7dtTDL2xKvuL+i73qE7Jsw=',
-  'k9Xb3TjhSPzzGZxw.eCPS5Jpqd/89cQoUdBmpdap9MoEPdtoXFNoYWsA9Rnxd8FI2r4n15v8s/m9KDBe7tfTlyt+2Qpg+gvlGwLN9nLUR1DLPgNb15w==',
-  'lTUgwgWZTHHxj0vn.vb58P6J/Yei80rUnD7F2tdkdEUdZ4wOrtJR+hIx2OOYZ0OmA7jLMXI3hfRj0Cfz6p+Bao4lphFbh7wwoXfeI',
-  'ooNTEp3e0SpV18gq.SC3+RNw9On88CIppnSYW58DdtB+37XwJP0JM4xusJQH5FDi9nCmog/TR4iCTdtvxeqz1U7FgybmnmU5hC3zy6USG',
-  'pFlOqlftU/JIhMGT.etOz/xgPONRM6uFmSjV96hdG60MHz9eGqBULOiUZmEF4hYhVaJAHTlsurMr0G1hLPNBnYsuwNIs1VEyj9wQNYh4izUxn',
-  'uIbB+d9NVqn7gLcE.O8qIJIX47mem0JQxYutKho8CK/icETh/oTQ3ltNn0PmlcT6TfbloKSTsKb+Z1VzwEHHStPwWdjlHtZOUaH0Gz/VDaTE=',
-  'xNTBQ+v6cuiFq1d5.rf4DBDRRtB/xxhok1vjKA4lCgyL1q1b29xc2svM//IRSQetekUa4PXe8lRD1Jt+Ym899LoMT2ubWtyPwqKH5aWEcpVPjug==',
-  'yUaBZWG87z35meC4.ZrJpxUPxhw8otG+8nL8GlFEHwKXx1cvWD+gvXATZo7J6Qatw4MQVTZ4Mli73//J1PDem6K0o+8URqtS0jxW3hzJ0NBBqkHnc'
+  '0cZsVTYSWo8S27lj.NPBL41eJjUZzgMTN6K12FQjJ8uLqgg79rQ+KGklOtuFyPI7l3OE3j/fvc2Aj6c755RJeOqY8YBs6occjDOExPGiWkx1i6G8=',
+  'AnCLiMQ5S1UtfZ9N.P/ADdUGuC5BTRkd1+fDiXDnOH0r4SqRoc//UK1wArDQxOQf1MZNwo2yUsOeTFcI0bHmg5RfTeX5h3rPjv2lJp6n7XJasbBA=',
+  'BRCHDT8lJ4skCPNx.XLLXXw7YDvN/uYEk/scID5yLPos9iE5fcHukAKjRkds6hhdWl1rri1davO4VdGihV4BIx13+oSdz+1+pgw8nXaKED32vbadm2Q==',
+  'EhyHd82hRnSWRpCh.e3mK+F6sffSKG9hf9nXh7ObWNnfce4+mQ6P8aL+4l7zZ969RDu7FIBM5V9Qd7tn4KuqxKOfypNF4x9iVcD/5E2fZcko=',
+  'G12RA6RP2i4Nm8Rl.CbMVBcCFN2jczbcBKLqMSdar/8bdBXG8xaovVvXnWzQxVkw4whoOsx6ecJkudnxF/B1Nf65q1UoJGAVG4cYTwz6uaA==',
+  'RWk2J8nJvSBWIMSF.vi/ySRV34mNg5mWOOaYuidJw2LlS2YTUYKAH8dAFzsgYvO/77GUkY71aDuY8vr8KT8XIhoteHyLw/4/Pok7cXlS/ZTm4hQ==',
+  'Rx2hTE2Cs6u8TJMW.0EK0H9uUR+d2Q6f+MMfJpNbl4JV3ow5GyjDkD0r29VoE9hhSJMMZgZgMfceOdXJQMMC3dIgP7Iq/tDJc+Yk=',
+  'TxN+x7mwwfhwzpKa.ukB8dA4y4yCVJ/2lwXF7Rou62R2c6lQREdXZhffn2Ptpb5yQPqa3vxCmqcp+mofUcaCCxLfaZXvYWTwVeUJgRbDSfCZv1w==',
+  'VR9Qe6yfa/lbujKp.GhFj2KADSPWcYQfTmtNWA5lkBPA/mqms3exvqJy615mxSx2mWjqsP3IZBZz5p9/99fJQuRT+z259jL/h+wvtwxWTCQ==',
+  'Vt5w7OPPYlokfiPe.RNAc+0rqUt/5Bfc9C2Bojh8wN7Woj+ZesxkyX3Oy0hKkw+r6ZqjZ4SDlr+EX9khdH4vld+JfLsKPMicdPabQMB1R',
+  'gpRd0AAFZ7wBKo5T.BlXFlHQxqn9emcrrUe6Z+wr40DP4zhBv6M8UvB+p2us7S3no4E0r1uM5OKnIwd3a2H+eyDsIdHx5JuSgrIFhKQ==',
+  'hJzU64iASHZ+PSKg.JaX1tyDtR3GNG+GM2me0fFYNeYwdWl7GJN7tpgHD/4hNrGgdPd4ycFjLvg/K+G+Ax9kIOzMxmthzrNYyW4d598KULeTs8/7t',
+  'kKGNHkiZlYOd2kiE.ZvMMNz4lNPvPGq1jeKuO6zmA/3k+X2KlnBv9dnL/4QNyy5sSVLv3nMlcxm5s8/jJusYXiwVLyvrtwXdeuAAfJVd/ip8qleRH',
+  'lA9xU3xlFt8iA2oR.eBHMtXpeTOADv+cRFZE0yNl7X1vXK0hX5v2UMBB1qhF31ojTvPa0jFCnmMwJhj+eVM6T5oaSjPpt0mhBO+1TpBXCpQ==',
+  'lkha6xE/Cy3gFlM7.xG+H2p4UOJJy+mbIj1PUcW2/RZ8ady4p6n1bu0P8NrHmiPy5mJlN7FcFmNBpODeQa3NhKgMU1g2F6Udf8MWO3oxorg==',
+  'q26GB6HEAqd+Xht4.LfCiQsxxvz+dkvgxQKoc2bjBwpr500B9XLo+Wtuqq/bE3GNu1+VwcDmOlceJyUUv5sR82LjrtujB4X5YJZphTvC7ssPS',
+  'sjfHmUufV1sG1ESV.FTib8JWgaApMdfEPWhqzFpmSirQyzUDfV+ALuJJuwZ4FrqgYjNpd2aEiTZcD8Wz1v8xNG4BgjWSIzXNFQ4/h',
+  'x3NaESqbXZOnxUTV.Gg9GckH3SASllo3BYK6iWbhoM85ye6MrpakSXzjqyJ/OGkohrtfCKOmUw97ZsrAYQkul9pl6jODT3pfqhVaVn2U=',
+  'zEPmH18kdcyxrDU0.ghz/FRAnhGpMK2+yYuytfISDae2weoFAbsgKPnptOVPROSTZcvGAMJnESHmtTCTVoHnEJha9MvTBYsFoW2yMIS7honQ='
 ];
 // ⟦/praticiens⟧
 
