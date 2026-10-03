@@ -196,6 +196,8 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
 @keyframes ezpulse{0%,100%{stroke:#1B4B8A;stroke-width:3}50%{stroke:#1B4B8A;stroke-width:16}}
 .ez-open-btn{font-size:11px;padding:3px 9px;margin-top:4px}
 .ez-tab{font-size:12px!important}
+#courrier-modal{position:fixed;inset:0;background:rgba(20,24,22,.6);z-index:9000;display:none;align-items:center;justify-content:center}
+#courrier-modal.open{display:flex}
 #sch-zoom{position:fixed;inset:0;background:rgba(20,24,22,.6);z-index:9000;display:none;align-items:center;justify-content:center}
 #sch-zoom.open{display:flex}
 .sz-stage{flex:1;overflow:auto;background:#fff;padding:8px}
@@ -304,6 +306,22 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
           <div class="f"><label>Email</label><input id="p-email" type="email" oninput="markDirty()"></div>
           <div class="f" style="grid-column:1/-1"><label>Motif initial</label><textarea id="p-motif" rows="2" oninput="markDirty()"></textarea></div>
           <div class="f"><label>Praticien</label><input id="p-praticien" oninput="markDirty()"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="ct">Médecin adresseur</div>
+        <div class="fg">
+          <div class="f"><label>Nom (avec titre)</label><input id="p-med-nom" placeholder="ex : Dr Claire Martin" oninput="markDirty()"></div>
+          <div class="f"><label>Spécialité</label><input id="p-med-spe" placeholder="ex : Médecine générale" oninput="markDirty()"></div>
+          <div class="f" style="grid-column:1/-1"><label>Adresse</label><textarea id="p-med-adr" rows="2" oninput="markDirty()"></textarea></div>
+          <div class="f"><label>E-mail (messagerie sécurisée de préférence)</label><input id="p-med-email" type="email" oninput="markDirty()"></div>
+          <div class="f"><label>Formule d'appel</label><select id="p-med-formule" onchange="markDirty()">
+            <option value="Chère Consœur, cher Confrère,">Chère Consœur, cher Confrère,</option>
+            <option value="Cher Confrère,">Cher Confrère,</option>
+            <option value="Chère Consœur,">Chère Consœur,</option>
+            <option value="Cher Docteur,">Cher Docteur,</option>
+            <option value="Madame, Monsieur,">Madame, Monsieur,</option>
+          </select></div>
         </div>
       </div>
       <div class="card">
@@ -469,7 +487,7 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
             <div style="margin:2px 0 0 14px;color:var(--slate)">Seuils de la norme CACM 2009 : constitution non équilibrée <em>présente</em> ≥ 40, <em>tendance</em> 30-39 ; constitution <em>Équilibrée</em> retenue seulement si ≥ 60 <u>et</u> toutes les autres &lt; 30 (« plutôt présente » si toutes &lt; 40). Une constitution présente compte pour +3 dans l'analyse des syndromes, une tendance pour +1.</div>
           </div>
           <div style="margin-top:4px"><strong style="color:var(--jade)">📍 Points</strong> — en tête de page, le panneau <strong>Convergence des points</strong> regroupe tout ce que proposent le syndrome, l'analyse méridienne, le motif (EBM, Mode Urgence, péri-opératoire), le protocole gynécologique et la palpation Shu/Mu, classé par nombre de sources concordantes ; il s'affiche dès que le motif est saisi ; un clic ajoute le socle de séance (6 à 12 points, réglable) et les points d'oreille les plus convergents. Puis syndromes retenus, prescription de points (syndrome MTC, EBM, Référentiel Sorbonne Paris Nord, libres, auriculothérapie). Ajoutez un point libre en tapant son <strong>code puis Entrée</strong> — le curseur reste actif pour enchaîner plusieurs points sans reprendre la souris. Une fois vos points cochés sur les différents axes, cliquez <strong>✅ Valider et aller vers Synthèse →</strong> pour tout rassembler automatiquement (points, principe de traitement, technique, syndrome retenu) dans le compte-rendu.</div>
-          <div style="margin-top:4px"><strong style="color:var(--jade)">✨ Synthèse</strong> — compte-rendu de séance, principe de traitement, conseils, prochain rendez-vous. Si vous arrivez ici sans passer par « Valider vers Synthèse », les champs encore vides se remplissent automatiquement depuis ce qui est coché/rempli dans Points. L'outil IA « Analyse à partir du motif » y extrait aussi automatiquement les points cités dans la réponse de l'IA pour les cocher en un clic dans « Points réalisés ».</div>
+          <div style="margin-top:4px"><strong style="color:var(--jade)">✨ Synthèse</strong> — compte-rendu de séance, principe de traitement, conseils, prochain rendez-vous. Le bouton <strong>✉ Courrier au médecin adresseur</strong> rédige une lettre à partir de la Synthèse et de la rubrique « Médecin adresseur » de la fiche Identité : modifiable, à copier, imprimer (ou enregistrer en PDF) ou ouvrir dans la messagerie, et enregistrée avec la séance. Si vous arrivez ici sans passer par « Valider vers Synthèse », les champs encore vides se remplissent automatiquement depuis ce qui est coché/rempli dans Points. L'outil IA « Analyse à partir du motif » y extrait aussi automatiquement les points cités dans la réponse de l'IA pour les cocher en un clic dans « Points réalisés ».</div>
           <div><strong style="color:var(--jade)">📅 Séances</strong> — historique, séances « 🕐 en préparation » (brouillon) vs « ✅ réalisées », suppression possible.</div>
           <div style="margin-top:4px"><strong style="color:var(--jade)">📚 Référentiel MTC</strong> — catalogue de référence et outil d'apprentissage : transcription des tableaux et associations de points du cours « Règles thérapeutiques » de Sorbonne Paris Nord (principes thérapeutiques, Shu antiques, points Yuan/Luo/Xi/Hui/Mu/Bei Shu, Xia-He, méthodes traditionnelles, localisation de la douleur, indications empiriques, associations de points, table des synonymes). Il <strong>documente</strong> les points mais n'en propose pas automatiquement : on y a recours <strong>en cas d'échec</strong> ou pour affiner un traitement qui traîne, après la méthode des méridiens et des Zang-Fu. Utilisation : tapez un <strong>point</strong> (E36, ST36, RP6, VB 34… toutes notations acceptées) pour voir toutes ses mentions, ou un <strong>symptôme</strong> (insomnie, dysménorrhée…) pour retrouver les tableaux concernés ; cliquez sur n'importe quel code de point pour afficher son index complet. Le menu déroulant permet de se limiter à un chapitre. Dans la fiche d'un méridien, les schémas des Shu antiques sont cliquables pour cocher les points dans « Points réalisés ».</div>
         </div>
@@ -2137,7 +2155,9 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
         <button class="btn bg" onclick="genSynthAI()">✨ Générer synthèse IA</button>
         <button class="btn bg" onclick="saveSeance()">💾 Enregistrer séance</button>
         <button class="btn" onclick="exportPatient()">⬇ Export Excel</button>
+        <button class="btn" onclick="ouvrirCourrier()" title="Lettre au médecin qui a adressé le patient, rédigée à partir de cette synthèse">✉ Courrier au médecin adresseur</button>
       </div>
+      <textarea id="s-courrier" style="display:none" oninput="markDirty()"></textarea>
 
 
     </div>
@@ -3392,6 +3412,8 @@ function loadFiche(){
   s('p-nom',curPt.nom);s('p-prenom',curPt.prenom);s('p-ddn',curPt.ddn);s('p-age',curPt.age);
   s('p-sexe',curPt.sexe);s('p-prof',curPt.prof);s('p-tel',curPt.tel);s('p-email',curPt.email);
   s('p-motif',curPt.motif);s('p-praticien',curPt.praticien);
+  const med=curPt.medecin||{}; s('p-med-nom',med.nom||'');s('p-med-spe',med.spe||'');s('p-med-adr',med.adr||'');s('p-med-email',med.email||'');
+  { const f=document.getElementById('p-med-formule'); if(f) f.value=med.formule||'Chère Consœur, cher Confrère,'; }
   s('p-atcd',curPt.atcd);s('p-traitement',curPt.traitement);s('p-allergies',curPt.allergies);s('p-vie',curPt.vie);
   s('p-sa',curPt.sa);
   toggleSAfield();
@@ -3402,6 +3424,7 @@ async function savePatient(){
   curPt.nom=g('p-nom');curPt.prenom=g('p-prenom');curPt.ddn=g('p-ddn');curPt.age=g('p-age');
   curPt.sexe=g('p-sexe');curPt.prof=g('p-prof');curPt.tel=g('p-tel');curPt.email=g('p-email');
   curPt.motif=g('p-motif');curPt.praticien=g('p-praticien');curPt.sa=g('p-sa');
+  curPt.medecin={nom:g('p-med-nom'),spe:g('p-med-spe'),adr:g('p-med-adr'),email:g('p-med-email'),formule:g('p-med-formule')};
   curPt.atcd=g('p-atcd');curPt.traitement=g('p-traitement');curPt.allergies=g('p-allergies');curPt.vie=g('p-vie');
   if(!curPt.seances)curPt.seances=[];
   const id=await dbPut(curPt);if(!curPt.id)curPt.id=id;
@@ -3641,7 +3664,7 @@ function loadSeance(sc){
   const syn=sc.syn||{};
   s('s-motif',syn.motif);s('s-syndromes',syn.syndromes);s('s-principe',syn.principe);
   s('s-points',syn.points);s('s-tech',syn.tech);s('s-duree',syn.duree);
-  s('s-react',syn.react);s('s-conseils',syn.conseils);s('s-cr',syn.cr);s('s-rdv',syn.rdv);
+  s('s-react',syn.react);s('s-conseils',syn.conseils);s('s-cr',syn.cr);s('s-rdv',syn.rdv);s('s-courrier',syn.courrier||'');
   s('dix-prep-notes',syn.prepNotes);
   // Sync motif vers la bannière 10+1 Questions
   const motifInp=document.getElementById('dix-motif-input');
@@ -3712,7 +3735,7 @@ function collectSc(){
   const sEl=document.getElementById('s-motif');if(sEl&&motifVal)sEl.value=motifVal;
   sc.syn={motif:motifVal,syndromes:g('s-syndromes'),principe:g('s-principe'),
     points:g('s-points'),tech:g('s-tech'),duree:g('s-duree'),
-    react:g('s-react'),conseils:g('s-conseils'),cr:g('s-cr'),rdv:g('s-rdv'),
+    react:g('s-react'),conseils:g('s-conseils'),cr:g('s-cr'),rdv:g('s-rdv'),courrier:g('s-courrier'),
     prepNotes:g('dix-prep-notes')};
   return sc;
 }
@@ -11246,6 +11269,116 @@ function clearForms(){
   // Réinitialiser résultats CCMQ visuels
   buildCCMQRes();
 }
+// ══════ COURRIER AU MÉDECIN ADRESSEUR (3 oct. 2026) ══════
+// Rédigé à partir de la Synthèse de la séance affichée (motif, syndromes, principe, points, technique,
+// conseils, prochain rendez-vous) et de la fiche (patient, médecin adresseur). Modifiable ; enregistré dans
+// la séance (syn.courrier). N'invente rien : une rubrique vide de la Synthèse est simplement omise.
+function _courrierPoints(txt){
+  // « Syndrome: E36 Zusanli — SP6 » / « Points: … — Oreille — Shen Men » / « [Auri] Auri:Shen Men · Auri:Foie »
+  // → points corporels en notation française, puis points d'oreille regroupés
+  const corps = [], oreille = [];
+  const fr = x => { const m = x.match(/^(\S+)(.*)$/); if(!m) return x; const c = MTCNorm.ptCode(m[1]);
+    return /^([A-Z]{1,3}\d+|EX-[A-Z]+-?\d+)$/.test(c) ? MTCNorm.ptFR(c) + m[2] : x; };
+  String(txt||'').split('\n').map(l => l.trim()).filter(Boolean).forEach(l => {
+    if(/^\[Auri\]/.test(l)){ l.replace(/^\[Auri\]\s*/,'').split(/\s*·\s*/).forEach(x => { x = x.replace(/^Auri:/,'').split(' — ')[0].trim(); if(x) oreille.push(x); }); return; }
+    l = l.replace(/^(Syndrome|EBM|Gynéco|Points)\s*:\s*/,'').replace(/ — convergence \([^)]*\)/g,'').replace(/Oreille — /g,'Oreille::');
+    l.split(' — ').map(x => x.trim()).filter(Boolean).forEach(x => {
+      if(x.startsWith('Oreille::')) oreille.push(x.slice(9)); else if(!/^(péri-op|urgence)/i.test(x)) corps.push(fr(x)); });
+  });
+  const uniq = a => [...new Set(a)];
+  return [uniq(corps).join(', '), oreille.length ? 'auriculothérapie : ' + uniq(oreille).join(', ') : ''].filter(Boolean).join(' ; ');
+}
+function _courrierDate(d){ try{ return new Date(d+'T00:00:00').toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'}); }catch(e){ return d; } }
+function genererCourrier(){
+  const g = id => ((document.getElementById(id)||{}).value||'').trim();
+  const p = (typeof curPt!=='undefined' && curPt) ? curPt : {};
+  const sexe = g('p-sexe') || p.sexe || '', F = sexe==='Féminin';
+  const civ = F ? 'Mme' : sexe==='Masculin' ? 'M.' : '';
+  const nomPt = [g('p-prenom'), g('p-nom').toUpperCase()].filter(Boolean).join(' ') || '[patient]';
+  const ddn = g('p-ddn'), age = g('p-age');
+  const sc = (curScIdx!==null && p.seances) ? p.seances[curScIdx] : null;
+  const dateSc = _courrierDate(sc && sc.date ? sc.date : new Date().toISOString().slice(0,10));
+  const num = curScIdx!==null ? curScIdx+1 : (p.seances||[]).length+1;
+  const medNom = g('p-med-nom'), formule = g('p-med-formule') || 'Chère Consœur, cher Confrère,';
+  const confraternel = !/^Madame, Monsieur/.test(formule);
+  const motif = g('s-motif') || g('dix-motif-input');
+  const synd = g('s-syndromes').replace(/\s*\(suggéré par l'analyse\)/g,'');
+  const pts = _courrierPoints(g('s-points'));
+  const prat = (typeof currentPraticien!=='undefined' && currentPraticien && currentPraticien.nom && !currentPraticien.local)
+    ? ((currentPraticien.titre ? currentPraticien.titre+' ' : '') + currentPraticien.nom) : g('p-praticien');
+  const patientE = F ? 'votre patiente' : 'votre patient';
+  const L = [];
+  if(prat) L.push(prat, '');
+  L.push('Le ' + _courrierDate(new Date().toISOString().slice(0,10)), '');
+  L.push(medNom || '[Médecin adresseur]'); if(g('p-med-spe')) L.push(g('p-med-spe')); if(g('p-med-adr')) L.push(...g('p-med-adr').split('\n'));
+  L.push('', 'Objet : ' + [civ, nomPt].filter(Boolean).join(' ') + (ddn ? ', ' + (F?'née':'né') + ' le ' + _courrierDate(ddn) : '') + ' — consultation d\'acupuncture du ' + dateSc, '');
+  L.push(formule, '');
+  const qui = [civ, nomPt].filter(Boolean).join(' ') + (age ? ', ' + age : '');
+  L.push(num <= 1
+    ? 'Je vous remercie de m\'avoir adressé ' + patientE + ' ' + qui + ', que j\'ai reçu' + (F?'e':'') + ' le ' + dateSc + ' en consultation d\'acupuncture' + (motif ? ' (motif : ' + motif.replace(/[.\s]+$/,'') + ')' : '') + '.'
+    : 'Je vous donne des nouvelles de ' + patientE + ' ' + qui + ', que j\'ai revu' + (F?'e':'') + ' le ' + dateSc + ' pour sa ' + num + 'e séance d\'acupuncture' + (motif ? ' (' + motif.replace(/[.\s]+$/,'') + ')' : '') + '.');
+  const par = [];
+  if(synd) par.push('Le bilan selon la médecine traditionnelle chinoise retrouve : ' + synd.replace(/[.\s]+$/,'') + '.');
+  if(g('s-principe')) par.push('Principe de traitement : ' + g('s-principe').replace(/[.\s]+$/,'') + '.');
+  const modal = [g('s-tech').replace(/[.\s]+$/,''), g('s-duree') ? 'durée ' + g('s-duree') : ''].filter(Boolean).join(', ');
+  if(pts) par.push('Points réalisés' + (modal ? ' (' + modal + ')' : '') + ' : ' + pts.replace(/[.\s]+$/,'') + '.');
+  if(g('s-react')) par.push('Pendant la séance : ' + g('s-react').replace(/[.\s]+$/,'') + '.');
+  if(g('s-conseils')) par.push('Conseils donnés : ' + g('s-conseils').replace(/[.\s]+$/,'') + '.');
+  if(par.length) L.push('', ...par);
+  const cr = document.getElementById('courrier-cr');
+  if(cr && cr.checked && g('s-cr')) L.push('', g('s-cr'));
+  if(g('s-rdv')) L.push('', 'Une prochaine séance est prévue le ' + _courrierDate(g('s-rdv')) + '.');
+  L.push('', 'Je reste à votre disposition pour tout renseignement complémentaire.', '', confraternel ? 'Bien confraternellement,' : 'Je vous prie d\'agréer, Madame, Monsieur, mes salutations distinguées.');
+  if(prat) L.push('', prat);
+  return L.join('\n');
+}
+function _courrierAlertes(){
+  const g = id => ((document.getElementById(id)||{}).value||'').trim();
+  const a = [];
+  if(!g('p-med-nom')) a.push('⚠️ Médecin adresseur non renseigné : complétez la rubrique « Médecin adresseur » de la fiche Identité, puis ↻ Régénérer.');
+  if(/suggéré par l'analyse/.test(g('s-syndromes'))) a.push('⚠️ Le syndrome cité est celui suggéré par l\'analyse : vérifiez qu\'il correspond à votre diagnostic.');
+  if(!g('s-points')) a.push('ℹ️ Aucun point dans la Synthèse : la rubrique « Points réalisés » est omise.');
+  const el = document.getElementById('courrier-alertes');
+  if(el) el.innerHTML = a.map(x => '<div style="color:' + (x.startsWith('⚠️') ? '#92400E' : 'var(--slate)') + '">' + x + '</div>').join('');
+}
+function ouvrirCourrier(){
+  if(typeof autoFillSynthese==='function') autoFillSynthese();
+  const t = document.getElementById('courrier-texte'), s = document.getElementById('s-courrier');
+  t.value = (s && s.value.trim()) ? s.value : genererCourrier();
+  if(s) s.value = t.value;
+  _courrierAlertes();
+  document.getElementById('courrier-modal').classList.add('open');
+  document.addEventListener('keydown', _courrierKey);
+}
+function regenererCourrier(){
+  const t = document.getElementById('courrier-texte');
+  t.value = genererCourrier(); document.getElementById('s-courrier').value = t.value; markDirty(); _courrierAlertes();
+}
+function fermerCourrier(){
+  document.getElementById('courrier-modal').classList.remove('open');
+  document.removeEventListener('keydown', _courrierKey);
+}
+function _courrierKey(e){ if(e.key==='Escape') fermerCourrier(); }
+function copierCourrier(){
+  const t = document.getElementById('courrier-texte');
+  const ok = () => showToast('Courrier copié');
+  if(navigator.clipboard) navigator.clipboard.writeText(t.value).then(ok, () => { t.select(); document.execCommand('copy'); ok(); });
+  else { t.select(); document.execCommand('copy'); ok(); }
+}
+function imprimerCourrier(){
+  const txt = document.getElementById('courrier-texte').value;
+  const esc = x => x.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const w = window.open('', '_blank');
+  if(!w){ showToast('Autorisez les fenêtres pour imprimer'); return; }
+  w.document.write('<!doctype html><html lang="fr"><head><meta charset="utf-8"><title>Courrier</title><style>@page{margin:22mm 20mm}body{font-family:Georgia,"Times New Roman",serif;font-size:12pt;line-height:1.5;color:#111;white-space:pre-wrap;margin:0}</style></head><body>' + esc(txt) + '</body></html>');
+  w.document.close(); w.focus(); setTimeout(() => w.print(), 150);
+}
+function envoyerCourrier(){
+  const txt = document.getElementById('courrier-texte').value;
+  const mail = ((document.getElementById('p-med-email')||{}).value||'').trim();
+  const objet = (txt.split('\n').find(l => l.startsWith('Objet : ')) || 'Objet : Consultation d\'acupuncture').replace('Objet : ','');
+  window.location.href = 'mailto:' + mail.replace(/[^\w.@+-]/g,'') + '?subject=' + encodeURIComponent(objet) + '&body=' + encodeURIComponent(txt);
+}
 function fmtD(d){if(!d)return'';try{return new Date(d+'T00:00:00').toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'});}catch(e){return d;}}
 // ══════ CONFIDENTIALITÉ DES ENVOIS À L'IA (1er oct. 2026) ══════
 // Rien n'identifie le patient dans ce qui part vers un service d'IA : nom et prénom retirés des gabarits,
@@ -12257,6 +12390,24 @@ function _flushUrgPending(navigateBack){
   </div>
 </div>
 <!-- Schémas d'examen agrandis (langue, pouls, Shu/Mu) : copie du schéma de la page, actualisée à chaque clic -->
+<div id="courrier-modal" onclick="if(event.target===this)fermerCourrier()">
+  <div class="ez-box" role="dialog" aria-label="Courrier au médecin adresseur" style="height:min(95vh,900px)">
+    <div class="ez-bar">
+      <strong style="font-size:13px;color:var(--jade);flex:1">✉ Courrier au médecin adresseur</strong>
+      <label style="font-size:11px;display:flex;gap:4px;align-items:center"><input type="checkbox" id="courrier-cr" onchange="regenererCourrier()"> Inclure le compte-rendu clinique</label>
+      <button class="btn" onclick="regenererCourrier()" title="Réécrire la lettre à partir de la synthèse actuelle (vos modifications seront remplacées)">↻ Régénérer</button>
+      <button class="btn" onclick="fermerCourrier()" title="Fermer (Échap)">✕</button>
+    </div>
+    <div id="courrier-alertes" style="padding:6px 12px;font-size:11px;display:grid;gap:3px"></div>
+    <textarea id="courrier-texte" oninput="document.getElementById('s-courrier').value=this.value;markDirty()" style="flex:1;margin:0 12px;padding:14px 16px;font-family:Georgia,'Times New Roman',serif;font-size:13.5px;line-height:1.55;border:1px solid var(--border);border-radius:6px;resize:none"></textarea>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:10px 12px">
+      <button class="btn bg" onclick="copierCourrier()">📋 Copier</button>
+      <button class="btn bg" onclick="imprimerCourrier()">🖨 Imprimer / PDF</button>
+      <button class="btn" onclick="envoyerCourrier()">✉ Ouvrir dans la messagerie</button>
+      <span style="font-size:10px;color:var(--slate);flex:1;min-width:220px">La lettre est enregistrée avec la séance. Le patient doit être informé de cet échange et ne pas s'y être opposé ; pour un envoi électronique, préférez une messagerie sécurisée de santé (MSSanté).</span>
+    </div>
+  </div>
+</div>
 <div id="sch-zoom" onclick="if(event.target===this)closeSchemaZoom()">
   <div class="ez-box" role="dialog" aria-label="Schéma agrandi">
     <div class="ez-bar">
