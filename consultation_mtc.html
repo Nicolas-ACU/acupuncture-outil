@@ -218,7 +218,7 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
 .pq-zone{cursor:pointer}
 .pq-zone:hover{fill:rgba(27,75,138,.12)}
 .lg-zone:hover{fill:rgba(27,75,138,.10)}
-.lg-menu{position:fixed;z-index:9600;background:#fff;border:1px solid var(--border);border-radius:8px;box-shadow:0 6px 24px rgba(0,0,0,.18);padding:8px 10px;min-width:230px;max-width:300px}
+.lg-menu{position:fixed;z-index:9600;max-height:calc(100vh - 8px);overflow-y:auto;overscroll-behavior:contain;background:#fff;border:1px solid var(--border);border-radius:8px;box-shadow:0 6px 24px rgba(0,0,0,.18);padding:8px 10px;min-width:230px;max-width:300px}
 .lg-menu h4{margin:0 0 6px;font-size:11px;color:var(--jade);text-transform:uppercase;letter-spacing:.3px}
 .lg-menu label{display:flex;gap:6px;align-items:flex-start;font-size:12px;padding:3px 0;cursor:pointer;line-height:1.3}
 .lg-menu input{width:auto;margin-top:2px;flex:none}
@@ -909,7 +909,7 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
             </table>
 
             <!-- Popup sélecteur de qualités -->
-            <div id="pouls-popup" style="display:none;position:fixed;z-index:9600;background:#fff;border:1px solid var(--border);border-radius:10px;box-shadow:0 4px 20px rgba(0,0,0,.15);padding:12px;width:320px">
+            <div id="pouls-popup" style="display:none;position:fixed;z-index:9600;max-height:calc(100vh - 12px);overflow-y:auto;overscroll-behavior:contain;background:#fff;border:1px solid var(--border);border-radius:10px;box-shadow:0 4px 20px rgba(0,0,0,.15);padding:12px;width:320px">
               <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
                 <div id="pouls-popup-title" style="font-size:12px;font-weight:700;color:var(--jade)"></div>
                 <button onclick="closePoulsSelector()" style="border:none;background:none;font-size:16px;cursor:pointer;color:var(--slate);line-height:1">✕</button>
@@ -5717,13 +5717,7 @@ function openPoulsSelector(fieldId, cell) {
   const title = document.getElementById('pouls-popup-title');
   const tagsEl = document.getElementById('pouls-popup-tags');
 
-  // Position popup near cell
-  // La fenêtre est en position:fixed : coordonnées de l'écran (l'ancien + scrollY la décalait
-  // dès que la page était défilée). Au-dessus de la cellule s'il n'y a pas la place en dessous.
-  const rect = cell.getBoundingClientRect();
-  const below = rect.bottom + 6, h = 430;
-  popup.style.top = Math.max(6, (below + h > window.innerHeight && rect.top - h - 6 > 0) ? rect.top - h - 6 : below) + 'px';
-  popup.style.left = Math.max(6, Math.min(rect.left, window.innerWidth - 340)) + 'px';
+  _poulsCell = cell;
 
   title.textContent = POULS_LABELS[fieldId] || fieldId;
 
@@ -5749,7 +5743,33 @@ function openPoulsSelector(fieldId, cell) {
   if (libre) libre.value = '';
 
   popup.style.display = '';
+  placerPoulsPopup();
 }
+
+// Position de la fenêtre des pouls (position:fixed, coordonnées de l'écran), calculée APRÈS remplissage
+// avec sa hauteur RÉELLE (04/10/2026, signalement d'un testeur sous Chrome) : l'ancienne hauteur supposée
+// de 430 px était inférieure à la hauteur réelle (~500 px) ; sur un écran d'ordinateur portable, le bas
+// de la fenêtre (Force, Forme, Dynamisme, Rythme, « Valider ») sortait de l'écran et ne pouvait être ni
+// atteint ni défilé — les clics y semblaient impossibles. La fenêtre est désormais toujours entièrement
+// visible : sous la cellule, sinon au-dessus, sinon calée en haut, et défilable si l'écran est trop bas
+// (max-height). Elle suit la cellule quand la page défile.
+let _poulsCell = null;
+function placerPoulsPopup() {
+  const popup = document.getElementById('pouls-popup');
+  // Cellule redessinée entre-temps (schéma des poignets re-rendu à chaque qualité) : on garde la position.
+  if (!popup || popup.style.display === 'none' || !_poulsCell || !_poulsCell.isConnected) return;
+  const H = window.innerHeight, W = window.innerWidth;
+  const rect = _poulsCell.getBoundingClientRect();
+  const h = Math.min(popup.offsetHeight, H - 12), w = popup.offsetWidth || 320;
+  let top;
+  if (rect.bottom + 6 + h <= H - 6) top = rect.bottom + 6;          // en dessous
+  else if (rect.top - 6 - h >= 6) top = rect.top - 6 - h;           // au-dessus
+  else top = Math.max(6, H - 6 - h);                                 // calée, entièrement visible
+  popup.style.top = Math.round(top) + 'px';
+  popup.style.left = Math.round(Math.max(6, Math.min(rect.left, W - w - 6))) + 'px';
+}
+window.addEventListener('resize', () => placerPoulsPopup());
+document.addEventListener('scroll', () => placerPoulsPopup(), true);
 
 function togPoulsTag(el, fieldId) {
   el.classList.toggle('on');
@@ -5804,6 +5824,7 @@ function clearPoulsPosition() {
 function closePoulsSelector() {
   document.getElementById('pouls-popup').style.display = 'none';
   _poulsTarget = null;
+  _poulsCell = null;
 }
 
 function restorePoulsDisplays() {
