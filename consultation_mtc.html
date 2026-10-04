@@ -284,6 +284,8 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
         <input id="pt-search" placeholder="🔍 Rechercher un patient…" oninput="renderPatients()"
           style="flex:1;padding:9px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;font-family:inherit">
         <button class="btn bg" onclick="newPatient()">➕ Nouveau patient</button>
+        <button class="btn" onclick="document.getElementById('passerelle-fichier').click()" title="Importer des fiches patients (site de rendez-vous, ANESTHconsult) — facultatif">📥 Importer des fiches</button>
+        <input type="file" id="passerelle-fichier" accept=".json,application/json" style="display:none" onchange="passerelleImporterFichier(this)">
       </div>
       <div id="pt-list"></div>
       <div id="pat-list"></div>
@@ -296,7 +298,9 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
         <div class="fg">
           <div class="f"><label>Nom</label><input id="p-nom" oninput="markDirty()"></div>
           <div class="f"><label>Prénom</label><input id="p-prenom" oninput="markDirty()"></div>
+          <div class="f"><label>Nom de naissance <span style="font-weight:400;opacity:.7">(facultatif)</span></label><input id="p-nomnaiss" oninput="markDirty()"></div>
           <div class="f"><label>Date de naissance</label><input id="p-ddn" type="date" oninput="calcAge();markDirty()"></div>
+          <div class="f"><label>Lieu de naissance <span style="font-weight:400;opacity:.7">(facultatif)</span></label><input id="p-lieunaiss" oninput="markDirty()"></div>
           <div class="f"><label>Âge (auto)</label><input id="p-age" readonly style="background:var(--cream2);color:var(--slate)"></div>
           <div class="f" id="sa-field" style="display:none"><label>SA (semaines d'aménorrhée)</label><input id="p-sa" type="number" min="0" max="45" placeholder="ex: 32" oninput="markDirty()" style="width:80px"></div>
           <div class="f"><label>Sexe</label>
@@ -3415,6 +3419,7 @@ function loadFiche(){
   s('p-nom',curPt.nom);s('p-prenom',curPt.prenom);s('p-ddn',curPt.ddn);s('p-age',curPt.age);
   s('p-sexe',curPt.sexe);s('p-prof',curPt.prof);s('p-tel',curPt.tel);s('p-email',curPt.email);
   s('p-motif',curPt.motif);s('p-praticien',curPt.praticien);
+  s('p-nomnaiss',curPt.nomNaissance||'');s('p-lieunaiss',curPt.lieuNaissance||'');
   const med=curPt.medecin||{}; s('p-med-nom',med.nom||'');s('p-med-spe',med.spe||'');s('p-med-adr',med.adr||'');s('p-med-email',med.email||'');
   { const f=document.getElementById('p-med-formule'); if(f) f.value=med.formule||'Chère Consœur, cher Confrère,'; }
   s('p-atcd',curPt.atcd);s('p-traitement',curPt.traitement);s('p-allergies',curPt.allergies);s('p-vie',curPt.vie);
@@ -3427,6 +3432,7 @@ async function savePatient(){
   curPt.nom=g('p-nom');curPt.prenom=g('p-prenom');curPt.ddn=g('p-ddn');curPt.age=g('p-age');
   curPt.sexe=g('p-sexe');curPt.prof=g('p-prof');curPt.tel=g('p-tel');curPt.email=g('p-email');
   curPt.motif=g('p-motif');curPt.praticien=g('p-praticien');curPt.sa=g('p-sa');
+  curPt.nomNaissance=g('p-nomnaiss');curPt.lieuNaissance=g('p-lieunaiss');
   curPt.medecin={nom:g('p-med-nom'),spe:g('p-med-spe'),adr:g('p-med-adr'),email:g('p-med-email'),formule:g('p-med-formule')};
   curPt.atcd=g('p-atcd');curPt.traitement=g('p-traitement');curPt.allergies=g('p-allergies');curPt.vie=g('p-vie');
   if(!curPt.seances)curPt.seances=[];
@@ -12565,5 +12571,397 @@ function _flushUrgPending(navigateBack){
     <div class="ez-hint">Molette ou pincement : zoom · Glisser : déplacer · Clic sur un point : palpé / non palpé (synchronisé avec les schémas de la page) · 🟠 proposé · 🔴 palpé · Les noms s'affichent automatiquement en zoomant. · Face postérieure : points 93 à 103.</div>
   </div>
 </div>
+<script>
+// ⟦passerelle⟧ Copie de ~/Desktop/Files/4 - Outils et tests/passerelle/passerelle.js (ne pas modifier ici : recopier la source)
+/*
+ * passerelle.js — module commun au site du cabinet, à ANESTHconsult et à ACUconsult.
+ * Fiche d'échange patient (format « cabinet-blanchard/patient », version 1) et règles
+ * d'identitovigilance inspirées du RNIV :
+ *   - le patient n'est reconnu que par ses traits stricts (nom de naissance, premier prénom de naissance,
+ *     date de naissance, sexe, lieu de naissance) ;
+ *   - le statut de l'identité est tracé (provisoire → récupérée → validée → qualifiée) ;
+ *   - deux fiches ne sont JAMAIS fusionnées automatiquement : la passerelle propose, le médecin décide.
+ * Aucune dépendance, aucun accès réseau. Fonctionne dans un navigateur (window.Passerelle) et sous Node.
+ * Source de référence : ~/Desktop/Files/4 - Outils et tests/passerelle/passerelle.js (les applications en ont une copie).
+ */
+(function (racine, fabrique) {
+  if (typeof module === 'object' && module.exports) module.exports = fabrique();
+  else racine.Passerelle = fabrique();
+})(typeof self !== 'undefined' ? self : this, function () {
+  'use strict';
+
+  const FORMAT = 'cabinet-blanchard/patient';
+  const VERSION = 1;
+  const STATUTS = ['provisoire', 'recuperee', 'validee', 'qualifiee'];
+  const TRAITS_STRICTS = ['nomNaissance', 'prenomNaissance', 'dateNaissance', 'sexe', 'lieuNaissance'];
+
+  // ───────── Normalisation (comparaison uniquement : l'affichage garde la saisie) ─────────
+
+  /** Majuscules sans diacritiques ; tiret, apostrophe et espace simple conservés (règle des noms du RNIV). */
+  function normaliserNom(s) {
+    return String(s || '')
+      .normalize('NFD').replace(/[̀-ͯ]/g, '')
+      .replace(/[Œœ]/g, 'OE').replace(/[Ææ]/g, 'AE')
+      .toUpperCase()
+      .replace(/[’`´]/g, "'")
+      .replace(/[^A-Z' -]/g, ' ')
+      .replace(/\s*-\s*/g, '-').replace(/\s*'\s*/g, "'")
+      .replace(/\s+/g, ' ').trim();
+  }
+
+  /** Premier prénom de naissance : le premier de la liste des prénoms (séparés par espace ou virgule). */
+  function premierPrenom(prenoms) {
+    const p = normaliserNom(String(prenoms || '').split(/[,;]/)[0]);
+    return p.split(' ')[0] || '';
+  }
+
+  /** Date au format AAAA-MM-JJ (accepte aussi JJ/MM/AAAA), ou '' si invalide. */
+  function normaliserDate(d) {
+    const s = String(d || '').trim();
+    let m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s);
+    if (!m) { const f = /^(\d{1,2})[/.-](\d{1,2})[/.-](\d{4})$/.exec(s); if (f) m = [null, f[3], f[2].padStart(2, '0'), f[1].padStart(2, '0')]; }
+    if (!m) return '';
+    const iso = `${m[1]}-${m[2]}-${m[3]}`;
+    const t = new Date(iso + 'T12:00:00Z');
+    return !isNaN(t) && t.toISOString().slice(0, 10) === iso ? iso : '';
+  }
+
+  function normaliserSexe(s) {
+    const v = String(s || '').trim().toUpperCase();
+    if (['F', 'FEMININ', 'FÉMININ', 'FEMME', 'MME'].includes(v)) return 'F';
+    if (['M', 'MASCULIN', 'HOMME', 'M.'].includes(v)) return 'M';
+    return v === 'I' || v === 'NG' ? 'I' : '';
+  }
+
+  function normaliserTel(v) {
+    let n = String(v || '').replace(/[\s.\-()/]/g, '');
+    if (/^(\+33|0033)[1-9]\d{8}$/.test(n)) n = '0' + n.replace(/^(\+33|0033)/, '');
+    if (/^0[1-9]\d{8}$/.test(n)) return n.replace(/(\d{2})(?=\d)/g, '$1 ');
+    if (/^(\+|00)[1-9]\d{6,14}$/.test(n)) return n.replace(/^00/, '+');
+    return String(v || '').trim();
+  }
+
+  // ───────── Fiche d'échange ─────────
+
+  function uuid() {
+    const c = typeof crypto !== 'undefined' ? crypto : (typeof require === 'function' ? require('crypto') : null);
+    if (c && c.randomUUID) return c.randomUUID();
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, ch => {
+      const r = Math.random() * 16 | 0; return (ch === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+    });
+  }
+
+  function ficheVide() {
+    return {
+      format: FORMAT, version: VERSION, id: uuid(), creeLe: new Date().toISOString(),
+      identite: {
+        nomNaissance: '', prenomNaissance: '', prenomsNaissance: '', dateNaissance: '', sexe: '', lieuNaissance: { insee: '', libelle: '', pays: '' },
+        nomUtilise: '', prenomUtilise: '', nir: '', ins: null, statut: 'provisoire', controle: null,
+      },
+      contacts: { telephone: '', email: '', medecinTraitant: '', mssanteMedecin: '' },
+      rendezVous: [], documents: [], historique: [],
+    };
+  }
+
+  /** Traits stricts manquants (le lieu de naissance n'est exigé qu'à partir du statut « validée »). */
+  function traitsManquants(fiche) {
+    const id = fiche.identite;
+    const manquants = [];
+    if (!id.nomNaissance) manquants.push('nom de naissance');
+    if (!id.prenomNaissance) manquants.push('premier prénom de naissance');
+    if (!id.dateNaissance) manquants.push('date de naissance');
+    if (!id.sexe) manquants.push('sexe');
+    if (!(id.lieuNaissance && (id.lieuNaissance.insee || id.lieuNaissance.libelle))) manquants.push('lieu de naissance');
+    return manquants;
+  }
+
+  /** Vérifie qu'un objet est une fiche d'échange lisible ; renvoie la liste des problèmes. */
+  function verifierFiche(f) {
+    const pb = [];
+    if (!f || f.format !== FORMAT) pb.push('format inconnu');
+    else if (f.version > VERSION) pb.push(`version ${f.version} plus récente que cette application (${VERSION})`);
+    if (f && f.identite && !STATUTS.includes(f.identite.statut)) pb.push('statut d\'identité inconnu');
+    return pb;
+  }
+
+  /** Bandeau d'identité uniforme : « NOM DE NAISSANCE (nom utilisé) Prénom, né(e) le JJ/MM/AAAA, F ». */
+  function bandeau(fiche) {
+    const id = fiche.identite;
+    const nom = id.nomNaissance || id.nomUtilise || '?';
+    const utilise = id.nomUtilise && normaliserNom(id.nomUtilise) !== normaliserNom(nom) ? ` (${normaliserNom(id.nomUtilise)})` : '';
+    const prenom = id.prenomUtilise || id.prenomNaissance || '?';
+    const ne = id.sexe === 'F' ? 'née' : id.sexe === 'M' ? 'né' : 'né(e)';
+    const date = id.dateNaissance ? id.dateNaissance.split('-').reverse().join('/') : 'date inconnue';
+    return `${normaliserNom(nom)}${utilise} ${prenom}, ${ne} le ${date}${id.sexe ? ', ' + id.sexe : ''} — identité ${libelleStatut(id.statut)}`;
+  }
+
+  function libelleStatut(s) {
+    return { provisoire: 'provisoire', recuperee: 'récupérée', validee: 'validée', qualifiee: 'qualifiée' }[s] || s;
+  }
+
+  // ───────── Rapprochement ─────────
+
+  function distance(a, b) {
+    const m = a.length, n = b.length;
+    const d = Array.from({ length: m + 1 }, (_, i) => [i, ...Array(n).fill(0)]);
+    for (let j = 1; j <= n; j++) d[0][j] = j;
+    for (let i = 1; i <= m; i++) for (let j = 1; j <= n; j++)
+      d[i][j] = Math.min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+    return d[m][n];
+  }
+
+  /**
+   * Compare deux identités. Renvoie :
+   *   { niveau: 'identique' } : tous les traits stricts renseignés des deux côtés sont égaux ;
+   *   { niveau: 'proche', ecarts } : même date de naissance, noms ou prénoms voisins → À VÉRIFIER par le médecin ;
+   *   { niveau: 'different', ecarts }.
+   * Jamais de fusion automatique, quel que soit le niveau : l'application doit demander confirmation.
+   */
+  function comparer(a, b) {
+    const A = a.identite || a, B = b.identite || b;
+    const val = (x, k) => k === 'dateNaissance' ? normaliserDate(x[k]) : k === 'sexe' ? normaliserSexe(x[k])
+      : k === 'prenomNaissance' ? premierPrenom(x[k] || x.prenomUtilise) : k === 'nomNaissance' ? normaliserNom(x[k] || x.nomUtilise)
+        : k === 'lieuNaissance' ? (x[k] && (x[k].insee || normaliserNom(x[k].libelle))) || '' : '';
+    const ecarts = [];
+    let compares = 0;
+    for (const k of TRAITS_STRICTS) {
+      const va = val(A, k), vb = val(B, k);
+      if (!va || !vb) continue;
+      compares++;
+      if (va !== vb) ecarts.push({ trait: k, a: va, b: vb });
+    }
+    if (!ecarts.length && compares >= 3) return { niveau: 'identique', ecarts };
+    const memeDate = val(A, 'dateNaissance') && val(A, 'dateNaissance') === val(B, 'dateNaissance');
+    const nomsVoisins = distance(val(A, 'nomNaissance'), val(B, 'nomNaissance')) <= 2 ||
+      normaliserNom(A.nomUtilise) === normaliserNom(B.nomNaissance) || normaliserNom(B.nomUtilise) === normaliserNom(A.nomNaissance);
+    const prenomsVoisins = distance(val(A, 'prenomNaissance'), val(B, 'prenomNaissance')) <= 2;
+    if (memeDate && (nomsVoisins || prenomsVoisins)) return { niveau: 'proche', ecarts };
+    if (!ecarts.length) return { niveau: 'proche', ecarts, remarque: 'traits stricts insuffisants pour conclure' };
+    return { niveau: 'different', ecarts };
+  }
+
+  /** Cherche dans une liste de fiches celles qui pourraient correspondre (identiques d'abord, puis proches). */
+  function rechercher(fiche, liste) {
+    return liste.map(f => ({ fiche: f, ...comparer(fiche, f) }))
+      .filter(r => r.niveau !== 'different')
+      .sort((x, y) => (x.niveau === 'identique' ? 0 : 1) - (y.niveau === 'identique' ? 0 : 1));
+  }
+
+  /**
+   * Fusion décidée par le médecin : complète la fiche cible avec les informations de la source,
+   * sans jamais écraser un trait strict déjà renseigné ; trace l'opération dans l'historique.
+   */
+  function fusionner(cible, source, { par = 'médecin' } = {}) {
+    const r = JSON.parse(JSON.stringify(cible));
+    for (const [k, v] of Object.entries(source.identite || {})) {
+      if (k === 'statut' || k === 'controle') continue;
+      const vide = r.identite[k] == null || r.identite[k] === '' || (typeof r.identite[k] === 'object' && !Object.values(r.identite[k] || {}).some(Boolean));
+      if (vide && v) r.identite[k] = v;
+    }
+    // Le statut le plus élevé l'emporte (une identité validée le reste).
+    if (STATUTS.indexOf(source.identite?.statut) > STATUTS.indexOf(r.identite.statut)) {
+      r.identite.statut = source.identite.statut; r.identite.controle = source.identite.controle || r.identite.controle;
+    }
+    for (const [k, v] of Object.entries(source.contacts || {})) if (v && !r.contacts[k]) r.contacts[k] = v;
+    const cles = new Set(r.rendezVous.map(x => `${x.date}|${x.heure}|${x.type}`));
+    for (const x of source.rendezVous || []) if (!cles.has(`${x.date}|${x.heure}|${x.type}`)) r.rendezVous.push(x);
+    r.documents.push(...(source.documents || []));
+    r.historique.push({ le: new Date().toISOString(), action: 'fusion', depuis: source.id, par });
+    return r;
+  }
+
+  /** Validation au cabinet sur pièce d'identité. */
+  function valider(fiche, { piece, le = new Date().toISOString().slice(0, 10), par = 'médecin' }) {
+    const manque = traitsManquants(fiche);
+    if (manque.length) throw new Error('Validation impossible, traits stricts manquants : ' + manque.join(', '));
+    if (!['CNI', 'passeport', 'titre de séjour', 'carte d\'identité européenne'].includes(piece)) throw new Error('Pièce d\'identité non recevable pour la validation');
+    const r = JSON.parse(JSON.stringify(fiche));
+    if (STATUTS.indexOf(r.identite.statut) < STATUTS.indexOf('validee')) r.identite.statut = 'validee';
+    r.identite.controle = { piece, le, par };
+    r.historique.push({ le: new Date().toISOString(), action: 'validation', piece, par });
+    return r;
+  }
+
+  // ───────── Conversions ─────────
+
+  /** Depuis le site de rendez-vous : identité déclarée en ligne → statut « provisoire ». */
+  function depuisSite({ patient, rdvs = [], types = {} }) {
+    const f = ficheVide();
+    Object.assign(f.identite, {
+      nomNaissance: patient.nomNaissance || patient.nom || '',
+      prenomNaissance: premierPrenom(patient.prenom),
+      dateNaissance: normaliserDate(patient.dateNaissance),
+      sexe: normaliserSexe(patient.sexe),
+      nomUtilise: patient.nom || '', prenomUtilise: patient.prenom || '',
+      statut: 'provisoire',
+    });
+    Object.assign(f.contacts, { telephone: normaliserTel(patient.tel), email: patient.email || '' });
+    f.rendezVous = rdvs.map(r => ({
+      date: r.date, heure: `${String(Math.floor(r.debut / 60)).padStart(2, '0')}:${String(r.debut % 60).padStart(2, '0')}`,
+      type: r.type, libelle: types[r.type]?.libelle || r.type, statut: r.statut,
+      demandeur: r.demande?.demandeur || '', dateIntervention: r.demande?.dateIntervention || '',
+    }));
+    f.historique.push({ le: new Date().toISOString(), action: 'creation', source: 'site de rendez-vous' });
+    return f;
+  }
+
+  /** Depuis le .json du questionnaire médical (ANESTHconsult) : identité « récupérée », questionnaire joint. */
+  function depuisQuestionnaireAnesth(q) {
+    const id = q.identity || {};
+    const f = ficheVide();
+    Object.assign(f.identite, {
+      nomNaissance: id.nomNaissance || id.nomUsage || '', prenomNaissance: premierPrenom(id.prenomsNaissance || id.prenom),
+      prenomsNaissance: id.prenomsNaissance || '',
+      lieuNaissance: { insee: '', libelle: id.lieuNaissance || '', pays: id.paysNaissance || '' },
+      dateNaissance: normaliserDate(id.dateNaissance), sexe: normaliserSexe(id.sexe),
+      nomUtilise: id.nomUsage || '', prenomUtilise: id.prenom || '', nir: id.nir || '', statut: 'recuperee',
+    });
+    Object.assign(f.contacts, { telephone: normaliserTel(id.telephone), email: id.email || '' });
+    f.documents.push({ type: 'questionnaire_medical', date: q._questionnairePatient?.rempliLe || '', contenu: q });
+    f.historique.push({ le: new Date().toISOString(), action: 'creation', source: 'questionnaire médical' });
+    return f;
+  }
+
+  /** Vers ANESTHconsult : objet au format du questionnaire (Voie 2), importable sans modifier l'application. */
+  function versAnesthconsult(fiche) {
+    const id = fiche.identite, c = fiche.contacts;
+    const rdv = fiche.rendezVous.find(r => r.type === 'anesthesie') || fiche.rendezVous[0] || {};
+    const q = fiche.documents.find(d => d.type === 'questionnaire_medical')?.contenu;
+    const base = q ? JSON.parse(JSON.stringify(q)) : {};
+    base.identity = Object.assign({}, base.identity, {
+      nomUsage: id.nomUtilise || id.nomNaissance, nomNaissance: id.nomNaissance,
+      prenom: id.prenomUtilise || id.prenomNaissance, dateNaissance: id.dateNaissance,
+      ...(id.prenomsNaissance ? { prenomsNaissance: id.prenomsNaissance } : {}),
+      ...(id.lieuNaissance && id.lieuNaissance.libelle ? { lieuNaissance: id.lieuNaissance.libelle } : {}),
+      ...(id.lieuNaissance && id.lieuNaissance.pays ? { paysNaissance: id.lieuNaissance.pays } : {}),
+      statutIdentite: id.statut,
+      ...(id.sexe ? { sexe: id.sexe === 'I' ? 'NG' : id.sexe } : {}),
+      telephone: c.telephone, email: c.email, ...(id.nir ? { nir: id.nir } : {}),
+      ...(rdv.demandeur ? { chirurgienDemandeur: rdv.demandeur } : {}),
+    });
+    if (rdv.dateIntervention) base.intervention = Object.assign({}, base.intervention, { dateIntervention: rdv.dateIntervention });
+    base._passerelle = { ficheId: fiche.id, statutIdentite: id.statut, bandeau: bandeau(fiche) };
+    return base;
+  }
+
+  /** Vers ACUconsult : champs de la fiche patient (nom, prénom, ddn, sexe, tel, email). */
+  function versAcuconsult(fiche) {
+    const id = fiche.identite, c = fiche.contacts;
+    return {
+      nom: id.nomUtilise || id.nomNaissance, prenom: id.prenomUtilise || id.prenomNaissance,
+      ddn: id.dateNaissance, sexe: id.sexe === 'F' ? 'Féminin' : id.sexe === 'M' ? 'Masculin' : id.sexe === 'I' ? 'Autre' : '', // libellés d'ACUconsult
+      tel: c.telephone, email: c.email,
+      nomNaissance: id.nomNaissance, prenomsNaissance: id.prenomsNaissance || '',
+      lieuNaissance: id.lieuNaissance ? [id.lieuNaissance.libelle, id.lieuNaissance.pays].filter(Boolean).join(', ') : '',
+      _passerelle: { ficheId: fiche.id, nomNaissance: id.nomNaissance, statutIdentite: id.statut, bandeau: bandeau(fiche) },
+    };
+  }
+
+  /** Lot « Dossier du jour » : plusieurs fiches dans un seul fichier. */
+  function lot(fiches, { date, source } = {}) {
+    return { format: FORMAT + '/lot', version: VERSION, date: date || new Date().toISOString().slice(0, 10), source: source || '', fiches };
+  }
+
+  return {
+    FORMAT, VERSION, STATUTS, TRAITS_STRICTS,
+    normaliserNom, premierPrenom, normaliserDate, normaliserSexe, normaliserTel,
+    ficheVide, traitsManquants, verifierFiche, bandeau, libelleStatut,
+    comparer, rechercher, fusionner, valider,
+    depuisSite, depuisQuestionnaireAnesth, versAnesthconsult, versAcuconsult, lot,
+  };
+});
+// ⟦/passerelle⟧
+</script>
+<script>
+// ══════ IMPORT DE FICHES (passerelle avec le site du cabinet et ANESTHconsult) ══════
+// Facultatif : sans import, rien ne change pour l'utilisateur. Identitovigilance (RNIV) : les dossiers
+// existants sont rapprochés sur les traits stricts, mais JAMAIS fusionnés sans action du praticien, et
+// une donnée déjà saisie n'est jamais écrasée (seuls les champs vides sont complétés).
+function _ficheDepuisPatient(p){
+  const f = Passerelle.ficheVide(), id = f.identite;
+  id.nomNaissance = p.nomNaissance || p.nom || ''; id.nomUtilise = p.nom || '';
+  id.prenomNaissance = Passerelle.premierPrenom(p.prenom); id.prenomUtilise = p.prenom || '';
+  id.dateNaissance = Passerelle.normaliserDate(p.ddn);
+  id.sexe = /^f/i.test(p.sexe||'') ? 'F' : /^m/i.test(p.sexe||'') ? 'M' : '';
+  id.lieuNaissance.libelle = p.lieuNaissance || '';
+  return f;
+}
+function passerelleAnalyser(json, patients){
+  const fiches = json && json.format === Passerelle.FORMAT + '/lot' ? json.fiches : json && json.format === Passerelle.FORMAT ? [json] : null;
+  if(!fiches) throw new Error("Ce fichier n'est pas une fiche de la passerelle (format « " + Passerelle.FORMAT + " »).");
+  return fiches.map(f => ({
+    fiche: f, acu: Passerelle.versAcuconsult(f), problemes: Passerelle.verifierFiche(f),
+    correspondances: (patients||[]).filter(p => !p._test)
+      .map(p => Object.assign({ patient: p }, Passerelle.comparer(f, _ficheDepuisPatient(p))))
+      .filter(r => r.niveau !== 'different')
+      .sort((a, b) => (a.niveau === 'identique' ? 0 : 1) - (b.niveau === 'identique' ? 0 : 1)),
+  }));
+}
+function _passerelleAge(ddn){
+  const d = new Date(ddn + 'T12:00:00'); if(isNaN(d)) return '';
+  const n = new Date(); let a = n.getFullYear() - d.getFullYear();
+  if(n < new Date(n.getFullYear(), d.getMonth(), d.getDate())) a--; return a + ' ans';
+}
+function _passerelleRemplir(p, acu){
+  const ajouts = [];
+  ['nom','prenom','ddn','sexe','tel','email','nomNaissance','lieuNaissance'].forEach(k => { if(acu[k] && !p[k]){ p[k] = acu[k]; ajouts.push(k); } });
+  if(p.ddn && !p.age) p.age = _passerelleAge(p.ddn);
+  if(acu._passerelle) p.passerelle = Object.assign({}, p.passerelle, { ficheId: acu._passerelle.ficheId, statutIdentite: acu._passerelle.statutIdentite });
+  return ajouts;
+}
+function passerelleNouveauPatient(acu){ const p = mkPt(); _passerelleRemplir(p, acu); return p; }
+function passerelleCompleter(patient, acu){ const p = JSON.parse(JSON.stringify(patient)); const ajouts = _passerelleRemplir(p, acu); return { patient: p, ajouts }; }
+
+let _passerelleAnalyse = [];
+async function passerelleImporterFichier(input){
+  const f = input.files && input.files[0]; input.value = '';
+  if(!f) return;
+  try {
+    const json = JSON.parse(await f.text());
+    _passerelleAnalyse = passerelleAnalyser(json, await dbAll());
+    _passerelleAfficher();
+  } catch(e){ showToast('Import impossible : ' + e.message); }
+}
+function _passerelleAfficher(){
+  let ov = document.getElementById('passerelle-modal');
+  if(!ov){ ov = document.createElement('div'); ov.id = 'passerelle-modal'; ov.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:9999;display:flex;align-items:center;justify-content:center;padding:16px'; document.body.appendChild(ov); }
+  ov.innerHTML = '';
+  const box = document.createElement('div'); box.style.cssText = 'background:#fff;border-radius:12px;max-width:720px;width:100%;max-height:85vh;overflow:auto;padding:20px;font-size:14px';
+  const h = document.createElement('h3'); h.textContent = 'Importer des fiches patients (' + _passerelleAnalyse.length + ')'; box.appendChild(h);
+  const intro = document.createElement('p'); intro.style.cssText = 'opacity:.8'; intro.textContent = "Chaque fiche est comparée à vos dossiers sur les traits d'identité (nom et prénom de naissance, date de naissance, sexe). Rien n'est fusionné sans votre choix ; les données déjà saisies ne sont jamais écrasées."; box.appendChild(intro);
+  _passerelleAnalyse.forEach((a, i) => {
+    const row = document.createElement('div'); row.style.cssText = 'border:1px solid #ddd;border-radius:8px;padding:10px 12px;margin:8px 0';
+    const t = document.createElement('div'); t.style.fontWeight = '600'; t.textContent = Passerelle.bandeau(a.fiche); row.appendChild(t);
+    const act = document.createElement('div'); act.style.cssText = 'display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;align-items:center';
+    const btn = (txt, fn) => { const b = document.createElement('button'); b.className = 'btn'; b.textContent = txt; b.onclick = fn; act.appendChild(b); return b; };
+    if(a.fait){ const ok = document.createElement('span'); ok.textContent = '✅ ' + a.fait; act.appendChild(ok); }
+    else {
+      a.correspondances.forEach(r => {
+        const lbl = (r.niveau === 'identique' ? 'Même patient : ' : 'À vérifier (proche) : ') + (r.patient.prenom||'') + ' ' + (r.patient.nom||'') + (r.patient.ddn ? ' (' + r.patient.ddn + ')' : '');
+        const info = document.createElement('div'); info.style.cssText = 'flex-basis:100%;font-size:13px;color:' + (r.niveau === 'identique' ? '#2D6A4F' : '#B45309');
+        info.textContent = lbl + (r.ecarts && r.ecarts.length ? ' — écarts : ' + r.ecarts.map(e => e.trait).join(', ') : ''); act.appendChild(info);
+        btn('Compléter ce dossier', () => _passerelleAppliquer(i, 'completer', r.patient));
+      });
+      btn('Créer un nouveau dossier', () => _passerelleAppliquer(i, 'creer'));
+      btn('Ignorer', () => { a.fait = 'ignorée'; _passerelleAfficher(); });
+    }
+    row.appendChild(act); box.appendChild(row);
+  });
+  const fermer = document.createElement('button'); fermer.className = 'btn bg'; fermer.textContent = 'Fermer'; fermer.onclick = () => { ov.remove(); renderPatients(); };
+  box.appendChild(fermer); ov.appendChild(box);
+}
+async function _passerelleAppliquer(i, action, patient){
+  const a = _passerelleAnalyse[i];
+  if(action === 'completer'){
+    const r = passerelleCompleter(patient, a.acu);
+    await dbPut(r.patient);
+    a.fait = 'dossier complété' + (r.ajouts.length ? ' (' + r.ajouts.join(', ') + ')' : ' (rien à ajouter)');
+  } else {
+    await dbPut(passerelleNouveauPatient(a.acu));
+    a.fait = 'nouveau dossier créé';
+  }
+  _passerelleAfficher();
+}
+</script>
 </body>
 </html>
