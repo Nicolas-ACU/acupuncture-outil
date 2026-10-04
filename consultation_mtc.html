@@ -309,7 +309,7 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
           <div class="f"><label>Téléphone</label><input id="p-tel" type="tel" placeholder="+33 6 …" oninput="markDirty()"></div>
           <div class="f"><label>Email</label><input id="p-email" type="email" oninput="markDirty()"></div>
           <div class="f" style="grid-column:1/-1"><label>Motif initial</label><textarea id="p-motif" rows="2" oninput="markDirty()"></textarea></div>
-          <div class="f"><label>Praticien</label><input id="p-praticien" oninput="markDirty()"></div>
+          <div class="f"><label>Praticien acupuncteur <span style="font-weight:400;opacity:.7">(signature des courriers)</span></label><input id="p-praticien" oninput="markDirty()" placeholder="Rempli automatiquement"></div>
         </div>
       </div>
       <div class="card">
@@ -2261,10 +2261,17 @@ async function doLogin(){
 function checkLogin(){
   // Sur localhost : pas de login requis (usage local personnel)
   if(location.hostname === 'localhost' || location.hostname === '127.0.0.1'){
-    currentPraticien = {nom:'', titre:'', role:'admin', local:true}; // usage local : aucun nom affiché
+    // Usage local : aucun nom dans le code de l'application. Le nom du praticien local est transmis par
+    // son lanceur personnel (Lancer_MTC.command → #praticien=…) et mémorisé sur ce poste uniquement.
+    try {
+      const h = new URLSearchParams((location.hash||'').replace(/^#/, ''));
+      if(h.get('praticien')) localStorage.setItem('mtc_praticien_local', h.get('praticien').slice(0, 80));
+    } catch(e){}
+    let nomLocal = ''; try { nomLocal = localStorage.getItem('mtc_praticien_local') || ''; } catch(e){}
+    currentPraticien = {nom:nomLocal, titre:'', role:'admin', local:true};
     const logoutBtn = document.getElementById('btn-logout'); if(logoutBtn) logoutBtn.style.display='none';
     const piName = document.getElementById('prat-name');
-    if(piName) piName.textContent = 'Mode local';
+    if(piName) piName.textContent = 'Mode local' + (nomLocal ? ' — ' + nomLocal : '');
     return;
   }
   // Sur GitHub Pages ou hébergement distant : login requis
@@ -3369,12 +3376,19 @@ function updSb(){
   document.getElementById('pi-sub').textContent=curPt._test?'Non archivé':`${nb} séance${nb>1?'s':''}`;
   document.getElementById('btn-dp').style.display=curPt.id?'':'none';
 }
+/* Praticien acupuncteur par défaut : praticien connecté (code d'accès), ou praticien local (lanceur). */
+function nomPraticienCourant(){
+  if(typeof currentPraticien==='undefined' || !currentPraticien || !currentPraticien.nom) return '';
+  return ((currentPraticien.titre ? currentPraticien.titre + ' ' : '') + currentPraticien.nom).trim();
+}
 function newPatient(){
   curPt=mkPt();curScIdx=null;
+  curPt.praticien=nomPraticienCourant();
   // Vider le CCMQ pour nouveau patient
   document.querySelectorAll('[id^="c-"]').forEach(el=>{ if(el.tagName==='INPUT'||el.tagName==='SELECT') el.value=''; });
   const ccqRes=document.getElementById('ccq-result');if(ccqRes)ccqRes.innerHTML='';
   clearForms();updSb();
+  { const e=document.getElementById('p-praticien'); if(e) e.value=curPt.praticien||''; } // après clearForms
   document.getElementById('btn-dp').style.display='none';
   document.getElementById('pi-name').textContent='Nouveau patient';
   document.getElementById('pi-sub').textContent='0 séance';
@@ -3418,7 +3432,7 @@ function loadFiche(){
   const s=(id,v)=>{const e=document.getElementById(id);if(e&&v!=null)e.value=v;};
   s('p-nom',curPt.nom);s('p-prenom',curPt.prenom);s('p-ddn',curPt.ddn);s('p-age',curPt.age);
   s('p-sexe',curPt.sexe);s('p-prof',curPt.prof);s('p-tel',curPt.tel);s('p-email',curPt.email);
-  s('p-motif',curPt.motif);s('p-praticien',curPt.praticien);
+  s('p-motif',curPt.motif);s('p-praticien',curPt.praticien||nomPraticienCourant());
   s('p-nomnaiss',curPt.nomNaissance||'');s('p-lieunaiss',curPt.lieuNaissance||'');
   const med=curPt.medecin||{}; s('p-med-nom',med.nom||'');s('p-med-spe',med.spe||'');s('p-med-adr',med.adr||'');s('p-med-email',med.email||'');
   { const f=document.getElementById('p-med-formule'); if(f) f.value=med.formule||'Chère Consœur, cher Confrère,'; }
@@ -11387,11 +11401,11 @@ function genererCourrier(){
   const motif = g('s-motif') || g('dix-motif-input');
   const synd = g('s-syndromes').replace(/\s*\(suggéré par l'analyse\)/g,'');
   const pts = _courrierPoints(g('s-points'));
-  const prat = (typeof currentPraticien!=='undefined' && currentPraticien && currentPraticien.nom && !currentPraticien.local)
-    ? ((currentPraticien.titre ? currentPraticien.titre+' ' : '') + currentPraticien.nom) : g('p-praticien');
+  // Signature : praticien acupuncteur de la fiche (rempli automatiquement), sinon praticien connecté/local.
+  const prat = g('p-praticien') || nomPraticienCourant();
   const patientE = F ? 'votre patiente' : 'votre patient';
   const L = [];
-  if(prat) L.push(prat, '');
+  L.push(prat || '[Praticien acupuncteur — à compléter]', '');
   L.push('Le ' + _courrierDate(new Date().toISOString().slice(0,10)), '');
   L.push(medNom || '[Médecin adresseur]'); if(g('p-med-spe')) L.push(g('p-med-spe')); if(g('p-med-adr')) L.push(...g('p-med-adr').split('\n'));
   L.push('', 'Objet : ' + [civ, nomPt].filter(Boolean).join(' ') + (ddn ? ', ' + (F?'née':'né') + ' le ' + _courrierDate(ddn) : '') + ' — consultation d\'acupuncture du ' + dateSc, '');
@@ -11418,6 +11432,7 @@ function genererCourrier(){
 function _courrierAlertes(){
   const g = id => ((document.getElementById(id)||{}).value||'').trim();
   const a = [];
+  if(!g('p-praticien') && !nomPraticienCourant()) a.push('⚠️ Praticien acupuncteur non renseigné : complétez la fiche Identité (signature du courrier), puis ↻ Régénérer.');
   if(!g('p-med-nom')) a.push('⚠️ Médecin adresseur non renseigné : complétez la rubrique « Médecin adresseur » de la fiche Identité, puis ↻ Régénérer.');
   if(/suggéré par l'analyse/.test(g('s-syndromes'))) a.push('⚠️ Le syndrome cité est celui suggéré par l\'analyse : vérifiez qu\'il correspond à votre diagnostic.');
   if(!g('s-points')) a.push('ℹ️ Aucun point dans la Synthèse : la rubrique « Points réalisés » est omise.');
