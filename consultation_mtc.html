@@ -12872,6 +12872,50 @@ function _flushUrgPending(navigateBack){
     };
   }
 
+  // ───────── Questionnaire chiffré (dépôt du patient sur le site, lecture par ANESTHconsult) ─────────
+  // Chiffrement hybride : clé AES-GCM 256 bits aléatoire pour les réponses, elle-même chiffrée par la clé
+  // publique RSA-OAEP (SHA-256) du cabinet. Seul le poste qui détient la clé privée peut lire les réponses ;
+  // le site ne stocke qu'un bloc illisible. WebCrypto uniquement (navigateur et Node ≥ 20).
+  const FORMAT_QUESTIONNAIRE_CHIFFRE = 'cabinet-blanchard/questionnaire-chiffre';
+  const ALGO_RSA = { name: 'RSA-OAEP', hash: 'SHA-256' };
+  const _subtle = () => (typeof crypto !== 'undefined' && crypto.subtle) ? crypto.subtle : require('crypto').webcrypto.subtle;
+  const _alea = n => { const c = (typeof crypto !== 'undefined' && crypto.getRandomValues) ? crypto : require('crypto').webcrypto; return c.getRandomValues(new Uint8Array(n)); };
+  const _b64 = u8 => { let s = ''; for (let i = 0; i < u8.length; i += 0x8000) s += String.fromCharCode.apply(null, u8.subarray(i, i + 0x8000)); return btoa(s); };
+  const _deb64 = b => Uint8Array.from(atob(b), c => c.charCodeAt(0));
+
+  /** Nouvelle paire de clés du cabinet : { publique: JWK, privee: JWK }. */
+  async function genererClesCabinet() {
+    const k = await _subtle().generateKey(Object.assign({ modulusLength: 3072, publicExponent: new Uint8Array([1, 0, 1]) }, ALGO_RSA), true, ['encrypt', 'decrypt']);
+    return { publique: await _subtle().exportKey('jwk', k.publicKey), privee: await _subtle().exportKey('jwk', k.privateKey) };
+  }
+  async function chiffrerPourCabinet(jwkPublique, objet) {
+    const pub = await _subtle().importKey('jwk', jwkPublique, ALGO_RSA, false, ['encrypt']);
+    const cleAes = _alea(32), iv = _alea(12);
+    const aes = await _subtle().importKey('raw', cleAes, 'AES-GCM', false, ['encrypt']);
+    const donnees = new Uint8Array(await _subtle().encrypt({ name: 'AES-GCM', iv }, aes, new TextEncoder().encode(JSON.stringify(objet))));
+    const cle = new Uint8Array(await _subtle().encrypt(ALGO_RSA, pub, cleAes));
+    return { format: FORMAT_QUESTIONNAIRE_CHIFFRE, version: 1, alg: 'RSA-OAEP-256+A256GCM', le: new Date().toISOString(), cle: _b64(cle), iv: _b64(iv), donnees: _b64(donnees) };
+  }
+  async function dechiffrerDuCabinet(jwkPrivee, paquet) {
+    if (!paquet || paquet.format !== FORMAT_QUESTIONNAIRE_CHIFFRE) throw new Error('Paquet chiffré inconnu');
+    const priv = await _subtle().importKey('jwk', jwkPrivee, ALGO_RSA, false, ['decrypt']);
+    const cleAes = new Uint8Array(await _subtle().decrypt(ALGO_RSA, priv, _deb64(paquet.cle)));
+    const aes = await _subtle().importKey('raw', cleAes, 'AES-GCM', false, ['decrypt']);
+    const clair = await _subtle().decrypt({ name: 'AES-GCM', iv: _deb64(paquet.iv) }, aes, _deb64(paquet.donnees));
+    return JSON.parse(new TextDecoder().decode(clair));
+  }
+  /** Remplace, dans une fiche, les questionnaires chiffrés par leur contenu en clair (poste du médecin). */
+  async function dechiffrerFiche(fiche, jwkPrivee) {
+    const f = JSON.parse(JSON.stringify(fiche));
+    const echecs = [];
+    for (const doc of f.documents || []) {
+      if (doc.type !== 'questionnaire_medical_chiffre') continue;
+      try { doc.contenu = await dechiffrerDuCabinet(jwkPrivee, doc.contenu); doc.type = 'questionnaire_medical'; }
+      catch (e) { echecs.push(doc.date || '?'); }
+    }
+    return { fiche: f, echecs };
+  }
+
   /** Lot « Dossier du jour » : plusieurs fiches dans un seul fichier. */
   function lot(fiches, { date, source } = {}) {
     return { format: FORMAT + '/lot', version: VERSION, date: date || new Date().toISOString().slice(0, 10), source: source || '', fiches };
@@ -12883,6 +12927,7 @@ function _flushUrgPending(navigateBack){
     ficheVide, traitsManquants, verifierFiche, bandeau, libelleStatut,
     comparer, rechercher, fusionner, valider,
     depuisSite, depuisQuestionnaireAnesth, versAnesthconsult, versAcuconsult, lot,
+    FORMAT_QUESTIONNAIRE_CHIFFRE, genererClesCabinet, chiffrerPourCabinet, dechiffrerDuCabinet, dechiffrerFiche,
   };
 });
 // ⟦/passerelle⟧
