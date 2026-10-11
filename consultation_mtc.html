@@ -402,14 +402,14 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
           <div class="card" style="border-left:4px solid var(--jade);padding:10px;margin:0 0 8px">
             <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:6px">
               <div style="font-size:11px;font-weight:700;color:var(--slate);text-transform:uppercase;letter-spacing:.4px">Points d'acupuncture proposés (max 10)</div>
-              <button class="btn" style="font-size:10px;padding:3px 9px" onclick="addAllUrgencePoints('acu')">➕ Tout ajouter</button>
+              <button class="btn" style="font-size:10px;padding:3px 9px" onclick="addAllUrgencePoints('acu')">✓ Tout cocher</button>
             </div>
             <div id="urg-acu-list"></div>
           </div>
           <div class="card" style="border-left:4px solid #8B3A3A;padding:10px;margin:0 0 8px">
             <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:6px">
               <div style="font-size:11px;font-weight:700;color:#8B3A3A;text-transform:uppercase;letter-spacing:.4px">Points d'auriculothérapie proposés (4-5)</div>
-              <button class="btn" style="font-size:10px;padding:3px 9px" onclick="addAllUrgencePoints('auri')">➕ Tout ajouter</button>
+              <button class="btn" style="font-size:10px;padding:3px 9px" onclick="addAllUrgencePoints('auri')">✓ Tout cocher</button>
             </div>
             <div id="urg-auri-list"></div>
           </div>
@@ -996,7 +996,8 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
 
       <!-- INSPECTION GÉNÉRALE -->
       <div class="card">
-        <div class="ct">Inspection générale 望 — Systématique</div>
+        <div class="ct" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">Inspection générale 望 — Systématique
+          <button type="button" class="btn" style="font-size:11px;padding:3px 10px;text-transform:none;letter-spacing:0" onclick="inspectionToutNormal()" title="Coche la réponse normale de chaque question encore vide ; décochez ensuite ce qui ne l'est pas">✓ Tout normal</button></div>
         <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
 
           <div>
@@ -3384,6 +3385,11 @@ function toggleSAfield(){
 }
 
 function navTo(pg){
+  // Nouvel onglet → retour en haut (le conteneur de défilement est commun à toutes les pages : sans cela,
+  // l'onglet Points s'ouvrait à la hauteur de l'Examen, donc sur l'auriculothérapie au lieu de la convergence).
+  const cont=document.getElementById('content');
+  if(cont && window._pgCourant!==pg) cont.scrollTop=0;
+  window._pgCourant=pg;
   document.querySelectorAll('.ni').forEach(i=>i.classList.remove('on'));
   const ni=document.querySelector(`.ni[data-pg="${pg}"]`);if(ni)ni.classList.add('on');
   document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
@@ -7670,7 +7676,7 @@ function _refTableHTML(t, Q){
   const open = Q.mode!=='none' ? ' open' : '';
   return '<details'+open+' style="margin:8px 0;border:1px solid var(--border);border-radius:6px;padding:6px 10px;background:#fff">'
     + '<summary style="cursor:pointer;font-size:12px;font-weight:700;color:var(--jade)">'+_refEsc(t.titre)
-    + ' <span style="font-weight:400;color:var(--slate);font-size:10px">· '+rows.length+' ligne(s) · source : '+_refEsc(t.src)+'</span></summary>'
+    + ' <span style="font-weight:400;color:var(--slate);font-size:10px">· '+rows.length+' ligne(s)</span></summary>'
     + '<div style="overflow-x:auto;margin-top:6px"><table style="width:100%;border-collapse:collapse;font-size:11px">'
     + '<tr style="background:#F3F4F6">'+t.cols.map(c=>'<th style="'+th+'">'+_refEsc(c)+'</th>').join('')+'</tr>'
     + body + '</table></div>'
@@ -7686,7 +7692,7 @@ function _refAssocHTML(a, Q){
     + '<span style="font-size:10px;padding:1px 7px;border-radius:10px;background:var(--cream2);color:var(--slate)">'+_refEsc(a.cat)+'</span>'
     + '<strong style="font-size:12px">'+_refEsc(a.nom)+'</strong>'
     + '<span style="font-size:12px">'+a.pts.map(p=>_refLinkPoints(p, active)).join(' + ')+'</span>'
-    + '<span style="font-size:10px;color:var(--slate);margin-left:auto">'+_refEsc(a.src)+'</span></div>'
+    + '</div>'
     + '<div style="font-size:11px;color:var(--ink);line-height:1.5">'+_refLinkPoints(a.ind, active)+'</div></div>';
 }
 
@@ -10413,8 +10419,41 @@ const LANGUE_HINTS = {
   },
 };
 
+// Inspection générale : réponse « normale » de chaque question et signes qu'elle exclut ('*' = tous les autres)
+const INSPECTION_NORMAUX = {
+  'e-shen':{'Shen intact (yeux vifs)':'*'}, 'e-teint':{'Normal':'*'}, 'e-yeux':{'Normaux':'*'},
+  'e-nez-oreilles':{'Nez normal':['Nez bouché','Rhinorrhée claire','Rhinorrhée épaisse/jaune','Anosmie','Rougeur ailes du nez'],
+                    'Oreilles normales':['Acouphènes','Hypoacousie','Oreilles rouges']},
+  'e-levres':{'Normales':'*'},
+  'e-ongles':{'Ongles roses (normal)':['Ongles pâles (Vide Sang)','Ongles violacés (Stase)','Ongles striés / cassants','Ongles en verre de montre'],
+              'Cheveux brillants (normal)':['Cheveux ternes / secs','Chute de cheveux','Cheveux blancs précoces']},
+  'e-morpho':{'Morphologie normale':'*'},
+  'e-membres':{'Membres normaux':['Œdèmes membres inf.','Varicosités / Varices','Douleurs articulaires','Tremblements membres'],
+               'Abdomen souple':['Abdomen distendu','Masse palpable','Tuméfaction','Ascite']},
+  'e-resp':{'Normale':['Superficielle','Courte / Dyspnée','Bruyante / Stertoreuse']}};
+// Cocher un signe décoche la réponse normale qui le contredit (et inversement)
+function _inspectionExclusion(el, inputId){
+  const N = INSPECTION_NORMAUX[inputId]; if(!N || !el.classList.contains('on')) return;
+  const t = el.textContent, tags = [...el.parentElement.querySelectorAll('.tg')];
+  const off = x => tags.filter(g => x.includes(g.textContent)).forEach(g => g.classList.remove('on'));
+  if(N[t]) off(N[t]==='*' ? tags.map(g=>g.textContent).filter(x=>x!==t) : N[t]);
+  else Object.entries(N).forEach(([n, ab]) => { if(ab==='*' || ab.includes(t)) off([n]); });
+}
+function inspectionToutNormal(){
+  let n = 0;
+  Object.entries(INSPECTION_NORMAUX).forEach(([id, N]) => {
+    const inp = document.getElementById(id); if(!inp || inp.value.trim()) return;  // ne touche pas aux questions déjà renseignées
+    const tr = inp.previousElementSibling && inp.previousElementSibling.classList.contains('tr') ? inp.previousElementSibling : inp.parentElement.querySelector('.tr');
+    if(!tr) return;
+    Object.keys(N).forEach(nom => { const g=[...tr.querySelectorAll('.tg')].find(x=>x.textContent===nom); if(g){ g.classList.add('on'); } });
+    inp.value = [...tr.querySelectorAll('.tg.on')].map(x=>x.textContent).join(', '); n++;
+  });
+  markDirty();
+  showToast(n ? `Réponse normale cochée pour ${n} question${n>1?'s':''} — décochez ce qui ne l'est pas` : 'Toutes les questions sont déjà renseignées');
+}
 function togEx(el, inputId) {
   el.classList.toggle('on');
+  _inspectionExclusion(el, inputId);
   const inp = document.getElementById(inputId);
   if (!inp) return;
   // Collecter tous les .tg.on du même groupe (parent commun)
@@ -12311,19 +12350,20 @@ function renderUrgenceProtocole(key){
   ['urg-acu-list','urg-auri-list'].forEach(id=>{ const x=document.getElementById(id); if(x&&x.parentElement&&!x.innerHTML.trim()) x.parentElement.style.display='none'; });
   el.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:6px">
       <div style="font-size:11px;font-weight:700;color:#6C3483;text-transform:uppercase;letter-spacing:.4px">🎯 ${P.label}</div>
-      <button class="btn" style="font-size:10px;padding:3px 9px" onclick="addAllUrgencePoints('proto')">➕ Tout ajouter</button>
+      <button class="btn" style="font-size:10px;padding:3px 9px" onclick="addAllUrgencePoints('proto')">✓ Tout cocher</button>
     </div>
     <div style="font-size:11px;color:var(--ink);margin-bottom:4px"><strong>Technique :</strong> ${P.technique}</div>
     <div style="font-size:11px;color:var(--slate);margin-bottom:8px"><strong>Indications :</strong> ${P.indications}</div>
     ${_urgLastProto.map((e,i)=>{
       const num=earNum(e.p.c);
+      const x=_urgPointLibre('proto', i);
       return `<div class="pt-row">
+        ${x ? propChk(x.code, x.label) : ''}
         <div class="pt-code" style="min-width:56px;background:#6C3483">${i+1}</div>
         <div class="pt-txt">
           <div class="pt-nom">${e.p.c}${num?' <span style="font-size:10px;color:var(--slate)">(n° '+num+' du schéma)</span>':' <span style="font-size:10px;color:#B45309">(sans repère sur le schéma)</span>'}</div>
           <div class="pt-act">${e.p.a}${e.p.loc?' · 📍 '+e.p.loc:''}</div>
         </div>
-        <button class="btn bg" style="font-size:11px;flex-shrink:0;margin-left:auto" onclick="addUrgencePointByIndex('proto',${i},this)">➕ Ajouter</button>
       </div>`;}).join('')}`;
 }
 
@@ -12355,32 +12395,35 @@ function _urgRow(entry, idx, type){
   const code = type==='acu' ? p.c : 'Oreille';
   const nom  = type==='acu' ? p.n : earLbl(p.c);
   const ind  = type==='acu' ? p.a : (p.a + (p.loc ? ' · 📍 '+p.loc : ''));
+  const x=_urgPointLibre(type, idx);
   return `<div class="pt-row">
+    ${x ? propChk(x.code, x.label) : ''}
     <div class="pt-code" style="min-width:${type==='acu'?'44px':'56px'}">${code}</div>
     <div class="pt-txt">
       <div class="pt-nom">${nom}</div>
       <div class="pt-act">${ind}</div>
       <div style="font-size:10px;color:var(--slate);font-style:italic;margin-top:2px">Recette(s) : ${entry.sources.join(' · ')}</div>
     </div>
-    <button class="btn bg" style="font-size:11px;flex-shrink:0;margin-left:auto" onclick="addUrgencePointByIndex('${type}',${idx},this)">➕ Ajouter</button>
   </div>`;
 }
 
-function addUrgencePointByIndex(type, idx, btn){
+function _urgPointLibre(type, idx){
   const entry = type==='acu' ? _urgLastAcu[idx] : type==='proto' ? _urgLastProto[idx] : _urgLastAuri[idx];
-  if(!entry) return;
+  if(!entry) return null;
   const p=entry.p;
-  const code = type==='acu' ? p.c : 'Oreille';
-  const nomBase = type==='acu' ? p.n : earLbl(p.c,false);
-  const label = nomBase+' — recette ⚡ '+entry.sources[0];
-  addLibrePointDirect(code, label, btn);
+  return { code: type==='acu' ? p.c : 'Oreille', label: (type==='acu' ? p.n : earLbl(p.c,false))+' — recette ⚡ '+entry.sources[0] };
+}
+function addUrgencePointByIndex(type, idx, btn){
+  const x=_urgPointLibre(type, idx); if(!x) return;
+  if(!_libreParNom(x.label).length) addLibrePointDirect(x.code, x.label, btn && btn.tagName==='BUTTON' ? btn : null);
+  if(btn && btn.type==='checkbox') btn.checked=true;
 }
 
 function addAllUrgencePoints(type){
   const list = type==='acu' ? _urgLastAcu : type==='proto' ? _urgLastProto : _urgLastAuri;
   if(!list.length){ showToast('Aucun point à ajouter'); return; }
-  const btns = type==='proto' ? document.querySelectorAll('#urg-proto-result .pt-row button') : document.querySelectorAll('#urg-'+type+'-list button');
-  list.forEach((e,i)=>addUrgencePointByIndex(type,i,btns[i]));
+  const cases = type==='proto' ? document.querySelectorAll('#urg-proto-result .pt-row .prop-chk') : document.querySelectorAll('#urg-'+type+'-list .prop-chk');
+  list.forEach((e,i)=>addUrgencePointByIndex(type,i,cases[i]));
 }
 
 function resetUrgence(){
@@ -12599,11 +12642,11 @@ function renderConvergence(){
     const fr = MTCNorm.ptFR(p.canon), ok = deja.has(p.canon), socle = i < N;
     const why = Object.entries(p.src).map(([k,v])=>CONV_SOURCES[k].lbl+' : '+v.why).join(' · ');
     return `<tr style="${socle?'':'opacity:.72'}">
+      <td style="padding:4px 6px;width:22px">${propChk(fr, _convLabel(p), ok && !_libreParNom(_convLabel(p)).length)}</td>
       <td style="padding:4px 6px;font-weight:700;color:${socle?'#0E6655':'var(--slate)'};white-space:nowrap">${fr}${p.canon!==fr?` <span style="font-weight:400;font-size:10px;color:var(--slate)">${p.canon}</span>`:''}</td>
       <td style="padding:4px 6px;font-size:11px;color:var(--slate)">${p.nom||''}</td>
       <td style="padding:4px 6px;text-align:center;font-weight:700;color:${p.n>=3?'#B3121B':p.n===2?'#B9770E':'var(--slate)'}">${'●'.repeat(p.n)}</td>
-      <td style="padding:4px 6px" title="${why.replace(/"/g,'&quot;')}">${Object.keys(p.src).map(badge).join(' ')}</td>
-      <td style="padding:4px 6px;text-align:right">${ok?'<span style="font-size:11px;color:#1E8449;font-weight:700">✓ retenu</span>':`<button class="btn" style="font-size:10px;padding:2px 8px" onclick="convAjouter('${p.canon}',this)">➕</button>`}</td></tr>`;
+      <td style="padding:4px 6px" title="${why.replace(/"/g,'&quot;')}">${Object.keys(p.src).map(badge).join(' ')}</td></tr>`;
   };
   const socle = C.body.slice(0, N), reste = C.body.slice(N);
   const aSocle = socle.filter(p=>!deja.has(p.canon)).length;
@@ -12612,7 +12655,7 @@ function renderConvergence(){
     <div style="font-size:12px;margin-bottom:6px"><strong>${C.body.length}</strong> points proposés par l'ensemble des sources, dont <strong>${conv}</strong> convergents (≥ 2 sources). Socle proposé : les <strong>${Math.min(N,C.body.length)}</strong> premiers.</div>
     <table style="width:100%;border-collapse:collapse;font-size:12px">
       <thead><tr style="font-size:10px;color:var(--slate);text-transform:uppercase;letter-spacing:.3px;text-align:left">
-        <th style="padding:3px 6px">Point</th><th style="padding:3px 6px">Nom</th><th style="padding:3px 6px">Sources</th><th style="padding:3px 6px">Proposé par</th><th></th></tr></thead>
+        <th style="padding:3px 6px" title="Cochez les points réalisés">✓</th><th style="padding:3px 6px">Point</th><th style="padding:3px 6px">Nom</th><th style="padding:3px 6px">Sources</th><th style="padding:3px 6px">Proposé par</th></tr></thead>
       <tbody>${socle.map(row).join('')}
       ${reste.length?`<tr><td colspan="5" style="padding:6px;font-size:11px;color:var(--slate);border-top:1px dashed var(--border)">
         <a href="#" onclick="document.getElementById('conv-reste').style.display=document.getElementById('conv-reste').style.display==='none'?'':'none';return false" style="color:var(--jade)">▸ ${reste.length} autres points (une seule source ou poids faible)</a></td></tr>`:''}
@@ -12620,16 +12663,29 @@ function renderConvergence(){
       <tbody id="conv-reste" style="display:none">${reste.map((p,j)=>row(p,N+j)).join('')}</tbody>
     </table>
     <div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap;align-items:center">
-      ${aSocle?`<button class="btn bg" style="font-size:11px" onclick="convAjouterSocle(this)">➕ Ajouter le socle (${aSocle} point${aSocle>1?'s':''})</button>`:'<span style="font-size:11px;color:#1E8449;font-weight:700">✓ Socle entièrement retenu</span>'}
+      ${aSocle?`<button class="btn bg" style="font-size:11px" onclick="convAjouterSocle(this)">✓ Cocher le socle (${aSocle} point${aSocle>1?'s':''})</button>`:'<span style="font-size:11px;color:#1E8449;font-weight:700">✓ Socle entièrement coché</span>'}
       ${C.ctx.mtm && C.ctx.mtm.probable && C.ctx.mtm.mtm.length ? `<div style="flex-basis:100%;font-size:11px;color:#784212">🟠 MTM — ${C.ctx.mtm.ashi.length ? 'points <strong>Ashi</strong> : '+C.ctx.mtm.ashi.join(', ')+' ; ' : ''}technique : ${C.ctx.mtm.tech.join(' ; ')}.</div>` : ''}
-      <span style="font-size:10px;color:var(--slate);font-style:italic">Survolez les badges pour voir la raison de chaque proposition. Points ajoutés dans « Points réalisés » (section Points libres).</span>
+      <span style="font-size:10px;color:var(--slate);font-style:italic">Cochez les points réalisés (ajoutés dans « Points réalisés », section Points libres). Survolez les badges pour voir la raison de chaque proposition.</span>
     </div>
     ${C.auri.length?`<div style="margin-top:10px;padding-top:8px;border-top:1px dashed var(--border)">
       <div style="font-size:11px;font-weight:700;color:#8B3A3A;margin-bottom:4px">Oreille — 4 points les plus convergents</div>
       ${C.auri.slice(0,4).map(a=>`<div style="display:flex;gap:8px;align-items:center;font-size:12px;padding:2px 0">
-        <strong style="min-width:150px">${earLbl(a.nom)}</strong><span style="font-size:10px;color:var(--slate);flex:1">${a.src.join(' · ')}</span>
-        <button class="btn" style="font-size:10px;padding:2px 8px" onclick="convAjouterAuri('${a.nom.replace(/'/g,"\\'")}',this)">➕</button></div>`).join('')}
+        ${propChk('Oreille', earLbl(a.nom,false)+' — convergence ('+a.src.join(' · ')+')')}
+        <strong style="min-width:150px">${earLbl(a.nom)}</strong><span style="font-size:10px;color:var(--slate);flex:1">${a.src.join(' · ')}</span></div>`).join('')}
     </div>`:''}`;
+}
+// Case à cocher d'un point proposé (convergence, Mode Urgence) : cochée = point ajouté aux points réalisés
+// (section Points libres), décochée = point retiré. Même geste que les cases des autres sections.
+function _libreParNom(nom){ return [...document.querySelectorAll('#pts-libres-list .libre-chk')].filter(c => c.dataset.nom === nom); }
+function propChk(code, nom, deja){
+  const att = x => String(x).replace(/&/g,'&amp;').replace(/"/g,'&quot;');
+  const coche = deja || _libreParNom(nom).length > 0;
+  return `<input type="checkbox" class="prop-chk" data-code="${att(code)}" data-nom="${att(nom)}" ${coche?'checked':''} ${deja?'disabled title="Déjà coché dans une autre section"':'title="Cocher = point réalisé"'} onchange="onPropChk(this)" style="width:15px;height:15px;flex-shrink:0;cursor:pointer">`;
+}
+function onPropChk(cb){
+  const code = cb.dataset.code, nom = cb.dataset.nom;
+  if(cb.checked){ if(!_libreParNom(nom).length) addLibrePointDirect(code, nom, null); }
+  else { _libreParNom(nom).forEach(c => c.closest('div') && c.closest('div').remove()); _urgPendingPoints = _urgPendingPoints.filter(x => x.nom !== nom); syncRealises(); markDirty(); showToast('Point retiré : '+code); }
 }
 function _convLabel(p){ return MTCNorm.ptFR(p.canon)+(p.nom?' '+p.nom:'')+' — convergence ('+Object.keys(p.src).map(k=>CONV_SOURCES[k].lbl).join(' · ')+')'; }
 function convAjouter(canon, btn){
