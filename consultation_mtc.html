@@ -668,6 +668,7 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
           </div>
           <button class="btn" style="font-size:11px;flex-shrink:0;border-color:var(--jade);color:var(--jade)" onclick="newCCMQ()">🏮 Nouveau CCMQ</button>
         </div>
+        <div id="dix-demandes"></div>
         <div class="f" style="margin-top:8px">
           <label style="font-size:10px;font-weight:700;color:var(--jade);text-transform:uppercase;letter-spacing:.3px">📧 Retour du patient (mail) / Notes de préparation</label>
           <textarea id="dix-prep-notes" rows="3" placeholder="Collez ici les nouvelles reçues par mail depuis la dernière séance, et vos points de réflexion pour la prochaine consultation…"
@@ -2253,6 +2254,7 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
         <button class="btn bg" onclick="saveSeance()">💾 Enregistrer séance</button>
         <button class="btn" onclick="exportPatient()">⬇ Export Excel</button>
         <button class="btn" onclick="ouvrirCourrier()" title="Lettre au médecin qui a adressé le patient, rédigée à partir de cette synthèse">✉ Courrier au médecin adresseur</button>
+        <button class="btn" id="btn-fiche-synthese" style="display:none" onclick="exporterSyntheseFiche()" title="Fiche d'échange (passerelle) contenant cette synthèse, à transmettre au médecin qui a demandé la séance">📤 Fiche de synthèse pour le médecin</button>
       </div>
       <textarea id="s-courrier" style="display:none" oninput="markDirty()"></textarea>
 
@@ -3470,6 +3472,7 @@ function updSb(){
   const nb=(curPt.seances||[]).length;
   document.getElementById('pi-sub').textContent=curPt._test?'Non archivé':`${nb} séance${nb>1?'s':''}`;
   document.getElementById('btn-dp').style.display=curPt.id?'':'none';
+  renderDemandesMedecin(); // jamais les demandes d'un autre dossier à l'écran
 }
 /* Praticien acupuncteur par défaut : praticien connecté (code d'accès), ou praticien local (lanceur). */
 function nomPraticienCourant(){
@@ -4113,6 +4116,7 @@ function updDixInfo(){
       motifInp.value=motif;
     }
   }
+  renderDemandesMedecin();
 }
 
 function onMotifChange(){
@@ -13193,6 +13197,65 @@ function _flushUrgPending(navigateBack){
     return { fiche: f, echecs };
   }
 
+  // ───────── Documents échangés entre ANESTHconsult et ACUconsult (11/10/2026) ─────────
+  // Types de documents d'une fiche : questionnaire_medical(_chiffre), ccmq, demande_acupuncture (ANESTHconsult →
+  // ACUconsult : indications proposées, jamais recopiées d'office comme motif), synthese_acu (ACUconsult →
+  // ANESTHconsult : rangée dans l'épisode péri-opératoire du registre), cr_cpa, cr_mpo.
+
+  /** Depuis une consultation d'ANESTHconsult (objet `d`) : identité au statut saisi (à défaut « récupérée »). */
+  function depuisAnesthconsult(d) {
+    const id = (d && d.identity) || {};
+    const f = ficheVide();
+    if (id.ficheId) f.id = id.ficheId;
+    Object.assign(f.identite, {
+      nomNaissance: id.nomNaissance || id.nomUsage || '', prenomNaissance: premierPrenom(id.prenomsNaissance || id.prenom),
+      prenomsNaissance: id.prenomsNaissance || '',
+      lieuNaissance: { insee: '', libelle: id.lieuNaissance || '', pays: id.paysNaissance || '' },
+      dateNaissance: normaliserDate(id.dateNaissance), sexe: normaliserSexe(id.sexe),
+      nomUtilise: id.nomUsage || '', prenomUtilise: id.prenom || '',
+      statut: STATUTS.includes(id.statutIdentite) ? id.statutIdentite : 'recuperee',
+      controle: id.pieceIdentite ? { piece: id.pieceIdentite, le: id.dateControleIdentite || '', par: 'médecin' } : null,
+    });
+    Object.assign(f.contacts, { telephone: normaliserTel(id.telephone), email: id.email || '', medecinTraitant: id.medecinTraitant || '' });
+    f.historique.push({ le: new Date().toISOString(), action: 'creation', source: 'ANESTHconsult' });
+    return f;
+  }
+  /** Ajoute (copie) un document daté à une fiche. */
+  function ajouterDocument(fiche, type, contenu, date) {
+    const f = JSON.parse(JSON.stringify(fiche));
+    f.documents.push({ type, date: date || new Date().toISOString().slice(0, 10), contenu });
+    return f;
+  }
+  /** Documents d'un type donné, du plus récent au plus ancien. */
+  function documentsDeType(fiche, type) {
+    return ((fiche && fiche.documents) || []).filter(x => x.type === type).sort((a, b) => String(b.date).localeCompare(String(a.date)));
+  }
+
+  // ───────── Sauvegarde protégée par mot de passe (registre de suivi, 11/10/2026) ─────────
+  // PBKDF2-SHA-256 (310 000 itérations, sel aléatoire) → clé AES-GCM 256 bits. Sans le mot de passe, le
+  // fichier est illisible ; un mot de passe perdu rend la sauvegarde définitivement inutilisable.
+  const FORMAT_SAUVEGARDE = 'cabinet-blanchard/sauvegarde-chiffree';
+  const ITERATIONS = 310000;
+  async function _cleMotDePasse(mdp, sel) {
+    const base = await _subtle().importKey('raw', new TextEncoder().encode(mdp), 'PBKDF2', false, ['deriveKey']);
+    return _subtle().deriveKey({ name: 'PBKDF2', salt: sel, iterations: ITERATIONS, hash: 'SHA-256' }, base, { name: 'AES-GCM', length: 256 }, false, ['encrypt', 'decrypt']);
+  }
+  async function chiffrerParMotDePasse(objet, mdp, { contenu = '' } = {}) {
+    if (!mdp || String(mdp).length < 8) throw new Error('Mot de passe trop court (8 caractères au moins)');
+    const sel = _alea(16), iv = _alea(12);
+    const cle = await _cleMotDePasse(mdp, sel);
+    const donnees = new Uint8Array(await _subtle().encrypt({ name: 'AES-GCM', iv }, cle, new TextEncoder().encode(JSON.stringify(objet))));
+    return { format: FORMAT_SAUVEGARDE, version: 1, alg: 'PBKDF2-SHA256+A256GCM', iterations: ITERATIONS, contenu, le: new Date().toISOString(), sel: _b64(sel), iv: _b64(iv), donnees: _b64(donnees) };
+  }
+  async function dechiffrerParMotDePasse(paquet, mdp) {
+    if (!paquet || paquet.format !== FORMAT_SAUVEGARDE) throw new Error('Ce fichier n\'est pas une sauvegarde chiffrée');
+    const cle = await _cleMotDePasse(mdp, _deb64(paquet.sel));
+    let clair;
+    try { clair = await _subtle().decrypt({ name: 'AES-GCM', iv: _deb64(paquet.iv) }, cle, _deb64(paquet.donnees)); }
+    catch (e) { throw new Error('Mot de passe incorrect ou fichier altéré'); }
+    return JSON.parse(new TextDecoder().decode(clair));
+  }
+
   /** Lot « Dossier du jour » : plusieurs fiches dans un seul fichier. */
   function lot(fiches, { date, source } = {}) {
     return { format: FORMAT + '/lot', version: VERSION, date: date || new Date().toISOString().slice(0, 10), source: source || '', fiches };
@@ -13205,6 +13268,8 @@ function _flushUrgPending(navigateBack){
     comparer, rechercher, fusionner, valider,
     depuisSite, depuisQuestionnaireAnesth, versAnesthconsult, versAcuconsult, lot,
     FORMAT_QUESTIONNAIRE_CHIFFRE, genererClesCabinet, chiffrerPourCabinet, dechiffrerDuCabinet, dechiffrerFiche,
+    depuisAnesthconsult, ajouterDocument, documentsDeType,
+    FORMAT_SAUVEGARDE, chiffrerParMotDePasse, dechiffrerParMotDePasse,
   };
 });
 // ⟦/passerelle⟧
@@ -13249,6 +13314,79 @@ function _passerelleRemplir(p, acu){
 function passerelleNouveauPatient(acu){ const p = mkPt(); _passerelleRemplir(p, acu); return p; }
 function passerelleCompleter(patient, acu){ const p = JSON.parse(JSON.stringify(patient)); const ajouts = _passerelleRemplir(p, acu); return { patient: p, ajouts }; }
 
+// Demandes de séance envoyées par un médecin (document « demande_acupuncture » d'une fiche) : rangées dans
+// le dossier, affichées en tête des 10+1 Questions ; l'indication n'est proposée comme motif que sur un clic
+// du praticien (jamais recopiée d'office, comme le motif d'une séance à l'autre).
+function _passerelleAjouterDemandes(p, fiche){
+  const docs = Passerelle.documentsDeType(fiche || {}, 'demande_acupuncture');
+  p.demandes = p.demandes || [];
+  let n = 0;
+  docs.forEach(d => {
+    const c = d.contenu || {};
+    const cle = d.date + '|' + JSON.stringify(c.indications || []) + '|' + (c.dateIntervention || '');
+    if(p.demandes.some(x => x.cle === cle)) return;
+    p.demandes.push({ cle, date: d.date, indications: c.indications || [], intervention: c.intervention || '', dateIntervention: c.dateIntervention || '',
+      demandeur: c.demandeur || '', commentaire: c.commentaire || '', recueLe: new Date().toISOString().slice(0, 10), traitee: false });
+    n++;
+  });
+  return n;
+}
+function renderDemandesMedecin(){
+  const fiche = document.getElementById('btn-fiche-synthese');
+  if(fiche) fiche.style.display = (curPt && curPt.passerelle && curPt.passerelle.ficheId) ? '' : 'none';
+  const box = document.getElementById('dix-demandes'); if(!box) return;
+  box.innerHTML = '';
+  ((curPt && curPt.demandes) || []).forEach((x, i) => {
+    if(x.traitee) return;
+    const div = document.createElement('div');
+    div.style.cssText = 'margin-top:8px;padding:7px 10px;border:1px solid var(--jade-md);border-radius:6px;background:#fff;font-size:12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap';
+    const t = document.createElement('span'); t.style.flex = '1';
+    t.textContent = '📨 Demande de séance' + (x.demandeur ? ' — ' + x.demandeur : '') + (x.date ? ' (' + fmtD(x.date) + ')' : '') + ' : ' + x.indications.join(' ; ') +
+      (x.intervention ? '. Intervention prévue : ' + x.intervention + (x.dateIntervention ? ' le ' + fmtD(x.dateIntervention) : '') : '') + (x.commentaire ? '. ' + x.commentaire : '') + '.';
+    const b1 = document.createElement('button'); b1.className = 'btn'; b1.style.fontSize = '11px'; b1.textContent = 'Proposer comme motif'; b1.onclick = () => demandeVersMotif(i);
+    const b2 = document.createElement('button'); b2.className = 'btn'; b2.style.fontSize = '11px'; b2.textContent = 'Masquer'; b2.onclick = () => demandeTraitee(i);
+    div.append(t, b1, b2); box.appendChild(div);
+  });
+}
+function demandeVersMotif(i){
+  const x = curPt && curPt.demandes && curPt.demandes[i]; if(!x) return;
+  const inp = document.getElementById('dix-motif-input'); if(!inp) return;
+  const txt = x.indications.join(' ; ');
+  if(inp.value.trim()){
+    if(inp.value.includes(txt)) return;
+    if(!confirm('Le motif de la séance est déjà rempli. Ajouter la demande à la suite ?')) return;
+    inp.value = inp.value.trim() + ' ; ' + txt;
+  } else inp.value = txt;
+  onMotifChange();
+  showToast('Motif proposé — à vérifier');
+}
+function demandeTraitee(i){
+  const x = curPt && curPt.demandes && curPt.demandes[i]; if(!x) return;
+  x.traitee = true; markDirty(); renderDemandesMedecin();
+}
+// Synthèse de la séance vers le médecin demandeur : fiche de la passerelle (document « synthese_acu »),
+// lue par ANESTHconsult (registre de suivi). Proposée seulement pour un dossier venu d'une fiche.
+function ficheSynthese(){
+  if(!curPt) return null;
+  const g = id => (document.getElementById(id) || {}).value || '';
+  const f = _ficheDepuisPatient(curPt);
+  if(curPt.passerelle && curPt.passerelle.ficheId) f.id = curPt.passerelle.ficheId;
+  if(curPt.passerelle && Passerelle.STATUTS.includes(curPt.passerelle.statutIdentite)) f.identite.statut = curPt.passerelle.statutIdentite;
+  const sc = curScIdx !== null && curPt.seances ? curPt.seances[curScIdx] : null;
+  return Passerelle.ajouterDocument(f, 'synthese_acu', {
+    motif: g('s-motif'), syndromes: g('s-syndromes'), principe: g('s-principe'), points: g('s-points'), technique: g('s-tech'),
+    conseils: g('s-conseils'), prochaineSeance: g('s-rdv'), praticien: curPt.praticien || nomPraticienCourant(), origine: 'ACUconsult',
+  }, (sc && sc.date) || new Date().toISOString().slice(0, 10));
+}
+function exporterSyntheseFiche(){
+  const f = ficheSynthese(); if(!f) return;
+  const blob = new Blob([JSON.stringify(f, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = 'synthese_acu_' + ((curPt.nom || 'patient') + '_' + (curPt.prenom || '')).normalize('NFD').replace(/[^\w]+/g, '_') + '_' + new Date().toISOString().slice(0, 10) + '.json';
+  document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+  showToast('Fiche de synthèse enregistrée : à transmettre au médecin');
+}
+
 let _passerelleAnalyse = [];
 async function passerelleImporterFichier(input){
   const f = input.files && input.files[0]; input.value = '';
@@ -13291,11 +13429,15 @@ async function _passerelleAppliquer(i, action, patient){
   const a = _passerelleAnalyse[i];
   if(action === 'completer'){
     const r = passerelleCompleter(patient, a.acu);
+    const nd = _passerelleAjouterDemandes(r.patient, a.fiche);
     await dbPut(r.patient);
-    a.fait = 'dossier complété' + (r.ajouts.length ? ' (' + r.ajouts.join(', ') + ')' : ' (rien à ajouter)');
+    if(curPt && curPt.id === r.patient.id){ curPt.demandes = r.patient.demandes; curPt.passerelle = r.patient.passerelle; renderDemandesMedecin(); }
+    a.fait = 'dossier complété' + (r.ajouts.length ? ' (' + r.ajouts.join(', ') + ')' : ' (rien à ajouter)') + (nd ? ', ' + nd + ' demande(s) de séance' : '');
   } else {
-    await dbPut(passerelleNouveauPatient(a.acu));
-    a.fait = 'nouveau dossier créé';
+    const p = passerelleNouveauPatient(a.acu);
+    const nd = _passerelleAjouterDemandes(p, a.fiche);
+    await dbPut(p);
+    a.fait = 'nouveau dossier créé' + (nd ? ', ' + nd + ' demande(s) de séance' : '');
   }
   _passerelleAfficher();
 }
