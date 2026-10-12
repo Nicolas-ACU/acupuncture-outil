@@ -8825,15 +8825,44 @@ const SPN_SPECIALTIES = [
 // Remplit le select Spécialité selon le sexe du patient (une spécialité avec sexeRestrict
 // n'apparaît que si elle correspond) ; appelé à l'ouverture de l'onglet Points et quand le
 // sexe du patient change.
+// Sexe retenu pour filtrer les spécialités : celui de la fiche à l'écran d'abord (nouvelle patiente pas encore
+// enregistrée, patient test), puis celui du dossier. Retour du 12/10/2026 : seul curPt.sexe était lu, vide tant
+// que la fiche n'était pas enregistrée — la Gynéco-Obstétrique « disparaissait » alors que « Féminin » était choisi.
+function spnSexePatient(){
+  const fiche = ((document.getElementById('p-sexe')||{}).value||'').trim();
+  return fiche || ((curPt && curPt.sexe) || '').trim();
+}
+// Une spécialité réservée à un sexe n'est masquée que si le sexe est CONNU et différent (sexe non renseigné :
+// toutes les spécialités restent proposées).
+function spnSpecialitesDisponibles(sexe){
+  return SPN_SPECIALTIES.filter(s => !s.sexeRestrict || !sexe || s.sexeRestrict===sexe);
+}
 function populateSpnSpecialties(){
   const sel = document.getElementById('spn-spec');
   if(!sel) return;
   const prev = sel.value;
-  const sexe = curPt ? (curPt.sexe||'') : ((document.getElementById('p-sexe')||{}).value||'');
-  const avail = SPN_SPECIALTIES.filter(s => !s.sexeRestrict || s.sexeRestrict===sexe);
+  const sexe = spnSexePatient();
+  const avail = spnSpecialitesDisponibles(sexe);
   sel.innerHTML = '<option value="">— Sélectionner une spécialité —</option>' +
     avail.map(s=>`<option value="${s.key}">${s.label}</option>`).join('');
+  // Toujours dire ce qui est masqué et pourquoi : un masquage ne doit jamais ressembler à une disparition.
+  const masquees = SPN_SPECIALTIES.filter(s => !avail.includes(s));
+  let info = document.getElementById('spn-masquees');
+  if(!info){ info = document.createElement('p'); info.id = 'spn-masquees'; info.style.cssText = 'font-size:11px;color:var(--slate);margin:4px 0 0'; sel.parentNode.appendChild(info); }
+  info.textContent = masquees.length ? 'Non proposée(s) pour ce patient (sexe : '+sexe+') : '+masquees.map(s=>s.label.replace(/\s*[^\x00-\u024F]+$/,'')).join(', ')+'.' : '';
   if(avail.some(s=>s.key===prev)){ sel.value = prev; } else { onSpnSpecChange(); }
+}
+// Contrôle du registre (appelé par les tests et au chargement) : chaque spécialité doit avoir une clé, un libellé,
+// des domaines et ses deux fonctions. Renvoie la liste des problèmes (vide = registre complet).
+function spnVerifierRegistre(){
+  const pb = [];
+  SPN_SPECIALTIES.forEach((s, i) => {
+    if(!s.key || !s.label) pb.push('spécialité n°'+(i+1)+' : clé ou libellé manquant');
+    if(!Array.isArray(s.domaineOptions) || !s.domaineOptions.length) pb.push((s.key||i)+' : aucun domaine');
+    if(typeof s.initSelects!=='function' || typeof s.showProtocole!=='function') pb.push((s.key||i)+' : fonctions d\'affichage manquantes');
+  });
+  if(new Set(SPN_SPECIALTIES.map(s=>s.key)).size !== SPN_SPECIALTIES.length) pb.push('clé de spécialité en double');
+  return pb;
 }
 
 function onSpnSpecChange(){
@@ -8868,6 +8897,7 @@ function spnShowProtocole(){
   const motifVal = (document.getElementById('gyno-motif')||{}).value||'';
   if(!spec || !motifVal){ clearGynoResult(); return; }
   const catVal = (document.getElementById('gyno-cat')||{}).value||'';
+  if(!spnSpecialitesDisponibles(spnSexePatient()).includes(spec)){ clearGynoResult(); return; }
   spec.showProtocole(catVal, motifVal);
 }
 
@@ -8896,8 +8926,10 @@ function showGynoProtocole(category, motifKey){
   });
   resultEl.innerHTML = '';
 
-  const isSexeF = (document.getElementById('p-sexe')||{}).value === 'Féminin';
-  if(!isSexeF){
+  // Même règle que la liste des spécialités (spnSpecialitesDisponibles) : refus seulement si le sexe est connu et
+  // différent — avant le 12/10/2026, un sexe non encore enregistré (nouvelle patiente, patient test) bloquait tout.
+  const sexeP = spnSexePatient();
+  if(sexeP && sexeP !== 'Féminin'){
     resultEl.innerHTML = '<p style="color:#C0392B;font-size:12px">⚠️ Ce référentiel est réservé aux patientes de sexe féminin.</p>';
     return;
   }
