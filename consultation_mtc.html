@@ -575,6 +575,7 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
             <option value="6">6. Méthodes traditionnelles</option>
             <option value="7">7. Localisation de la douleur</option>
             <option value="8">8. Indications empiriques</option>
+            <option value="R">Rhumatologie</option>
             <option value="A">Associations de points</option>
             <option value="S">Synonymes (analyse croisée)</option>
           </select>
@@ -638,6 +639,12 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
       <div class="card ref-sec" data-sec="8" id="ref-8">
         <div class="ct">8. Selon les indications empiriques des points</div>
         <div class="ref-tables" data-sec="8"></div>
+      </div>
+
+      <div class="card ref-sec" data-sec="R" id="ref-rhumato">
+        <div class="ct">Rhumatologie en MTC — tableaux de référence</div>
+        <div class="ref-doc" style="font-size:11px;color:var(--slate);margin-bottom:6px">Cours de rhumatologie du DU d'acupuncture et de la Capacité. Les protocoles par motif sont dans Points › Motif clinique › Référentiel Sorbonne › Rhumatologie.</div>
+        <div class="ref-tables" data-sec="R"></div>
       </div>
 
       <div class="card ref-sec" data-sec="S" id="ref-syn">
@@ -1308,7 +1315,7 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
               <span class="tg" onclick="togEx(this,'d-type')">Irradiante</span>
               <span class="tg" onclick="togEx(this,'d-type')">Pulsatile</span>
             </div>
-            <input id="d-type" style="display:none" oninput="markDirty()">
+            <input id="d-type" style="display:none" oninput="markDirty();rhRafraichir()">
           </div>
 
           <div>
@@ -1325,7 +1332,7 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
               <span class="tg" onclick="togEx(this,'d-rythme')">À l'effort</span>
               <span class="tg" onclick="togEx(this,'d-rythme')">Au repos</span>
             </div>
-            <input id="d-rythme" style="display:none" oninput="markDirty()">
+            <input id="d-rythme" style="display:none" oninput="markDirty();rhRafraichir()">
           </div>
         </div>
 
@@ -1347,7 +1354,7 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
               <span class="tg tg-agg" onclick="togEx(this,'d-aggrave')">L'humidité</span>
               <span class="tg tg-agg" onclick="togEx(this,'d-aggrave')">Le vent</span>
             </div>
-            <input id="d-aggrave" style="display:none" oninput="markDirty();calcDouleurType()">
+            <input id="d-aggrave" style="display:none" oninput="markDirty();calcDouleurType();rhRafraichir()">
           </div>
           <div>
             <div style="font-size:11px;font-weight:700;color:var(--jade);text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px">⬇ Amélioré par</div>
@@ -1363,10 +1370,34 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
               <span class="tg tg-amel" onclick="togEx(this,'d-ameliore')">L'application de froid</span>
               <span class="tg tg-amel" onclick="togEx(this,'d-ameliore')">Le relâchement</span>
             </div>
-            <input id="d-ameliore" style="display:none" oninput="markDirty();calcDouleurType()">
+            <input id="d-ameliore" style="display:none" oninput="markDirty();calcDouleurType();rhRafraichir()">
           </div>
         </div>
 
+        <!-- Signes articulaires et orientation rhumatologique (référentiel Sorbonne, 12/10/2026) -->
+        <div style="margin-bottom:14px">
+          <div style="font-size:11px;font-weight:700;color:#117A65;text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px">Signes articulaires et rhumatologiques</div>
+          <div class="tr">
+              <span class="tg" onclick="togEx(this,'d-rhumato')">Gonflement articulaire</span>
+              <span class="tg" onclick="togEx(this,'d-rhumato')">Rougeur / chaleur locale</span>
+              <span class="tg" onclick="togEx(this,'d-rhumato')">Articulations froides</span>
+              <span class="tg" onclick="togEx(this,'d-rhumato')">Raideur matinale prolongée</span>
+              <span class="tg" onclick="togEx(this,'d-rhumato')">Craquements</span>
+              <span class="tg" onclick="togEx(this,'d-rhumato')">Déformation / nodules</span>
+              <span class="tg" onclick="togEx(this,'d-rhumato')">Limitation / ankylose</span>
+              <span class="tg" onclick="togEx(this,'d-rhumato')">Engourdissement</span>
+              <span class="tg" onclick="togEx(this,'d-rhumato')">Faiblesse sans douleur</span>
+              <span class="tg" onclick="togEx(this,'d-rhumato')">Atrophie musculaire</span>
+              <span class="tg" onclick="togEx(this,'d-rhumato')">Plusieurs articulations</span>
+              <span class="tg" onclick="togEx(this,'d-rhumato')">Atteinte symétrique</span>
+              <span class="tg" onclick="togEx(this,'d-rhumato')">Poussées successives</span>
+              <span class="tg" onclick="togEx(this,'d-rhumato')">Sensible aux changements de temps</span>
+              <span class="tg" onclick="togEx(this,'d-rhumato')">Début traumatique</span>
+              <span class="tg" onclick="togEx(this,'d-rhumato')">Douleur ancienne (&gt; 3 mois)</span>
+          </div>
+          <input id="d-rhumato" style="display:none" oninput="markDirty();rhRafraichir()">
+          <div id="rh-analyse-examen" style="margin-top:6px"></div>
+        </div>
         <!-- Tableau diagnostique Plénitude/Vide/Stagnation × Yin/Yang -->
         <div style="margin-bottom:12px">
           <div style="font-size:11px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.4px;margin-bottom:8px">Catégorisation MTC — Plénitude / Vide / Stagnation</div>
@@ -1826,7 +1857,8 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
               <button class="btn bg" onclick="spnShowProtocole()" style="font-size:11px;background:#117A65;border-color:#117A65">→ Voir protocole</button>
             </div>
           </div>
-          <p id="spn-empty-msg" style="font-size:11px;color:var(--slate);font-style:italic">Sélectionnez une spécialité pour afficher ses domaines et motifs cliniques. D'autres spécialités du référentiel (rhumatologie, psychiatrie…) seront ajoutées progressivement.</p>
+          <div id="rh-analyse-points" style="display:none;background:#F0F9F6;border-radius:6px;padding:6px 10px;margin-bottom:8px"></div>
+          <p id="spn-empty-msg" style="font-size:11px;color:var(--slate);font-style:italic">Sélectionnez une spécialité pour afficher ses domaines et motifs cliniques. D'autres spécialités du référentiel (psychiatrie, ORL…) seront ajoutées progressivement.</p>
           <div id="gyno-result-wrapper" style="display:none">
             <div id="gyno-result" style="font-size:12px"></div>
           </div>
@@ -3334,7 +3366,7 @@ function validerVersSynthese(navigate=true){
     all.push('[EBM] '+(cb.dataset.code||''));
   });
   document.querySelectorAll('.gyno-chk:checked').forEach(cb=>{
-    all.push('[Gynéco] '+(cb.dataset.code||''));
+    all.push('['+spnPrefixe()+'] '+(cb.dataset.code||''));
   });
   document.querySelectorAll('.libre-chk:checked').forEach(cb=>{
     const c = cb.dataset.code||'';
@@ -3412,6 +3444,7 @@ function navTo(pg){
   if(pg==='seances')renderSeances();
   if(pg==='realises') setTimeout(syncRealises, 50);
   if(pg==='points') setTimeout(renderConvergence, 60);
+  if((pg==='points' || pg==='examen') && typeof rhRafraichir==='function') setTimeout(rhRafraichir, 40);
   if(pg==='fiche') setTimeout(toggleSAfield, 30);
   if(pg==='synthese') setTimeout(autoFillSynthese, 50);
   if(pg==='points'){
@@ -3698,7 +3731,7 @@ function loadSeance(sc){
     'palp-oreille':ex.palpOreille, 'palp-oreille-notes':ex.palpOreilleNotes,
     // Douleur
     'd-localisation':ex.dLocalisation, 'd-type':ex.dType, 'd-rythme':ex.dRythme,
-    'd-aggrave':ex.dAggrave, 'd-ameliore':ex.dAmeliore, 'd-libre':ex.dLibre,
+    'd-aggrave':ex.dAggrave, 'd-ameliore':ex.dAmeliore, 'd-rhumato':ex.dRhumato, 'd-libre':ex.dLibre,
     // Langue
     'l-forme':ex.lForme, 'l-epaisseur':ex.lEpaisseur, 'l-couleur':ex.lCouleur, 'l-couleur-loc':ex.lCouleurLoc,
     'l-enduit-couleur':ex.lEnduitCouleur, 'l-enduit-dist':ex.lEnduitDist,
@@ -3752,7 +3785,7 @@ function loadSeance(sc){
       showAuri(synd,sc.pts.auriRealises||[]);
     }
     // Restaurer le protocole Sorbonne Paris Nord et ses points cochés (avant le 1er oct. 2026 : perdus à la réouverture)
-    const gyRe = (sc.pts.realises||[]).filter(r=>r.startsWith('[Gynéco] ')).map(r=>r.replace('[Gynéco] ','').split(' — ')[0].trim());
+    const gyRe = (sc.pts.realises||[]).filter(r=>SPN_PREFIXE_RE.test(r)).map(r=>r.replace(SPN_PREFIXE_RE,'').split(' — ')[0].trim());
     const GYs = sc.pts.gyno;
     if(GYs && GYs.motif && typeof populateSpnSpecialties==='function'){
       populateSpnSpecialties();
@@ -3768,7 +3801,7 @@ function loadSeance(sc){
       const libreList = document.getElementById('pts-libres-list');
       if(libreList){
         libreList.innerHTML = '';
-        const gyLibres = (!GYs || !GYs.motif) ? sc.pts.realises.filter(r=>r.startsWith('[Gynéco] ')).map(r=>'[+] '+r.replace('[Gynéco] ','')+' — Gynéco SPN') : [];
+        const gyLibres = (!GYs || !GYs.motif) ? sc.pts.realises.filter(r=>SPN_PREFIXE_RE.test(r)).map(r=>'[+] '+r.replace(SPN_PREFIXE_RE,'')+' — Réf. Sorbonne') : [];
         sc.pts.realises.filter(r=>r.startsWith('[+] ')).concat(gyLibres).forEach(r=>{
           // code = le point en tête du libellé (« RM4 Guanyuan — convergence… » → RM4), sinon la partie avant « — »
           const tete = r.replace('[+] ','').split(' — ')[0], mot1 = tete.split(' ')[0];
@@ -3836,7 +3869,7 @@ function collectSc(){
     palpAhshiT:gT('palp-ahshi-t'),palpAhshi:g('palp-ahshi'),palpNotes:g('palp-notes'),
     palpOreille:gT('palp-oreille'),palpOreilleNotes:g('palp-oreille-notes'),
     dLocalisation:gT('d-localisation'),dType:gT('d-type'),dRythme:gT('d-rythme'),
-    dAggrave:gT('d-aggrave'),dAmeliore:gT('d-ameliore'),dLibre:g('d-libre'),dZones:g('d-zones')};
+    dAggrave:gT('d-aggrave'),dAmeliore:gT('d-ameliore'),dRhumato:gT('d-rhumato'),dLibre:g('d-libre'),dZones:g('d-zones')};
   sc.ccmq={};CQ.forEach(i=>{const v=g('c-'+i.n);if(v)sc.ccmq[i.n]=v;});
   const syndChk2=document.querySelectorAll('.pt-chk:checked:not(.ebm-chk):not(.auri-chk):not(.gyno-chk):not(.libre-chk)');
   const ebmChk2=document.querySelectorAll('.ebm-chk:checked');
@@ -3845,7 +3878,7 @@ function collectSc(){
   const real=[];
   syndChk2.forEach(cb=>{const n=cb.closest('.pt-row')?.querySelector('.pt-note');real.push(cb.dataset.code+(cb.dataset.nom&&cb.dataset.nom!==cb.dataset.code?' '+cb.dataset.nom:'')+(n&&n.value?' ('+n.value+')':''));});
   ebmChk2.forEach(cb=>{const n=cb.closest('.pt-row')?.querySelector('.pt-note');real.push('[EBM] '+cb.dataset.code+' '+cb.dataset.nom+(n&&n.value?' ('+n.value+')':''));});
-  gynoChk2.forEach(cb=>{real.push('[Gynéco] '+cb.dataset.code+(cb.dataset.nom&&cb.dataset.nom!==cb.dataset.code?' — '+cb.dataset.nom:''));});
+  gynoChk2.forEach(cb=>{real.push('['+spnPrefixe()+'] '+cb.dataset.code+(cb.dataset.nom&&cb.dataset.nom!==cb.dataset.code?' — '+cb.dataset.nom:''));});
   libreChk2.forEach(cb=>{ real.push(_libreLabel(cb)); });
   const auriReal = collectAuri();
   sc.pts={syndrome:getSyndrome(),syndLibre:g('synd-libre'),realises:real,auriRealises:auriReal,auriNotes:g('auri-notes'),notesLibres:g('pts-nl')};
@@ -4439,7 +4472,7 @@ function _pointsCoches(){
 }
 function syncRealises(){
   const P = _pointsCoches();
-  const syndList=P.synd, ebmList=P.ebm.map(x=>'[EBM] '+x), gynoList=P.gyno.map(x=>'[Gynéco] '+x),
+  const syndList=P.synd, ebmList=P.ebm.map(x=>'[EBM] '+x), gynoList=P.gyno.map(x=>'['+spnPrefixe()+'] '+x),
     libreList=P.libre.map(x=>'[+] '+x), auriList=P.auri.map(x=>'[Auri] '+x);
 
   const allList=[...syndList,...ebmList,...gynoList,...libreList,...auriList];
@@ -4452,7 +4485,7 @@ function syncRealises(){
       let html='';
       if(syndList.length) html+=`<div style="font-size:10px;font-weight:700;color:var(--jade);text-transform:uppercase;letter-spacing:.4px;margin:4px 0 2px">Syndrome</div>`+syndList.map(l=>`<div style="padding:2px 0;border-bottom:1px solid var(--border);font-size:12px">${l}</div>`).join('');
       if(ebmList.length) html+=`<div style="font-size:10px;font-weight:700;color:#1A5276;text-transform:uppercase;letter-spacing:.4px;margin:6px 0 2px">EBM</div>`+ebmList.map(l=>`<div style="padding:2px 0;border-bottom:1px solid var(--border);font-size:12px">${l}</div>`).join('')
-      if(gynoList.length) html+=`<div style="font-size:10px;font-weight:700;color:#117A65;text-transform:uppercase;letter-spacing:.4px;margin:4px 0 2px">Gynéco-Obstétrical</div>`+gynoList.map(l=>`<div style="padding:2px 0;border-bottom:1px solid var(--border);font-size:12px">${l}</div>`).join('');
+      if(gynoList.length) html+=`<div style="font-size:10px;font-weight:700;color:#117A65;text-transform:uppercase;letter-spacing:.4px;margin:4px 0 2px">${spnLibelleGroupe()}</div>`+gynoList.map(l=>`<div style="padding:2px 0;border-bottom:1px solid var(--border);font-size:12px">${l}</div>`).join('');
       if(libreList.length) html+=`<div style="font-size:10px;font-weight:700;color:#7D3C98;text-transform:uppercase;letter-spacing:.4px;margin:4px 0 2px">Points libres</div>`+libreList.map(l=>`<div style="padding:2px 0;border-bottom:1px solid var(--border);font-size:12px">${l}</div>`).join('');;
       if(auriList.length) html+=`<div style="font-size:10px;font-weight:700;color:#8B3A3A;text-transform:uppercase;letter-spacing:.4px;margin:6px 0 2px">Auriculothérapie</div>`+auriList.map(l=>`<div style="padding:2px 0;border-bottom:1px solid var(--border);font-size:12px">${l}</div>`).join('');
       el.innerHTML=html;
@@ -4471,7 +4504,7 @@ function syncPts(){
   let parts=[];
   if(syndList.length) parts.push('Syndrome: '+syndList.join(' — '));
   if(ebmList.length) parts.push('EBM: '+ebmList.join(' — '));
-  if(P.gyno.length) parts.push('Gynéco: '+P.gyno.join(' — '));
+  if(P.gyno.length) parts.push(spnPrefixe()+': '+P.gyno.join(' — '));
   if(libreList.length) parts.push('Points: '+libreList.join(' — '));
   if(nl) parts.push(nl);
   if(auriList.length) parts.push('[Auri] '+auriList.join(' · ')+(auriN?' — '+auriN:''));
@@ -5137,7 +5170,8 @@ async function refineAI(){
     g('d-zones')?'Zones douloureuses: '+g('d-zones'):'',
     g('d-type')?'Type: '+g('d-type'):'',
     g('d-aggrave')?'Aggravé: '+g('d-aggrave'):'',
-    g('d-ameliore')?'Amélioré: '+g('d-ameliore'):''
+    g('d-ameliore')?'Amélioré: '+g('d-ameliore'):'',
+    g('d-rhumato')?'Signes articulaires: '+g('d-rhumato'):''
   ].filter(Boolean).join(' | ')||'nr';
   const insp=[
     g('e-shen')?'Shen: '+g('e-shen'):'',
@@ -5479,7 +5513,7 @@ function updateRealisesPage(){
   const P = _pointsCoches();
   const grp = (titre, col, l) => l.length ? `<div style="font-size:10px;font-weight:700;color:${col};text-transform:uppercase;letter-spacing:.4px;margin:5px 0 3px">${titre}</div>`
     + l.map(x=>`<div style="font-size:12px;padding:1px 0">${x}</div>`).join('') : '';
-  let html = grp('Syndrome MTC','var(--jade)',P.synd) + grp('EBM','#1A5276',P.ebm) + grp('Gynéco-Obstétrical','#117A65',P.gyno)
+  let html = grp('Syndrome MTC','var(--jade)',P.synd) + grp('EBM','#1A5276',P.ebm) + grp(spnLibelleGroupe(),'#117A65',P.gyno)
     + grp('Points libres','#7D3C98',P.libre) + grp('Auriculothérapie','#8B3A3A',P.auri);
   if(!html) html = '<span style="color:var(--slate);font-style:italic;font-size:11px">Aucun point — cochez des points dans l\u2019onglet Points</span>';
   if(listEl) listEl.innerHTML = html;
@@ -5610,7 +5644,8 @@ function buildFullMotifPrompt(motifText){
     g('d-zones')?'Zones douloureuses: '+g('d-zones'):'',
     g('d-type')?'Type: '+g('d-type'):'',
     g('d-aggrave')?'Aggravé: '+g('d-aggrave'):'',
-    g('d-ameliore')?'Amélioré: '+g('d-ameliore'):''
+    g('d-ameliore')?'Amélioré: '+g('d-ameliore'):'',
+    g('d-rhumato')?'Signes articulaires: '+g('d-rhumato'):''
   ].filter(Boolean).join(' | ') || 'nr';
 
   return `Tu es l'acupuncteur MTC en charge de ce patient. En te fondant sur tes recherches et connaissances (littérature MTC et médecine basée sur les preuves), établis toi-même le diagnostic syndromique et propose la prescription de points comme si tu voyais le patient en consultation.
@@ -7182,6 +7217,123 @@ function buildShuAntiqueDiagram(nom){
 // Notation d'origine du cours conservée (P, GI, E, Rt/RP, C, IG, V, R/Rn, MC/EC, TR/TF, VB, F, RM, DM, HM).
 // chap = chapitre du plan (1…8) ; src = image/section d'origine dans le document source.
 const REF_TABLES = [
+ // ── Rhumatologie (12/10/2026) — chap 'R' ──
+ {id:'rh-structures', chap:'R', titre:'Structures ostéo-articulaires et gouvernance énergétique', src:'cours rhumatologie',
+  cols:['Structure','Physiologie MTC','Correspondance'],
+  rows:[
+   ['Gu 骨 — Os','Gouverné par le Rein (Eau, Hiver), constitué par le Jing. « Les Reins produisent la Moelle et les Os » (SW5)','Rein → Jing → Moelle → Os'],
+   ['Rou 肉 — Chair, muscles','Gouvernés par la Rate (Terre) : masse, tonus, trophicité','Rate → Qi acquis → masse musculaire'],
+   ['Jin 筋 — Tendons, ligaments','Gouvernés par le Foie (Bois) : souplesse = reflet du Sang hépatique','Foie → Sang → flexibilité tendineuse'],
+   ['Jin Ye — Liquide synovial','Produits par la Rate, stockés par le Rein : lubrification et nutrition articulaires','Rate + Rein → Ye → liquide synovial'],
+   ['Guan Jie 关节 — Articulations','Carrefours de méridiens, barrières (Guan) et charnières (Jie), vulnérables aux Pervers ; reliées aux MTM','Lieu de rencontre méridiens + Pervers'],
+   ['Cartilage','Rate (centre) + Poumon (Tai Yin)','Transition entre deux segments'],
+   ['Capsule, bourses séreuses','Rate (membranes, Cou Li) ; Tai Yin','Coussin hydraulique'],
+   ['Vascularisation','Cœur (vaisseaux) + Foie + Rate (Sang)','Le Shen Qi sort de l\'articulation vers les chairs']]},
+ {id:'rh-pervers', chap:'R', titre:'Les 6 Pervers climatiques (Liu Yin) en rhumatologie', src:'cours rhumatologie',
+  cols:['Pervers','Nature','Signes cliniques','Type de Bi'],
+  rows:[
+   ['Vent (Feng)','Mobile, changeant, associé au Foie, véhicule les autres pervers','Douleur migrante, erratique, brusque','Bi Vent (Xing Bi) — traiter le Sang pour chasser le Vent'],
+   ['Froid (Han)','Contracte, ralentit, durcit, bloque le Qi, lèse le Yang','Douleur fixe intense, améliorée par la chaleur','Bi Froid (Tong Bi) — moxa obligatoire'],
+   ['Humidité (Shi)','Lourde, collante, stagnante, altère la Rate','Lourdeur, gonflement, engourdissement fixe','Bi Humidité (Zhuo Bi)'],
+   ['Chaleur (Shu / Huo)','Yang, rapide, aiguë, sèche les Liquides','Rougeur, chaleur, gonflement, fièvre','Bi Chaleur (Re Bi) — sans moxa'],
+   ['Sécheresse (Zao)','Assèche les Jin Ye, fragilise tendons et cartilages','Douleur sèche, raideur sans gonflement','Chronicité arthrosique'],
+   ['Feu (Huo)','Chaleur extrême, surtout interne','Inflammation aiguë intense, destruction rapide','Bi inflammatoire grave']],
+  note:'Fu Xie (Pervers latents) : pervers non éliminés lors de l\'invasion initiale, réactivés par un traumatisme, un changement de saison, une émotion ou un écart alimentaire → poussées (Lie Jie Bing, PR, SPA).'},
+ {id:'rh-entites', chap:'R', titre:'Bi Zheng, Wei Zheng, Lie Jie Bing — distinction', src:'cours rhumatologie',
+  cols:['Entité','Mécanisme','Caractéristique clé','Équivalents occidentaux'],
+  rows:[
+   ['Bi Zheng (Su Wen 43)','Obstruction douloureuse des méridiens par Vent, Froid, Humidité, Chaleur','TOUJOURS DOULOUREUX — 1 à 2 articulations, mobile ou fixe','Arthrose, tendinite, capsulite, sciatique, cervicalgies'],
+   ['Wei Zheng (Su Wen 44)','Épuisement, parésie : muscles flasques, faibles, atrophiques','INDOLORE — traiter le Yangming + Huatuojiaji','SEP, SLA, myasthénie, polio, dystrophies, névrites'],
+   ['Lie Jie Bing (Jin Gui Yao Lue)','Atteinte des articulations successives sur Vide Foie + Rein (40-60 ans)','Poly-articulaire, bilatéral, déformant, récidivant','Polyarthrite rhumatoïde, polyarthrites chroniques']]},
+ {id:'rh-points-cles', chap:'R', titre:'Points stratégiques universels en rhumatologie', src:'cours rhumatologie',
+  cols:['Point','Rôle'],
+  rows:[
+   ['V11 (Dazhu)','Hui des os — toute pathologie osseuse et rachidienne'],
+   ['VB34 (Yanglingquan)','Hui des tendons et muscles — toute tendinopathie'],
+   ['VB39 (Xuanzhong)','Hui des moelles — SPA, PR, dégénérescence osseuse'],
+   ['DM14 (Dazhui)','Réguler le Yang global, disperser la Chaleur, anti-inflammatoire ; équilibre droite/gauche (NCB, cervicalgie)'],
+   ['DM4 (Ming Men)','Tonifier le Yang du Rein — SPA, pathologies vertébrales froides'],
+   ['V23 (Shenshu)','Shu du Rein — maître lombaire, pathologies chroniques vertébrales et articulaires'],
+   ['V18 (Ganshu)','Shu du Foie — pathologies tendineuses chroniques'],
+   ['E36 (Zusanli)','Tonifier Rate et Estomac, Qi et Sang — Wei et Bi chroniques'],
+   ['RP6 (Sanyinjiao)','Réunion des 3 Yin — essentiel dans le chronique'],
+   ['V17 (Geshu)','Hui du Sang — stase de Sang, Bi chronique et déformant'],
+   ['RP21 (Da Bao)','Grand Luo de la Rate — « douleur à toutes les articulations »'],
+   ['RM4 (Guanyuan)','Tonifier le Yuan Qi — Wei chronique (Vide Foie + Rein)'],
+   ['IG10','Point majeur de l\'épaule'],
+   ['VB41','Dai Mai — lombalgie en ceinture, canal lombaire étroit, scoliose'],
+   ['IG3 + V62','Du Mai + Yang Qiao — sciatique persistante, scoliose, canal lombaire étroit'],
+   ['V62 + R6','Qiao Mai — entorses répétées, déséquilibre Yin/Yang'],
+   ['VB20 + V10','Régulation sympathique/parasympathique (cervicalgie)'],
+   ['VB38','Antispasmodique, contractures (sciatique VB)'],
+   ['V63','Xi de la Vessie — stagnation, piétinement'],
+   ['C7 + C3','Calmer le Cœur — algodystrophie, arthrite']]},
+ {id:'rh-moxa', chap:'R', titre:'Règles de moxibustion en rhumatologie', src:'cours rhumatologie',
+  cols:['','Indications / contre-indications','Technique'],
+  rows:[
+   ['Indiqués','Froid, Humidité, Vide de Yang, pathologies chroniques froides, SPA hors poussée, arthrose froide, Bi Froid, Wei Vide de Yang','Moxa sur gingembre pour le Bi Froid ; moxa indirect ou lampe TDP pour les zones étendues'],
+   ['Contre-indiqués','Bi Chaleur (Re Bi), toute inflammation ACTIVE avec rougeur et chaleur, PR ou SPA en poussée, fièvre, Wei Chaleur du Poumon','Règle absolue : jamais de moxa sur un Bi chaud'],
+   ['Précaution','Vide de Yin avec chaleur interne','Moxas légers UNIQUEMENT sur les points Rein distaux (R3, RP6, VB39) ; éviter les points proches des zones inflammées']]},
+ {id:'rh-barrieres', chap:'R', titre:'Points barrières des articulations', src:'cours rhumatologie',
+  cols:['Articulation','Sortie de Yang','Sortie de Yin','Entrée de Yin','Entrée de Yang'],
+  rows:[
+   ['Poignet','GI9','Shou Jue Yin','Shou Tai Yin','Shou Tai Yang'],
+   ['Coude','TR13','Shou Shao Yin','Shou Shao Yin','Shou Shao Yang'],
+   ['Épaule','IG11','P2','MC2','GI15'],
+   ['Hanche','V29','RP12','F11','E31'],
+   ['Genou','VB33','Zu Shao Yin','Zu Shao Yin','Zu Shao Yang'],
+   ['Cheville','E37','Zu Jue Yin','Zu Tai Yin','Zu Tai Yang']],
+  note:'Tout point local peut devenir un point barrière sur un méridien. À défaut de point de barrière spécifique : point Xi de désobstruction. Au membre inférieur : E31 = barrière coxo-fémorale ; F7 (barrière du genou) peu efficace, préférer RP9, F8.'},
+ {id:'rh-distaux', chap:'R', titre:'Choix des points distaux selon le tableau', src:'cours rhumatologie',
+  cols:['Tableau clinique','Règle de traitement'],
+  rows:[
+   ['Plénitude','Point de dispersion du méridien principal'],
+   ['Vide','Point de tonification du méridien principal'],
+   ['Amélioré par la chaleur','Point Chaud du méridien en tonification'],
+   ['Amélioré par le froid','Point Froid en tonification (ou disperser le point Chaleur)'],
+   ['Obstruction','Point Xi en tonification'],
+   ['Augmenté par l\'humidité','Disperser le point Humidité'],
+   ['Augmenté par le vent','Disperser le point Vent'],
+   ['Picotement, fourmillement, douleur lancinante','Déséquilibre Qi/Sang : point Luo (Sang) + point Xi (Énergie)']]},
+ {id:'rh-mouvements', chap:'R', titre:'Membre inférieur — méridiens des mouvements et loges', src:'cours rhumatologie',
+  cols:['Mouvement ou structure','Méridien ou loge'],
+  rows:[
+   ['Rétropulsion','Vessie'],['Abduction + rotation externe','Vésicule Biliaire + Estomac'],['Adduction + rotation interne','3 méridiens Yin (Foie, Rate, Rein)'],['Antépulsion','Estomac'],
+   ['Tendon, muscle','Loge Foie'],['Tissu conjonctif, chairs, capsule, ligaments','Loge Rate'],['Liquide synovial','Loge Rate + Chong Mai'],['Os','Loge Rein'],['Peau, épithélium','Loge Poumon']]},
+ {id:'rh-radiculalgies', chap:'R', titre:'Radiculalgies — synthèse', src:'cours rhumatologie',
+  cols:['Radiculalgie','Trajet','Points clés'],
+  rows:[
+   ['Sciatique S1 (Vessie)','Face postérieure','V39, V40, V57, V58 + V67/V65 + V62 (ancienne) + V63 (stagnation)'],
+   ['Sciatique L4-L5 (VB)','Face latérale','VB30, VB34, VB36, VB41 + VB38 ou VB43'],
+   ['Cruralgie L3-L4 (Estomac)','Face antérieure','E32, E34, E36 + E44 ou E41'],
+   ['Forme persistante','Du Mai + Yang Qiao','IG3 + V62'],
+   ['NCB C5 (GI)','Deltoïde, bras latéral','GI11, GI4 + distaux GI'],
+   ['NCB C6 (Poumon)','Pouce, bord radial','P9, P7, P5'],
+   ['NCB C7 (MC / Cœur)','Majeur, face palmaire','MC7 + C9'],
+   ['NCB C8 (IG)','Auriculaire, bord ulnaire','IG3, IG8']],
+  note:'Tester le Luo : la pression soulage = Vide (tonifier le Luo, disperser le MP) ; elle aggrave = Plénitude (disperser le Luo, tonifier le MP).'},
+ {id:'rh-radio', chap:'R', titre:'Arthrose — lecture radiologique en MTC', src:'cours rhumatologie',
+  cols:['Image','Orientation MTC'],
+  rows:[
+   ['Géodes nettes, bien délimitées','Froid (Yang insuffisant, Bi Froid)'],
+   ['Géodes floues, irrégulières','Humidité (Rate insuffisante, Bi Humidité)'],
+   ['Ostéophytes importants','Stagnation de Sang et de Phlegme'],
+   ['Pincement articulaire rapide','Vide de Jing — traiter le Rein en priorité']],
+  note:'La lecture radiologique oriente le traitement de fond : ne pas se limiter au symptôme douloureux.'},
+ {id:'rh-correspondances', chap:'R', titre:'Correspondances pathologies occidentales ↔ MTC', src:'cours rhumatologie',
+  cols:['Pathologie occidentale','Équivalent MTC','Physiopathologie'],
+  rows:[
+   ['Polyarthrite rhumatoïde','Wang Bi (Bi déformant), forme grave de Gu Bi','Bi Zheng / Lie Jie Bing : Vide Foie + Rein + Vent-Froid-Humidité'],
+   ['Spondylarthrite ankylosante','Gu Bi / Da Zhu Bi (Bi arthrogène majeur)','Axe Du Mai + Yang du Rein défaillant + Froid-Humidité'],
+   ['Arthrose','Bi Zheng localisé (Vent, Froid, Humidité ou Chaleur selon la présentation)','Vide Rein + Foie (vieillissement) + Pervers'],
+   ['Canal carpien','Bi du poignet — MC + Poumon','Stagnation Qi/Sang ou Humidité-Froid local'],
+   ['Maladie de Dupuytren','Jin Zhuo — Bi de l\'aponévrose palmaire','Vide de Sang du Foie + Stase de Sang et Tan'],
+   ['SEP, SLA, myasthénie','Wei Zheng — type 4 (Vide Foie + Rein) ou type 3 (Vide Rate)','Yangming + Huatuojiaji + Shu dorsaux'],
+   ['Sciatique, cervicalgie','Bi Zheng','MP Vessie, IG, VB + MTM + méridiens curieux'],
+   ['Polyarthrite aiguë','Lie Jie Bing en phase aiguë (Re Bi ou syndrome Froid)','Niveaux A + B + D'],
+   ['Fibromyalgie','Rou Bi (Bi des muscles)','Rate atteinte + Vide Qi/Sang/Yang ; axe Rate-Rein + stagnation du Qi du Foie'],
+   ['Syndrome de Sjögren','Bi sec — Vide de Yin profond (Foie + Rein)','Nourrir le Yin : RP6, R3, VB39, V18, V23']]},
+
  {id:'chaleur-organes', chap:'1', titre:'Clarification — Chaleur ou Feu dans les organes', src:'img1',
   cols:['Syndrome','Symptômes','Points'],
   rows:[
@@ -8811,7 +8963,7 @@ function setMotifMode(mode){
 // et à mesure (rhumatologie, psychiatrie, ORL, pédiatrie…). Chaque entrée fournit sa propre base
 // de données, sa liste de domaines et ses fonctions d'affichage — même forme que "gyneco" ci-dessous.
 const SPN_SPECIALTIES = [
-  { key:'gyneco', label:'Gynéco-Obstétrique 婦科', sexeRestrict:'Féminin',
+  { key:'gyneco', label:'Gynéco-Obstétrique 婦科', prefixe:'Gynéco', sexeRestrict:'Féminin',
     domaineOptions:[
       {value:'gyneco', label:'Gynécologie'},
       {value:'grossesse', label:'Grossesse'},
@@ -8819,8 +8971,25 @@ const SPN_SPECIALTIES = [
     ],
     initSelects: ()=>initGynoSelects(),
     showProtocole: (cat,motif)=>showGynoProtocole(cat,motif)
+  },
+  { key:'rhumato', label:'Rhumatologie 痹證', prefixe:'Rhumato',
+    // Lecture différée : RHUMATO_DB est défini plus loin dans le fichier.
+    get domaineOptions(){ return Object.entries(RHUMATO_DB).map(([value, C]) => ({value, label:C.label})); },
+    initSelects: ()=>initRhumatoSelects(),
+    showProtocole: (cat,motif)=>showRhumatoProtocole(cat,motif)
   }
 ];
+// Préfixe des points cochés dans le référentiel (« [Gynéco] RM4 », « [Rhumato] V23 ») — reconnu à la réouverture.
+const SPN_PREFIXE_RE = /^\[(Gynéco|Rhumato)\] /;
+function spnPrefixe(){
+  const v = (document.getElementById('spn-spec')||{}).value;
+  const sp = SPN_SPECIALTIES.find(s => s.key===v);
+  return (sp && sp.prefixe) || 'Gynéco';
+}
+function spnLibelleGroupe(){
+  const v = (document.getElementById('spn-spec')||{}).value;
+  return v==='rhumato' ? 'Rhumatologie (réf. Sorbonne)' : 'Gynéco-Obstétrical';
+}
 
 // Remplit le select Spécialité selon le sexe du patient (une spécialité avec sexeRestrict
 // n'apparaît que si elle correspond) ; appelé à l'ouverture de l'onglet Points et quand le
@@ -8880,6 +9049,7 @@ function onSpnSpecChange(){
   }
   if(block) block.style.display='';
   if(emptyMsg) emptyMsg.style.display='none';
+  if(typeof rhRafraichir==='function') rhRafraichir();
   if(catSel) catSel.innerHTML = '<option value="">— Sélectionner —</option>' +
     spec.domaineOptions.map(o=>`<option value="${o.value}">${o.label}</option>`).join('');
   if(motifSel) motifSel.innerHTML = '<option value="">— Sélectionner un motif —</option>';
@@ -9025,6 +9195,677 @@ function initGynoSelects(){
     motifs.map(m => `<option value="${m.replace(/"/g,'&quot;')}">${m}</option>`).join('');
 }
 
+
+// ══════ BASE RHUMATOLOGIQUE — Référentiel Acupuncture Sorbonne Paris Nord (12/10/2026) ══════
+// Sources (fournies par le praticien) : « Rhumatologie en MTC — Bi Zheng · Wei Zheng · Lie Jie Bing » (Dr Jean Lê,
+// Dr Nhan Tâm, Dr JC Cortier, Darras — DU Acupuncture SPN 2025-2026) et « Pathologie des membres et du rachis »
+// (notes Dr Apchain, Dr Saifi, Darras, Schmidt — Capacité d'acupuncture, v4). Points en notation française du cours
+// (« 23 V », « 34 VB », « RM3 », « DM4 »…), convertis à l'affichage par _rhPt ; un libellé sans numéro (Ashi,
+// Huatuojiaji, Xiyan…) reste un point hors méridien cochable. Les incohérences du cours sont signalées, jamais
+// corrigées en silence. Champs : note (info), alerte (sécurité), pointsBase (cochables, communs au motif),
+// syn (mots du motif de consultation qui le reconnaissent), syndromes [{nom, signes, pp, ps, tech}].
+const RHUMATO_DB = {
+
+  bi: {
+    label: 'Bi Zheng — syndromes douloureux d\'obstruction',
+    note: 'Bi = TOUJOURS DOULOUREUX (≠ Wei). Vent, Froid et Humidité s\'associent : déterminer le Pervers PRÉDOMINANT. Socle antalgique universel : points locaux + point Xi ou barrière + points Ashi (motif « Points locaux par localisation »). Tout Bi chronique non traité évolue vers le Gu Bi : traiter aussi la Racine (Rein/Foie).',
+    motifs: {
+      'Bi Zheng — douleurs articulaires, musculaires ou tendineuses': {
+        syn: ['rhumatisme','rhumatismes','arthralgie','arthralgies','douleurs articulaires','douleur articulaire','polyarthralgie','polyarthralgies','bi zheng'],
+        note: 'Su Wen 43. Moxa : obligatoire dans le Bi Froid, CONTRE-INDIQUÉ dans le Bi Chaleur.',
+        syndromes: [
+          {nom:'Xing Bi — Bi Vent (erratique)', signes:'Douleurs erratiques, superficielles, migrantes (MS ↔ MI) sans systématisation, mobilité diminuée, aggravées par les changements de temps ; frissons, crainte du froid ± fièvre. Enduit mince blanchâtre | Pouls superficiel rapide',
+           pp:['17 V','10 RT','16 VG','20 VB','12 V'], ps:['18 V','12 IG','31 VB','17 TR','2 RT','2 GI','11 GI','36 E'],
+           tech:'Dispersion. Pour traiter le Vent, traiter d\'abord le Sang (17 V Hui du Sang, 18 V Shu du Foie, 10 RT Mer du Sang, 16 VG point Vent du Du Mai). Ordonnance type : 20 VB + 12 V + 17 V + 18 V + 10 RT. Autre schéma : 2 RT, 2 GI, 11 GI, 36 E + Ashi + points d\'insertion amont/aval + traitement MTM.'},
+          {nom:'Tong Bi — Bi Froid (douloureux)', signes:'Douleur intense péri-articulaire, progressive sur le méridien, aggravée par le froid et la nuit, améliorée par la chaleur et le jour ; sensation de froid. Enduit mince blanc | Pouls profond tendu',
+           pp:['23 V','4 VC','8 VC','14 VG'], ps:['11 GI','36 E','2 RT','2 GI'],
+           tech:'MOXA OBLIGATOIRE sur 23 V + 4 VC (combattre le Froid par la Chaleur). Selon le cours : Ping Bu Ping Xie sur 23 V + 14 VG, moxa sur gingembre sur 4 VC et 8 VC (moxa sur sel). + Ashi, points d\'insertion amont/aval, traitement MTM.'},
+          {nom:'Zhuo Bi — Bi Humidité (fixe)', signes:'Corps lourd, douleurs articulaires FIXES aggravées par l\'humidité, engourdissement, gonflement puis déformation, limitation fonctionnelle. Enduit épais blanc collant | Pouls profond rugueux',
+           pp:['36 E','5 RT','20 V','9 RT'], ps:['40 E'],
+           tech:'Autre schéma : 36 E + 5 RT (points barrières, transforment l\'Humidité) ; 20 V + 40 E en dispersion. Selon le cours : 20 V + 36 E en tonification + 9 RT. Moxa pour transformer, aiguilles pour faire circuler. + Ashi ; Shu si organe, He si entraille.'},
+          {nom:'Re Bi — Bi Chaleur', signes:'Rhumatisme inflammatoire aigu (rougeur, chaleur, gonflement, douleur) augmenté à la palpation et à la mobilisation ± nodosités ; fièvre, soif, crainte du vent, oppression thoracique. Enduit jaune | Pouls rapide tendu',
+           pp:['14 VG','11 GI','4 GI'], ps:['2 F','10 RT','2 GI','5 RT','40 E'],
+           tech:'Dispersion — CONTRE-INDICATION ABSOLUE DES MOXAS. 4 GI + 11 GI purifient la Chaleur du Yangming, 14 VG celle du Du Mai, 2 F + 10 RT (dispersion) rafraîchissent le Sang. Saignée + ventouse sur 14 VG si Chaleur toxique.'},
+          {nom:'Bi Vide de Qi et de Sang', signes:'Os et articulations douloureux, douleur variable majorée par le mouvement, rétraction et spasme des tendons ; teint jaune terne, asthénie, palpitations, souffle court, transpiration spontanée, anorexie, amaigrissement. Langue pâle | Pouls mou et faible ou fin',
+           pp:['Shu dorsaux des organes en Vide','He des entrailles'], ps:[],
+           tech:'Tonifier et harmoniser l\'Énergie et le Sang — MOXA en priorité. Le cours ne donne pas d\'ordonnance chiffrée : choisir les Shu dorsaux et les points He selon l\'organe en Vide.'},
+          {nom:'Bi Vide de Yang', signes:'Articulations douloureuses, raides, déformées et FROIDES, muscles et tendons atrophiés, teint pâle, faiblesse des genoux et des lombes, selles liquides ou diarrhée matinale. Langue pâle | Pouls profond faible',
+           pp:['4 VG','23 V','6 VC','12 VC','17 VC'], ps:['18 V','36 E'],
+           tech:'Tonification + MOXA vigoureux. Selon le cours : 18 V + 23 V + 6 VC + 36 E + 4 DM (Mingmen, Porte de la Vie) + moxa.'},
+          {nom:'Bi Vide de Yin', signes:'Articulations chaudes, rouges, œdématiées, parfois déformées ; amaigrissement, nervosité, bouffées de chaleur, fébricule vespérale, vertiges, acouphènes, lombes et genoux faibles ; aggravation nocturne. Langue rouge peu d\'enduit | Pouls faible',
+           pp:['18 V','23 V','6 RT','3 R','6 C','14 VG'], ps:[],
+           tech:'6 C + 14 VG en dispersion, les autres en tonification. Moxas légers seulement sur les points Rein distaux (3 R, 6 RT, 39 VB) si nécessaire.'},
+          {nom:'Huan Bi — Bi tenace (chronique, Stase de Sang ou Glaires)', signes:'Longue évolution avec rechutes : enraidissement et déformation, douleur fixe accentuée. Stase : articulation rouge enflée, langue à taches violacées, pouls fin rugueux. Glaires : articulation froide avec engourdissement, enduit blanc graisseux, pouls mou lent',
+           pp:['17 V','20 V','40 E','6 RT','10 RT'], ps:['14 VG'],
+           tech:'Dispersion. Si fièvre : + 14 VG + saignée locale. Traitement difficile : pharmacopée souvent nécessaire.'}
+        ]
+      },
+      'Wu Bi — Bi évoluant vers un organe (Su Wen 43)': {
+        syn: ['wu bi'],
+        note: 'Le Bi entre par les couches anatomiques, de la périphérie vers le centre, et gagne l\'organe correspondant lors des atteintes répétées pendant sa saison. Traitement par les Shu dorsaux.',
+        syndromes: [
+          {nom:'Pi Bi (peau) → Poumon — Automne', signes:'Température, crainte du froid, toux, essoufflement, plénitude thoracique, vomissement, agitation anxieuse', pp:['9 P','13 V','1 P'], ps:[], tech:''},
+          {nom:'Mai Bi (vaisseaux) → Cœur — Été', signes:'Stagnation de Sang, douleur brûlante, stries rouges cutanées ; puis palpitations, gonflement précordial, dyspnée, gorge sèche, soupirs, anxiété', pp:['4 MC','6 MC','7 C'], ps:[], tech:''},
+          {nom:'Jin Bi (tendons) → Foie — Printemps', signes:'Rétraction musculaire ; puis céphalées, sommeil agité, cauchemars, soif, polyurie, lombalgies, douleur des flancs, pieds froids', pp:['18 V','14 F','3 F'], ps:[], tech:''},
+          {nom:'Gu Bi (os) → Rein — Hiver', signes:'Corps difficile à mobiliser, douleurs osseuses, engourdissement ; puis os faibles, dos courbé, marche difficile, articulations raides et enflées', pp:['3 R','23 V','25 VB'], ps:[], tech:''},
+          {nom:'Ji Bi (chair) → Rate — 5e saison', signes:'Paresthésies, douleur des masses charnues ; puis fatigue des membres, plénitude thoracique, toux, vomissements, régurgitation de glaires', pp:['4 RT','6 RT','36 E'], ps:[], tech:''}
+        ]
+      },
+      'Points locaux par localisation': {
+        syn: [],
+        note: 'À associer à l\'ordonnance principale selon le tableau (Bi Vent, Froid, Humidité, Chaleur ou chronique). Points Ashi à rechercher systématiquement. En cas de douleur : points locaux + point Xi et/ou de barrière + Ashi.',
+        syndromes: [
+          {nom:'Mâchoires / articulation temporo-mandibulaire', signes:'', pp:['7 E','17 TR','4 GI','19 IG'], ps:[], tech:''},
+          {nom:'Cervicales', signes:'', pp:['20 VB','14 VG','Huatuojiaji cervicaux','3 IG'], ps:[], tech:''},
+          {nom:'Dorsales', signes:'', pp:['Huatuojiaji dorsaux','14 VG','17 V','13 V'], ps:['11 V'], tech:'Autre schéma : 11 V = rachis dorsal et cervical ; 17 V = rachis dorsal.'},
+          {nom:'Lombaires / sacrum', signes:'', pp:['23 V','26 V','4 VG','40 V','31 V','32 V','33 V','34 V'], ps:['2 VG','Shiqizhui','30 V','60 V'], tech:'Baliao = 31 à 34 V. Shiqizhui : sous L5 (entre L5 et S1). Autre schéma : 23 V + 40 V = lombalgies.'},
+          {nom:'Sacro-iliaque', signes:'', pp:['27 V','28 V','Ashi'], ps:[], tech:'Points douloureux à la pression.'},
+          {nom:'Rachis (ensemble)', signes:'', pp:['37 V','40 V','26 VG','Huatuojiaji'], ps:[], tech:''},
+          {nom:'Épaule', signes:'', pp:['15 GI','14 TR','10 IG','21 VB','Jianqian'], ps:[], tech:'10 IG = point majeur de l\'épaule (+++).'},
+          {nom:'Omoplate', signes:'', pp:['11 IG','12 IG','14 IG','43 V'], ps:[], tech:'Rechercher un blocage cervical.'},
+          {nom:'Coude et bras', signes:'', pp:['11 GI','5 TR','5 P','8 IG','12 GI','10 GI','10 TR','4 GI'], ps:[], tech:''},
+          {nom:'Poignet, paume, doigts', signes:'', pp:['5 TR','5 GI','5 IG','10 GI','4 TR','4 IG','7 MC','Baxie','Sifeng','4 GI','3 IG'], ps:[], tech:'5 TR ++.'},
+          {nom:'Hanche', signes:'', pp:['30 VB','29 VB','34 VB'], ps:[], tech:''},
+          {nom:'Genou', signes:'', pp:['40 V','8 F','35 E','Xiyan','9 RT','34 VB','34 E','36 E','Heding'], ps:[], tech:'34 VB +++.'},
+          {nom:'Cheville', signes:'', pp:['41 E','5 RT','41 VB','40 VB','60 V','3 R','62 V'], ps:[], tech:''},
+          {nom:'Orteils / métatarso-phalangiennes', signes:'', pp:['4 RT','3 F','Bafeng','43 VB','65 V','38 VB'], ps:[], tech:''},
+          {nom:'Douleur ou engourdissement de la jambe', signes:'', pp:['57 V','58 V'], ps:[], tech:''},
+          {nom:'Engourdissement des 4 membres', signes:'', pp:['4 GI','3 F'], ps:[], tech:'« Les 4 barrières ».'}
+        ]
+      }
+    }
+  },
+
+  wei: {
+    label: 'Wei Zheng — faiblesse indolore, parésie, atrophie',
+    alerte: 'Wei = INDOLORE (≠ Bi, toujours douloureux) : muscles flasques, faibles, atrophiques. Distinguer de l\'AVC (paralysie hémicorporelle, déviation faciale, troubles de la parole) : prise en charge conventionnelle urgente.',
+    note: 'Su Wen 44 : « Traiter exclusivement le Yangming » (main et pied) + Huatuojiaji, points de base obligatoires de tout Wei.',
+    motifs: {
+      'Wei Zheng — faiblesse ou paralysie flasque des membres': {
+        syn: ['wei zheng','faiblesse des membres','faiblesse musculaire','paralysie','parésie','paresie','atrophie musculaire','myasthénie','sclérose en plaques','sclerose laterale','neuropathie','polynévrite','névrite'],
+        syndromes: [
+          {nom:'Type 1 — Chaleur du Poumon et lésion des Liquides', signes:'Début aigu, souvent après une fièvre : faiblesse brusque, fièvre, agitation, soif, toux, gorge sèche, urines foncées, constipation. Langue rouge, enduit jaune | Pouls fin rapide',
+           pp:['13 V','5 P','11 GI','9 P','37 E','Huatuojiaji'], ps:[], tech:'9 P en tonification, les autres en dispersion ; Huatuojiaji tous piqués. 11 GI + 37 E purifient la Chaleur du Poumon et protègent le Yin.'},
+          {nom:'Type 2 — Humidité-Chaleur', signes:'Lourdeur, flaccidité, léger gonflement des membres inférieurs, engourdissement, fièvre, angoisse thoraco-épigastrique, miction cuisante. Enduit jaune collant | Pouls mou rapide',
+           pp:['Huatuojiaji','12 VC','9 RT','11 GI','32 E','36 E','37 E','39 E','41 E'], ps:['44 E','20 V'], tech:'Tonifier en chaîne le Yangming du membre inférieur (32 E → 41 E), disperser les autres. Chaleur de l\'Estomac : + 44 E ; Humidité : + 20 V.'},
+          {nom:'Type 3 — Vide de Rate et d\'Estomac', signes:'Faiblesse progressive, atrophie prononcée, lassitude, inappétence, selles relâchées, teint pâle, visage gonflé. Enduit fin blanc | Pouls fin',
+           pp:['Huatuojiaji','4 GI','11 GI','15 GI','32 E','36 E','37 E','41 E'], ps:[], tech:'TONIFICATION EN CHAÎNE de tous les points Yangming (main 4 GI → 15 GI, pied 32 E → 41 E).'},
+          {nom:'Type 4 — Vide du Foie et du Rein', signes:'Faiblesse progressive des 4 membres, lombes sensibles, étourdissements, acouphènes, troubles génito-urinaires, règles irrégulières. Langue rouge peu d\'enduit | Pouls fin rapide',
+           pp:['Huatuojiaji','18 V','23 V','39 VB','34 VB','6 RT','4 VC'], ps:['14 VG','3 R','6 C'], tech:'Tonification de tous ; 34 VB en Ping Bu Ping Xie. Fièvre : + 14 VG ; transpiration : + 3 R + 6 C ; fonte musculaire : piquer autour du muscle. 34 VB (Hui des tendons) + 39 VB (Hui des moelles) = couplage fondamental du Wei chronique.'}
+        ]
+      },
+      'Wei tissulaires — 5 formes': {
+        syn: [],
+        note: '36 E (Zusanli) est commun à toutes les formes : le Yangming traite tous les Wei. Miroir des 5 Bi, par Vide et non par obstruction.',
+        syndromes: [
+          {nom:'Wei Bi — Poumon / peau', signes:'Paresthésies, engourdissements cutanés, peau sèche, membres lourds', pp:['36 E','40 E','45 E','4 RT'], ps:[], tech:'Renforcer le Poumon, disperser l\'Humidité.'},
+          {nom:'Mai Wei — Cœur / vaisseaux', signes:'Palpitations, oppression thoracique, troubles circulatoires, teint violacé, faiblesse des bras', pp:['36 E','41 E','42 E','41 VB'], ps:[], tech:''},
+          {nom:'Gu Wei — Rein / os', signes:'Faiblesse et douleur profonde des os, marche difficile, lombalgie, vertiges, acouphènes', pp:['36 E','44 E','4 VG','11 V'], ps:[], tech:''},
+          {nom:'Rou Wei — Rate / chair', signes:'Faiblesse et atrophie musculaires, membres lourds et mous, inappétence', pp:['36 E','40 E','4 VC','4 RT'], ps:[], tech:''},
+          {nom:'Jin Wei — Foie / muscles', signes:'Crampes, contractures, spasticité, raideur tendineuse, troubles de la marche, ongles secs', pp:['36 E','42 E','3 VC','4 RT'], ps:[], tech:''}
+        ]
+      },
+      'Traitement général du Wei (Su Wen 44)': {
+        syn: [],
+        note: 'Principe : tonifier le point Rong (2e point Shu antique) et libérer le point Shu des méridiens paralysés, selon l\'organe dominant.',
+        syndromes: [
+          {nom:'Points Su Wen principaux', signes:'', pp:['30 E','13 V','1 MC','20 V','21 V','12 VC','4 VG','4 RT','17 RT'], ps:[], tech:'Le cours écrit « 15 PC (Tianchi) » et « 6 RT (Gongsun) » : Tianchi = MC1 et Gongsun = RT4 (retenus ici) — à vérifier.'},
+          {nom:'Points Su Wen des membres (Chong Mai, Jing)', signes:'', pp:['16 E','4 VC','4 RT','18 V','23 V'], ps:[], tech:''}
+        ]
+      }
+    }
+  },
+
+  polyarthrites: {
+    label: 'Lie Jie Bing, polyarthrites et spondylarthrite',
+    note: 'Lie Jie Bing (Jin Gui Yao Lue) : atteinte poly-articulaire successive, bilatérale et déformante sur terrain de Vide du Foie et du Rein (40-60 ans), avec réveil possible de Pervers latents (Fu Xie). Moxa : jamais en poussée inflammatoire.',
+    motifs: {
+      'Lie Jie Bing — polyarthrite chronique déformante': {
+        syn: ['lie jie bing','polyarthrite','polyarthrites','polyarthrite chronique','arthrites successives'],
+        pointsBase: ['36 E','34 VB','23 V'],
+        note: 'Base systématique : 36 E + 34 VB + 23 V (± moxa si Froid-Humidité, contre-indiqué si Chaleur toxique aiguë), puis combiner les niveaux A → E selon la profondeur et le stade. Crise « Froid » : fièvre sans transpiration, arthralgies violentes aggravées par le vent ; crise « Chaleur » : crainte du vent, transpirations inefficaces, arthralgies inflammatoires.',
+        syndromes: [
+          {nom:'Niveau A — Sang et Ying (base de tout traitement)', signes:'', pp:['11 V','37 E','39 E'], ps:[], tech:'11 V : toute douleur osseuse ; 37 E : ferme le Yangming en profondeur ; 39 E : ouvre le Taiyang.'},
+          {nom:'Niveau B — Jing et Moelle (atteinte profonde, dégénérative)', signes:'', pp:['3 VC','39 VB'], ps:[], tech:'RM3 = point Mu de l\'hiver (toute atteinte ligamentaire) ; VB39 = Hui des moelles + Luo de groupe des Zu Yang.'},
+          {nom:'Niveau C — couche Taiyang (Vessie, IG)', signes:'', pp:['62 V','58 V'], ps:['13 V','20 V','41 V','43 V','58 V','63 V','64 V','65 V','4 IG','7 IG','9 IG','13 IG'], tech:'V62 : articulations relâchées, ankylosées, contracturées ; V58 : arthrite, rhumatisme articulaire, Bi Vent.'},
+          {nom:'Niveau C — couche Shaoyang (VB, TR)', signes:'', pp:['34 VB','12 TR'], ps:['6 TR','10 TR','29 VB','30 VB','39 VB','41 VB','43 VB'], tech:'VB34 : contractures, crampes, faiblesse des muscles et tendons ; TR12 : Bi Vent.'},
+          {nom:'Niveau C — couche Yangming (GI, E)', signes:'', pp:['9 GI','36 E'], ps:['8 GI','11 GI','12 GI','14 GI','15 E','31 E','38 E','39 E','41 E'], tech:'GI9 : atteinte de toutes les articulations + Froid aux os ; E36 : rhumatismes douloureux.'},
+          {nom:'Niveau C — couche Taiyin (P, RT)', signes:'', pp:['21 RT','5 RT'], ps:['3 P','8 P','9 P','10 P','2 RT','3 RT','7 RT'], tech:'RP21 Da Bao : douleur à toutes les articulations ; RP5 : affections poly-articulaires.'},
+          {nom:'Niveau C — couche Jueyin (F)', signes:'', pp:['7 F'], ps:['2 F','4 F'], tech:'F7 : rhumatismes articulaires en général.'},
+          {nom:'Niveau C — couche Shaoyin (C, R)', signes:'', pp:['13 R'], ps:['4 C','1 R'], tech:'R13 : rhumatisme articulaire inflammatoire.'},
+          {nom:'Niveau D — méridiens curieux (formes chroniques déformantes)', signes:'', pp:['62 V','6 R','41 VB','5 TR','17 VC'], ps:[], tech:'V62 + R6 (Qiao Mai) TOUJOURS ensemble : polyarthralgies fugaces et raideur douloureuse. VB41 (Dai Mai), TR5 (Yang Wei : tout l\'appareil locomoteur), RM17 : cartilages et ligaments.'},
+          {nom:'Niveau E — Sang et Énergie (couches profondes)', signes:'', pp:['3 VG','17 VG','17 V','21 RT'], ps:['49 V','57 V','67 V'], tech:'DM3 : Yang originel ; DM17 : douleurs et rhumatismes articulaires ; V17 : rhumatismes généralisés ; RP21 : relâchement de toutes les articulations. V49, V57, V67 : toute contracture et douleur musculaire.'}
+        ]
+      },
+      'Polyarthrite rhumatoïde': {
+        syn: ['polyarthrite rhumatoide','polyarthrite rhumatoïde','wang bi'],
+        note: 'Wang Bi = Bi déformant, forme grave de Gu Bi. Diététique : éliminer laitages, sucres raffinés et graisses denses. Moxas sur 18 V + 23 V HORS poussée seulement.',
+        syndromes: [
+          {nom:'Re Bi — Chaleur-Humidité (poussée)', signes:'Poussée aiguë, rougeur, chaleur, gonflement, fièvre. Langue rouge | Pouls rapide', pp:['14 VG','11 GI','4 GI','34 VB','9 RT'], ps:[], tech:'SANS MOXA en phase aiguë.'},
+          {nom:'Froid-Humidité', signes:'Douleur froide intense, raideur matinale prolongée, amélioration par la chaleur, peur du froid', pp:['23 V','4 VG','8 VC'], ps:[], tech:'Moxa sur gingembre + points locaux.'},
+          {nom:'Phlegme + Stase de Sang', signes:'Nodules, déformations, douleur fixe nocturne. Langue violacée, enduit gras', pp:['17 V','20 V','40 E','6 RT','10 RT'], ps:[], tech:''},
+          {nom:'Vide du Foie et du Rein', signes:'Forme chronique : fatigue, douleur sourde, atrophie. Langue pâle ou rouge', pp:['18 V','23 V','3 F','3 R','6 RT','36 E'], ps:[], tech:'Moxas HORS poussée.'}
+        ]
+      },
+      'Spondylarthrite ankylosante': {
+        syn: ['spondylarthrite','spondylarthrite ankylosante','pelvispondylite','da zhu bi'],
+        pointsBase: ['4 VG','3 VG','11 V','23 V'],
+        note: 'Gu Bi / Da Zhu Bi : défaillance de l\'axe Yang (Du Mai + Reins) + Froid-Humidité + Stase de Sang. Traitement phare : 4 DM (Ming Men, point central), 3 DM (charnière lombo-sacrée, sacro-iliaques), 11 V (Hui des os), 23 V. Moxibustion du Du Mai de DM1 à DM14 hors poussée ; Qi Gong (ondulation de la colonne).',
+        syndromes: [
+          {nom:'Vide de Yang du Rein + Froid-Humidité', signes:'Douleur lombaire nocturne, raideur matinale, amélioration par la chaleur, peur extrême du froid', pp:['4 VG','23 V','11 V'], ps:[], tech:'+ moxibustion du Du Mai.'},
+          {nom:'Chaleur toxique + Humidité (poussée)', signes:'Poussée aiguë, chaleur locale, douleur intense, fièvre, CRP élevée', pp:['14 VG','11 GI','4 GI','34 VB'], ps:[], tech:'SANS MOXA.'},
+          {nom:'Stase de Sang + Glaires osseuses (Gu Bi)', signes:'Déformations, ankylose vertébrale, douleur fixe profonde, raideur permanente', pp:['17 V','10 RT','6 RT','40 E','20 V'], ps:[], tech:'+ Shu dorsaux.'},
+          {nom:'Vide du Foie et du Rein (stabilisé)', signes:'Faiblesse lombaire, fatigue, douleur sourde, yeux secs', pp:['18 V','23 V','11 V','40 V','60 V','3 R','6 RT'], ps:[], tech:''}
+        ]
+      },
+      'Syndrome de Sjögren (Bi sec)': {
+        syn: ['sjogren','sjögren','syndrome sec'],
+        syndromes: [
+          {nom:'Vide de Yin profond (Foie + Rein) avec Sécheresse', signes:'', pp:['6 RT','3 R','39 VB','18 V','23 V'], ps:[], tech:'Nourrir le Yin.'}
+        ]
+      }
+    }
+  },
+
+  rachis: {
+    label: 'Rachis : lombalgie, sciatique, cervicalgie',
+    alerte: 'Sécurité : éliminer toute indication conventionnelle urgente avant de traiter (méthode en 6 temps : localiser, identifier le méridien, qualifier, sécurité, traiter, adapter).',
+    note: 'Méthode : localiser (locaux + Ashi + barrières), identifier le méridien (MP, MTM, Luo, curieux), qualifier (Vide/Plénitude, Froid/Chaleur, Qi/Sang, Humidité/Vent), puis traiter. Ne pas négliger le Vide de Rein dans les lombalgies chroniques ; penser aux méridiens curieux dans les douleurs complexes ou récidivantes.',
+    motifs: {
+      'Lombalgie': {
+        syn: ['lombalgie','lombalgies','lumbago','mal de dos','douleur lombaire','douleurs lombaires','mal aux reins','mal au dos'],
+        note: '23 V = point maître de la région lombaire (tonifie aussi le Rein). Aigu = Stase de Sang/Qi ; chronique = Vide de Rein ; Froid-Humidité aigu et chronique. Associer Ashi et Beishu lombaires 22 V → 28 V selon la localisation. (t) tonifier, (d) disperser, (h) chauffer.',
+        syndromes: [
+          {nom:'Froid-Humidité (la plus fréquente)', signes:'Lourdeur lombaire, sensation d\'être assis dans l\'eau, amélioration par la chaleur ; forme chronique = arthrose lombaire. Langue enduit blanc gras | Pouls mou, profond, lent',
+           pp:['23 V','3 VG','16 VG','26 V','9 RT','40 V'], ps:['25 V','34 VB','3 R','41 VB'], tech:'23 V (h) ; 3 VG (d,h) ; 16 VG (d) ; 25 V (d,h) en alternative à 26 V (h) ; 9 RP (d) ; 40 V (d,h) ; 34 VB (d) ; 3 R (t). 41 VB (Dai Mai) si sensation d\'être assis dans l\'eau.'},
+          {nom:'Vent-Humidité', signes:'Douleur mobile, changeante, irradiant parfois aux pieds et à la nuque, raideurs, crainte du froid, transpiration. Enduit fin blanc | Pouls superficiel serré',
+           pp:['12 V','14 VG','40 V','23 V','Ashi'], ps:[], tech:'12 V (d,h), 14 VG (d), 40 V (h), 23 V (t,h). Ventouses sur 23 V, 12 V et Ashi.'},
+          {nom:'Humidité-Chaleur', signes:'Chaleur locale, pesanteur à la marche, aggravée par temps chaud et pluvieux ; urines rares et foncées, constipation, goût amer. Enduit jaune gras | Pouls mou rapide',
+           pp:['22 V','23 V','24 V','25 V','28 V','20 V','9 RT','6 RT','26 VG','40 V','60 V'], ps:['3 R','67 V','11 GI'], tech:'Dispersion (3 R tonifié). Autre schéma : 60 V (d) + 67 V (t) + 40 V + 11 GI. Croiser les membres : 6 RT à droite + 9 RT à gauche, 40 V à droite + 60 V à gauche (Schmidt).'},
+          {nom:'Humidité seule', signes:'Douleur sourde, fixe, lourde, aggravée le matin et par l\'humidité, s\'atténuant dans la journée. Langue grosse et humide | Pouls mou',
+           pp:['23 V','24 V','25 V','9 RT','6 RT','36 E','40 V','34 VB','3 R'], ps:[], tech:'36 E (t) + 9 RP (d) : Rate vide sous-jacente. Moxa possible sur 23 V.'},
+          {nom:'Mucosités-Humidité (Humidité prolongée)', signes:'Limitation des mouvements lombaires, longue évolution', pp:['40 E'], ps:[], tech:'Traiter d\'abord les syndromes associés.'},
+          {nom:'Stagnation de Sang (traumatisme, effort)', signes:'Douleur fixe, aiguë, aggravée par la pression, l\'effort et la nuit, calmée au repos diurne ; lombes tuméfiées ; recrudescence prémenstruelle. Langue mauve | Pouls rugueux',
+           pp:['17 V','6 RT','32 V','40 V','23 V','3 VG','26 VG','2 F','6 TR','34 VB'], ps:['24 V','25 V','53 V','58 V','63 V','4 RT','27 R','6 VC','4 VC','10 RT','9 F','41 VB'], tech:'Autre schéma : + Luo et Xi de la Vessie (58 V, 63 V) + Chong Mai ; moxa sur psoas contracté (≈ 20 V à 26-27 V). Lombalgie pendant les règles : 4 RP, 27 R, 6 VC, 4 VC, 10 RP, 9 F + 23 V, 41 VB.'},
+          {nom:'Stagnation de Qi du Foie (émotions)', signes:'Douleur irradiant au dos, au ventre et aux flancs sur le trajet du Foie ; nervosité, rancœur. Pouls tendu', pp:['5 MC','2 F','3 F'], ps:[], tech:'+ Beishu locaux en dispersion + points distaux de la Vessie.'},
+          {nom:'Vide de Yang des Reins', signes:'Froid, crainte du froid, douleur calmée par la chaleur, lombes et genoux froids, asthénie, urines claires abondantes. Langue pâle | Pouls profond lent faible',
+           pp:['23 V','52 V','4 VG','3 VG','4 VC','6 VC','8 VC','3 R'], ps:['40 V','60 V'], tech:'Tonification + MOXA ; 8 VC : moxa sur sel. 40 V / 60 V (d) : manifestation sur la Vessie.'},
+          {nom:'Vide de Yin des Reins', signes:'Bouche et gorge sèches, vertiges, acouphènes, insomnie, sueurs nocturnes, chaleur des mains et des pieds. Langue rouge peu d\'enduit | Pouls fin profond rapide',
+           pp:['23 V','52 V','6 RT','3 R','6 R','7 R'], ps:['40 V','60 V'], tech:'Tonification.'},
+          {nom:'Vide de Qi des Reins', signes:'Asthénie, transpiration spontanée, nycturie, miction goutte à goutte. Langue pâle | Pouls profond faible', pp:['23 V','4 VC','6 VC','6 RT','3 R','7 R','4 GI'], ps:['31 V'], tech:'Tonification.'},
+          {nom:'Vide de Jing (Essence) des Reins', signes:'Asthénie psycho-physique et sexuelle, acouphènes, hypoacousie, mémoire pauvre. Langue pâle | Pouls profond fin faible', pp:['23 V','24 V','25 V','4 VC','3 R','4 GI','10 RT'], ps:[], tech:'Tonification — NE PAS disperser le méridien de la Vessie (contrairement aux autres Vides de Rein).'}
+        ]
+      },
+      'Lombalgie selon le méridien atteint (Su Wen, MTM)': {
+        syn: [],
+        syndromes: [
+          {nom:'Tai Yang (Vessie)', signes:'Douleur vive des lombes, raideur, extension difficile', pp:['40 V'], ps:['60 V','65 V','66 V','67 V','12 V'], tech:'Froid : 60 V (t) + 66 V (d) + 67 V ; Vent : 12 V + 65 V (d).'},
+          {nom:'Shao Yang (VB)', signes:'Douleur face externe du membre inférieur ± hypochondre droit, céphalées, vertiges', pp:['33 VB'], ps:['20 VB'], tech:''},
+          {nom:'Yang Ming (Estomac)', signes:'Douleur transversale en barre sur le flanc, face antérieure du membre inférieur, tension abdominale', pp:['36 E'], ps:[], tech:''},
+          {nom:'Tai Yin (Rate)', signes:'Douleurs dorso-lombaires et thoraciques, contracture du gros orteil', pp:['8 RT'], ps:[], tech:''},
+          {nom:'Jue Yin (Foie)', signes:'Douleur irradiant sur le trajet du Foie, hypochondre, organes génitaux', pp:['5 F'], ps:[], tech:''},
+          {nom:'Shao Yin (Rein)', signes:'Douleur profonde paramédiane, acouphènes, vertiges, plantes douloureuses', pp:['7 R'], ps:[], tech:''},
+          {nom:'MTM Rate (Tai Yin)', signes:'Douleurs dorso-lombaires et thoraciques, contracture du gros orteil', pp:['1 RT','5 RT','Ashi'], ps:['2 RT','3 VC'], tech:'Humidité associée : 2 RP (d) + 3 VC (d).'},
+          {nom:'MTM Estomac (Yang Ming)', signes:'Douleur en barre ou en écharpe sur le flanc, face antérieure des membres inférieurs, tension abdominale', pp:['45 E','41 E'], ps:[], tech:''},
+          {nom:'MTM Rein', signes:'Douleur paramédiane profonde, contracture de la plante du pied, difficulté de flexion lombaire', pp:['1 R','7 R','Ashi'], ps:[], tech:''},
+          {nom:'MTM Vessie', signes:'Douleur vive du rachis, colonne raide en arrière, contractures de la nuque', pp:['67 V','Ashi'], ps:[], tech:'Plénitude : Jing distal + dispersion du Shu ; Vide : Jing distal + tonifier le Shu.'}
+        ]
+      },
+      'Lombalgie — méridiens curieux': {
+        syn: [],
+        syndromes: [
+          {nom:'Chong Mai', signes:'Soulèvement d\'une charge trop lourde, blocage en demi-flexion, douleur en barre ± face antérieure de cuisse, vertige en extension', pp:['4 RT','30 E'], ps:['38 V','39 V','4 VC','6 MC'], tech:'Variantes : 38 V + 39 V (déséquilibre du bassin), 4 VC, 6 MC.'},
+          {nom:'Yang Wei Mai', signes:'Sciatalgie VB, sensibilité sacro-iliaque, MÉTÉO-SENSIBILITÉ', pp:['41 VB','5 TR','35 VB'], ps:[], tech:'35 VB = Xi du Yang Wei Mai.'},
+          {nom:'Yang Qiao Mai', signes:'Douleur latérale intense et brutale, raideur, attitude antalgique, difficulté à lever la jambe', pp:['62 V','59 V','29 VB'], ps:[], tech:''},
+          {nom:'Yin Qiao Mai', signes:'Tension lombes + bas-ventre, irradiation génitale, sensibilité au cycle', pp:['6 R','7 P','8 R'], ps:[], tech:'8 R = Xi du Yin Qiao Mai.'},
+          {nom:'Dai Mai', signes:'Douleur en ceinture, sensation d\'être assis dans l\'eau, dysménorrhées, leucorrhées', pp:['41 VB','26 VB'], ps:[], tech:''},
+          {nom:'Du Mai (Vide)', signes:'Douleur lombaire ou dorsale chronique, scoliose, canal lombaire étroit', pp:['3 IG','62 V','41 VB'], ps:['1 VG','11 V'], tech:'Vide : moxa sur 1 VG et 11 V.'},
+          {nom:'Yin Wei Mai', signes:'Dorsalgies, gonflement des flancs, douleur transfixiante au cœur', pp:['6 MC'], ps:[], tech:'Luo du MC.'}
+        ]
+      },
+      'Lumbago d\'effort (aigu)': {
+        syn: ['lumbago d\'effort','tour de reins','blocage lombaire'],
+        syndromes: [
+          {nom:'Médian (sur le Du Mai)', signes:'Lumbago axial, sur la colonne', pp:['26 VG','40 V'], ps:[], tech:'26 VG (Renzhong) toujours associé à 40 V (Weizhong).'},
+          {nom:'Paramédian (contracture paravertébrale)', signes:'', pp:['58 V','63 V'], ps:[], tech:'Luo et Xi de la Vessie, efficaces en urgence.'},
+          {nom:'Points spéciaux', signes:'', pp:['6 IG','10 GI'], ps:['53 V','54 V'], tech:'6 IG (Yanglao) : aiguille oblique vers le coude, 30 s ; 10 GI (Shousanli) : contracture MTM. 53 V + 54 V : zones sacro-fessières profondes (Sun Simiao).'}
+        ]
+      },
+      'Sciatique L5-S1 (méridien Vessie)': {
+        syn: ['sciatique','sciatiques','lombosciatique','lombosciatalgie','sciatalgie','radiculalgie'],
+        note: 'Tester le Luo : la pression soulage = VIDE (tonifier le Luo, disperser le MP) ; elle aggrave = PLÉNITUDE (disperser le Luo, tonifier le MP). Fond : 14 VG + traitement de l\'arthrose si nécessaire. Penser méridien distinct si douleur intermittente, ancienne ou trajet tronqué.',
+        syndromes: [
+          {nom:'Traitement de base', signes:'Face postérieure du membre inférieur', pp:['Point L5-S1','31 V','32 V','33 V','34 V','39 V','40 V','57 V','58 V'], ps:['67 V','65 V'], tech:'Extrémité : 67 V en tonification ou 65 V en dispersion, selon le tableau.'},
+          {nom:'Sciatique ancienne', signes:'', pp:['62 V','59 V'], ps:[], tech:'Qiao Mai.'},
+          {nom:'Douleur augmentée au repos (stagnation)', signes:'', pp:['60 V','63 V'], ps:[], tech:'60 V + point Xi.'},
+          {nom:'Forme persistante', signes:'', pp:['3 IG','62 V'], ps:[], tech:'Ouverture du Du Mai + Yang Qiao.'},
+          {nom:'Méridiens distincts — cause interne', signes:'Douleur intermittente, ancienne, trajet tronqué', pp:['5 R','36 E','10 R','2 VC','20 VG'], ps:[], tech:'Xi du Rein + 36 E bilatéral + tonification du Rein + He du Rein + 2 VC + 20 VG. Cause externe : points Shu du Rein côté malade. Points Jing distaux controlatéraux.'},
+          {nom:'MTM Rein (forme lombosciatique)', signes:'Contracture plantaire, flexion lombaire difficile', pp:['1 R','7 R','Ashi'], ps:[], tech:''}
+        ]
+      },
+      'Sciatique L4-L5 (méridien Vésicule Biliaire)': {
+        syn: ['sciatique l4','sciatique externe'],
+        syndromes: [
+          {nom:'Traitement de base', signes:'Face latérale du membre inférieur', pp:['30 VB','34 VB','36 VB','41 VB'], ps:['38 VB','43 VB'], tech:'38 VB (antispasmodique, point Chaleur) ou 43 VB.'},
+          {nom:'Forme persistante', signes:'', pp:['3 IG','62 V'], ps:[], tech:''}
+        ]
+      },
+      'Cruralgie L3-L4 (méridien Estomac)': {
+        syn: ['cruralgie','cruralgies','névralgie crurale'],
+        syndromes: [
+          {nom:'Traitement de base', signes:'Face antérieure du membre inférieur', pp:['32 E','34 E','36 E'], ps:['41 E','44 E'], tech:''},
+          {nom:'Méridiens distincts — cause externe', signes:'', pp:['45 E','1 RT'], ps:['43 E','3 RT'], tech:'45 E + 1 RP controlatéraux (Jing distaux côté opposé) ; variante : 43 E + 3 RP côté malade.'},
+          {nom:'Méridiens distincts — cause interne', signes:'', pp:['36 E','34 E','8 RT','2 RT','12 RT','41 E','30 E','2 VC','20 VG'], ps:['45 E','1 RT'], tech:'Côté douloureux ; controlatéral : 45 E + 1 RP + 36 E en tonification.'}
+        ]
+      },
+      'Sciatique en contexte de cancer': {
+        syn: [],
+        alerte: 'Contexte néoplasique : soulagement antalgique sans traitement curatif ; résultats variables.',
+        syndromes: [
+          {nom:'Antalgie', signes:'', pp:['30 VB','54 V','Ashi','60 V','34 VB'], ps:[], tech:'Électrostimulation locale (30 VB, 54 V, Ashi) et à distance (60 V, 34 VB) ; acupuncture analgésique à distance.'}
+        ]
+      },
+      'Névralgie cervico-brachiale': {
+        syn: ['névralgie cervico-brachiale','nevralgie cervico brachiale','ncb','cervico-brachiale'],
+        syndromes: [
+          {nom:'Traitement de base', signes:'', pp:['14 VG','3 IG','12 IG'], ps:['3 F'], tech:'14 VG : équilibre droite/gauche. Chronicité : Luo du méridien en cause, côté opposé, en tonification. 3 F controlatéral si irradiation au-delà du poignet (Schmidt). 3 IG + 12 IG pour une NCB basse.'},
+          {nom:'C5 (GI) — deltoïde, face latérale du bras', signes:'', pp:['11 GI','4 GI'], ps:[], tech:'+ points distaux GI.'},
+          {nom:'C6 (Poumon) — pouce, bord radial', signes:'', pp:['9 P','7 P','5 P'], ps:[], tech:''},
+          {nom:'C7 (MC / Cœur) — majeur, face palmaire', signes:'', pp:['7 MC','9 C'], ps:[], tech:''},
+          {nom:'C8 (IG) — auriculaire, bord ulnaire', signes:'', pp:['3 IG','8 IG'], ps:[], tech:''}
+        ]
+      },
+      'Cervicalgie chronique': {
+        syn: ['cervicalgie','cervicalgies','douleur cervicale','douleurs cervicales','mal au cou','nuque raide'],
+        syndromes: [
+          {nom:'Traitement de base', signes:'', pp:['2 R','14 VG','11 V','20 VB','4 GI','11 GI','3 IG','62 V'], ps:['10 V'], tech:'20 VB + 10 V : régulation sympathique/parasympathique. Si aggravation au stress : traiter en parallèle l\'axe neuro-végétatif.'},
+          {nom:'Arthrose cervicale', signes:'', pp:['4 GI','11 GI'], ps:[], tech:'+ traitement de fond de l\'arthrose.'}
+        ]
+      },
+      'Cervicalgie aiguë': {
+        syn: ['cervicalgie aigue','cervicalgie aiguë','blocage cervical'],
+        syndromes: [
+          {nom:'MP Vessie', signes:'', pp:['67 V','63 V'], ps:[], tech:'67 V Jing distal + 63 V Xi.'},
+          {nom:'MP Intestin Grêle (face postérieure épaule/cou)', signes:'', pp:['1 IG','3 IG','6 IG'], ps:[], tech:''},
+          {nom:'MP Vésicule Biliaire (face latérale du cou)', signes:'', pp:['20 VB','21 VB'], ps:[], tech:'Règle midi-minuit (IG ↔ VB) si applicable : 6 F.'},
+          {nom:'Luo du Du Mai (dorsalgie haute, nuque raide)', signes:'', pp:['1 VG'], ps:[], tech:'Point Luo du Du Mai (Changqiang, DM1).'},
+          {nom:'MTM Vessie (nuque raide, face postérieure)', signes:'', pp:['67 V','Ashi'], ps:[], tech:''},
+          {nom:'MTM Rein (contracture paramédiane)', signes:'', pp:['1 R','7 R'], ps:[], tech:''},
+          {nom:'MTM Vésicule Biliaire (face latérale, trapèze)', signes:'', pp:['44 VB','41 VB','Ashi'], ps:[], tech:''},
+          {nom:'Du Mai (raideur axiale)', signes:'', pp:['3 IG','62 V'], ps:[], tech:'+ points VG.'},
+          {nom:'Yang Qiao Mai (douleur latérale brutale)', signes:'', pp:['62 V','59 V','29 VB'], ps:[], tech:''},
+          {nom:'Yang Wei Mai (météo-sensibilité)', signes:'', pp:['41 VB','5 TR'], ps:[], tech:''},
+          {nom:'Dai Mai (irradiation en ceinture)', signes:'', pp:['41 VB','26 VB'], ps:[], tech:''}
+        ]
+      },
+      'Cervicalgie de stress': {
+        syn: ['cervicalgie de stress','tensions de la nuque','contracture des trapèzes','trapèzes'],
+        syndromes: [
+          {nom:'Axe neuro-végétatif', signes:'Tension, anxiété, surmenage ; douleur diffuse nuque et épaules, contractures du trapèze', pp:['6 MC','3 F','12 VC','10 V','20 VB','20 VG'], ps:['25 E','11 V','12 V','13 V'], tech:'6 MC et 3 F en dispersion ; 12 VC si douloureux à la pression ; 11-12-13 V : aiguille puis moxa si agréable ; 10 V ou 20 VB. Auriculothérapie : cou, stress, Shenmen.'}
+        ]
+      },
+      'Torticolis': {
+        syn: ['torticolis'],
+        syndromes: [
+          {nom:'Torticolis courant (Vent-Froid du MTM IG)', signes:'', pp:['1 IG','3 IG','5 IG','10 IG','11 IG','12 IG','20 VB','Luozhen'], ps:['15 TR','11 V','12 V'], tech:'Chaîne du MTM IG du distal vers le proximal (3 IG ici point Shu, 5 IG point Chaleur). Moxa : 12 IG, 15 TR, 11 IG, 11 V, 12 V (sèche-cheveux à domicile dans le sens du méridien). Luozhen : dos de la main, entre 2e et 3e métacarpiens, 0,5 cun des métacarpo-phalangiennes.'},
+          {nom:'Torticolis spasmodique', signes:'Forme difficile : éliminer d\'abord une cause interne ou psychique', pp:['10 GI'], ps:[], tech:'Le cours écrit « 10 GI (Naoshu) » : Naoshu = IG10, Shousanli = GI10 — à vérifier.'}
+        ]
+      }
+    }
+  },
+
+  membreInf: {
+    label: 'Membre inférieur',
+    alerte: 'Traumatisme : éliminer fracture, entorse grave et arrachement ligamentaire complet AVANT tout traitement (au moindre doute : radiographie).',
+    note: 'Une grosse articulation joue le rôle de barrière : utiliser le point barrière + les points avant et après + le point Xi. Blocage en zone Yin = douleur progressive ; en zone Yang = douleur aiguë, par à-coups.',
+    motifs: {
+      'Coxarthrose': {
+        syn: ['coxarthrose','arthrose de hanche','arthrose de la hanche','douleur de hanche','hanche'],
+        note: 'L\'acupuncture peut limiter ou ralentir l\'évolution : ne jamais promettre d\'éviter l\'intervention chirurgicale.',
+        syndromes: [
+          {nom:'Équilibrage bilatéral (traitement de l\'arthrose)', signes:'', pp:['2 IG','4 R','7 R','2 R'], ps:[], tech:''},
+          {nom:'Local, côté atteint', signes:'', pp:['30 VB','29 VB','31 E'], ps:['12 RT','12 F'], tech:'30 VB : puncture profonde + chauffer (moxa ou aiguille chauffée). Autre schéma : 31 E, 12 RP, 12 F, 30 VB.'},
+          {nom:'Chaleur de VB', signes:'', pp:['38 VB'], ps:[], tech:'Dégager la Chaleur.'},
+          {nom:'Élimination / stagnation', signes:'', pp:['4 GI','60 V','36 VB'], ps:[], tech:'4 GI + 60 V débloquent la circulation ; 36 VB si stagnation.'}
+        ]
+      },
+      'Coxalgie par pointe de sciatique': {
+        syn: ['coxalgie'],
+        syndromes: [
+          {nom:'Lombalgie associée', signes:'Douleur souvent en 30 VB, linéaire, remontant des lombes', pp:['3 IG','62 V'], ps:[], tech:''},
+          {nom:'Contracture (Chaleur VB)', signes:'', pp:['38 VB'], ps:[], tech:''},
+          {nom:'Spasmes (radiculonévrite)', signes:'', pp:['2 F','3 F','34 VB'], ps:[], tech:'34 VB : maître des muscles.'},
+          {nom:'Blocage articulaire', signes:'', pp:['Point L5-S1','31 V','32 V','33 V','34 V','60 V','63 V'], ps:['41 VB','23 V'], tech:''}
+        ]
+      },
+      'Périarthrite de hanche': {
+        syn: ['periarthrite de hanche','tendinite de hanche','bursite trochantérienne'],
+        syndromes: [
+          {nom:'Local', signes:'', pp:['30 VB','29 VB','31 E'], ps:[], tech:''},
+          {nom:'Couches anatomiques (disperser les Luo, nourrir)', signes:'', pp:['4 RT','5 F','4 R'], ps:['7 P'], tech:''},
+          {nom:'Muscles et Luo de groupe Yang', signes:'', pp:['34 VB','39 VB'], ps:['8 TR','5 MC','6 RT'], tech:'39 VB du côté opposé (3 Yang touchés : VB, V, E).'}
+        ]
+      },
+      'Pubalgie / douleur des adducteurs': {
+        syn: ['pubalgie','adducteurs','douleur des adducteurs'],
+        syndromes: [
+          {nom:'Adducteurs (Foie, plus rarement Rate)', signes:'Souvent le moyen adducteur', pp:['8 F','9 RT','6 F','8 RT','3 F','3 RT','1 F','1 RT'], ps:['34 VB','Point L5-S1'], tech:'8 F + 9 RP : réchauffer les méridiens Yin ; 6 F + 8 RP : Xi ; 3 F + 3 RP : MTM en dispersion ; 1 F + 1 RP : Jing distal du MTM.'},
+          {nom:'Pubalgie vraie (Rein)', signes:'Traitement efficace', pp:['10 R','5 R','3 R'], ps:['9 F','10 RT'], tech:'Si irradiation à la cuisse : + 9 F + 10 RP.'}
+        ]
+      },
+      'Gonarthrose': {
+        syn: ['gonarthrose','arthrose du genou','arthrose de genou','douleur du genou','genou','gonalgie'],
+        syndromes: [
+          {nom:'Arthrose rotulienne (6 points péri-rotuliens)', signes:'', pp:['34 E','35 E','Xiyan','Heding'], ps:[], tech:'34 E, point hors méridien en regard, 35 E (œil du genou), 2 points hors méridien de part et d\'autre du tendon rotulien. + traitement de fond de l\'arthrose.'},
+          {nom:'Genou selon les méridiens', signes:'Méridiens V, VB, Rein, Foie', pp:['39 V','40 V','10 R','7 R','8 F','33 VB','34 VB'], ps:[], tech:''},
+          {nom:'Face postérieure (Vessie)', signes:'', pp:['40 V','39 V'], ps:[], tech:''},
+          {nom:'Face interne', signes:'', pp:['Point douloureux + au-dessus + au-dessous','Xi du méridien'], ps:[], tech:''}
+        ]
+      },
+      'Troubles de la marche / canal lombaire étroit': {
+        syn: ['troubles de la marche','canal lombaire étroit','canal lombaire etroit','claudication'],
+        syndromes: [
+          {nom:'Triangle de Le Barbier', signes:'Amélioration de la marche', pp:['34 VB','36 E','3 F'], ps:[], tech:'Tonification.'},
+          {nom:'Jambes fatiguées', signes:'', pp:['58 V'], ps:[], tech:'Point des coolies.'},
+          {nom:'Antépulsion (Estomac)', signes:'', pp:['36 E','32 E','34 E'], ps:[], tech:''},
+          {nom:'Canal lombaire étroit', signes:'', pp:['3 IG','41 VB','36 E','32 E','34 E'], ps:[], tech:'Ouvrir Du Mai (3 IG) + Dai Mai (41 VB).'}
+        ]
+      },
+      'Entorse du genou': {
+        syn: ['entorse du genou','entorse genou'],
+        syndromes: [
+          {nom:'Socle', signes:'Le plus souvent ligament latéral externe', pp:['34 VB','5 F','4 RT','8 F','3 F'], ps:[], tech:'34 VB (maître des tendons) ; 5 F + 4 RP en dispersion (Luo, nourrir la couche) ; 8 F (point Froid, réfrigérer) ; 3 F en dispersion (chasser les pervers).'},
+          {nom:'Œdème important', signes:'', pp:['9 F','10 RT'], ps:[], tech:'Équilibre Qi/Sang.'},
+          {nom:'Œdème résiduel (sans hématome)', signes:'', pp:['6 RT','7 R'], ps:[], tech:'6 RP ou 7 R.'},
+          {nom:'MTM / stagnation', signes:'', pp:['Jing distal du MTM concerné','Xi du méridien atteint'], ps:[], tech:''}
+        ]
+      },
+      'Entorse de cheville': {
+        syn: ['entorse de cheville','entorse cheville','entorse'],
+        syndromes: [
+          {nom:'Externe (VB et/ou Vessie)', signes:'', pp:['34 VB','62 V'], ps:[], tech:'+ Luo du méridien + point Froid + Shu antique.'},
+          {nom:'Interne (Rein, Foie, voire Rate)', signes:'', pp:['34 VB','6 R'], ps:[], tech:'+ Luo du méridien + point Froid + Shu antique.'},
+          {nom:'Entorses répétées (Qiao)', signes:'', pp:['62 V','6 R'], ps:[], tech:'Rééquilibration Yin/Yang, ancrage.'},
+          {nom:'Stagnation / irradiation dorsale', signes:'', pp:['34 E','37 VB'], ps:[], tech:'Point Xi (par exemple 34 E) ; 37 VB si irradiation à la face dorsale.'}
+        ]
+      },
+      'Séquelles d\'entorse': {
+        syn: ['sequelles d\'entorse','séquelle d\'entorse'],
+        syndromes: [
+          {nom:'Tableau Yin (douleur au repos, améliorée par la marche)', signes:'', pp:['Point Chaleur du méridien en cause','Xi du méridien en cause'], ps:[], tech:'Si échec : traiter comme une arthrose, même sans signe radiologique.'}
+        ]
+      },
+      'Arthrite (ex. genou)': {
+        syn: ['arthrite','arthrite du genou'],
+        syndromes: [
+          {nom:'Chaleur et calmer le Cœur', signes:'', pp:['7 C','3 C','Point Chaleur du méridien (dispersion)'], ps:[], tech:'Disperser le point Chaleur ou tonifier le point Froid du méridien. Technique Luo-Yuan : disperser le Luo du méridien Yin + tonifier la Source du méridien Yang couplé.'}
+        ]
+      },
+      'Tendinite d\'Achille': {
+        syn: ['tendinite d\'achille','achille','tendon d\'achille'],
+        syndromes: [
+          {nom:'Traitement', signes:'', pp:['34 VB','7 R','3 R','6 R','57 V','58 V','59 V','60 V','62 V'], ps:[], tech:'± puncture des insertions haute et basse. 2 séances par semaine au début.'}
+        ]
+      },
+      'Épine calcanéenne / talalgie': {
+        syn: ['épine calcanéenne','epine calcaneenne','talalgie','talalgies'],
+        syndromes: [
+          {nom:'Traitement', signes:'', pp:['2 R','2 IG','7 R','4 R','62 V','6 R','63 V','5 R'], ps:[], tech:'Arthrose (2 R, 2 IG, 7 R, 4 R) + Qiao (62 V, 6 R) + Xi Vessie et Rein (63 V, 5 R). 3 à 10 séances.'}
+        ]
+      },
+      'Algodystrophie': {
+        syn: ['algodystrophie','syndrome douloureux régional complexe','sdrc'],
+        note: 'Résultats variables.',
+        syndromes: [
+          {nom:'Qi/Sang + calmer le Cœur + nourrir l\'os', signes:'', pp:['9 F','10 RT','7 C','3 C','4 R','5 F'], ps:['8 IG'], tech:'Yang (perte osseuse) : amener du Froid, disperser la Chaleur. Membre supérieur : 3 C + 8 IG.'},
+          {nom:'Si échec après 5-6 séances', signes:'', pp:['4 GI','3 F','7 C','14 E'], ps:['5 VC'], tech:'Équilibrage nerveux général ; + 5 VC si effondrement.'}
+        ]
+      }
+    }
+  },
+
+  membreSup: {
+    label: 'Membre supérieur',
+    alerte: 'Traumatisme : éliminer fracture et lésion ligamentaire grave avant tout traitement.',
+    motifs: {
+      'Épaule (douleur, périarthrite)': {
+        syn: ['épaule','epaule','périarthrite','periarthrite','capsulite','douleur d\'épaule','tendinite de l\'épaule','coiffe des rotateurs'],
+        note: 'Même raisonnement que pour la hanche : chercher le méridien atteint (GI le plus fréquent).',
+        syndromes: [
+          {nom:'Point majeur et points locaux', signes:'', pp:['10 IG','15 GI','14 TR','Jianqian'], ps:['14 VG','13 V'], tech:'10 IG : toutes les douleurs d\'épaule (+++).'},
+          {nom:'Douleur nocturne (stagnation)', signes:'Réveille la nuit', pp:['Point Chaleur du méridien','Xi du méridien'], ps:[], tech:'Patient en position semi-assise.'},
+          {nom:'Douleur diurne croissante (Froid)', signes:'', pp:['Point Froid du méridien (tonification)'], ps:[], tech:''},
+          {nom:'Douleur à l\'abduction (Yang Qiao)', signes:'', pp:['62 V'], ps:[], tech:''},
+          {nom:'Douleur difficile', signes:'', pp:['41 VB','5 TR'], ps:[], tech:'41 VB du côté opposé.'}
+        ]
+      },
+      'Épicondylite latérale (tennis elbow)': {
+        syn: ['épicondylite','epicondylite','tennis elbow','coude'],
+        syndromes: [
+          {nom:'Chaîne du MTM Gros Intestin', signes:'Face externe de l\'avant-bras', pp:['1 GI','2 GI','3 GI','10 GI','12 GI','11 GI','Ashi'], ps:['5 P'], tech:'Du distal vers le proximal + point douloureux au bout de la tête radiale. 5 P : alternative aussi efficace. Corriger la gestuelle en cause.'}
+        ]
+      },
+      'Rhizarthrose': {
+        syn: ['rhizarthrose','arthrose du pouce'],
+        syndromes: [
+          {nom:'Arthrose + points autour du pouce', signes:'', pp:['2 IG','7 R','4 GI','5 GI','9 P','10 P'], ps:['11 P'], tech:''}
+        ]
+      },
+      'Canal carpien': {
+        syn: ['canal carpien','syndrome du canal carpien','paresthésies des doigts'],
+        syndromes: [
+          {nom:'Stagnation de Qi et de Sang (gestes répétés)', signes:'', pp:['6 MC','7 MC','8 MC','9 P','11 GI'], ps:[], tech:'6 MC : libère poignet et avant-bras ; 7 MC : Source, spécifique du poignet ; 9 P : Hui des vaisseaux. CONTRE-INDIQUÉ si Re Bi (inflammation aiguë avec chaleur locale).'},
+          {nom:'Humidité-Vent-Froid', signes:'Engourdissement, raideur (Froid) ; lourdeur, gonflement (Humidité)', pp:['6 MC','7 MC','9 P'], ps:[], tech:'± moxibustion ou lampe chauffante.'},
+          {nom:'Vide de Qi et de Sang', signes:'Fatigue, âge, paresthésies nocturnes dominantes', pp:['9 P','11 GI'], ps:[], tech:'Tonifier.'},
+          {nom:'Schéma Raynaud modifié', signes:'', pp:['3 C','8 IG','2 TR','11 GI','7 MC','6 MC','4 MC','7 P','32 E'], ps:[], tech:'Comme le Raynaud du membre supérieur, mais 7 P remplace 9 P.'}
+        ]
+      },
+      'Syndrome de Raynaud': {
+        syn: ['raynaud','syndrome de raynaud','doigts blancs'],
+        syndromes: [
+          {nom:'Membre supérieur', signes:'', pp:['3 C','8 IG','2 TR','11 GI','7 MC','6 MC','4 MC','9 P','32 E'], ps:['7 P'], tech:'Équilibre Qi/Sang (3 C, 8 IG, 2 TR, 11 GI) ; Maître du Sang (MC) ; artères = 9 P ; veines = 32 E.'},
+          {nom:'Membre inférieur', signes:'', pp:['9 P','32 E'], ps:[], tech:'Même principe : le méridien de l\'Estomac remplace le MC.'}
+        ]
+      },
+      'Maladie de Dupuytren': {
+        syn: ['dupuytren'],
+        note: 'Stades précoces : MTC efficace ; stades avancés : chirurgie souvent indispensable, MTC en post-opératoire.',
+        syndromes: [
+          {nom:'Jin Zhuo (rétraction des tendons)', signes:'Vide de Sang du Foie + Vide de Yin du Rein ; Stase de Sang + Tan (nodules)', pp:['Piquetage local des nodules','34 VB','3 F'], ps:[], tech:'+ moxibustion, Tuina, Gua Sha.'}
+        ]
+      }
+    }
+  },
+
+  arthrose: {
+    label: 'Arthrose (traitement de fond)',
+    note: 'Autre schéma : vide de Jing du Rein, cartilage = Tai Yin (Rate + Poumon). Autre schéma : Jue Froid (Bi froid profond) — Vide de Yang ou de Jing du Rein, insuffisance de Rate, Stase de Sang, Vide de Qi ancestral. Lecture radiologique : voir le Référentiel MTC (section Rhumatologie).',
+    motifs: {
+      'Arthrose — selon le tableau': {
+        syn: ['arthrose','arthroses','polyarthrose','arthrosique'],
+        note: 'Diététique : gingembre, cannelle, poireaux ; bouillons d\'os à moelle. Éviter crudités froides, laitages, aliments crus en excès.',
+        syndromes: [
+          {nom:'Xing Bi — arthrose mobile', signes:'Douleurs changeantes, craquements, aggravation au vent, genou ++', pp:['20 VB','17 V','18 V','10 RT'], ps:[], tech:'Dispersion.'},
+          {nom:'Tong Bi — arthrose froide', signes:'Douleur fixe intense, amélioration par la chaleur, hanche ou genou en hiver', pp:['23 V','4 VC','8 VC','14 VG'], ps:[], tech:'Moxa sur gingembre.'},
+          {nom:'Zhuo Bi — arthrose humide', signes:'Gonflement, lourdeur, épanchement, aggravation par temps humide', pp:['20 V','36 E','9 RT'], ps:[], tech:'Drainer l\'Humidité.'},
+          {nom:'Re Bi — arthrose inflammatoire (poussée)', signes:'Rougeur, chaleur locale, arthrite sur arthrose', pp:['14 VG','11 GI','4 GI'], ps:[], tech:'SANS MOXA.'}
+        ]
+      },
+      'Arthrose — traitement de fond (Rate et Rein)': {
+        syn: [],
+        syndromes: [
+          {nom:'Tonifier la Rate', signes:'Cartilage, capsule, liquide synovial', pp:['13 F','2 RT','5 RT','20 V'], ps:[], tech:'5 RP en dispersion : Humidité articulaire.'},
+          {nom:'Tonifier le Rein', signes:'Os', pp:['25 VB','7 R','4 R','23 V'], ps:[], tech:'4 R (Luo) en dispersion : Froid intra-osseux. 23 V : moxa obligatoire si Froid / Yang insuffisant.'},
+          {nom:'Prévention rhumatismale (Sun Simiao)', signes:'', pp:['11 V','34 VB','39 VB'], ps:[], tech:'Hui des os + Hui des tendons + Hui des moelles.'}
+        ]
+      },
+      'Arthrose — traitement étiopathogénique': {
+        syn: [],
+        syndromes: [
+          {nom:'Énergie ancestrale Yang — 1re séance', signes:'Point d\'entrée de tout bilan arthrosique global', pp:['3 IG','62 V','5 TR','41 VB'], ps:[], tech:'Puis affiner par système.'},
+          {nom:'Grande circulation (Nei Jing)', signes:'', pp:['66 V','2 IG','2 R','8 C'], ps:['4 R','7 R','23 V'], tech:'Variante si Froid-Rein : 2 IG + 2 R + 4 R (d) + 7 R ± 23 V (moxa).'},
+          {nom:'Yanguisation', signes:'Injecter du Yang contre le Jue Froid', pp:['9 P','2 RT','36 VB','7 TR'], ps:[], tech:''},
+          {nom:'Luo-Yuan (paires couplées)', signes:'', pp:['40 E','3 RT','7 P','4 GI'], ps:['60 V','11 GI'], tech:'40 E (d) / 3 RP (t) ; 7 P (d) / 4 GI (t). Le Barbier : 60 V + 4 GI ; + 11 GI après chimiothérapie.'},
+          {nom:'Insuffisance globale du Qi (Sun Simiao)', signes:'Épuisement profond, arthrose multifocale', pp:['43 V','53 V','8 MC','9 P','12 VC','36 E'], ps:[], tech:'NE PAS disperser.'},
+          {nom:'Blocage post-traumatique', signes:'', pp:['10 RT','17 VC','6 RT','3 F'], ps:[], tech:''},
+          {nom:'Météo-sensibilité', signes:'Recrudescence aux changements de temps', pp:['5 TR','35 VB','15 TR','12 IG'], ps:[], tech:'Associer les 4 points.'},
+          {nom:'Distribution de l\'énergie dans les os', signes:'', pp:['4 R','11 V','14 VG'], ps:[], tech:''},
+          {nom:'Genou', signes:'', pp:['35 E','Xiyan','Heding'], ps:[], tech:'35 E, Neixiyan, 2 points supra-rotuliens + points de fond selon l\'étiologie.'}
+        ]
+      }
+    }
+  }
+};
+
+// ── Rhumatologie : notation, affichage du protocole, analyse de l'examen ──
+// Notation du cours (« 23 V », « 34 VB », « RM3 », « DM4 ») → code OMS + notation française de l'application.
+// Un libellé sans numéro (Ashi, Huatuojiaji, Xiyan…) reste un point hors méridien.
+function _rhPt(raw){
+  const s = String(raw||'').trim();
+  const m = s.match(/^(\d{1,2})\s*([A-Za-z]{1,3})$/);
+  const c = m ? MTCNorm.ptCode(m[2]+m[1]) : (/^[A-Za-z]{1,3}\s?\d{1,2}$/.test(s) ? MTCNorm.ptCode(s) : '');
+  return /^[A-Z]{2}\d+$/.test(c) ? {oms:c, fr:MTCNorm.ptFR(c)} : {oms:'', fr:s};
+}
+function _rhEsc(x){ return String(x==null?'':x).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
+function _rhCb(raw, principal){
+  const p = _rhPt(raw);
+  return '<span style="display:inline-flex;align-items:center;gap:3px;margin:2px 7px 2px 0;font-size:11px">'
+    + '<input type="checkbox" class="pt-chk gyno-chk" data-code="'+_rhEsc(p.fr)+'" data-nom="'+_rhEsc(p.fr)+'" onchange="syncRealises()" style="width:13px;height:13px">'
+    + '<span style="'+(principal?'font-weight:700;color:var(--jade)':'color:var(--slate)')+'">'+_rhEsc(p.fr)+'</span>'
+    + (p.oms ? '<span style="font-size:9px;color:var(--slate)">'+p.oms+'</span>' : '') + '</span>';
+}
+// Pastille moxa lue dans la technique du cours (jamais déduite ailleurs).
+function _rhMoxa(t){
+  t = t || '';
+  if(/(SANS MOXA|CONTRE-INDICATION ABSOLUE DES MOXAS)/i.test(t)) return '<span style="font-size:10px;background:#FDEDEC;color:#C0392B;border-radius:10px;padding:1px 7px;margin-left:6px">🚫 Pas de moxa</span>';
+  if(/(MOXA OBLIGATOIRE|MOXA vigoureux|\+ MOXA|MOXA en priorité|Moxa sur gingembre)/i.test(t)) return '<span style="font-size:10px;background:#FEF5E7;color:#B9770E;border-radius:10px;padding:1px 7px;margin-left:6px">🔥 Moxa</span>';
+  return '';
+}
+function initRhumatoSelects(){
+  const catSel = document.getElementById('gyno-cat'), motifSel = document.getElementById('gyno-motif');
+  if(!catSel || !motifSel) return;
+  const C = RHUMATO_DB[catSel.value];
+  motifSel.innerHTML = '<option value="">— Sélectionner un motif —</option>' +
+    (C ? Object.keys(C.motifs).map(m => `<option value="${_rhEsc(m)}">${_rhEsc(m)}</option>`).join('') : '');
+}
+function showRhumatoProtocole(cat, motifKey){
+  const C = RHUMATO_DB[cat]; if(!C) return;
+  const M = C.motifs[motifKey]; if(!M) return;
+  const res = document.getElementById('gyno-result'); if(!res) return;
+  document.querySelectorAll('.gyno-chk').forEach(cb => { cb.checked = false; });
+  const sugg = new Map(rhAnalyse().filter(s => s.cat===cat && s.motif===motifKey && s.idx!=null).map(s => [s.idx, s]));
+  let h = '';
+  const alerte = M.alerte || C.alerte;
+  if(alerte) h += '<div style="background:#FDEDEC;border-left:3px solid #C0392B;border-radius:6px;padding:7px 12px;margin-bottom:8px;font-size:11px;color:#922B21">⚠️ '+_rhEsc(alerte)+'</div>';
+  if(C.note || M.note || (M.pointsBase && M.pointsBase.length)){
+    h += '<div style="background:#E8F8F5;border-left:3px solid #117A65;border-radius:6px;padding:8px 12px;margin-bottom:10px;font-size:11px;line-height:1.7">'
+      + (M.pointsBase && M.pointsBase.length ? '<div>📌 <strong>Base :</strong> '+M.pointsBase.map(p=>_rhCb(p,true)).join('')+'</div>' : '')
+      + (M.note ? '<div style="color:#444">'+_rhEsc(M.note)+'</div>' : '')
+      + (C.note ? '<div style="margin-top:3px;color:#666;font-style:italic">'+_rhEsc(C.note)+'</div>' : '')
+      + '</div>';
+  }
+  M.syndromes.forEach((s, i) => {
+    const sg = sugg.get(i);
+    h += '<div class="rh-synd" data-idx="'+i+'" style="background:#fff;border:'+(sg?'2px solid #117A65':'1px solid var(--border)')+';border-radius:8px;padding:9px 12px;margin-bottom:8px">'
+      + '<div style="font-weight:600;font-size:13px;color:#117A65;margin-bottom:4px">'+(i+1)+'. '+_rhEsc(s.nom)+_rhMoxa(s.tech)
+      + (sg ? ' <span style="font-size:10px;font-weight:600;background:#117A65;color:#fff;border-radius:10px;padding:1px 7px">✓ évoqué par l\'examen</span>' : '') + '</div>'
+      + (sg ? '<div style="font-size:10px;color:#117A65;margin-bottom:4px">Signes retrouvés : '+_rhEsc(sg.raisons.join(', '))+'</div>' : '')
+      + (s.signes ? '<div style="font-size:11px;color:var(--slate);margin-bottom:6px;font-style:italic">'+_rhEsc(s.signes)+'</div>' : '')
+      + '<div style="font-size:10px;font-weight:700;color:var(--slate);text-transform:uppercase;margin-bottom:3px">Points principaux</div>'
+      + '<div style="margin-bottom:6px">'+(s.pp||[]).map(p=>_rhCb(p,true)).join('')+'</div>'
+      + ((s.ps||[]).length ? '<div style="font-size:10px;font-weight:700;color:var(--slate);text-transform:uppercase;margin-bottom:3px">Points secondaires</div><div style="margin-bottom:6px">'+s.ps.map(p=>_rhCb(p,false)).join('')+'</div>' : '')
+      + (s.tech ? '<div style="font-size:11px;background:#F0F9F6;padding:5px 8px;border-radius:5px;color:#117A65"><strong>Technique :</strong> '+_rhEsc(s.tech)+'</div>' : '')
+      + '</div>';
+  });
+  res.innerHTML = h;
+  res.style.display = '';
+  const w = document.getElementById('gyno-result-wrapper'); if(w) w.style.display = '';
+  setTimeout(()=>{ if(typeof filterAuri==='function') filterAuri(); }, 50);
+}
+
+// Signes articulaires recueillis à l'examen (section Douleur) — complètent type, rythme et facteurs.
+const RH_SIGNES = ['Gonflement articulaire','Rougeur / chaleur locale','Articulations froides','Raideur matinale prolongée','Craquements',
+  'Déformation / nodules','Limitation / ankylose','Engourdissement','Faiblesse sans douleur','Atrophie musculaire',
+  'Plusieurs articulations','Atteinte symétrique','Poussées successives','Sensible aux changements de temps','Début traumatique','Douleur ancienne (> 3 mois)'];
+function _rhVals(id){ return ((document.getElementById(id)||{}).value||'').split(',').map(x=>x.trim()).filter(Boolean); }
+// Orientation rhumatologique d'après l'examen. Chaque critère reprend un signe du cours (tableaux des 6 Pervers,
+// des Bi de plénitude et de vide, du Wei Zheng et du Lie Jie Bing). Proposition seulement : le praticien choisit.
+function rhAnalyse(){
+  const T=_rhVals('d-type'), A=_rhVals('d-aggrave'), B=_rhVals('d-ameliore'), R=_rhVals('d-rythme'), S=_rhVals('d-rhumato');
+  const Q=Array.from(document.querySelectorAll('#tr-q3 .tg.on')).map(t=>t.textContent);
+  const E=_rhVals('l-enduit-couleur'), L=_rhVals('l-couleur').concat(_rhVals('l-couleur-loc'));
+  const has=(a,x)=>a.includes(x), ancienne=has(S,'Douleur ancienne (> 3 mois)');
+  const BI='Bi Zheng — douleurs articulaires, musculaires ou tendineuses';
+  const regles = [
+    {cat:'bi', motif:BI, idx:0, nom:'Bi Vent (Xing Bi)', crit:[[has(T,'Mobile / Migrante'),2,'douleur migrante'],[has(A,'Le vent'),1,'aggravée par le vent'],[has(S,'Sensible aux changements de temps'),1,'sensible aux changements de temps'],[has(Q,'Courbatures'),1,'courbatures']]},
+    {cat:'bi', motif:BI, idx:1, nom:'Bi Froid (Tong Bi)', crit:[[has(A,'Le froid'),2,'aggravée par le froid'],[has(B,'La chaleur')||has(B,'La chaleur locale'),2,'améliorée par la chaleur'],[has(T,'Fixe / Stabbing'),1,'douleur fixe'],[has(T,'Vive / Aiguë'),1,'douleur vive'],[has(R,'Nocturne'),1,'nocturne']]},
+    {cat:'bi', motif:BI, idx:2, nom:'Bi Humidité (Zhuo Bi)', crit:[[has(T,'Pesanteur / Lourdeur'),2,'lourdeur'],[has(A,"L'humidité"),2,"aggravée par l'humidité"],[has(S,'Gonflement articulaire'),1,'gonflement'],[has(S,'Engourdissement'),1,'engourdissement'],[has(Q,'Lourdeur corps'),1,'corps lourd'],[E.some(x=>/épais/i.test(x)),1,'enduit épais']]},
+    {cat:'bi', motif:BI, idx:3, nom:'Bi Chaleur (Re Bi) — sans moxa', crit:[[has(S,'Rougeur / chaleur locale'),3,'rougeur et chaleur locales'],[has(T,'Brûlure'),1,'brûlure'],[has(A,'La chaleur'),1,'aggravée par la chaleur'],[has(B,'Le froid')||has(B,"L'application de froid"),2,'améliorée par le froid'],[E.some(x=>/jaune/i.test(x)),1,'enduit jaune']], exclut:()=>ancienne && !has(S,'Poussées successives')},
+    {cat:'bi', motif:BI, idx:4, nom:'Bi Vide de Qi et de Sang', crit:[[ancienne,1,'douleur ancienne'],[has(A,'La fatigue'),1,'aggravée par la fatigue'],[has(A,'Le mouvement'),1,'aggravée par le mouvement'],[has(B,'Le repos')||has(B,'Le massage')||has(B,'La pression'),1,'améliorée par le repos, le massage ou la pression'],[has(Q,'Fatigue musculaire chronique'),1,'fatigue musculaire']], exige:()=>ancienne},
+    {cat:'bi', motif:BI, idx:5, nom:'Bi Vide de Yang', crit:[[has(S,'Articulations froides'),2,'articulations froides'],[ancienne,1,'douleur ancienne'],[has(S,'Limitation / ankylose')||has(S,'Déformation / nodules'),1,'raideur ou déformation'],[has(B,'La chaleur')||has(B,'La chaleur locale'),1,'améliorée par la chaleur']], exige:()=>ancienne},
+    {cat:'bi', motif:BI, idx:6, nom:'Bi Vide de Yin', crit:[[has(S,'Rougeur / chaleur locale'),1,'articulations chaudes'],[ancienne,1,'douleur ancienne'],[has(R,'Nocturne')||has(R,'Vespérale'),1,'aggravation nocturne ou vespérale'],[has(A,'La fatigue'),1,'aggravée par la fatigue']], exige:()=>ancienne && has(S,'Rougeur / chaleur locale')},
+    {cat:'bi', motif:BI, idx:7, nom:'Bi tenace (Huan Bi) — Stase ou Glaires', crit:[[has(S,'Déformation / nodules'),2,'déformation ou nodules'],[ancienne,1,'douleur ancienne'],[has(T,'Fixe / Stabbing') && has(R,'Nocturne'),1,'douleur fixe nocturne'],[L.some(x=>/violac/i.test(x)),1,'langue violacée']], exige:()=>ancienne},
+    {cat:'wei', motif:'Wei Zheng — faiblesse ou paralysie flasque des membres', idx:null, nom:'Wei Zheng (faiblesse indolore)', crit:[[has(S,'Faiblesse sans douleur'),3,'faiblesse sans douleur'],[has(S,'Atrophie musculaire'),2,'atrophie musculaire'],[has(Q,'Faiblesse membres'),1,'faiblesse des membres']]},
+    {cat:'polyarthrites', motif:'Lie Jie Bing — polyarthrite chronique déformante', idx:null, nom:'Lie Jie Bing (polyarthrite)', crit:[[has(S,'Plusieurs articulations'),2,'plusieurs articulations'],[has(S,'Atteinte symétrique'),1,'atteinte symétrique'],[has(S,'Poussées successives'),1,'poussées successives'],[has(S,'Déformation / nodules'),1,'déformations'],[has(S,'Raideur matinale prolongée'),1,'raideur matinale']], exige:()=>has(S,'Plusieurs articulations')},
+  ];
+  return regles.map(r => {
+    const ok = r.crit.filter(c=>c[0]);
+    return Object.assign({}, r, { score: ok.reduce((a,c)=>a+c[1],0), raisons: ok.map(c=>c[2]) });
+  }).filter(r => r.score>=2 && (!r.exige || r.exige()) && !(r.exclut && r.exclut())).sort((a,b)=>b.score-a.score);
+}
+function rhAnalyseHTML(){
+  const L = rhAnalyse().slice(0,3);
+  const S = _rhVals('d-rhumato');
+  let h = '';
+  if(S.includes('Début traumatique')) h += '<div style="font-size:11px;color:#922B21;margin-bottom:4px">⚠️ Début traumatique : éliminer fracture, entorse grave ou arrachement ligamentaire avant tout traitement.</div>';
+  if(!L.length) return h + '<div style="font-size:11px;color:var(--slate);font-style:italic">Orientation rhumatologique : renseignez le type de douleur, les facteurs et les signes articulaires.</div>';
+  return h + '<div style="font-size:11px;font-weight:700;color:#117A65;margin-bottom:3px">Orientation rhumatologique (référentiel Sorbonne) — proposition à confirmer</div>'
+    + L.map(r => '<div style="font-size:11px;margin:2px 0">• <strong>'+_rhEsc(r.nom)+'</strong> <span style="color:var(--slate)">('+_rhEsc(r.raisons.join(', '))+')</span> '
+      + '<button class="btn" style="font-size:10px;padding:1px 7px" onclick="rhOuvrir(\''+r.cat+'\',\''+_rhEsc(r.motif).replace(/'/g,"\\'")+'\')">→ Protocole</button></div>').join('');
+}
+function rhRafraichir(){
+  ['rh-analyse-examen','rh-analyse-points'].forEach(id => { const el = document.getElementById(id); if(el) el.innerHTML = rhAnalyseHTML(); });
+  const spec = (document.getElementById('spn-spec')||{}).value;
+  const pts = document.getElementById('rh-analyse-points'); if(pts) pts.style.display = spec==='rhumato' ? '' : 'none';
+}
+// Ouvre directement un protocole rhumatologique (depuis l'examen ou l'orientation).
+function rhOuvrir(cat, motif){
+  navTo('points');
+  if(typeof setMotifMode==='function') setMotifMode('spn');
+  populateSpnSpecialties();
+  const s = document.getElementById('spn-spec'); s.value = 'rhumato'; onSpnSpecChange();
+  const c = document.getElementById('gyno-cat'); c.value = cat; spnInitMotifs();
+  const m = document.getElementById('gyno-motif'); m.value = motif;
+  spnShowProtocole(); rhRafraichir();
+  const p = document.getElementById('motif-panel-spn'), cont = document.getElementById('content');
+  if(p && cont) cont.scrollTop += p.getBoundingClientRect().top - 120;
+}
+// Convergence : motif rhumatologique reconnu dans le motif de consultation (mots du cours, puis titres).
+function _rhMotifReconnu(mt){
+  if(!mt || !mt.length) return null;
+  let best = null;
+  Object.entries(RHUMATO_DB).forEach(([cat, C]) => Object.entries(C.motifs).forEach(([titre, M]) => {
+    (M.syn||[]).forEach(p => { const n = MTCNorm.tokens(p).length; if(n && MTCNorm.phraseIn(mt, p) && (!best || n > best.n)) best = {cat, titre, n}; });
+  }));
+  return best;
+}
+function _convRhumato(mt, impose){
+  let cat = '', titre = '';
+  if(impose){ Object.entries(RHUMATO_DB).forEach(([c, C]) => { if(C.motifs[impose]) { cat = c; titre = impose; } }); }
+  if(!titre){ const r = _rhMotifReconnu(mt); if(!r) return null; cat = r.cat; titre = r.titre; }
+  const M = RHUMATO_DB[cat].motifs[titre], pts = [];
+  (M.pointsBase||[]).forEach(p => pts.push({raw:p, w:1, why:'points de base'}));
+  // Points présents dans au moins la moitié des tableaux du motif (socle commun)
+  const S = (M.syndromes||[]).map(s => (s.pp||[]).map(p => _rhPt(p).oms).filter(Boolean));
+  if(S.length >= 2){
+    const cpt = {}; S.forEach(l => new Set(l).forEach(c => { cpt[c] = (cpt[c]||0) + 1; }));
+    Object.entries(cpt).forEach(([c, n]) => { if(n >= Math.ceil(S.length/2)) pts.push({raw:c, w:.6, why:'commun à '+n+'/'+S.length+' tableaux'}); });
+  }
+  // Tableau évoqué par l'examen dans ce motif
+  const A = rhAnalyse().find(a => a.cat===cat && a.motif===titre && a.idx!=null);
+  if(A) (M.syndromes[A.idx].pp||[]).forEach(p => pts.push({raw:p, w:.8, why:M.syndromes[A.idx].nom+' (signes de l\'examen)'}));
+  return {titre, cat, pts};
+}
 
 // ══════ BASE EBM — Evidence-Based Acupuncture ══════
 const EBM_DB = {
@@ -10503,6 +11344,8 @@ function togEx(el, inputId) {
   if(['d-aggrave','d-ameliore','d-type','d-localisation'].includes(inputId)){
     calcDouleurType();
   }
+  // Orientation rhumatologique (le clic remplit le champ caché sans déclencher son oninput)
+  if(/^(d-(aggrave|ameliore|type|rythme|rhumato)|l-enduit-couleur|l-couleur(-loc)?)$/.test(inputId) && typeof rhRafraichir==='function') rhRafraichir();
 }
 
 // ══════ SCHÉMA DE LA LANGUE (dessin vivant + zones cliquables) ══════
@@ -12508,7 +13351,7 @@ function onMeridChk(cb){
 // premiers, pour limiter le nombre d'aiguilles. Rien n'est ajouté au dossier sans clic du praticien.
 const CONV_SOURCES = {
   synd:{lbl:'Syndrome', col:'#1E8449'}, merid:{lbl:'Méridien', col:'#117A65'}, ebm:{lbl:'Motif EBM', col:'#1A5276'},
-  gyno:{lbl:'Gynéco SPN', col:'#7D3C98'}, urg:{lbl:'Mode Urgence', col:'#B9770E'}, periop:{lbl:'Péri-op.', col:'#2E4053'},
+  gyno:{lbl:'Réf. Sorbonne', col:'#7D3C98'}, urg:{lbl:'Mode Urgence', col:'#B9770E'}, periop:{lbl:'Péri-op.', col:'#2E4053'},
   shumu:{lbl:'Shu/Mu palpé', col:'#C0392B'}, mtm:{lbl:'MTM', col:'#784212'}};
 let _conv = {n:8, body:[], auri:[], ctx:{}};
 
@@ -12602,9 +13445,14 @@ function computeConvergence(){
   if(ek){ (EBM_DB[ek].pp||[]).forEach(p=>add(p.c,'ebm',1,ek+' (principal)',p.n)); (EBM_DB[ek].ps||[]).forEach(p=>add(p.c,'ebm',.6,ek+' (secondaire)',p.n)); }
   // 4. Protocole gynéco-obstétrical (Référentiel Sorbonne Paris Nord) : celui affiché, sinon reconnu dans le motif
   //    (protocole affiché : ses points de base + les points cochés par le praticien, pas tous ses tableaux)
-  const gyAff = document.querySelectorAll('#gyno-result .gyno-chk').length ? ((document.getElementById('gyno-motif')||{}).value||'') : '';
-  const GY = _convGyno(mt, gyAff);
+  const specAff = (document.getElementById('spn-spec')||{}).value||'';
+  const protAff = document.querySelectorAll('#gyno-result .gyno-chk').length ? ((document.getElementById('gyno-motif')||{}).value||'') : '';
+  const gyAff = specAff==='rhumato' ? '' : protAff;
+  const GY = specAff==='rhumato' && protAff ? null : _convGyno(mt, gyAff);
   if(GY){ ctx.gyno = GY.titre; GY.pts.forEach(c => add(String(c).split(' ')[0],'gyno',1,'Référentiel SPN — '+GY.titre+' (points de base)')); }
+  // 4 bis. Rhumatologie (Référentiel Sorbonne) : protocole affiché, sinon motif reconnu ; tableau évoqué par l'examen
+  const RH = typeof _convRhumato==='function' ? _convRhumato(mt, specAff==='rhumato' ? protAff : '') : null;
+  if(RH){ ctx.rhumato = RH.titre; RH.pts.forEach(p => { const o = _rhPt(p.raw).oms; if(o) add(o,'gyno',p.w,'Référentiel SPN — '+RH.titre+' ('+p.why+')'); }); }
   document.querySelectorAll('#gyno-result .gyno-chk:checked').forEach(cb => add(cb.dataset.code,'gyno',1,'Référentiel SPN — coché',cb.dataset.nom));
   // 5. Mode Urgence : recettes reconnues dans le motif
   if(mt.length) URGENCE_RECIPES.forEach(r => {
@@ -12665,6 +13513,7 @@ function renderConvergence(){
   if(C.ctx.mer.length) ctx.push('Méridiens : '+C.ctx.mer.join(' + '));
   if(C.ctx.ebm) ctx.push('EBM : '+C.ctx.ebm);
   if(C.ctx.gyno) ctx.push('Sorbonne Paris Nord : '+C.ctx.gyno);
+  if(C.ctx.rhumato) ctx.push('Sorbonne Paris Nord (rhumatologie) : '+C.ctx.rhumato);
   if(C.ctx.mtm && C.ctx.mtm.probable && C.ctx.mtm.mtm.length) ctx.push('MTM : '+C.ctx.mtm.mtm.map(x=>x.nom.replace(/\s*\(.*\)$/,'')).join(', ')+' (atteinte tendino-musculaire probable)');
   if(C.ctx.periop) ctx.push('Péri-op. : '+C.ctx.periop);
   if(!C.body.length){
