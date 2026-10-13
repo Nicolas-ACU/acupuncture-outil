@@ -38,6 +38,12 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
 .br{background:var(--vermil);border-color:var(--vermil);color:#fff}
 .bo{background:var(--gold);border-color:var(--gold);color:#fff}
 #mic-bar{background:var(--cream2);border-bottom:1px solid var(--border);padding:7px 14px;display:flex;align-items:center;gap:9px;flex-shrink:0}
+#mic-bar:not(.visible):not(.ai-actif){display:none}
+#top-motif-bloc{flex:1;display:flex;align-items:center;gap:8px;min-width:0}
+#top-motif-bloc label{font-size:10px;font-weight:700;color:var(--jade);text-transform:uppercase;letter-spacing:.4px;white-space:nowrap}
+#top-motif{flex:1;min-width:0;padding:6px 10px;border:1.5px solid var(--jade);border-radius:7px;font-size:14px;font-weight:600;color:var(--ink);background:#fff;font-family:inherit}
+#transcription-bar{background:#fff;border-bottom:1px solid var(--border);padding:7px 14px;align-items:center;gap:9px;flex-shrink:0}
+#transcription-bar.on{display:flex !important}
 #tbox{flex:1;min-height:28px;max-height:64px;overflow-y:auto;padding:5px 9px;background:#fff;border:1px solid var(--border);border-radius:6px;font-size:13px;color:var(--slate);line-height:1.5;cursor:text}
 #tbox.has{color:var(--ink)}
 #ai-btn{display:none;flex-shrink:0}
@@ -45,6 +51,17 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
 #content{flex:1;overflow-y:auto;overflow-x:hidden;padding:16px;-webkit-overflow-scrolling:touch}
 .pg{display:none}.pg.on{display:block}
 .sh{display:flex;align-items:baseline;gap:10px;margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid var(--jade)}
+.spn-rech-item:hover{background:#E8F8F5}
+.c27-ligne{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:4px 0;border-bottom:1px solid var(--border)}
+.c27-q{flex:1 1 260px;font-size:12px}
+.c27-ech{display:flex;gap:3px}
+.c27-b{border:1px solid var(--border);background:#fff;border-radius:6px;min-width:44px;padding:3px 4px;font-size:12px;font-weight:700;cursor:pointer;display:flex;flex-direction:column;align-items:center;font-family:inherit;color:var(--ink)}
+.c27-b span{font-size:8px;font-weight:400;color:var(--slate)}
+.c27-b.on{background:#4A235A;border-color:#4A235A;color:#fff}.c27-b.on span{color:#E8DAEF}
+@media (pointer:coarse){ .c27-b{min-width:52px;padding:6px 4px} }
+.spn-cible{outline:3px solid #117A65;outline-offset:2px;border-radius:8px;transition:outline-color .4s}
+.btn-reset{margin-left:auto;align-self:center;background:var(--vermil-lt);border:1px solid var(--vermil);color:var(--vermil);border-radius:8px;padding:6px 14px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit}
+.btn-reset:hover{background:var(--vermil);color:#fff}
 .sh h2{font-size:17px;font-weight:600}.sh .zh{color:var(--jade);font-size:13px;opacity:.7}
 .card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:12px;box-shadow:0 2px 8px rgba(26,58,42,.08)}
 .ct{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--gold);margin-bottom:10px;display:flex;align-items:center;gap:8px}
@@ -57,7 +74,18 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
 .f input:focus,.f select:focus,.f textarea:focus{outline:none;border-color:var(--jade);box-shadow:0 0 0 3px rgba(45,122,94,.1)}
 .tr{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px;margin-bottom:4px}
 .tg{font-size:11px;padding:3px 8px;border-radius:20px;background:var(--cream2);color:var(--slate);cursor:pointer;border:1px solid transparent;transition:all .1s;user-select:none}
-.tg:hover,.tg.on{background:var(--jade-lt);color:var(--jade);border-color:var(--jade)}
+.tg.on{background:var(--jade-lt);color:var(--jade);border-color:var(--jade);font-weight:600}
+.tg.on::before{content:'✓ ';font-weight:700}
+/* Survol distinct de la sélection, et seulement avec une souris : sur tablette, le « survol » restait collé
+   après le toucher et une étiquette désélectionnée paraissait encore allumée (retour du 13/10/2026). */
+@media (hover:hover) and (pointer:fine){ .tg:not(.on):hover{background:#fff;border-color:var(--jade-md);color:var(--ink)} }
+/* Tablettes et écrans tactiles : cibles plus grandes pour le doigt */
+@media (pointer:coarse){
+  .tg{font-size:13px;padding:6px 12px;margin:2px 1px}
+  input[type=checkbox]{min-width:20px;min-height:20px}
+  .btn{min-height:38px}
+  select,input:not([type=checkbox]):not([type=radio]),textarea{font-size:16px}
+}
 .ear-zone{cursor:pointer;transition:fill .15s;fill:none}
 .ear-zone:hover{fill:var(--jade-lt) !important}
 .ear-zone.on{fill:var(--vermil) !important;stroke:var(--vermil) !important;fill-opacity:.55}
@@ -75,7 +103,8 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
 .ear-pt-num{font-size:24px;font-weight:700;fill:#1E6B3A;pointer-events:none}
 .ear-pt-num-maitre{fill:#2F5BEA;font-family:Helvetica,Arial,sans-serif;font-weight:500;font-size:30px;text-decoration:underline}
 .lgd-item{cursor:pointer;border-radius:3px;padding:1px 3px;transition:background .12s}
-.lgd-item.hl,.lgd-item:hover{background:var(--jade-lt);color:var(--ink)}
+.lgd-item.hl{background:var(--jade-lt);color:var(--ink)}
+@media (hover:hover){ .lgd-item:hover{background:var(--jade-lt);color:var(--ink)} }
 .lgd-item b{color:var(--jade)}
 .lgd-item.lgd-master{color:#1B4B8A}
 .lgd-item.lgd-master b{color:#1B4B8A}
@@ -173,6 +202,20 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
 @keyframes bk{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
 #toast{position:fixed;bottom:16px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--ink);color:#fff;padding:8px 16px;border-radius:20px;font-size:13px;font-weight:500;z-index:999;transition:transform .3s;pointer-events:none}
 #toast.on{transform:translateX(-50%) translateY(0)}
+/* Tablettes (13/10/2026) : barre du haut compacte, barre latérale réduite aux icônes en portrait */
+@media(max-width:1180px){
+  #sb{width:180px}
+  #topbar{height:auto;min-height:50px;flex-wrap:wrap;padding:6px 12px}
+  #tb-title{font-size:14px;flex:1 1 150px}
+  .tb-lbl{display:none}
+}
+@media(max-width:900px){
+  #sb{width:52px}
+  #sb-top h1,#sb-top .sub,#pi .pn,#pi .ps,.nsep,.ni span:last-child{display:none}
+  #top-motif-bloc label{display:none}
+  #sb .btn span{display:none}
+  #sb .btn{padding:6px 0;justify-content:center}
+}
 @media(max-width:700px){
   #sb{width:52px}
   #sb-top h1,#sb-top .sub,#pi .pn,#pi .ps,.nsep,.ni span:last-child{display:none}
@@ -262,22 +305,31 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
     <div style="font-size:11px;color:var(--jade);font-weight:600;flex-shrink:0" id="prat-name"></div>
     <div style="display:flex;gap:6px;margin-left:auto;flex-wrap:wrap">
       <button class="btn" id="btn-ns" style="display:none" onclick="newSeance()">➕ Nouvelle séance</button>
-      <button class="btn" id="btn-brouillon" style="display:none;border-color:var(--jade);color:var(--jade)" onclick="saveCCMQOnly()" title="Sauvegarde tout le contenu sans marquer la séance comme réalisée — reprenez-la plus tard">💾 Enregistrer le brouillon</button>
+      <button class="btn" id="btn-brouillon" style="display:none;border-color:var(--jade);color:var(--jade)" onclick="saveCCMQOnly()" title="Sauvegarde tout le contenu sans marquer la séance comme réalisée — reprenez-la plus tard">💾 <span class="tb-lbl">Enregistrer le </span>brouillon</button>
       <button class="btn bg" id="btn-ss" style="display:none" onclick="saveSeance()">💾 Enregistrer</button>
       <button class="btn bg" id="btn-ex" style="display:none" onclick="exportPatient()">⬇ Excel</button>
-      <button class="btn" title="Exporter tous les dossiers en JSON (sauvegarde / transfert navigateur)" onclick="exportAllJSON()" style="font-size:11px;border-color:var(--jade);color:var(--jade)">⬆️ Exporter JSON</button>
+      <button class="btn" title="Exporter tous les dossiers en JSON (sauvegarde / transfert navigateur)" onclick="exportAllJSON()" style="font-size:11px;border-color:var(--jade);color:var(--jade)">⬆️<span class="tb-lbl"> Exporter JSON</span></button>
       <button class="btn" onclick="logout()" style="font-size:11px;display:none" id="btn-logout" title="Se déconnecter">⎋ Quitter</button>
-      <button class="btn" title="Importer des dossiers depuis un fichier JSON" onclick="importAllJSON()" style="font-size:11px;border-color:#8B4513;color:#8B4513">⬇️ Importer JSON</button>
+      <button class="btn" title="Importer des dossiers depuis un fichier JSON" onclick="importAllJSON()" style="font-size:11px;border-color:#8B4513;color:#8B4513">⬇️<span class="tb-lbl"> Importer JSON</span></button>
     </div>
   </div>
   <div id="test-banner" style="display:none;background:#FEF3C7;color:#92400E;padding:7px 16px;font-size:12px;font-weight:600;text-align:center;border-bottom:1px solid #F59E0B;align-items:center;justify-content:center;gap:10px">
     <span>🧪 Mode test — cette consultation n'est pas archivée, aucune donnée n'est enregistrée.</span>
     <button onclick="exitTestMode()" style="border:1px solid #92400E;background:transparent;color:#92400E;border-radius:6px;padding:2px 10px;cursor:pointer;font-size:11px;font-weight:600">Quitter le mode test</button>
   </div>
+  <!-- Bandeau du haut (13/10/2026) : motif de la séance, modifiable depuis chaque onglet de la consultation.
+       La zone de texte libre (transcription analysée par l'IA) n'apparaît plus que sur demande, dans Identité et 10+1 Questions. -->
   <div id="mic-bar">
+    <div id="top-motif-bloc" style="display:none">
+      <label for="top-motif">Motif de la séance</label>
+      <input id="top-motif" placeholder="Motif de la séance (il oriente toutes les propositions de points)" oninput="onTopMotif()" autocomplete="off">
+    </div>
+    <button class="btn" id="btn-transcription" style="display:none;font-size:11px" onclick="toggleTranscription()" title="Coller la transcription d'un entretien : l'IA remplit l'Identité ou les 10+1 Questions (clé API nécessaire)">🎙️ Transcription IA</button>
+    <div id="ai-st"></div>
+  </div>
+  <div id="transcription-bar" style="display:none">
     <div id="tbox" contenteditable="true" spellcheck="false">Saisissez ou collez du texte ici…</div>
     <button class="btn bg" id="ai-btn" style="display:none;font-size:12px" onclick="analyzeAI()">✨ Analyser IA</button>
-    <div id="ai-st"></div>
   </div>
   <div id="content">
 
@@ -351,7 +403,8 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
 
     <!-- MODE URGENCE — RECETTES SYMPTOMATIQUES -->
     <div class="pg" id="pg-urgence">
-      <div class="sh"><h2>⚡ Mode Urgence — Recettes symptomatiques</h2><span class="zh">应急处方</span></div>
+      <div class="sh" style="flex-wrap:wrap"><h2>⚡ Mode Urgence — Recettes symptomatiques</h2><span class="zh">应急处方</span>
+        <button class="btn-reset" id="btn-reset-urgence" onclick="resetUrgence()" title="Vider la recherche et les propositions">🔄 Réinitialiser</button></div>
       <div class="card" style="background:#FEF3C7;border-color:#D97706;padding:10px 13px">
         <div style="font-size:12px;color:#92400E;line-height:1.6">
           <strong>Objectif :</strong> traiter rapidement une <strong>Branche</strong> (标 Biao) sans passer par l'analyse fine des Racines. Recettes de points éprouvées pour les affections courantes de la vie quotidienne et pour la médecine péri-opératoire (épargne morphinique). Ne remplace pas une analyse syndromique complète pour un suivi de fond — utile en dépannage, en garde, ou en complément d'un protocole d'épargne morphinique.
@@ -362,8 +415,11 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
         <div class="ct">Recherche</div>
         <div style="display:flex;gap:9px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px">
           <div class="f" style="flex:2;min-width:220px">
-            <label>Motif / symptôme (texte libre)</label>
+            <label>Motif / symptôme</label>
             <input id="urg-motif" placeholder="Ex : lombalgie aiguë, nausées post-opératoires, migraine, insomnie…" oninput="searchUrgence()">
+            <select id="urg-recette" onchange="urgChoisirRecette()" style="margin-top:5px;font-size:12px">
+              <option value="">📋 Ou choisir dans la liste des recettes…</option>
+            </select>
           </div>
           <div class="f" style="flex:1;min-width:220px">
             <label>Type de chirurgie (péri-opératoire, optionnel)</label>
@@ -380,7 +436,7 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
             </select>
           </div>
           <div class="f" style="flex:1;min-width:220px">
-            <label>Indication péri-opératoire (mémoire, tableau 7.4)</label>
+            <label>Indication péri-opératoire</label>
             <select id="urg-periop" onchange="searchUrgence()"><option value="">— Aucune —</option></select>
           </div>
           <div class="f" style="flex:1;min-width:220px">
@@ -391,17 +447,18 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
               <option value="cheng">CHENG — per-opératoire PTH / PTG</option>
             </select>
           </div>
-          <button class="btn" onclick="resetUrgence()" style="font-size:12px">🔄 Réinitialiser</button>
         </div>
+        <div id="urg-perso" class="card" style="display:none;border-left:4px solid #7D3C98;padding:10px;margin:0 0 10px"></div>
         <div id="urg-empty" style="text-align:center;padding:20px;color:var(--slate);font-size:13px">
           Décrivez le motif ou choisissez un type de chirurgie pour obtenir une proposition de points.
         </div>
         <div id="urg-result" style="display:none">
+          <div id="urg-croise" style="display:none;font-size:12px;background:#F4F6F7;border:1px solid var(--border);border-radius:8px;padding:7px 11px;margin:0 0 8px"></div>
           <div class="card" id="urg-periop-result" style="display:none;border-left:4px solid #1A5276;padding:10px;margin:0 0 8px"></div>
           <div class="card" id="urg-proto-result" style="display:none;border-left:4px solid #6C3483;padding:10px;margin:0 0 8px"></div>
           <div class="card" style="border-left:4px solid var(--jade);padding:10px;margin:0 0 8px">
             <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:6px">
-              <div style="font-size:11px;font-weight:700;color:var(--slate);text-transform:uppercase;letter-spacing:.4px">Points d'acupuncture proposés (max 10)</div>
+              <div style="font-size:11px;font-weight:700;color:var(--slate);text-transform:uppercase;letter-spacing:.4px">Points d'acupuncture proposés (max 10) — <span id="urg-acu-titre">toutes recherches croisées</span></div>
               <button class="btn" style="font-size:10px;padding:3px 9px" onclick="addAllUrgencePoints('acu')">✓ Tout cocher</button>
             </div>
             <div id="urg-acu-list"></div>
@@ -414,6 +471,7 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
             <div id="urg-auri-list"></div>
           </div>
           <div id="urg-sources" style="font-size:10px;color:var(--slate);font-style:italic;margin-top:4px"></div>
+          <div class="card" id="urg-ccmq" style="display:none;border-left:4px solid #4A235A;padding:10px;margin:0 0 8px"></div>
           <div style="font-size:10px;color:var(--slate);font-style:italic;margin-top:10px;padding-top:8px;border-top:1px solid var(--border)">
             Les points ajoutés apparaissent dans « Points réalisés » (onglet Points) et sont enregistrés avec la séance, comme n'importe quel point.
           </div>
@@ -547,6 +605,19 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
         <div class="ct">Journal des évolutions</div>
         <div style="font-size:11px;color:var(--slate);font-style:italic;margin-bottom:8px">Cette liste s'enrichit à chaque amélioration de l'application — vous pouvez vérifier ici ce qui a changé depuis votre dernière utilisation. Remise à zéro le 1er octobre 2026, au lancement de la bêta.</div>
         <div id="guide-changelog" style="font-size:12px;color:var(--ink);line-height:1.8">
+          <div style="font-size:12px;line-height:1.65;margin-bottom:10px">
+            <div style="font-weight:700;color:var(--jade);margin-bottom:4px">13 octobre 2026 — d'après vos retours</div>
+            <div>• <strong>Points → Synthèse</strong> : les points d'auriculothérapie cochés, les notes de technique et les points décochés sont maintenant repris aussitôt. Changer de motif dans le Référentiel Sorbonne ou l'EBM ne fait plus disparaître les points déjà cochés : ils passent dans les points libres. Si vous avez retouché le champ « Points réalisés » à la main, il n'est plus écrasé ; un bouton propose de reprendre les points cochés.</div>
+            <div>• <strong>Motif de la séance en haut de page</strong>, modifiable depuis chaque onglet de la consultation. La zone de texte libre (transcription pour l'IA) n'apparaît plus que sur demande (bouton « 🎙️ Transcription IA » dans Identité et 10+1 Questions).</div>
+            <div>• <strong>Référentiel Sorbonne : moteur de recherche</strong> (ex. « douleur poignet », « sciatique », « nausées grossesse »).</div>
+            <div>• <strong>Tablettes</strong> : une étiquette touchée une deuxième fois s'éteint vraiment (elle restait allumée par l'effet de survol) ; étiquette sélectionnée marquée ✓ ; cibles plus grandes au doigt ; barres compactées.</div>
+            <div>• <strong>Boutons « Réinitialiser »</strong> (Points, Mode Urgence) : en rouge, en haut à droite de la page.</div>
+            <div>• <strong>Mode Urgence</strong> : liste de 43 recettes (symptômes, douleurs par localisation) et vos recettes personnelles ; les recherches associées (motif, chirurgie, indication péri-opératoire, constitution) sont croisées, les points communs en tête (★) ; CCMQ-27 proposé dès qu'une chirurgie ou une indication péri-opératoire est choisie ; références lisibles (auteurs, année, citation complète).</div>
+          </div>
+          <div style="font-size:12px;line-height:1.65;margin-bottom:10px">
+            <div style="font-weight:700;color:var(--jade);margin-bottom:4px">12 octobre 2026</div>
+            <div>• <strong>Rhumatologie</strong> dans le Référentiel Sorbonne (Bi Zheng, Wei Zheng, Lie Jie Bing, rachis, membres, arthrose), signes articulaires dans l'Examen avec orientation proposée, chapitre Rhumatologie dans le Référentiel MTC.</div>
+          </div>
           <div style="font-size:12px;line-height:1.65">
             <div style="font-weight:700;color:var(--jade);margin-bottom:4px">1er octobre 2026 — version de départ de la bêta</div>
             <div>Point de départ du test. Les modifications faites à partir de vos retours seront listées ici, datées.</div>
@@ -1697,7 +1768,7 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
     <div class="pg" id="pg-points">
       <div class="sh" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
         <div><h2>Prescription de points</h2><span class="zh">處方選穴</span></div>
-        <button onclick="resetPrescription()" style="background:#FEF3C7;border:1px solid #D97706;color:#92400E;border-radius:8px;padding:6px 14px;font-size:12px;font-weight:600;cursor:pointer" title="Vider toutes les sélections et recommencer">🔄 Reset prescription</button>
+        <button class="btn-reset" id="btn-reset-points" onclick="resetPrescription()" title="Vider toutes les sélections et recommencer">🔄 Réinitialiser la prescription</button>
       </div>
 
       <!-- ══ CONVERGENCE DES POINTS ══ -->
@@ -1834,6 +1905,10 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
         <!-- Panneau Référentiel Sorbonne Paris Nord (organisé par spécialité, alimenté au fur et à mesure) -->
         <div id="motif-panel-spn" class="motif-panel">
           <label style="font-size:11px;font-weight:700;color:#117A65;text-transform:uppercase;letter-spacing:.5px">Référentiel Acupuncture Sorbonne Paris Nord</label>
+          <div style="margin-top:6px;position:relative">
+            <input id="spn-recherche" type="search" placeholder="🔍 Rechercher dans le référentiel : douleur poignet, sciatique, dysménorrhée, nausées de grossesse…" oninput="spnRechercher()" style="width:100%;box-sizing:border-box;font-size:12px;padding:7px 10px;border:1px solid #117A65;border-radius:8px;font-family:inherit">
+            <div id="spn-recherche-res" style="display:none;margin-top:4px;border:1px solid var(--border);border-radius:8px;background:#fff;max-height:320px;overflow-y:auto"></div>
+          </div>
           <div class="f" style="margin-top:6px;margin-bottom:8px;max-width:320px">
             <label>Spécialité</label>
             <select id="spn-spec" onchange="onSpnSpecChange()" style="font-size:12px">
@@ -1979,7 +2054,7 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
           <div id="pts-realises" style="font-size:13px;min-height:40px;line-height:2;margin-bottom:8px"></div>
           
         <div class="f"><label style="font-size:11px">Notes de traitement</label>
-            <textarea id="pts-nl" rows="2" placeholder="Ex : LV3 dispersion, moxa CV4 15 min, ST36 tonification…" oninput="markDirty()" style="font-size:12px"></textarea>
+            <textarea id="pts-nl" rows="2" placeholder="Ex : LV3 dispersion, moxa CV4 15 min, ST36 tonification…" oninput="markDirty();syncRealises()" style="font-size:12px"></textarea>
           </div>
           <div style="display:flex;gap:8px;margin-top:6px;align-items:center;flex-wrap:wrap">
             <input id="pts-libre-code" placeholder="Code (ex: ST36) puis ↵" style="width:110px;font-size:12px;padding:6px 8px;border:1px solid var(--border);border-radius:6px;font-family:inherit" onkeydown="if(event.key==='Enter'){event.preventDefault();addLibrePoint();}">
@@ -2188,7 +2263,7 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
           <div id="auri-list" style="flex:1;min-width:260px;margin-bottom:8px"></div>
         </div>
         <div class="f"><label style="font-size:11px">Notes auriculothérapie</label>
-          <textarea id="auri-notes" rows="2" placeholder="Aiguilles semi-permanentes, vaccariae, électrostimulation…" oninput="markDirty()" style="font-size:12px"></textarea>
+          <textarea id="auri-notes" rows="2" placeholder="Aiguilles semi-permanentes, vaccariae, électrostimulation…" oninput="markDirty();syncRealises()" style="font-size:12px"></textarea>
         </div>
       </div>
 
@@ -2253,7 +2328,7 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
           <button class="btn bg" onclick="applyRealises();navTo('synthese')" style="font-size:13px;padding:10px 20px">
             ✓ Valider et aller vers Synthèse →
           </button>
-          <button class="btn" onclick="autoFillSynthese();showToast('Points copiés')" style="font-size:11px">
+          <button class="btn" onclick="autoFillSynthese();syncPts(true);showToast('Points copiés')" style="font-size:11px">
             📋 Copier points seulement
           </button>
         </div>
@@ -2272,7 +2347,9 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
         <div class="fg">
           <div class="f" style="grid-column:1/-1"><label>Syndromes retenus</label><textarea id="s-syndromes" rows="2" oninput="markDirty()"></textarea></div>
           <div class="f" style="grid-column:1/-1"><label>Principes de traitement (Zhi Ze)</label><textarea id="s-principe" rows="2" oninput="markDirty()"></textarea></div>
-          <div class="f" style="grid-column:1/-1"><label>Points réalisés</label><textarea id="s-points" rows="3" oninput="markDirty()"></textarea></div>
+          <div class="f" style="grid-column:1/-1"><label>Points réalisés</label><textarea id="s-points" rows="3" oninput="markDirty();syncPts()"></textarea>
+            <div id="s-points-maj" style="display:none;margin-top:4px;font-size:11px;color:#92400E;background:#FEF3C7;border-radius:6px;padding:5px 9px">⚠️ Ce champ a été modifié à la main et ne contient pas tous les points cochés.
+              <button class="btn" style="font-size:10px;padding:1px 8px;margin-left:6px" onclick="syncPts(true);markDirty()">↻ Reprendre les points cochés</button></div></div>
           <div class="f"><label>Technique</label><input id="s-tech" oninput="markDirty()"></div>
           <div class="f"><label>Durée</label><input id="s-duree" oninput="markDirty()"></div>
           <div class="f" style="grid-column:1/-1"><label>Réactions pendant la séance</label><textarea id="s-react" rows="2" oninput="markDirty()"></textarea></div>
@@ -3457,6 +3534,7 @@ function navTo(pg){
   }
   if(pg==='referentiel') setTimeout(refRender,30);
   if(pg==='dix')updDixInfo();
+  majBarreHaut(pg);
   if(pg==='examen')restorePoulsDisplays();
   if(pg==='realises')updateRealisesPage();
 }
@@ -3817,7 +3895,7 @@ function loadSeance(sc){
   }
   const syn=sc.syn||{};
   s('s-motif',syn.motif);s('s-syndromes',syn.syndromes);s('s-principe',syn.principe);
-  s('s-points',syn.points);s('s-tech',syn.tech);s('s-duree',syn.duree);
+  s('s-points',syn.points);{const sp=document.getElementById('s-points');if(sp)sp.dataset.auto=sp.value;}s('s-tech',syn.tech);s('s-duree',syn.duree);
   s('s-react',syn.react);s('s-conseils',syn.conseils);s('s-cr',syn.cr);s('s-rdv',syn.rdv);s('s-courrier',syn.courrier||'');
   s('dix-prep-notes',syn.prepNotes);
   // Sync motif vers la bannière 10+1 Questions
@@ -4150,6 +4228,33 @@ function updDixInfo(){
     }
   }
   renderDemandesMedecin();
+  majTopMotif();
+}
+
+// ── Bandeau du haut : motif de la séance (même valeur que « Motif de la séance » des 10+1 Questions) ──
+const PAGES_MOTIF = ['dix','examen','ccmq','points','realises','synthese','urgence'];
+const PAGES_TRANSCRIPTION = ['fiche','dix'];
+function majTopMotif(){
+  const t = document.getElementById('top-motif'); if(!t || document.activeElement===t) return;
+  t.value = (document.getElementById('dix-motif-input')||{}).value || '';
+}
+function onTopMotif(){
+  const t = document.getElementById('top-motif'), d = document.getElementById('dix-motif-input');
+  if(t && d){ d.value = t.value; onMotifChange(); }
+}
+function majBarreHaut(pg){
+  const motif = !!curPt && PAGES_MOTIF.includes(pg), transc = PAGES_TRANSCRIPTION.includes(pg);
+  const bloc = document.getElementById('top-motif-bloc'), bt = document.getElementById('btn-transcription');
+  if(bloc) bloc.style.display = motif ? '' : 'none';
+  if(bt) bt.style.display = transc ? '' : 'none';
+  const bar = document.getElementById('mic-bar'); if(bar) bar.classList.toggle('visible', motif || transc);
+  const tb = document.getElementById('transcription-bar'); if(tb && !transc) tb.classList.remove('on');
+  majTopMotif();
+}
+function toggleTranscription(){
+  const tb = document.getElementById('transcription-bar'); if(!tb) return;
+  tb.classList.toggle('on');
+  if(tb.classList.contains('on')){ const x = document.getElementById('tbox'); if(x) x.focus(); }
 }
 
 function onMotifChange(){
@@ -4157,6 +4262,7 @@ function onMotifChange(){
   const val=(document.getElementById('dix-motif-input')||{}).value||'';
   const sm=document.getElementById('s-motif');
   if(sm)sm.value=val;
+  majTopMotif();
   markDirty();
   // Le motif pilote les propositions d'auriculothérapie : rafraîchir si déjà affichées
   if(typeof filterAuri==='function') filterAuri();
@@ -4384,7 +4490,7 @@ function mkPtRow(p,realises=[]){
 }
 function onPtChk(cb){
   const row=cb.closest('.pt-row'),code=row.querySelector('.pt-code');
-  if(cb.checked){if(code)code.classList.add('ck');if(!row.querySelector('.pt-note')){const inp=document.createElement('input');inp.className='pt-note';inp.placeholder='Technique…';row.querySelector('.pt-txt').appendChild(inp);}}
+  if(cb.checked){if(code)code.classList.add('ck');if(!row.querySelector('.pt-note')){const inp=document.createElement('input');inp.className='pt-note';inp.placeholder='Technique…';inp.oninput=()=>{syncRealises();markDirty();};row.querySelector('.pt-txt').appendChild(inp);}}
   else{if(code)code.classList.remove('ck');const n=row.querySelector('.pt-note');if(n)n.remove();}
   syncRealises();markDirty();
 }
@@ -4493,7 +4599,7 @@ function syncRealises(){
   }
   syncPts();
 }
-function syncPts(){
+function syncPts(force){
   const P = _pointsCoches();
   const syndList=P.synd, ebmList=P.ebm, auriList=P.auri.map(x=>'Auri:'+x);
   // Compte-rendu : sans la justification interne « — convergence (sources) »
@@ -4509,8 +4615,15 @@ function syncPts(){
   if(nl) parts.push(nl);
   if(auriList.length) parts.push('[Auri] '+auriList.join(' · ')+(auriN?' — '+auriN:''));
 
+  // Le champ Points de la Synthèse suit les cases cochées tant qu'il n'a pas été modifié à la main
+  // (retour des bêta-testeurs du 13/10/2026 : points ajoutés dans Points absents de la Synthèse).
   const el=document.getElementById('s-points');
-  if(el&&parts.length) el.value=parts.join('\n');
+  if(!el) return;
+  const txt=parts.join('\n');
+  const manuel = el.value.trim() && el.value!==(el.dataset.auto||'');
+  if(!manuel || force){ el.value=txt; el.dataset.auto=txt; }
+  const alerte=document.getElementById('s-points-maj');
+  if(alerte) alerte.style.display = (manuel && !force && txt && el.value!==txt) ? '' : 'none';
 }
 function resetPointsDisplay(){
   // Vider l'affichage des points et décocher les cases syndrome
@@ -5324,7 +5437,8 @@ async function exportAllJSON(){
   const json = JSON.stringify({
     version: 1,
     date: new Date().toISOString(),
-    patients: all
+    patients: all,
+    recettesPerso: urgRecettesPerso()
   }, null, 2);
   const blob = new Blob([json], {type:'application/json'});
   const url = URL.createObjectURL(blob);
@@ -5350,6 +5464,12 @@ async function importAllJSON(){
       const data = JSON.parse(text);
       // Accepte {version,patients:[...]}, {patients:[...]} ou tableau direct
       const patients = Array.isArray(data) ? data : (data.patients || []);
+      // Recettes personnelles du Mode Urgence (ajoutées si absentes, même nom = déjà présente)
+      if(!Array.isArray(data) && Array.isArray(data.recettesPerso) && data.recettesPerso.length){
+        const L = urgRecettesPerso(), noms = new Set(L.map(r=>r.nom));
+        data.recettesPerso.filter(r=>r && r.nom && !noms.has(r.nom)).forEach(r=>L.push(r));
+        if(_urgEnregistrerPerso(L)) urgRemplirRecettes();
+      }
       if(!patients.length) throw new Error('Aucun patient trouvé dans ce fichier');
 
       const existing = await dbAll();
@@ -5555,11 +5675,8 @@ function autoFillSynthese(){
     if(consEl && consEl.textContent.trim()) sConseils.value = consEl.textContent.trim();
   }
 
-  // Points cochés si s-points vide
-  if(sPoints.value.trim()) return;
-  const P = _pointsCoches();
-  const all = [...P.synd, ...P.ebm, ...P.gyno, ...P.libre.map(x=>x.replace(/ — convergence \(.*\)$/,'')), ...P.auri.map(x=>'[Aur] '+x)];
-  if(all.length) sPoints.value = all.join(', ');
+  // Points cochés (même règle que syncPts : une saisie manuelle n'est pas écrasée, une alerte le signale)
+  syncPts();
 }
 
 function applyRealises(){
@@ -8970,13 +9087,15 @@ const SPN_SPECIALTIES = [
       {value:'accouchement', label:'Accouchement & Post-partum'}
     ],
     initSelects: ()=>initGynoSelects(),
-    showProtocole: (cat,motif)=>showGynoProtocole(cat,motif)
+    showProtocole: (cat,motif)=>showGynoProtocole(cat,motif),
+    get db(){ return GYNO_DB; }
   },
   { key:'rhumato', label:'Rhumatologie 痹證', prefixe:'Rhumato',
     // Lecture différée : RHUMATO_DB est défini plus loin dans le fichier.
     get domaineOptions(){ return Object.entries(RHUMATO_DB).map(([value, C]) => ({value, label:C.label})); },
     initSelects: ()=>initRhumatoSelects(),
-    showProtocole: (cat,motif)=>showRhumatoProtocole(cat,motif)
+    showProtocole: (cat,motif)=>showRhumatoProtocole(cat,motif),
+    get db(){ return RHUMATO_DB; }
   }
 ];
 // Préfixe des points cochés dans le référentiel (« [Gynéco] RM4 », « [Rhumato] V23 ») — reconnu à la réouverture.
@@ -9068,14 +9187,44 @@ function spnShowProtocole(){
   if(!spec || !motifVal){ clearGynoResult(); return; }
   const catVal = (document.getElementById('gyno-cat')||{}).value||'';
   if(!spnSpecialitesDisponibles(spnSexePatient()).includes(spec)){ clearGynoResult(); return; }
+  // Un autre protocole remplace celui affiché : ses points cochés passent dans les points libres ;
+  // le même protocole réaffiché garde ses cases cochées.
+  const res = document.getElementById('gyno-result'), origine = (spec.prefixe||spec.label)+' · '+motifVal;
+  const memes = res && res.dataset.origine===origine ? [...res.querySelectorAll('.gyno-chk:checked')].map(cb=>cb.dataset.code) : null;
+  if(!memes) _conserverCoches('.gyno-chk', 'gyno-result');
   spec.showProtocole(catVal, motifVal);
+  if(res && res.querySelector('.gyno-chk')){
+    res.dataset.origine = origine;
+    if(memes){ const vus=new Set(); res.querySelectorAll('.gyno-chk').forEach(cb=>{ if(memes.includes(cb.dataset.code)&&!vus.has(cb.dataset.code)){ cb.checked=true; vus.add(cb.dataset.code); } }); syncRealises(); }
+  }
+}
+
+// Points cochés d'un protocole sur le point d'être remplacé ou effacé par le praticien : versés dans les
+// points libres (sans doublon) au lieu de disparaître en silence. Jamais pendant un chargement ou une remise à zéro.
+let _ptsSansConserver = 0;
+function _conserverCoches(selector, conteneurId){
+  if(_ptsSansConserver || !curPt) return 0;
+  const box = document.getElementById(conteneurId); if(!box) return 0;
+  const coches = [...box.querySelectorAll(selector+':checked')]; if(!coches.length) return 0;
+  const origine = box.dataset.origine || '';
+  const deja = new Set([...document.querySelectorAll('#pts-libres-list .libre-chk:checked')].map(c=>MTCNorm.ptCode(c.dataset.code)));
+  let n = 0;
+  coches.forEach(cb => {
+    const code = cb.dataset.code||'', canon = MTCNorm.ptCode(code);
+    if(deja.has(canon)) return; deja.add(canon);
+    const nom = [cb.dataset.nom && cb.dataset.nom!==code ? cb.dataset.nom : '', origine].filter(Boolean).join(' — ');
+    _reallyAddLibrePoint(code, nom, null); n++;
+  });
+  if(n) showToast(n+(n>1?' points cochés conservés':' point coché conservé')+' dans les points libres');
+  return n;
 }
 
 // ── Afficher les protocoles gynéco-obstétricaux ──
 function clearGynoResult(){
+  _conserverCoches('.gyno-chk', 'gyno-result');
   const res = document.getElementById('gyno-result');
   const wrapper = document.getElementById('gyno-result-wrapper');
-  if(res) res.innerHTML = '';
+  if(res){ res.innerHTML = ''; delete res.dataset.origine; }
   if(wrapper) wrapper.style.display = 'none';
   // Uncheck all gyno checkboxes
   document.querySelectorAll('.gyno-chk').forEach(cb => cb.checked = false);
@@ -9309,7 +9458,7 @@ const RHUMATO_DB = {
         syn: [],
         note: 'Principe : tonifier le point Rong (2e point Shu antique) et libérer le point Shu des méridiens paralysés, selon l\'organe dominant.',
         syndromes: [
-          {nom:'Points Su Wen principaux', signes:'', pp:['30 E','13 V','1 MC','20 V','21 V','12 VC','4 VG','4 RT','17 RT'], ps:[], tech:'Le cours écrit « 15 PC (Tianchi) » et « 6 RT (Gongsun) » : Tianchi = MC1 et Gongsun = RT4 (retenus ici) — à vérifier.'},
+          {nom:'Points Su Wen principaux', signes:'', pp:['30 E','13 V','1 MC','20 V','21 V','12 VC','4 VG','4 RT','17 RT'], ps:[], tech:'1 MC (Tianchi), 4 RT (Gongsun).'},
           {nom:'Points Su Wen des membres (Chong Mai, Jing)', signes:'', pp:['16 E','4 VC','4 RT','18 V','23 V'], ps:[], tech:''}
         ]
       }
@@ -9508,7 +9657,7 @@ const RHUMATO_DB = {
         syn: ['torticolis'],
         syndromes: [
           {nom:'Torticolis courant (Vent-Froid du MTM IG)', signes:'', pp:['1 IG','3 IG','5 IG','10 IG','11 IG','12 IG','20 VB','Luozhen'], ps:['15 TR','11 V','12 V'], tech:'Chaîne du MTM IG du distal vers le proximal (3 IG ici point Shu, 5 IG point Chaleur). Moxa : 12 IG, 15 TR, 11 IG, 11 V, 12 V (sèche-cheveux à domicile dans le sens du méridien). Luozhen : dos de la main, entre 2e et 3e métacarpiens, 0,5 cun des métacarpo-phalangiennes.'},
-          {nom:'Torticolis spasmodique', signes:'Forme difficile : éliminer d\'abord une cause interne ou psychique', pp:['10 GI'], ps:[], tech:'Le cours écrit « 10 GI (Naoshu) » : Naoshu = IG10, Shousanli = GI10 — à vérifier.'}
+          {nom:'Torticolis spasmodique', signes:'Forme difficile : éliminer d\'abord une cause interne ou psychique', pp:['10 IG'], ps:[], tech:'10 IG (Naoshu).'}
         ]
       }
     }
@@ -9867,6 +10016,110 @@ function _convRhumato(mt, impose){
   return {titre, cat, pts};
 }
 
+// ══════ Recherche dans le Référentiel Sorbonne Paris Nord (13/10/2026) ══════
+// Parcourt toutes les spécialités proposées pour ce patient (titres de motifs, mots-clés du cours, noms
+// et signes des tableaux). Les mots génériques (« douleur », « mal », « traitement »…) ne sont pas exigés :
+// « douleur poignet » trouve « Points locaux par localisation › Poignet, paume, doigts ».
+const SPN_RECH_VIDES = new Set(['de','du','des','la','le','les','et','ou','au','aux','en','un','une','par','pour','avec','sur','sans','dans','chez','d','l']);
+const SPN_RECH_GENERIQUES = new Set(['douleur','douleurs','mal','maux','algie','traitement','syndrome','probleme','trouble','troubles','point','points']);
+function _spnRechNorm(t){ return (t||'').toString().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/œ/g,'oe').replace(/æ/g,'ae'); }
+function _spnRechMots(t){ return _spnRechNorm(t).split(/[^a-z0-9]+/).filter(w => w.length>1 && !SPN_RECH_VIDES.has(w)); }
+// Même mot au pluriel près, ou début commun d'au moins 5 lettres (« lombaire » / « lombalgie », « nausee » / « nausees »)
+function _spnRechEgal(q, w){
+  if(q===w) return true;
+  const a = q.replace(/(s|x)$/,''), b = w.replace(/(s|x)$/,'');
+  if(a===b) return true;
+  let n=0; while(n<a.length && n<b.length && a[n]===b[n]) n++;
+  return n>=5 || (n>=4 && n===a.length);
+}
+function _spnRechIndex(){
+  const out = [];
+  spnSpecialitesDisponibles(spnSexePatient()).forEach(sp => {
+    const DB = sp.db || {};
+    Object.entries(DB).forEach(([cat, C]) => Object.entries(C.motifs||{}).forEach(([titre, M]) => {
+      const base = {spec:sp.key, specLbl:sp.prefixe||sp.label, cat, catLbl:C.label, motif:titre};
+      // Champs par poids décroissant : nom de l'entrée, titre du motif, mots-clés du cours, signes / note, contexte
+      out.push(Object.assign({synd:'', champs:[[_spnRechMots(titre),3],[_spnRechMots((M.syn||[]).join(' ')),2],[_spnRechMots(M.note||''),1.5],[_spnRechMots(sp.label+' '+C.label),1]]}, base));
+      (M.syndromes||[]).forEach(S => out.push(Object.assign({synd:S.nom||'', signes:S.signes||'',
+        champs:[[_spnRechMots(S.nom),3],[_spnRechMots(titre),2.5],[_spnRechMots((M.syn||[]).join(' ')),2],[_spnRechMots(S.signes||''),1.5],[_spnRechMots(sp.label+' '+C.label),1]]}, base)));
+    }));
+  });
+  return out;
+}
+function spnChercher(texte){
+  const mots = _spnRechMots(texte); if(!mots.length) return [];
+  const exiges = mots.filter(w => !SPN_RECH_GENERIQUES.has(w)), bonus = mots.filter(w => SPN_RECH_GENERIQUES.has(w));
+  const req = exiges.length ? exiges : bonus;
+  const poids = (e, q) => { for(const [ws,p] of e.champs) if(ws.some(w=>_spnRechEgal(q,w))) return p; return 0; };
+  let res = [];
+  _spnRechIndex().forEach(e => {
+    let sc = 0, n = 0;
+    req.forEach(q => { const p = poids(e, q); if(p){ sc += p; n++; } });
+    if(!n) return;
+    if(exiges.length) bonus.forEach(q => { sc += poids(e, q)*0.3; });
+    if(n===req.length && req.every(q => e.champs[0][0].some(w=>_spnRechEgal(q,w)))) sc += 1; // l'entrée elle-même porte les mots cherchés
+    res.push(Object.assign({score:sc, trouves:n}, e));
+  });
+  // Tous les mots exigés si possible ; sinon les entrées qui en contiennent le plus (ex. « épaule gelée »)
+  const max = Math.max(0, ...res.map(r => r.trouves));
+  res = res.filter(r => r.trouves===max);
+  res.sort((a,b) => b.score-a.score || (a.synd?1:0)-(b.synd?1:0));
+  return res.slice(0, 15);
+}
+let _spnRechDernier = [];
+function spnRechercher(){
+  const inp = document.getElementById('spn-recherche'), box = document.getElementById('spn-recherche-res');
+  if(!inp || !box) return;
+  const q = inp.value.trim();
+  if(q.length < 3){ box.style.display='none'; box.innerHTML=''; _spnRechDernier=[]; return; }
+  _spnRechDernier = spnChercher(q);
+  box.style.display = '';
+  if(!_spnRechDernier.length){ box.innerHTML = '<div style="padding:8px 10px;font-size:12px;color:var(--slate);font-style:italic">Aucun résultat dans le référentiel pour « '+_rhEsc(q)+' ». Essayez un autre mot (localisation, symptôme, pathologie).</div>'; return; }
+  box.innerHTML = _spnRechDernier.map((r,i) => '<div class="spn-rech-item" onclick="spnRechOuvrir('+i+')" style="padding:7px 10px;border-bottom:1px solid var(--border);cursor:pointer;font-size:12px">'
+    + '<div><span style="font-size:10px;font-weight:700;color:#117A65;text-transform:uppercase">'+_rhEsc(r.specLbl)+'</span> <span style="color:var(--slate)">'+_rhEsc(r.catLbl)+' › </span><strong>'+_rhEsc(r.motif)+'</strong>'
+    + (r.synd ? ' › <strong style="color:#117A65">'+_rhEsc(r.synd)+'</strong>' : '')+'</div>'
+    + (r.signes ? '<div style="font-size:11px;color:var(--slate);margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+_rhEsc(r.signes)+'</div>' : '')
+    + '</div>').join('');
+}
+function spnRechOuvrir(i){
+  const r = _spnRechDernier[i]; if(!r) return;
+  spnOuvrir(r.spec, r.cat, r.motif, r.synd);
+  const box = document.getElementById('spn-recherche-res'); if(box) box.style.display='none';
+}
+// Ouvre un protocole du référentiel et, si un tableau est précisé, le met en évidence
+function spnOuvrir(spec, cat, motif, synd){
+  if(typeof setMotifMode==='function') setMotifMode('spn');
+  populateSpnSpecialties();
+  const s = document.getElementById('spn-spec'); s.value = spec; onSpnSpecChange();
+  const c = document.getElementById('gyno-cat'); c.value = cat; spnInitMotifs();
+  const m = document.getElementById('gyno-motif'); m.value = motif;
+  spnShowProtocole();
+  if(typeof rhRafraichir==='function') rhRafraichir();
+  const res = document.getElementById('gyno-result'); if(!res) return;
+  let cible = null;
+  if(synd){
+    const n = _spnRechNorm(synd);
+    cible = [...res.querySelectorAll('div')].filter(d => d.children.length && _spnRechNorm(d.firstElementChild.textContent).includes(n))
+      .sort((a,b) => a.textContent.length-b.textContent.length)[0] || null;
+    if(cible && cible.parentElement && cible.parentElement!==res && cible.textContent.length < 60) cible = cible.parentElement;
+  }
+  const el = cible || res;
+  if(cible){ cible.classList.add('spn-cible'); setTimeout(() => cible.classList.remove('spn-cible'), 4000); }
+  if(el.scrollIntoView){ el.scrollIntoView({behavior:'smooth', block:'start'});
+    setTimeout(() => { if(el.isConnected) el.scrollIntoView({block:'start'}); }, 400); } // la convergence se redessine au-dessus
+}
+
+// Chargement d'une séance, changement de patient, remise à zéro : les cases décochées ne sont pas des
+// points « à conserver » (voir _conserverCoches).
+['resetPoints','resetPrescription','loadSeance','loadSeanceNoCalc','clearForms','newPatient','newSeance','startTestPatient','exitTestMode','openPt'].forEach(n => {
+  const f = window[n]; if(typeof f!=='function') return;
+  window[n] = function(){
+    _ptsSansConserver++;
+    let r; try{ r = f.apply(this, arguments); } catch(e){ _ptsSansConserver--; throw e; }
+    if(r && typeof r.then==='function') return r.finally(() => { _ptsSansConserver--; });
+    _ptsSansConserver--; return r;
+  };
+});
 // ══════ BASE EBM — Evidence-Based Acupuncture ══════
 const EBM_DB = {
   'Cervicalgie / Torticolis': {
@@ -10485,6 +10738,9 @@ const EBM_DB = {
 function showEBM(){
   const sel=(document.getElementById('ebm-sel')||{}).value||'';
   const result=document.getElementById('ebm-result');
+  const ebmMemes = result && sel && result.dataset.origine==='EBM · '+sel ? [...result.querySelectorAll('.ebm-chk:checked')].map(cb=>cb.dataset.code) : null;
+  if(!ebmMemes) _conserverCoches('.ebm-chk', 'ebm-result');
+  if(result) delete result.dataset.origine;
   const niv=document.getElementById('ebm-niveau');
   if(!sel||!result){
     if(result) result.style.display='none';
@@ -10532,6 +10788,8 @@ function showEBM(){
   const note=document.getElementById('ebm-note');if(note)note.innerHTML='<strong>⚠️ Note clinique :</strong> '+db.note;
 
   result.style.display='';
+  result.dataset.origine='EBM · '+sel;
+  if(ebmMemes){ const vus=new Set(); result.querySelectorAll('.ebm-chk').forEach(cb=>{ if(ebmMemes.includes(cb.dataset.code)&&!vus.has(cb.dataset.code)){ cb.checked=true; vus.add(cb.dataset.code); onPtChk(cb); } }); }
   markDirty();
   // Mettre à jour auriculothérapie
   setTimeout(filterAuri, 80);
@@ -11207,14 +11465,14 @@ function onAuriChk(cb) {
     if (code) code.classList.add('ck');
     if (!row.querySelector('.pt-note')) {
       const inp = document.createElement('input');
-      inp.className = 'pt-note'; inp.placeholder = 'Technique…';
+      inp.className = 'pt-note'; inp.placeholder = 'Technique…'; inp.oninput = () => { syncRealises(); markDirty(); };
       row.querySelector('.auri-txt').appendChild(inp);
     }
   } else {
     if (code) code.classList.remove('ck');
     const n = row.querySelector('.pt-note'); if (n) n.remove();
   }
-  markDirty();
+  syncRealises(); markDirty();
 }
 
 function collectAuri() {
@@ -11944,7 +12202,7 @@ function _fillPeriopSelect(){
     sel.appendChild(g);
   });
 }
-document.addEventListener('DOMContentLoaded', ()=>{ try{ _fillPeriopSelect(); }catch(e){} });
+document.addEventListener('DOMContentLoaded', ()=>{ try{ _fillPeriopSelect(); urgRemplirRecettes(); }catch(e){} });
 
 // ── Fenêtre agrandie des schémas d'examen ──
 const SZ_SRC = {langue:['langue-schema','langue-sous'], pouls:['pouls-schema'], shumu:['shu-schema','mu-schema'], douleur:['douleur-schema']};
@@ -12642,7 +12900,7 @@ function _aiAnonymiser(txt){
 }
 function getApiKey(){return localStorage.getItem('mtc_api_key')||'';}
 function setApiKey(){const k=prompt('Clé API Anthropic (sk-ant-…):',getApiKey());if(k!==null){localStorage.setItem('mtc_api_key',k.trim());showToast('Clé enregistrée');}}
-function setAiSt(html){const el=document.getElementById('ai-st');if(el)el.innerHTML=html;}
+function setAiSt(html){const el=document.getElementById('ai-st');if(el)el.innerHTML=html;const bar=document.getElementById('mic-bar');if(bar)bar.classList.toggle('ai-actif',!!html);}
 function ldH(){return'<span class="ld"><span class="d"></span><span class="d"></span><span class="d"></span></span>';}
 function showToast(msg){const t=document.getElementById('toast');if(!t)return;t.textContent=msg;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),2800);}
 
@@ -13067,10 +13325,8 @@ function renderUrgencePeriop(key){
   el.style.display='';
   ['urg-acu-list','urg-auri-list'].forEach(id=>{ const x=document.getElementById(id); if(x&&x.parentElement&&!x.innerHTML.trim()) x.parentElement.style.display='none'; });
   const acu=_periopPts(I.acu, I.ea), auri=I.auriPts.filter(n=>_auriByName(n));
-  const C=_periopCcmq(), comp=[];
-  C.pres.forEach(c=>{ const x=PERIOP_CCMQ[c]; if(x) comp.push({c, ...x, statut:'présente'}); });
-  C.tend.forEach(c=>{ const x=PERIOP_CCMQ[c]; if(x && x.pts) comp.push({c, ...x, statut:'tendance'}); });
-  const ccmqPts=_periopPts(...comp.filter(x=>x.statut==='présente').map(x=>x.pts));
+  const K=urgConstitution();
+  const ccmqPts=_periopPts(...K.pres.map(c=>(PERIOP_CCMQ[c]||{}).pts||''));
   _periopLast={key, acu, auri, ccmq:ccmqPts, label:I.label};
   const fr=c=>MTCNorm.ptFR(c);
   const cell=(t,v)=>`<div style="flex:1 1 200px;background:#F8FAFC;border:1px solid var(--border);border-radius:6px;padding:6px 8px"><div style="font-size:10px;font-weight:700;color:#1A5276;text-transform:uppercase;letter-spacing:.3px;margin-bottom:3px">${t}</div><div style="font-size:12px">${v}</div></div>`;
@@ -13084,14 +13340,7 @@ function renderUrgencePeriop(key){
       ${cell('Acupuncture traditionnelle', I.acu)}${cell('Auriculothérapie', I.auri)}${cell('Électroacupuncture / TEAS', I.ea)}
     </div>
     ${(I.protocoles||[]).length?`<div style="font-size:11px;margin-bottom:6px">Protocoles détaillés : ${I.protocoles.map(k=>`<a href="#" onclick="document.getElementById('urg-proto').value='${k}';searchUrgence();return false" style="color:#6C3483;font-weight:700">${URGENCE_AURI_PROTOCOLES[k].label}</a>`).join(' · ')}</div>`:''}
-    <div style="font-size:11px;color:var(--slate)"><strong>Niveau de preuve :</strong> ${I.preuve} · <strong>Références du mémoire :</strong> ${I.refs}</div>
-    <div style="margin-top:8px;padding-top:6px;border-top:1px dashed var(--border);font-size:11px">
-      <strong style="color:#4A235A">Personnalisation selon la constitution (CCMQ, mémoire §7.5)</strong>
-      <span style="color:var(--slate);font-style:italic"> — hypothèse de travail non validée en péri-opératoire</span><br>
-      ${comp.length ? comp.map(x=>`<b>${x.c}</b> (${x.statut}) : ${x.pts||'aucun point complémentaire'} — <span style="color:var(--slate)">${x.ratio}</span>`).join('<br>')
-        + (ccmqPts.length?`<br><button class="btn" style="font-size:10px;padding:3px 9px;margin-top:4px" onclick="addPeriopPoints('ccmq',this)">➕ Compléments CCMQ (${ccmqPts.map(fr).join(', ')})</button>`:'')
-        : '<span style="color:var(--slate)">Pas de CCMQ calculé pour ce patient (onglet CCMQ) : protocole générique seul.</span>'}
-    </div>
+    <div style="font-size:11px;color:var(--slate)"><strong>Niveau de preuve :</strong> ${I.preuve} · <strong>Références :</strong> ${bibRefs(I.refs)}</div>
     <div style="font-size:10px;color:var(--slate);font-style:italic;margin-top:6px">Outil de travail du mémoire, non opposable ; adapter le choix des points à l'examen clinique du patient.</div>`;
 }
 function addPeriopPoints(type, btn){
@@ -13150,48 +13399,77 @@ function _doSearchUrgence(){
   const chirurgie=(document.getElementById('urg-chirurgie')||{}).value||'';
   const motifN=_normTxt(motif);
 
-  const acuMap=new Map(), auriMap=new Map();
-  const addAcu=(p,score,source)=>{
+  // Analyse croisée (13/10/2026) : chaque recherche renseignée (motif, chirurgie, indication péri-opératoire,
+  // constitution CCMQ) est un « groupe ». Les points sont classés d'abord par nombre de groupes qui les
+  // proposent, puis par poids : les points communs aux recherches associées passent en tête.
+  const acuMap=new Map(), auriMap=new Map(), groupes=[];
+  const addAcu=(p,score,source,groupe)=>{
     if(!p||!p.c) return;
-    if(!acuMap.has(p.c)) acuMap.set(p.c,{p,score:0,sources:[]});
-    const e=acuMap.get(p.c); e.score+=score; if(!e.sources.includes(source)) e.sources.push(source);
+    const k=MTCNorm.ptCode(p.c)||p.c;
+    if(!acuMap.has(k)) acuMap.set(k,{p,score:0,sources:[],groupes:new Set()});
+    const e=acuMap.get(k); e.score+=score; if(!e.sources.includes(source)) e.sources.push(source); e.groupes.add(groupe);
   };
-  const addAuri=(name,score,source)=>{
+  const addAuri=(name,score,source,groupe)=>{
     const p=_auriByName(name);
     if(!p) return;
-    if(!auriMap.has(name)) auriMap.set(name,{p,score:0,sources:[]});
-    const e=auriMap.get(name); e.score+=score; if(!e.sources.includes(source)) e.sources.push(source);
+    if(!auriMap.has(name)) auriMap.set(name,{p,score:0,sources:[],groupes:new Set()});
+    const e=auriMap.get(name); e.score+=score; if(!e.sources.includes(source)) e.sources.push(source); e.groupes.add(groupe);
   };
 
   const matchedRecipes=[];
   if(motifN){
     // Mots entiers + pluriels + négation (MTCNorm) : « gastro » ne matche plus « gastroscopie »,
     // « pas de nausées » ne déclenche plus la recette nausées ; exclusions propres à chaque recette
-    // (ex. « crampes menstruelles » ≠ crampe musculaire).
+    // (ex. « crampes menstruelles » ≠ crampe musculaire). Une recette choisie dans la liste est reconnue par son nom.
     const motifTok=MTCNorm.tokens(motif);
-    URGENCE_RECIPES.forEach(r=>{
-      const hit=r.keywords.some(kw=>MTCNorm.phraseIn(motifTok, kw))
+    urgToutesRecettes().forEach(r=>{
+      const hit=(r.keywords.some(kw=>MTCNorm.phraseIn(motifTok, kw)) || motifN.includes(_normTxt(r.nom)))
         && !(r.exclude||[]).some(kw=>MTCNorm.phraseIn(motifTok, kw));
       if(hit){
         matchedRecipes.push(r);
-        r.acu.forEach(p=>addAcu(p,3,r.nom));
-        r.auri.forEach(n=>addAuri(n,3,r.nom));
+        r.acu.forEach(p=>addAcu(p,3,r.nom,'motif'));
+        r.auri.forEach(n=>addAuri(n,3,r.nom,'motif'));
       }
     });
+    if(matchedRecipes.length) groupes.push({id:'motif', lbl:'Motif « '+motif.trim()+' »'});
   }
 
   let surgLabel='';
   if(chirurgie && URGENCE_PERIOP_SURGERY[chirurgie]){
     const surg=URGENCE_PERIOP_SURGERY[chirurgie];
     surgLabel=surg.label;
-    URGENCE_PERIOP_BASE.acu.forEach(p=>addAcu(p,5,'Péri-opératoire (base)'));
-    URGENCE_PERIOP_BASE.auri.forEach(n=>addAuri(n,5,'Péri-opératoire (base)'));
-    surg.acu.forEach(p=>addAcu(p,4,surg.label));
-    surg.auri.forEach(n=>addAuri(n,4,surg.label));
+    URGENCE_PERIOP_BASE.acu.forEach(p=>addAcu(p,5,'Péri-opératoire (base)','chirurgie'));
+    URGENCE_PERIOP_BASE.auri.forEach(n=>addAuri(n,5,'Péri-opératoire (base)','chirurgie'));
+    surg.acu.forEach(p=>addAcu(p,4,surg.label,'chirurgie'));
+    surg.auri.forEach(n=>addAuri(n,4,surg.label,'chirurgie'));
+    groupes.push({id:'chirurgie', lbl:surg.label});
   }
 
-  const acuList=Array.from(acuMap.values()).sort((a,b)=>b.score-a.score).slice(0,10);
-  const auriList=Array.from(auriMap.values()).sort((a,b)=>b.score-a.score).slice(0,5);
+  // Indication péri-opératoire : choisie dans la liste, ou reconnue dans le motif
+  let periopKey=(document.getElementById('urg-periop')||{}).value||'';
+  if(!periopKey && motifN){
+    const mt=MTCNorm.tokens(motif);
+    periopKey=(PERIOP_INDICATIONS.find(I=>I.keywords.some(kw=>MTCNorm.phraseIn(mt, kw)))||{}).id||'';
+  }
+  const I=PERIOP_INDICATIONS.find(x=>x.id===periopKey);
+  if(I){
+    _periopPts(I.acu, I.ea).forEach(c=>addAcu({c, n:nomPoint(c), a:I.label+' — '+I.phase+' (niveau de preuve : '+I.preuve+')'},5,I.label,'indication'));
+    I.auriPts.forEach(n=>addAuri(n,5,I.label,'indication'));
+    groupes.push({id:'indication', lbl:I.label});
+  }
+
+  // Constitution CCMQ : proposée dès qu'une recherche péri-opératoire est faite (mémoire §7.5)
+  const periop = !!(surgLabel || I);
+  const K = periop ? urgConstitution() : null;
+  if(K && K.pres.length){
+    let n=0;
+    K.pres.forEach(c=>{ const x=PERIOP_CCMQ[c]; if(x&&x.pts){ _periopPts(x.pts).forEach(code=>{ addAcu({c:code, n:nomPoint(code), a:'Constitution '+c+' — '+x.ratio},2,'Constitution '+c,'ccmq'); n++; }); } });
+    if(n) groupes.push({id:'ccmq', lbl:'Constitution ('+K.pres.join(', ')+')'});
+  }
+
+  const tri=(a,b)=>b.groupes.size-a.groupes.size || b.score-a.score;
+  const acuList=Array.from(acuMap.values()).sort(tri).slice(0,10);
+  const auriList=Array.from(auriMap.values()).sort(tri).slice(0,5);
 
   // Protocole auriculaire codifié : choisi dans la liste, ou reconnu dans le motif (« BFA », « PTH »…)
   let protoKey=(document.getElementById('urg-proto')||{}).value||'';
@@ -13201,17 +13479,227 @@ function _doSearchUrgence(){
   }
   _urgLastProto = protoKey ? URGENCE_AURI_PROTOCOLES[protoKey].points.map(n=>({p:_auriByName(n), sources:[URGENCE_AURI_PROTOCOLES[protoKey].label]})).filter(e=>e.p) : [];
 
-  // Indication péri-opératoire : choisie dans la liste, ou reconnue dans le motif
-  let periopKey=(document.getElementById('urg-periop')||{}).value||'';
-  if(!periopKey && motifN){
-    const mt=MTCNorm.tokens(motif);
-    periopKey=(PERIOP_INDICATIONS.find(I=>I.keywords.some(kw=>MTCNorm.phraseIn(mt, kw)))||{}).id||'';
-  }
-
-  _urgLastAcu=acuList; _urgLastAuri=auriList;
+  _urgLastAcu=acuList; _urgLastAuri=auriList; _urgGroupes=groupes;
   renderUrgenceResults(acuList, auriList, matchedRecipes, surgLabel);
   renderUrgenceProtocole(protoKey);
   renderUrgencePeriop(periopKey);
+  renderUrgenceCcmq(periop);
+  _renderUrgCroise(groupes);
+}
+let _urgGroupes=[];
+const URG_GROUPE_COUL = {motif:'#2D7A5E', chirurgie:'#B9770E', indication:'#1A5276', ccmq:'#4A235A'};
+function _renderUrgCroise(groupes){
+  const el=document.getElementById('urg-croise'); if(!el) return;
+  const t=document.getElementById('urg-acu-titre');
+  if(t) t.textContent = groupes.length>1 ? 'analyse croisée de '+groupes.length+' recherches' : groupes.length ? groupes[0].lbl : '';
+  if(groupes.length<2){ el.style.display='none'; el.innerHTML=''; return; }
+  const communs=_urgLastAcu.filter(e=>e.groupes.size>1).length;
+  el.style.display='';
+  el.innerHTML='<strong>Analyse croisée</strong> : '+groupes.map(g=>'<span style="color:'+URG_GROUPE_COUL[g.id]+';font-weight:700">'+_rhEsc(g.lbl)+'</span>').join(' <b>+</b> ')
+    +'<br><span style="color:var(--slate);font-size:11px">Les points proposés par plusieurs recherches sont classés en tête (★). '
+    +(communs ? communs+' point'+(communs>1?'s':'')+' commun'+(communs>1?'s':'')+'.' : 'Aucun point commun : les propositions sont complémentaires.')+'</span>';
+}
+
+// Nom chinois d'un point (premier libellé « c:'ST36', n:'Zusanli' » trouvé dans les bases de l'application)
+let _nomsPts=null;
+function nomPoint(code){
+  if(!_nomsPts){
+    _nomsPts={};
+    const txt=[...document.scripts].map(x=>x.textContent).join('\n');
+    const re=/c:\s*'([A-Z]{1,3}\d+|EX-[A-Z]+-?\d+)'\s*,\s*n:\s*'([^']+)'/g; let m;
+    while((m=re.exec(txt))){ const k=MTCNorm.ptCode(m[1]); if(k && !_nomsPts[k]) _nomsPts[k]=m[2]; }
+  }
+  return _nomsPts[MTCNorm.ptCode(code)]||'';
+}
+
+// ── Recettes : celles du Mode Urgence, les douleurs par localisation du référentiel rhumatologie, et les recettes personnelles ──
+function _urgRecettesRhumato(){
+  const M = typeof RHUMATO_DB!=='undefined' && RHUMATO_DB.bi && RHUMATO_DB.bi.motifs['Points locaux par localisation'];
+  if(!M) return [];
+  return M.syndromes.map((S,i)=>({ id:'rh-loc-'+i, nom:'Douleur — '+S.nom, groupe:'rhumato',
+    keywords: S.nom.split(/,| et |\//).map(x=>_normTxt(x).trim()).filter(x=>x.length>2).flatMap(x=>['douleur '+x, 'douleur du '+x, 'douleur de la '+x, 'douleur de l '+x, 'mal au '+x, 'mal a la '+x]),
+    acu: S.pp.map(r=>{ const x=_rhPt(r); return x.oms ? {c:x.oms, n:nomPoint(x.oms), a:'Point local — référentiel rhumatologie ('+S.nom+')'} : {c:r, n:r, a:'Point hors méridien — référentiel rhumatologie ('+S.nom+')'}; }),
+    auri:[] }));
+}
+const URG_PERSO_CLE='acu_recettes_perso';
+function urgRecettesPerso(){ try{ const v=JSON.parse(localStorage.getItem(URG_PERSO_CLE)||'[]'); return Array.isArray(v)?v:[]; }catch(e){ return []; } }
+function _urgEnregistrerPerso(L){ try{ localStorage.setItem(URG_PERSO_CLE, JSON.stringify(L)); return true; }catch(e){ showToast('Enregistrement impossible dans ce navigateur'); return false; } }
+function urgToutesRecettes(){
+  const perso=urgRecettesPerso().map(r=>({ id:r.id, nom:r.nom, groupe:'perso', keywords:(r.keywords||[]).map(_normTxt).filter(Boolean),
+    acu:(r.acu||[]).map(c=>({c, n:nomPoint(c), a:'Recette personnelle'+(r.note?' — '+r.note:'')})), auri:(r.auri||[]).filter(n=>_auriByName(n)) }));
+  return URGENCE_RECIPES.concat(_urgRecettesRhumato(), perso);
+}
+function urgRemplirRecettes(){
+  const sel=document.getElementById('urg-recette'); if(!sel) return;
+  const opt=(r)=>'<option value="'+_rhEsc(r.id)+'">'+_rhEsc(r.nom)+'</option>';
+  const T=urgToutesRecettes(), perso=T.filter(r=>r.groupe==='perso');
+  sel.innerHTML='<option value="">📋 Ou choisir dans la liste des recettes ('+T.length+')…</option>'
+    +'<optgroup label="Recettes symptomatiques ('+URGENCE_RECIPES.length+')">'+URGENCE_RECIPES.map(opt).join('')+'</optgroup>'
+    +'<optgroup label="Douleur selon la localisation (référentiel rhumatologie)">'+T.filter(r=>r.groupe==='rhumato').map(opt).join('')+'</optgroup>'
+    +'<optgroup label="Mes recettes ('+perso.length+')">'+perso.map(opt).join('')+'<option value="__nouvelle">➕ Créer une recette personnelle…</option>'+(perso.length?'<option value="__gerer">✏️ Modifier mes recettes…</option>':'')+'</optgroup>';
+}
+function urgChoisirRecette(){
+  const sel=document.getElementById('urg-recette'); if(!sel) return;
+  const v=sel.value; sel.value='';
+  if(v==='__nouvelle'){ urgEditerPerso(null); return; }
+  if(v==='__gerer'){ urgEditerPerso(''); return; }
+  const r=urgToutesRecettes().find(x=>x.id===v); if(!r) return;
+  const m=document.getElementById('urg-motif'); if(m){ m.value=r.nom; }
+  _doSearchUrgence();
+}
+// Formulaire « Mes recettes » : id null = nouvelle ; '' = liste ; sinon modifier cette recette
+function urgEditerPerso(id){
+  const box=document.getElementById('urg-perso'); if(!box) return;
+  const L=urgRecettesPerso();
+  box.style.display='';
+  if(id===''){
+    box.innerHTML='<div style="font-size:11px;font-weight:700;color:#7D3C98;text-transform:uppercase;margin-bottom:6px">Mes recettes</div>'
+      +(L.length ? L.map(r=>'<div style="display:flex;gap:8px;align-items:center;padding:4px 0;border-bottom:1px solid var(--border);font-size:12px"><strong style="flex:1">'+_rhEsc(r.nom)+'</strong><span style="color:var(--slate)">'+_rhEsc((r.acu||[]).map(c=>MTCNorm.ptFR(c)).join(', '))+'</span>'
+        +'<button class="btn" style="font-size:10px;padding:2px 8px" onclick="urgEditerPerso(\''+r.id+'\')">✏️ Modifier</button></div>').join('') : '<div style="font-size:12px;color:var(--slate)">Aucune recette personnelle.</div>')
+      +'<div style="margin-top:8px;display:flex;gap:6px"><button class="btn" style="font-size:11px" onclick="urgEditerPerso(null)">➕ Nouvelle recette</button><button class="btn" style="font-size:11px" onclick="document.getElementById(\'urg-perso\').style.display=\'none\'">Fermer</button></div>';
+    return;
+  }
+  const r=L.find(x=>x.id===id)||{id:'', nom:'', keywords:[], acu:[], auri:[], note:''};
+  const champ=(lbl,idc,val,ph)=>'<div class="f" style="flex:1;min-width:200px"><label>'+lbl+'</label><input id="'+idc+'" value="'+_rhEsc(val)+'" placeholder="'+_rhEsc(ph)+'"></div>';
+  box.innerHTML='<div style="font-size:11px;font-weight:700;color:#7D3C98;text-transform:uppercase;margin-bottom:6px">'+(r.id?'Modifier la recette':'Nouvelle recette personnelle')+'</div>'
+    +'<div style="display:flex;gap:8px;flex-wrap:wrap">'
+    +champ('Nom','urgp-nom',r.nom,'Ex : Douleur du talon')
+    +champ('Mots-clés du motif (séparés par des virgules)','urgp-mots',(r.keywords||[]).join(', '),'Ex : talon, talalgie, épine calcanéenne')
+    +champ('Points corporels','urgp-acu',(r.acu||[]).map(c=>MTCNorm.ptFR(c)).join(', '),'Ex : R3, V60, R6, Ashi')
+    +champ('Points auriculaires (noms du schéma)','urgp-auri',(r.auri||[]).join(', '),'Ex : Shen Men, Talon')
+    +champ('Note (technique, indication)','urgp-note',r.note||'','Facultatif')
+    +'</div><div id="urgp-msg" style="font-size:11px;margin-top:4px"></div>'
+    +'<div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap"><button class="btn bg" style="font-size:11px" onclick="urgSauverPerso(\''+(r.id||'')+'\')">💾 Enregistrer</button>'
+    +(r.id?'<button class="btn" style="font-size:11px;color:var(--vermil);border-color:var(--vermil)" onclick="urgSupprimerPerso(\''+r.id+'\')">Supprimer</button>':'')
+    +'<button class="btn" style="font-size:11px" onclick="document.getElementById(\'urg-perso\').style.display=\'none\'">Annuler</button></div>'
+    +'<div style="font-size:10px;color:var(--slate);margin-top:6px">Vos recettes sont gardées dans ce navigateur et incluses dans « Exporter JSON » (sauvegarde, transfert vers un autre poste).</div>';
+}
+function urgSauverPerso(id){
+  const g=x=>((document.getElementById(x)||{}).value||'').trim();
+  const msg=document.getElementById('urgp-msg');
+  const nom=g('urgp-nom'); if(!nom){ if(msg){ msg.style.color='var(--vermil)'; msg.textContent='Donnez un nom à la recette.'; } return; }
+  const acu=[], inconnus=[];
+  g('urgp-acu').split(/[,;]/).map(x=>x.trim()).filter(Boolean).forEach(x=>{ const c=MTCNorm.ptCode(x); if(/^([A-Z]{1,3}\d+|EX-[A-Z]+-?\d+)$/.test(c||'')) acu.push(c); else acu.push(x); });
+  const auri=g('urgp-auri').split(/[,;]/).map(x=>x.trim()).filter(Boolean);
+  auri.filter(n=>!_auriByName(n)).forEach(n=>inconnus.push(n));
+  if(inconnus.length){ if(msg){ msg.style.color='var(--vermil)'; msg.textContent='Points auriculaires inconnus du schéma : '+inconnus.join(', ')+' (écrire le nom comme dans la légende).'; } return; }
+  if(!acu.length && !auri.length){ if(msg){ msg.style.color='var(--vermil)'; msg.textContent='Indiquez au moins un point.'; } return; }
+  const L=urgRecettesPerso();
+  const r={ id:id||('perso-'+Date.now().toString(36)), nom, keywords:g('urgp-mots').split(',').map(x=>x.trim()).filter(Boolean).concat([nom]), acu, auri, note:g('urgp-note') };
+  r.keywords=[...new Set(r.keywords)];
+  const i=L.findIndex(x=>x.id===r.id); if(i>=0) L[i]=r; else L.push(r);
+  if(!_urgEnregistrerPerso(L)) return;
+  urgRemplirRecettes(); document.getElementById('urg-perso').style.display='none';
+  showToast('Recette enregistrée : '+nom);
+}
+function urgSupprimerPerso(id){
+  const L=urgRecettesPerso(), r=L.find(x=>x.id===id); if(!r) return;
+  if(!confirm('Supprimer la recette « '+r.nom+' » ?')) return;
+  if(_urgEnregistrerPerso(L.filter(x=>x.id!==id))){ urgRemplirRecettes(); urgEditerPerso(''); showToast('Recette supprimée'); }
+}
+
+// ── CCMQ-27 (version courte, Bai et al. 2023 ; mémoire §7.5) : numéros des items du CCMQ-60, réponses
+// enregistrées dans les mêmes champs que l'onglet CCMQ. Seuils du CCMQ-60 (CACM 2009) appliqués : à valider.
+const CCMQ27 = {
+  EQ:{items:[1,2,8], inv:[2,8]}, QI:{items:[3,4,2]}, YG:{items:[19,22,52]}, YN:{items:[16,44,46]}, GH:{items:[28,42,49]},
+  HC:{items:[41,56,59,60]}, SS:{items:[40,43,45]}, STQI:{items:[9,10,11]}, PT:{items:[30,31]}
+};
+const CCMQ27_Q = {
+  1:'Vous sentez-vous en bonne forme ?', 2:'Êtes-vous facilement fatigué(e) ?', 8:'Vous sentez-vous triste ou abattu(e) ?',
+  3:'Êtes-vous essoufflé(e) ?', 4:'Avez-vous des palpitations ?',
+  19:'Êtes-vous sensible au froid et plus couvert(e) que les autres ?', 22:'Avez-vous plus tendance aux rhumes que les autres ?',
+  52:'Ressentez-vous un inconfort quand vous mangez ou buvez froid, ou évitez-vous les boissons et aliments froids ?',
+  16:'Ressentez-vous une chaleur au niveau des paumes des mains ou des plantes des pieds ?', 44:'Avez-vous les yeux secs ou irrités ?',
+  46:'Avez-vous la bouche ou la gorge sèche, avec envie de boire ?',
+  28:'Avez-vous la peau grasse au niveau du front ?', 42:'Par rapport aux autres, vos paupières supérieures sont-elles gonflées ?', 49:'Avez-vous une sensation de bouche pâteuse ?',
+  41:'Avez-vous de l\'acné ou des boutons similaires ?', 56:'Vos selles sont-elles collantes ou avez-vous une sensation d\'évacuation incomplète ?',
+  59:'Avez-vous une sensation de brûlure en urinant ou des urines foncées ?', 60:'Transpirez-vous au niveau des parties génitales ? (hommes) / Avez-vous des pertes jaunâtres ? (femmes)',
+  40:'Votre visage est-il d\'un teint terne ou présente-t-il des taches brunes ?', 43:'Avez-vous des cernes ?', 45:'Vos lèvres peuvent-elles apparaître ternes et sans éclat ?',
+  9:'Êtes-vous tendu(e), anxieux(se) ou inquiet(ète) ?', 10:'Êtes-vous émotionnellement fragile ?', 11:'Vous arrive-t-il d\'avoir des frayeurs ou de sursauter ?',
+  30:'Êtes-vous sujet(te) aux allergies (médicaments, aliments, odeurs, pollen ou changements de saison / climat) ?', 31:'Avez-vous tendance à avoir des réactions de type urticaire sur la peau ?'
+};
+const CCMQ27_ECHELLE = ['Jamais','Rarement','Parfois','Souvent','Toujours'];
+function _ccmq27Items(){ const v=[]; Object.values(CCMQ27).forEach(c=>c.items.forEach(n=>{ if(!v.includes(n)) v.push(n); })); return v; }
+function ccmq27Resultat(getVal){
+  getVal = getVal || (n=>(document.getElementById('c-'+n)||{}).value);
+  const scores={};
+  Object.entries(CCMQ27).forEach(([k,v])=>{
+    let raw=0,cnt=0; v.items.forEach(n=>{ const x=parseInt(getVal(n)); if(!(x>=1&&x<=5)) return; raw+=(v.inv||[]).includes(n)?6-x:x; cnt++; });
+    const n=v.items.length; scores[k]={norm:cnt===n?Math.round((raw-n)/(n*4)*100):null};
+  });
+  const verdict={};
+  Object.keys(CCMQ27).forEach(k=>{ verdict[k]=ccmqVerdict(k, scores); });
+  const pres=[], tend=[];
+  Object.entries(verdict).forEach(([k,v])=>{ if(v==='oui'||v==='plutot') pres.push(CC[k].lbl); else if(v==='tendance') tend.push(CC[k].lbl); });
+  const items=_ccmq27Items(), rep=items.filter(n=>{ const x=parseInt(getVal(n)); return x>=1&&x<=5; }).length;
+  return {scores, verdict, pres, tend, nb:rep, total:items.length, complet:rep===items.length};
+}
+// Constitution retenue : CCMQ complet de l'onglet CCMQ s'il a été calculé, sinon CCMQ-27
+function urgConstitution(){
+  const C60=_periopCcmq();
+  if(C60.pres.length || C60.tend.length) return {source:'CCMQ complet (onglet CCMQ)', pres:C60.pres, tend:C60.tend, complet:true, c60:true};
+  const r=ccmq27Resultat();
+  return {source:'CCMQ-27', pres:r.pres, tend:r.tend, complet:r.complet, nb:r.nb, total:r.total, r};
+}
+let _urgCcmqPts=[];
+function renderUrgenceCcmq(periop){
+  const el=document.getElementById('urg-ccmq'); if(!el) return;
+  if(!periop){ el.style.display='none'; el.innerHTML=''; _urgCcmqPts=[]; return; }
+  el.style.display='';
+  const K=urgConstitution();
+  const comp=[]; K.pres.forEach(c=>{ const x=PERIOP_CCMQ[c]; if(x) comp.push({c, ...x, statut:'présente'}); });
+  K.tend.forEach(c=>{ const x=PERIOP_CCMQ[c]; if(x && x.pts) comp.push({c, ...x, statut:'tendance'}); });
+  _urgCcmqPts=_periopPts(...comp.filter(x=>x.statut==='présente').map(x=>x.pts));
+  const fr=c=>MTCNorm.ptFR(c);
+  const ouvert = !K.c60 && !K.complet;
+  let h='<div style="font-size:11px;font-weight:700;color:#4A235A;text-transform:uppercase;letter-spacing:.4px">🏮 Constitution du patient — CCMQ-27 <span style="font-weight:400;text-transform:none">(mémoire §7.5)</span></div>'
+    +'<div style="font-size:11px;color:var(--slate);font-style:italic;margin:2px 0 6px">Personnalisation des points selon la constitution : hypothèse de travail non validée en péri-opératoire ; seuils du CCMQ-60 appliqués à la version courte.</div>';
+  if(K.c60) h+='<div style="font-size:12px;margin-bottom:4px">D\'après le <strong>CCMQ complet</strong> (onglet CCMQ).</div>';
+  else {
+    h+='<details '+(ouvert?'open':'')+' style="margin-bottom:6px"><summary style="cursor:pointer;font-size:12px;font-weight:600">Questionnaire CCMQ-27 — '+K.nb+' / '+K.total+' réponses'+(K.complet?' ✓':'')+'</summary>'
+      +'<div style="font-size:10px;color:var(--slate);margin:4px 0">Au cours de l\'année écoulée. Réponses enregistrées avec la séance (mêmes questions que l\'onglet CCMQ).</div>'
+      +_ccmq27Items().map(n=>{ const v=parseInt((document.getElementById('c-'+n)||{}).value)||0;
+        return '<div class="c27-ligne"><div class="c27-q"><b>'+n+'.</b> '+CCMQ27_Q[n]+'</div><div class="c27-ech">'
+          +CCMQ27_ECHELLE.map((l,i)=>'<button type="button" class="c27-b'+(v===i+1?' on':'')+'" onclick="urgCcmqRepondre('+n+','+(i+1)+')" title="'+l+'">'+(i+1)+'<span>'+l+'</span></button>').join('')+'</div></div>'; }).join('')
+      +'</details>';
+  }
+  if(!K.c60 && !K.complet && !K.pres.length) h+='<div style="font-size:12px;color:var(--slate)">Répondez aux '+K.total+' questions (moins de 4 minutes) pour compléter la proposition de points selon la constitution.</div>';
+  else if(!comp.length) h+='<div style="font-size:12px">Aucune constitution déséquilibrée retenue'+(K.pres.includes('Équilibrée')?' (constitution équilibrée)':'')+' : protocole générique seul.</div>';
+  else {
+    h+='<table style="width:100%;border-collapse:collapse;font-size:12px;margin-top:4px"><tr style="text-align:left;color:var(--slate);font-size:10px;text-transform:uppercase"><th>Constitution</th><th>Points complémentaires</th><th>Rationnel</th></tr>'
+      +comp.map(x=>'<tr style="border-top:1px solid var(--border)"><td style="padding:3px 4px"><b>'+x.c+'</b> <span style="color:var(--slate)">('+x.statut+')</span></td><td style="padding:3px 4px">'+(x.pts||'—')+'</td><td style="padding:3px 4px;color:var(--slate)">'+x.ratio+'</td></tr>').join('')+'</table>'
+      +(_urgCcmqPts.length?'<button class="btn" style="font-size:10px;padding:3px 9px;margin-top:6px" onclick="urgAjouterCcmq(this)">➕ Compléments CCMQ ('+_urgCcmqPts.map(fr).join(', ')+')</button>':'')
+      +'<div style="font-size:10px;color:var(--slate);margin-top:4px">Seules les constitutions présentes alimentent la proposition croisée ; les tendances sont indiquées pour information.</div>';
+  }
+  h+='<div style="font-size:10px;color:var(--slate);margin-top:6px">Références : '+bibRefs('[165] [163] [164]')+'</div>';
+  el.innerHTML=h;
+}
+function urgCcmqRepondre(n, v){
+  const e=document.getElementById('c-'+n); if(!e) return;
+  e.value = String(e.value)===String(v) ? '' : v; // second clic = effacer la réponse
+  markDirty();
+  const d=document.querySelector('#urg-ccmq details'), ouvert=d?d.open:true, y=(document.getElementById('content')||{}).scrollTop;
+  _doSearchUrgence();
+  const d2=document.querySelector('#urg-ccmq details'); if(d2) d2.open=ouvert;
+  const c=document.getElementById('content'); if(c && y!=null) c.scrollTop=y;
+}
+function urgAjouterCcmq(btn){
+  const ctx=_urgGroupes.filter(g=>g.id==='chirurgie'||g.id==='indication').map(g=>g.lbl).join(' + ')||'péri-op.';
+  _urgCcmqPts.forEach(c=>addLibrePointDirect(MTCNorm.ptFR(c), MTCNorm.ptFR(c)+' — péri-op. ⚕ '+ctx+' (complément CCMQ)', null));
+  if(btn){ btn.disabled=true; btn.textContent='✓ Ajoutés'; }
+}
+
+// ── Références du mémoire (« Acupuncture et médecine périopératoire », 2026) : numéros → citations complètes ──
+const MEMOIRE_BIB = {"9": "Laffont JP, Broussard P. Césariennes sous acupuncture, à propos de 46 cas. Agressologie. 1984;25(10):1141-1143.", "82": "Wang SM, Peloquin C, Kain ZN. The use of auricular acupuncture to reduce preoperative anxiety. Anesth Analg. 2001;93(5):1178-1180.", "84": "Wiles MD, Mamdani J, Pullman M, Andrzejowski JC. A randomised controlled trial examining the effect of acupuncture at the EX-HN3 (Yintang) point on preoperative anxiety levels in neurosurgical patients. Anaesthesia. 2017;72(3):335-342.", "85": "Tong Q, Liu R, Zhang K, Gao Y, Cui G, Shen W. Can acupuncture therapy reduce preoperative anxiety? A systematic review and meta-analysis. J Integr Med. 2021;19(1):20-28.", "87": "Usichenko TI, Hua K, Cummings M, et al. Auricular stimulation for preoperative anxiety: a systematic review and meta-analysis of randomized controlled clinical trials. J Clin Anesth. 2022;76:110581.", "88": "Guezenec X. Le tabac, ou le Qi de la respiration, il faut choisir... [communication]. XIIe Journées de la FAFORMEC; 21-22 novembre 2008; Nîmes.", "90": "Wang JH, Wang M, Yang GL, Zhang Z, Wang LQ, Zhou YQ, et al. Acupuncture for smoking cessation: a systematic review and meta-analysis of 24 randomized controlled trials. Tob Induc Dis. 2019;17:48.", "91": "Zhang YY, Su YZ, Tian ZY, Liang SB, Liu YJ, Li YF, et al. Acupuncture and related acupoint therapies for smoking cessation: an umbrella review and updated meta-analysis. Tob Induc Dis. 2024;22.", "96": "Qiu M, Li C, Sun T, Ruan Q. Effect of perioperative acupuncture-assisted general anesthesia on the anesthetic dosage required in adult surgical patients: a network meta-analysis of randomized controlled trials. Front Med. 2023;10:1133585.", "97": "Wang H, Xie Y, Zhang Q, Xu N, Zhong H, Dong H, et al. Transcutaneous electric acupoint stimulation reduces intra-operative remifentanil consumption and alleviates postoperative side-effects in patients undergoing sinusotomy: a prospective placebo-controlled trial. Br J Anaesth. 2014;112(6):1075-1082.", "98": "Huang S, Peng W, Tian X, Liang H, Jia Z, Lo T, et al. Effects of transcutaneous electrical acupoint stimulation at different frequencies on perioperative anesthetic dosage, recovery, complications and prognosis in video-assisted thoracic surgical lobectomy: a randomized, double-blind, placebo-controlled trial. J Anesth. 2017;31(1):58-65.", "100": "Sun Y, Gan TJ, Dubose JW, Habib AS. Acupuncture and related techniques for postoperative pain: a systematic review of randomized controlled trials. Br J Anaesth. 2008;101(2):151-160.", "101": "Lin JG, Lo MW, Wen YR, Hsieh CL, Tsai SK, Sun WZ. The effect of high and low frequency electroacupuncture in pain after lower abdominal surgery. Pain. 2002;99(3):509-514.", "102": "Maimer A, Remppis A, Sack FU, et al. Objectifying acupuncture effects by lung function and numeric rating scale in patients undergoing heart surgery. Evid Based Complement Alternat Med. 2013;2013:219817.", "103": "Kho HG, Eijk RJ, Kapteijns WM, van Egmond J. Acupuncture and transcutaneous stimulation analgesia in comparison with moderate dose fentanyl anaesthesia in major abdominal surgery: clinical efficacy and influence on recovery and morbidity. Anaesthesia. 1991;46(2):129-135.", "104": "Gheorghita E, Litarczek G, Trifu M, Rata O, Ciurea J, Gorgan RM. Anesthésie par électro-acupuncture en neurochirurgie [communication], cité dans : L'acupuncture dans la pratique de l'anesthésie. DIU Acupuncture Scientifique Paris XI; 2024.", "105": "Zhou Y, Bao Q, Yang C, Li S, Yin Z, Xiong J, et al. Auricular acupuncture for perioperative pain management: a systematic review and meta-analysis of randomized controlled trials. J Pain Res. 2025;18:441-454.", "107": "Usichenko TI, Kuchling S, Witstruck T, Pavlovic D, Zach M, Hofer A, et al. Auricular acupuncture for pain relief after ambulatory knee surgery: a randomized trial. CMAJ. 2007;176(2):179-183.", "108": "Baldawi M, McKelvey G, Patel VR, Krish B, Kumar AJ, Patel P. Battlefield acupuncture use for perioperative anesthesia in Veterans Affairs surgical patients: a single-center randomized controlled trial. J Integr Complement Med. 2022;28(8):683-688.", "109": "Cheng SI, Swamidoss CP, Soffin EM. Perioperative acupuncture: a novel and necessary addition to ERAS pathways for total joint arthroplasty. HSS J. 2024;20(1):122-125.", "110": "Elkiss M. Auricular trauma protocol for trauma spectrum disorders: development, rationale, and clinical applications. Med Acupunct. 2026;38(1):30-37.", "111": "Cheng SI, Kelleher DC, DeMeo D, Zhong H, Birch G, Ast MP. Intraoperative acupuncture as part of a multimodal analgesic regimen to reduce opioid usage after total knee arthroplasty: a prospective cohort trial. Med Acupunct. 2022;34(1):49-57.", "112": "Cheng SI, et al. The effect of intraoperative acupuncture within an enhanced recovery pathway for total hip arthroplasty: a randomized controlled trial [communication]. American Academy of Medical Acupuncture Annual Meeting; 23-26 avril 2026; Denver.", "113": "Sator-Katzenschlager SM, Wölfler MM, Kozek-Langenecker SA, Sator K, Sator PG, Li B, et al. Auricular electro-acupuncture as an additional perioperative analgesic method during oocyte aspiration in IVF treatment. Hum Reprod. 2006;21(8):2114-2120.", "115": "Stener-Victorin E, Waldenström U, Nilsson L, Wikland M, Janson PO. A prospective randomized study of electro-acupuncture versus alfentanil as anaesthesia during oocyte aspiration in in-vitro fertilization. Hum Reprod. 1999;14(10):2480-2484.", "116": "Usichenko TI, et al. Effectiveness of acupuncture for pain control after cesarean delivery: a randomized clinical trial. JAMA Netw Open. 2022.", "117": "Groupe d'études et de recherches en acupuncture (GERA). L'acupuncture discipline médicale, l'obstétrique champ d'application privilégié [document de synthèse]. Octobre 2025.", "119": "Dundee JW, Chestnutt WN, Ghaly RG, Lynas AGA. Traditional Chinese acupuncture: a potentially useful antiemetic? BMJ. 1986;293(6547):583-584.", "120": "Lee A, Done ML. The use of nonpharmacologic techniques to prevent postoperative nausea and vomiting: a meta-analysis. Anesth Analg. 1999;88(6):1362-1369.", "121": "Lee A, Zhang JZ, Xie J, Cheng V, Wong MKH, Yau DKW. Stimulation of the wrist acupuncture point PC6 for preventing postoperative nausea and vomiting: a network meta-analysis. Cochrane Database Syst Rev. 2025;9(9):CD003281.", "122": "Liu G, Wu W, Sang G, Li J, Liu C, She Y, et al. Common auricular acupoint patterns for postoperative recovery across laparoscopic surgeries: a data mining-based systematic analysis. Front Med (Lausanne). 2026;13:1708106.", "123": "Zheng DY, Ding P, Gong M, Zhu HW, Shi HJ, Ren GL, et al. Transcutaneous electrical acupoint stimulation vs metoclopramide for moderate to severe postoperative nausea and vomiting: a randomized clinical trial. JAMA Surg. 2026;161(3):268-273.", "124": "Zhou T, Hou H, Cairen Z, et al. Comparative effectiveness of acupoint stimulation for preventing postoperative nausea and vomiting after general anesthesia: a network meta-analysis of randomized trials. Int J Surg. 2025;111(1):1330-1347.", "126": "Wu MS, Chen KH, Chen IF, Huang SK, Tzeng PC, Yeh ML, et al. The efficacy of acupuncture in post-operative pain management: a systematic review and meta-analysis. PLoS One. 2016;11(3):e0150367.", "127": "Wang D, Shi H, Yang Z, Liu W, Qi L, Dong C, Si G, Gao Q. Efficacy and safety of transcutaneous electrical acupoint stimulation for postoperative pain: a meta-analysis of randomized controlled trials. Pain Res Manag. 2022;2022:7570533.", "128": "Huang H, Tang K, Song X, Zhao L, Liang Y, Xu H, et al. Effects of contralateral versus ipsilateral electroacupuncture for analgesia and rehabilitation after unilateral total knee arthroplasty: a randomized controlled trial. Acupunct Med. 2023 Nov:9645284231211601.", "131": "Chernyak GV, Sessler DI. Perioperative acupuncture and related techniques. Anesthesiology. 2005;102(5):1031-1049.", "132": "Ng SSM, Leung WW, Mak TWC, Hon SSF, Li JCM, Wong CYN, et al. Electroacupuncture reduces duration of postoperative ileus after laparoscopic surgery for colorectal cancer. Gastroenterology. 2013;144(2):307-313.", "133": "Wang Y, Yang JW, Yan SY, Lu Y, Han JG, Pei W, et al. Electroacupuncture vs sham electroacupuncture in the treatment of postoperative ileus after laparoscopic surgery for colorectal cancer: a multicenter, randomized clinical trial. JAMA Surg. 2023;158(1):20-27.", "134": "Pei L, Wang G, Yang S, Zhou S, Xu T, Zhou J, et al. Electroacupuncture reduces duration of postoperative ileus after laparoscopic gastrectomy for gastric cancer: a multicenter randomized trial. Gastroenterology. 2025;169(1):73-84.", "135": "Xu G, Huang X, Ren L, Meng F, Sun Y, Liu Z. Acupuncture treatment for post-operative pain management in patients undergoing abdominal or laparoscopic surgery: a systematic review and meta-analysis. BMJ Open. 2017;7(12):e016580.", "136": "Esmaeili S, Aghsaeifard Z, Alizadeh R. Randomized clinical trial for the treatment of post-dural puncture headache with acupuncture. Rev Int Acupunt. 2021;15(1):1-7.", "137": "Michel-Cherqui M, Szekely B, Lemoyne F, Feliot E, Fischler M. Intérêt de l'auriculothérapie dans la prévention de la rétention d'urine post-opératoire chez les hommes bénéficiant d'une analgésie péridurale en chirurgie thoracique : étude contrôlée, randomisée en double aveugle [communication]. Congrès SFAR; 2019.", "138": "Guo Y, Pan H, Chen S, Tian M, Huang Y, Zhou Y. Effectiveness of acupuncture on urinary retention after radical hysterectomy for cervical cancer in China: a systematic review and meta-analysis. Front Med (Lausanne). 2024;11:1375963.", "139": "Zheng C, Li Z, Lu H, Zhou Y. Effectiveness of acupuncture on urinary retention: a meta-analysis. Evid Based Complement Alternat Med. 2021;2021:2500282.", "140": "Zhang Q, Li YN, Guo YY, Yin CP, Gao F, Xin X, et al. Effects of preconditioning of electro-acupuncture on postoperative cognitive dysfunction in elderly: a prospective, randomized, controlled trial. Medicine (Baltimore). 2017;96(26):e7375.", "142": "Xiong Q, Min S, Wei K, Yang Y, Ma J, Liu D, et al. Transcutaneous electrical acupoint stimulation combined with dexamethasone and tropisetron prevents postoperative nausea and vomiting in female patients undergoing laparoscopic sleeve gastrectomy: a prospective, randomized controlled trial. Obes Surg. 2021;31(5):1912-1920.", "143": "Honca M, Honca T, Babayigit M, Bulus H. The impact of acupuncture on postoperative nausea and vomiting in obese adult patients undergoing laparoscopic sleeve gastrectomy: a randomized controlled trial. J Laparoendosc Adv Surg Tech A. 2022;32(7):775-780.", "144": "Balaban D, Yayla A. The effects of acupressure applied after bariatric surgery on gastrointestinal functions, pain, and anxiety. Obes Surg. 2025;35(7):2518-2527.", "145": "Gürsözlü Ö, Koşar B, Babayiğit MA, Buluş H, Dereli N, Sazak H, et al. The effects of acupuncture application on preoperative anxiety and perioperative hemodynamics in patients undergoing bariatric surgery. Bariatr Surg Pract Patient Care. 2026;21:14-20.", "162": "Wang Q. Classification and diagnosis basis of nine basic constitutions in Chinese medicine. J Beijing Univ Tradit Chin Med. 2005;28(4):1-8.", "163": "Nguyen J. Le CCMQ : auto-questionnaire de diagnostic en médecine chinoise [Internet]. GERA (Groupe d'études et de recherches en acupuncture); 18 mai 2026 [cité le 12 août 2026]. Disponible sur : https://gera.fr/auto-questionnaire-diagnostic-en-medecine-chinoise/", "164": "Yu W, Ni S, Li Q, et al. Characteristics of 240 randomized controlled trials for adjusting constitution in preventive treatment of disease: a bibliometric analysis. J Tradit Chin Med Sci. 2019;6(3):226-233.", "165": "Bai MH, Li ZQ, Wang HY, Ma XL, Wang ZL, Li SJ, et al. Development and evaluation of short-form version of the Constitution in Chinese Medicine Questionnaire: study a new and best brief instrument of Chinese medicine for health management. Chin Med. 2023;18(1):140."};
+function bibRefs(txt){
+  const nums=(String(txt||'').match(/\[(\d+)\]/g)||[]).map(x=>+x.replace(/\D/g,''));
+  const autres=String(txt||'').replace(/\[\d+\]/g,'').trim();
+  if(!nums.length) return _rhEsc(autres);
+  const court=n=>{ const r=MEMOIRE_BIB[n]||''; const a=(r.split(/[,.]/)[0]||'').trim(); const y=(r.match(/(19|20)\d{2}/)||[''])[0]; return a ? a+(/ et al| [A-Z]{1,3}, /.test(r)?' et al.':'')+(y?' '+y:'') : '['+n+']'; };
+  return '<details class="bib" style="display:inline"><summary style="cursor:pointer;display:inline;color:#1A5276">'+nums.map(court).join(' ; ')+' 📚</summary>'
+    +'<ol style="margin:4px 0 0;padding-left:18px">'+nums.map(n=>'<li value="'+n+'" style="margin:2px 0">'+_rhEsc(MEMOIRE_BIB[n]||'Référence '+n+' du mémoire')+'</li>').join('')+'</ol>'
+    +'<div style="font-size:10px;color:var(--slate)">Numéros de la bibliographie du mémoire de Capacité (2026). Littérature arrêtée à la rédaction du mémoire.</div></details>'
+    +(autres?' '+_rhEsc(autres):'');
 }
 
 let _urgLastProto=[];
@@ -13279,9 +13767,9 @@ function _urgRow(entry, idx, type){
     ${x ? propChk(x.code, x.label) : ''}
     <div class="pt-code" style="min-width:${type==='acu'?'44px':'56px'}">${code}</div>
     <div class="pt-txt">
-      <div class="pt-nom">${nom}</div>
+      <div class="pt-nom">${nom}${entry.groupes && entry.groupes.size>1 ? ' <span title="Proposé par plusieurs recherches" style="font-size:10px;font-weight:700;color:#B9770E">★ commun à '+entry.groupes.size+' recherches</span>' : ''}</div>
       <div class="pt-act">${ind}</div>
-      <div style="font-size:10px;color:var(--slate);font-style:italic;margin-top:2px">Recette(s) : ${entry.sources.join(' · ')}</div>
+      <div style="font-size:10px;color:var(--slate);font-style:italic;margin-top:2px">Proposé par : ${entry.sources.join(' · ')}</div>
     </div>
   </div>`;
 }
@@ -13290,7 +13778,7 @@ function _urgPointLibre(type, idx){
   const entry = type==='acu' ? _urgLastAcu[idx] : type==='proto' ? _urgLastProto[idx] : _urgLastAuri[idx];
   if(!entry) return null;
   const p=entry.p;
-  return { code: type==='acu' ? p.c : 'Oreille', label: (type==='acu' ? p.n : earLbl(p.c,false))+' — recette ⚡ '+entry.sources[0] };
+  return { code: type==='acu' ? p.c : 'Oreille', label: (type==='acu' ? (p.n||p.c) : earLbl(p.c,false))+' — recette ⚡ '+entry.sources.join(' + ') };
 }
 function addUrgencePointByIndex(type, idx, btn){
   const x=_urgPointLibre(type, idx); if(!x) return;
@@ -13311,6 +13799,8 @@ function resetUrgence(){
   const pr=document.getElementById('urg-proto'); if(pr) pr.value='';
   const po=document.getElementById('urg-periop'); if(po) po.value='';
   renderUrgencePeriop('');
+  renderUrgenceCcmq(false); _renderUrgCroise([]);
+  const pe=document.getElementById('urg-perso'); if(pe) pe.style.display='none';
   _urgLastAcu=[]; _urgLastAuri=[]; _urgLastProto=[];
   renderUrgenceProtocole('');
   const empty=document.getElementById('urg-empty'); if(empty) empty.style.display='';
