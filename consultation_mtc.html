@@ -606,6 +606,15 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
         <div style="font-size:11px;color:var(--slate);font-style:italic;margin-bottom:8px">Cette liste s'enrichit à chaque amélioration de l'application — vous pouvez vérifier ici ce qui a changé depuis votre dernière utilisation. Remise à zéro le 1er octobre 2026, au lancement de la bêta.</div>
         <div id="guide-changelog" style="font-size:12px;color:var(--ink);line-height:1.8">
           <div style="font-size:12px;line-height:1.65;margin-bottom:10px">
+            <div style="font-weight:700;color:var(--jade);margin-bottom:4px">15 octobre 2026</div>
+            <div>• <strong>Orientation psychiatrique à l'examen</strong> : nouvelle carte « Signes psychiques et comportement » ; avec la question 10, le sommeil, la digestion, la langue et le pouls, l'application propose un tableau (Dian, Kuang, angoisse Yang ou Yin, trac, spasmophilie, tics), mis en évidence dans le protocole. Alerte en cas d'idées noires ou suicidaires.</div>
+            <div>• <strong>Protocole psychiatrie enrichi</strong> d'après les supports de cours : 8 tableaux d'angoisse Yin avec leurs points, 5 tableaux Dian et 5 tableaux Kuang, points qui ouvrent les orifices de l'Esprit, noms variants des points Gui.</div>
+          </div>
+          <div style="font-size:12px;line-height:1.65;margin-bottom:10px">
+            <div style="font-weight:700;color:var(--jade);margin-bottom:4px">14 octobre 2026</div>
+            <div>• <strong>Psychiatrie</strong> dans le Référentiel Sorbonne : Dian Kuang (dont les 13 points Gui), angoisse, spasmophilie, trac, céphalées et colopathie de stress, tics ; chapitre « Psyché » dans le Référentiel MTC (entités psychiques, émotions, consultation, langue, points de la littérature).</div>
+          </div>
+          <div style="font-size:12px;line-height:1.65;margin-bottom:10px">
             <div style="font-weight:700;color:var(--jade);margin-bottom:4px">13 octobre 2026 — d'après vos retours</div>
             <div>• <strong>Points → Synthèse</strong> : les points d'auriculothérapie cochés, les notes de technique et les points décochés sont maintenant repris aussitôt. Changer de motif dans le Référentiel Sorbonne ou l'EBM ne fait plus disparaître les points déjà cochés : ils passent dans les points libres. Si vous avez retouché le champ « Points réalisés » à la main, il n'est plus écrasé ; un bouton propose de reprendre les points cochés.</div>
             <div>• <strong>Motif de la séance en haut de page</strong>, modifiable depuis chaque onglet de la consultation. La zone de texte libre (transcription pour l'IA) n'apparaît plus que sur demande (bouton « 🎙️ Transcription IA » dans Identité et 10+1 Questions).</div>
@@ -647,6 +656,7 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
             <option value="7">7. Localisation de la douleur</option>
             <option value="8">8. Indications empiriques</option>
             <option value="R">Rhumatologie</option>
+            <option value="P">Psyché</option>
             <option value="A">Associations de points</option>
             <option value="S">Synonymes (analyse croisée)</option>
           </select>
@@ -716,6 +726,12 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
         <div class="ct">Rhumatologie en MTC — tableaux de référence</div>
         <div class="ref-doc" style="font-size:11px;color:var(--slate);margin-bottom:6px">Cours de rhumatologie du DU d'acupuncture et de la Capacité. Les protocoles par motif sont dans Points › Motif clinique › Référentiel Sorbonne › Rhumatologie.</div>
         <div class="ref-tables" data-sec="R"></div>
+      </div>
+
+      <div class="card ref-sec" data-sec="P" id="ref-psy">
+        <div class="ct">La psyché en MTC — tableaux de référence</div>
+        <div class="ref-doc" style="font-size:11px;color:var(--slate);margin-bottom:6px">Cours « La psyché en médecine traditionnelle chinoise » (octobre 2026). Les protocoles par motif sont dans Points › Motif clinique › Référentiel Sorbonne › Psychiatrie.</div>
+        <div class="ref-tables" data-sec="P"></div>
       </div>
 
       <div class="card ref-sec" data-sec="S" id="ref-syn">
@@ -1539,6 +1555,36 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
         </div>
       </div>
 
+      <!-- SIGNES PSYCHIQUES (15/10/2026) : orientation psychiatrique, avec la question 10, la langue et le pouls -->
+      <div class="card" style="margin-top:12px" id="card-psy">
+        <div class="ct">Signes psychiques et comportement 神志</div>
+        <div style="font-size:11px;color:var(--slate);margin-bottom:6px">À compléter par la question 10 (Émotions &amp; Mental). L'orientation lit aussi le sommeil, la digestion, la langue et le pouls.</div>
+        <div class="tr">
+              <span class="tg" onclick="togEx(this,'d-psy')">Agitation / logorrhée</span>
+              <span class="tg" onclick="togEx(this,'d-psy')">Euphorie / expansivité</span>
+              <span class="tg" onclick="togEx(this,'d-psy')">Idées de grandeur</span>
+              <span class="tg" onclick="togEx(this,'d-psy')">Violence / injures</span>
+              <span class="tg" onclick="togEx(this,'d-psy')">Rires immotivés</span>
+              <span class="tg" onclick="togEx(this,'d-psy')">Repli / mutisme</span>
+              <span class="tg" onclick="togEx(this,'d-psy')">Discours incohérent / soliloque</span>
+              <span class="tg" onclick="togEx(this,'d-psy')">Hallucinations</span>
+              <span class="tg" onclick="togEx(this,'d-psy')">Idées noires</span>
+              <span class="tg" onclick="togEx(this,'d-psy')">Idées suicidaires</span>
+              <span class="tg" onclick="togEx(this,'d-psy')">Angoisse haute (gorge / thorax)</span>
+              <span class="tg" onclick="togEx(this,'d-psy')">Angoisse basse (abdominale)</span>
+              <span class="tg" onclick="togEx(this,'d-psy')">Crises de panique</span>
+              <span class="tg" onclick="togEx(this,'d-psy')">Hésitation / indécision</span>
+              <span class="tg" onclick="togEx(this,'d-psy')">Spasmes / tétanie</span>
+              <span class="tg" onclick="togEx(this,'d-psy')">Tics</span>
+              <span class="tg" onclick="togEx(this,'d-psy')">Trac / angoisse de performance</span>
+              <span class="tg" onclick="togEx(this,'d-psy')">Début brutal</span>
+              <span class="tg" onclick="togEx(this,'d-psy')">Évolution progressive</span>
+              <span class="tg" onclick="togEx(this,'d-psy')">Épuisement / surmenage</span>
+        </div>
+        <input id="d-psy" style="display:none" oninput="markDirty();psyRafraichir()">
+        <div id="psy-analyse-examen" style="margin-top:6px"></div>
+      </div>
+
       <!-- AURICULOTHÉRAPIE (placée en dernier, 3 oct. 2026) -->
       <div class="card" style="margin-top:12px">
         <!-- Palpation auriculaire -->
@@ -1933,7 +1979,8 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
             </div>
           </div>
           <div id="rh-analyse-points" style="display:none;background:#F0F9F6;border-radius:6px;padding:6px 10px;margin-bottom:8px"></div>
-          <p id="spn-empty-msg" style="font-size:11px;color:var(--slate);font-style:italic">Sélectionnez une spécialité pour afficher ses domaines et motifs cliniques. D'autres spécialités du référentiel (psychiatrie, ORL…) seront ajoutées progressivement.</p>
+          <div id="psy-analyse-points" style="display:none;background:#F5EEF8;border-radius:6px;padding:6px 10px;margin-bottom:8px"></div>
+          <p id="spn-empty-msg" style="font-size:11px;color:var(--slate);font-style:italic">Sélectionnez une spécialité pour afficher ses domaines et motifs cliniques. D'autres spécialités du référentiel (ORL, pédiatrie…) seront ajoutées progressivement.</p>
           <div id="gyno-result-wrapper" style="display:none">
             <div id="gyno-result" style="font-size:12px"></div>
           </div>
@@ -3522,6 +3569,7 @@ function navTo(pg){
   if(pg==='realises') setTimeout(syncRealises, 50);
   if(pg==='points') setTimeout(renderConvergence, 60);
   if((pg==='points' || pg==='examen') && typeof rhRafraichir==='function') setTimeout(rhRafraichir, 40);
+  if((pg==='points' || pg==='examen') && typeof psyRafraichir==='function') setTimeout(psyRafraichir, 45);
   if(pg==='fiche') setTimeout(toggleSAfield, 30);
   if(pg==='synthese') setTimeout(autoFillSynthese, 50);
   if(pg==='points'){
@@ -3809,7 +3857,7 @@ function loadSeance(sc){
     'palp-oreille':ex.palpOreille, 'palp-oreille-notes':ex.palpOreilleNotes,
     // Douleur
     'd-localisation':ex.dLocalisation, 'd-type':ex.dType, 'd-rythme':ex.dRythme,
-    'd-aggrave':ex.dAggrave, 'd-ameliore':ex.dAmeliore, 'd-rhumato':ex.dRhumato, 'd-libre':ex.dLibre,
+    'd-aggrave':ex.dAggrave, 'd-ameliore':ex.dAmeliore, 'd-rhumato':ex.dRhumato, 'd-psy':ex.dPsy, 'd-libre':ex.dLibre,
     // Langue
     'l-forme':ex.lForme, 'l-epaisseur':ex.lEpaisseur, 'l-couleur':ex.lCouleur, 'l-couleur-loc':ex.lCouleurLoc,
     'l-enduit-couleur':ex.lEnduitCouleur, 'l-enduit-dist':ex.lEnduitDist,
@@ -3947,7 +3995,7 @@ function collectSc(){
     palpAhshiT:gT('palp-ahshi-t'),palpAhshi:g('palp-ahshi'),palpNotes:g('palp-notes'),
     palpOreille:gT('palp-oreille'),palpOreilleNotes:g('palp-oreille-notes'),
     dLocalisation:gT('d-localisation'),dType:gT('d-type'),dRythme:gT('d-rythme'),
-    dAggrave:gT('d-aggrave'),dAmeliore:gT('d-ameliore'),dRhumato:gT('d-rhumato'),dLibre:g('d-libre'),dZones:g('d-zones')};
+    dAggrave:gT('d-aggrave'),dAmeliore:gT('d-ameliore'),dRhumato:gT('d-rhumato'),dPsy:gT('d-psy'),dLibre:g('d-libre'),dZones:g('d-zones')};
   sc.ccmq={};CQ.forEach(i=>{const v=g('c-'+i.n);if(v)sc.ccmq[i.n]=v;});
   const syndChk2=document.querySelectorAll('.pt-chk:checked:not(.ebm-chk):not(.auri-chk):not(.gyno-chk):not(.libre-chk)');
   const ebmChk2=document.querySelectorAll('.ebm-chk:checked');
@@ -7334,6 +7382,114 @@ function buildShuAntiqueDiagram(nom){
 // Notation d'origine du cours conservée (P, GI, E, Rt/RP, C, IG, V, R/Rn, MC/EC, TR/TF, VB, F, RM, DM, HM).
 // chap = chapitre du plan (1…8) ; src = image/section d'origine dans le document source.
 const REF_TABLES = [
+ // ── Psyché (14/10/2026) — chap 'P' ──
+ {id:'psy-entites', chap:'P', titre:'Le Shen et les cinq entités psychiques', src:'cours psyché',
+  cols:['Entité','Organe','Fonctions psychiques'],
+  rows:[
+   ['Shen (Esprit) 神','Cœur','Conscience, pensée, lucidité, discernement, sommeil, vie émotionnelle, rayonnement (Shen Ming, la lumière des Esprits)'],
+   ['Hun (Âme éthérée) 魂','Foie','Idées, intuition, projets, créativité, rêves, « va-et-vient » de la vie psychique ; le Sang du Foie doit l\'ancrer'],
+   ['Po (Âme corporelle) 魄','Poumon','Sentiments inconscients, instinct, pleurs et larmes ; le chagrin refoulé « contracte » le Po'],
+   ['Yi (Intellect) 意','Rate','Mémoire explicite (études, travail), concentration, production des idées'],
+   ['Zhi (Volonté) 志','Rein','Mémoire, volonté, détermination, enthousiasme, motivation ; les cinq volontés (Wu Zhi) sont le vouloir-vivre']],
+  note:'Trois Trésors : Jing (Rein), Qi (Poumon, Estomac, Rate), Shen (Cœur). Le Shen naît de l\'union des Jing : si l\'Essence n\'est pas solide, l\'Esprit ne peut s\'incarner. Qi du Foie stagnant = dépression, sans accès à ses émotions ; Yang ou Feu du Foie = agitation, colère. Le vide du Rein et de la Volonté est un aspect majeur de la dépression chronique.'},
+ {id:'psy-emotions', chap:'P', titre:'Les émotions et le mouvement des Souffles (Ling Shu 8)', src:'cours psyché',
+  cols:['Émotion','Organe','Mouvement du Souffle'],
+  rows:[
+   ['Joie (excitation)','Cœur','Relâche et disperse le Qi ; en excès, le Shen est dispersé'],
+   ['Colère (Nu)','Foie','Fait monter le Qi : montée du Yang, Feu du Foie'],
+   ['Soucis, réflexion (Si)','Rate','Noue le Qi : rumination, obstruction'],
+   ['Tristesse, chagrin (Bei, You)','Poumon','Épuise et contracte le Qi : stagnation dans la poitrine'],
+   ['Peur (Kong)','Rein','Fait descendre le Qi : fuite vers le bas, perte d\'assise'],
+   ['Effroi, frayeur (Jing)','Cœur et Rein','Bloque le Qi, le fait chuter : saisissement']],
+  note:'Le Cœur est touché par toutes les émotions. Chaque émotion en neutralise une autre selon le cycle de domination des Cinq Éléments. Une émotion exprimée n\'implique pas mécaniquement l\'atteinte de l\'organe correspondant : saisir le mouvement des Souffles derrière les mots (« triste comment ? » — une tristesse par mécontentement est une colère).'},
+ {id:'psy-physio', chap:'P', titre:'Physiopathologie des émotions', src:'cours psyché',
+  cols:['Étape','Mécanisme'],
+  rows:[
+   ['1','Une tension émotionnelle prolongée provoque une stagnation de Qi, puis de Sang'],
+   ['2','La stagnation prolongée engendre de la Chaleur, puis du Feu'],
+   ['3','Le Feu coagule les liquides et produit les Glaires (Tan), qui obstruent les orifices et les Luo'],
+   ['4','Le Shen, privé de Sang ou obstrué par les Tan, perd sa demeure ou son rayonnement : troubles psychiques']],
+  note:'Bai He Bing (syndrome du lis) : agitation paradoxale — veut manger mais ne peut avaler, veut se coucher mais ne peut rester allongé, veut marcher mais se fatigue vite, alternance froid/chaud, pouls rapide.'},
+ {id:'psy-consult', chap:'P', titre:'La consultation en pathologie psychique', src:'cours psyché',
+  cols:['Repère','Contenu'],
+  rows:[
+   ['Écoute','Écouter comment le patient raconte, sans le classer d\'emblée ; le silence et les questions inattendues ouvrent ; la clé arrive souvent en fin de consultation (lien symptôme / événement de vie)'],
+   ['Su Wen 77','Interroger : déclassement social, ruine, difficultés professionnelles, alimentation, résidence, bonheurs ou malheurs soudains'],
+   ['Su Wen 78 — 1er manquement','Ne pas reconnaître si les pouls sont Yin ou Yang, ou accordés à la saison'],
+   ['2e manquement','Information incomplète sur les pouls, techniques multipliées, usage inapproprié des points (« la multiplicité des techniques cache la pauvreté de la pensée »)'],
+   ['3e manquement','Ignorer condition sociale, constitution, alimentation, force de l\'âme ; ne pas savoir classer les symptômes'],
+   ['4e manquement','Ne pas interroger sur le début de la maladie, un malheur, un surmenage, une intoxication'],
+   ['Épigastre','Troubles digestifs : Réchauffeur moyen ; les ruminations digestives accompagnent les ruminations mentales'],
+   ['Thorax','Oppression, palpitations : Réchauffeur supérieur (Cœur-Poumon), difficulté d\'échange avec le monde'],
+   ['Abdomen','Angoisses péri-ombilicales : plus loin du conscient, souvent liées à un phénomène caché, plus difficiles à faire partir'],
+   ['Rêves','Troisième moyen d\'étude avec les signes physiques et cliniques (Ling Shu 23)']],
+  note:'Règle topographique : plus l\'angoisse est haute, plus elle est liée à un événement conscient (aide par la parole) ; les angoisses basses relèvent du ressenti et du silence. Une peur peut traduire un problème de protection (Yang Ming, « fenêtres de la poitrine » 14E, 15E, 16E) plutôt qu\'une atteinte du Rein.'},
+ {id:'psy-langue', chap:'P', titre:'Langue en psychiatrie', src:'cours psyché',
+  cols:['Signe','Orientation'],
+  rows:[
+   ['Fissure de type Cœur (profonde, médiane)','Atteinte du Shen ; prolongée vers l\'Estomac : Feu Cœur-Estomac'],
+   ['Bords rouges','Feu du Foie ; bords et pointe rouges : Chaleur Foie-Cœur'],
+   ['Langue fortement gonflée','Tendance aux troubles psychiatriques ; gonflement du tiers antérieur : troubles mentaux graves'],
+   ['Enduit jaune épais et collant','Glaires-Chaleur'],
+   ['Langue rouge-pourpre, raide et gonflée','Stase par Feu']],
+  note:'Le pouls est aussi perçu par le patient comme une écoute de son intériorité ; l\'éclat du teint et la vigueur du regard (Jing Ming) complètent l\'observation.'},
+ {id:'psy-dian-kuang', chap:'P', titre:'Dian et Kuang — tableau comparatif', src:'cours psyché',
+  cols:['','Dian 癫 (en dedans)','Kuang 狂 (en dehors)'],
+  rows:[
+   ['Début','Progressif, prodromes','Soudain, rapide'],
+   ['Aspect','Yin, figé, calme','Yang, violent, agité'],
+   ['Souffle','Congelé, noué','Congelé, extravasé'],
+   ['Sentiments','Sept sentiments (Qi Qing)','Cinq volontés (Wu Zhi)'],
+   ['Nature','Froid et Vide','Feu et Plénitude'],
+   ['Esprit','Shen Ming obstrués','Jing Shen excités'],
+   ['Glaires','Tan','Tan'],
+   ['Organes','Rate, Cœur','Vésicule Biliaire, Estomac (+ Cœur, Foie)'],
+   ['Atteinte','Xin Bao Luo (luo enveloppes du Cœur)','Orifices du Cœur / du Shen']]},
+ {id:'psy-gui', chap:'P', titre:'Les 13 points Gui (points des revenants, Sun Si Miao)', src:'cours psyché',
+  cols:['Ordre','Nom (variante)','Point','Sens'],
+  rows:[
+   ['1','Gui Gong','DM26','« Palais du revenant » ; réanimation, remettre en ordre'],['2','Gui Xin','P11','« Message » ; Xin = confiance, bonne foi'],['3','Gui Lei (Gui Yan)','RP1','« Rempart » (« Œil ») du revenant'],
+   ['4','Gui Xin','MC7','« Cœur du revenant »'],['5','Gui Lu','V62','« Chemin du revenant »'],['6','Gui Zhen','DM16','« Oreiller du revenant »'],
+   ['7','Gui Chong (Gui Chuang)','E6','« Lit du revenant »'],['8','Gui Shi','RM24','« Marché du revenant »'],['9','Gui Jiao (Gui Ku)','MC8','« Rencontre » (« Grotte ») du revenant'],
+   ['10','Gui Tang','DM23','« Salle » (« Entrée ») du revenant'],['11','Gui Cang','RM1 (homme) ; You Men Tou (femme)','« Cachette » ; Cang = thésauriser'],
+   ['12','Gui Tui (Gui Chen)','GI11','« Jambe » (« Ministre ») du revenant'],['13','Gui Feng','Hai Quan, point hors méridien sous la langue, ligne médiane (saignée)','« Sceau du revenant »']],
+  note:'À piquer l\'un après l\'autre, dans l\'ordre, dans les Dian Kuang. Triade Ciel-Homme-Terre : DM16 (Ciel), E6 (Homme, Yang Ming), RM24 (Terre).'},
+
+ {id:'psy-classif', chap:'P', titre:'Troubles psychiques en médecine chinoise ancienne', src:'cours psyché',
+  cols:['Entité','Description','Correspondances occidentales'],
+  rows:[
+   ['Dian 癫','Folie en dedans, Yin','Phase dépressive du trouble bipolaire, épisode dépressif, schizophrénie ; épilepsie (Dian Xian)'],
+   ['Kuang 狂','Folie en dehors, Yang','Phase maniaque du trouble bipolaire, psychose, schizophrénie'],
+   ['Yu Zheng','Syndrome de dépression (oppression)','Troubles dépressifs'],
+   ['Bai He Bing','Syndrome du lis (Jin Gui Yao Lue)','Agitation paradoxale, épuisement'],
+   ['Mei He Qi','Syndrome du noyau de prune','Boule dans la gorge, angoisse'],
+   ['Zang Zao','Agitation des organes','Agitation, labilité'],
+   ['Xin Ji Zheng Chong','Palpitations et anxiété','Troubles anxieux, attaques de panique'],
+   ['Yi','Hystérie','Troubles de conversion'],
+   ['Chi Dai','Hébétude','Arriération, démence'],
+   ['Dian Xian','Maladie de l\'intervalle','Épilepsie']],
+  note:'Douleur chronique et comorbidités : troubles de l\'humeur jusqu\'à 50 % (fibromyalgie, ATM, rachis, abdomen), troubles anxieux, addictions, troubles de la personnalité ; idées suicidaires chez 28 à 48 % des douloureux chroniques — à rechercher régulièrement.'},
+ {id:'psy-orifices', chap:'P', titre:'Points qui ouvrent les orifices de l\'Esprit', src:'cours psyché',
+  cols:['Point','Indications'],
+  rows:[
+   ['P3','Somnolence, insomnie, tristesse, pleurs, « discours aux fantômes »'],['GI5','Manie, rires déplacés, « visions de fantômes », frayeur'],['GI7','Rires déplacés, manie'],
+   ['E25','Agitation, anxiété, manie ; demeure de Hun et Po'],['E40','Dian Kuang, rires déplacés, désir de grimper et de chanter, se déshabille'],
+   ['E42','Dian Kuang, désir de grimper et de chanter'],['E45','Rêves excessifs, frayeur, insomnie, Dian Kuang'],
+   ['IG16','Manie, Dian Kuang'],['V10','Manie, logorrhée'],['MC5','Palpitations, oppression thoracique, manie, frayeur, mauvaise mémoire ; dissout les Glaires de l\'Esprit'],
+   ['VB13','Manie, frayeur'],['VB17','Pensées obsessionnelles, excès de réflexion, manie'],['VB18','Pensées obsessionnelles, démence'],
+   ['DM16','Manie, envie de mourir, tristesse, peur'],['DM19','Manie, anxiété, agitation, insomnie'],['DM20','Désorientation, tristesse, pleurs, envie de mourir'],['DM26','Dian Kuang']]},
+ {id:'psy-litterature', chap:'P', titre:'Angoisse et anxiété — points de la littérature', src:'cours psyché',
+  cols:['Point','Indication'],
+  rows:[
+   ['C5','Angoisse, cœur serré, trac des artistes'],['C7','Angoisse avec soupirs nombreux, horreur du froid ; point maître du Shen'],['C9','Angoisse avec faiblesse et découragement'],
+   ['E12','Avec insomnie'],['E14','Gorge serrée, suite de choc ; traumatisme ou deuil ancien'],['E36','Toute perturbation psychique'],['E41','Dépression sans appétit pour la vie et la nourriture'],
+   ['MC5','Très grand point de la pathologie mentale chronique'],['MC6','Perte de mémoire, perte de décision'],['MC9','Peur irraisonnée, peur des enfants'],
+   ['P10','Angoisse'],['RP2','Angoisse avec soucis exagérés'],['RP5','Anxiété sur l\'avenir'],
+   ['R2','Appréhension, « comme la peur d\'être arrêté »'],['R24','Anxieux soupçonneux, deux volontés opposées'],
+   ['VB34','Peur d\'être arrêté, cœur et gorge contractés'],['VB35','Esprit tremblant, regrets, remords'],['VB39','Anxiété, surexcitation, soucis'],
+   ['RM6','Insomnie, émotivité, anxiété'],['DM20','« Oublie le passé »'],['DM24','Surexcitation, anxiété, chagrin excessif ; dépressions']],
+  note:'Sentiment fort (haine, colère, tristesse, peur) : point Xi du méridien concerné + Shu dorsal correspondant. Auriculothérapie : point Oméga (127) pour le trac, épiphyse pour la dépression.'},
+
  // ── Rhumatologie (12/10/2026) — chap 'R' ──
  {id:'rh-structures', chap:'R', titre:'Structures ostéo-articulaires et gouvernance énergétique', src:'cours rhumatologie',
   cols:['Structure','Physiologie MTC','Correspondance'],
@@ -9096,10 +9252,16 @@ const SPN_SPECIALTIES = [
     initSelects: ()=>initRhumatoSelects(),
     showProtocole: (cat,motif)=>showRhumatoProtocole(cat,motif),
     get db(){ return RHUMATO_DB; }
+  },
+  { key:'psy', label:'Psychiatrie 神志', prefixe:'Psy',
+    get domaineOptions(){ return Object.entries(PSY_DB).map(([value, C]) => ({value, label:C.label})); },
+    initSelects: ()=>_spnCoursSelects(PSY_DB),
+    showProtocole: (cat,motif)=>_spnCoursAfficher(PSY_DB, cat, motif, _psySugg(cat, motif)),
+    get db(){ return PSY_DB; }
   }
 ];
 // Préfixe des points cochés dans le référentiel (« [Gynéco] RM4 », « [Rhumato] V23 ») — reconnu à la réouverture.
-const SPN_PREFIXE_RE = /^\[(Gynéco|Rhumato)\] /;
+const SPN_PREFIXE_RE = /^\[(Gynéco|Rhumato|Psy)\] /;
 function spnPrefixe(){
   const v = (document.getElementById('spn-spec')||{}).value;
   const sp = SPN_SPECIALTIES.find(s => s.key===v);
@@ -9107,7 +9269,7 @@ function spnPrefixe(){
 }
 function spnLibelleGroupe(){
   const v = (document.getElementById('spn-spec')||{}).value;
-  return v==='rhumato' ? 'Rhumatologie (réf. Sorbonne)' : 'Gynéco-Obstétrical';
+  return v==='rhumato' ? 'Rhumatologie (réf. Sorbonne)' : v==='psy' ? 'Psychiatrie (réf. Sorbonne)' : 'Gynéco-Obstétrical';
 }
 
 // Remplit le select Spécialité selon le sexe du patient (une spécialité avec sexeRestrict
@@ -9169,6 +9331,7 @@ function onSpnSpecChange(){
   if(block) block.style.display='';
   if(emptyMsg) emptyMsg.style.display='none';
   if(typeof rhRafraichir==='function') rhRafraichir();
+  if(typeof psyRafraichir==='function') psyRafraichir();
   if(catSel) catSel.innerHTML = '<option value="">— Sélectionner —</option>' +
     spec.domaineOptions.map(o=>`<option value="${o.value}">${o.label}</option>`).join('');
   if(motifSel) motifSel.innerHTML = '<option value="">— Sélectionner un motif —</option>';
@@ -9890,19 +10053,25 @@ function _rhMoxa(t){
   if(/(MOXA OBLIGATOIRE|MOXA vigoureux|\+ MOXA|MOXA en priorité|Moxa sur gingembre)/i.test(t)) return '<span style="font-size:10px;background:#FEF5E7;color:#B9770E;border-radius:10px;padding:1px 7px;margin-left:6px">🔥 Moxa</span>';
   return '';
 }
-function initRhumatoSelects(){
+// Spécialités issues des cours (rhumatologie, psychiatrie…) : même structure de base, même affichage.
+function initRhumatoSelects(){ _spnCoursSelects(RHUMATO_DB); }
+function _spnCoursSelects(DB){
   const catSel = document.getElementById('gyno-cat'), motifSel = document.getElementById('gyno-motif');
   if(!catSel || !motifSel) return;
-  const C = RHUMATO_DB[catSel.value];
+  const C = DB[catSel.value];
   motifSel.innerHTML = '<option value="">— Sélectionner un motif —</option>' +
     (C ? Object.keys(C.motifs).map(m => `<option value="${_rhEsc(m)}">${_rhEsc(m)}</option>`).join('') : '');
 }
 function showRhumatoProtocole(cat, motifKey){
-  const C = RHUMATO_DB[cat]; if(!C) return;
+  _spnCoursAfficher(RHUMATO_DB, cat, motifKey, new Map(rhAnalyse().filter(s => s.cat===cat && s.motif===motifKey && s.idx!=null).map(s => [s.idx, s])));
+}
+// sugg : Map index du tableau → {raisons} pour les tableaux évoqués par l'examen
+function _spnCoursAfficher(DB, cat, motifKey, sugg){
+  const C = DB[cat]; if(!C) return;
   const M = C.motifs[motifKey]; if(!M) return;
   const res = document.getElementById('gyno-result'); if(!res) return;
   document.querySelectorAll('.gyno-chk').forEach(cb => { cb.checked = false; });
-  const sugg = new Map(rhAnalyse().filter(s => s.cat===cat && s.motif===motifKey && s.idx!=null).map(s => [s.idx, s]));
+  sugg = sugg || new Map();
   let h = '';
   const alerte = M.alerte || C.alerte;
   if(alerte) h += '<div style="background:#FDEDEC;border-left:3px solid #C0392B;border-radius:6px;padding:7px 12px;margin-bottom:8px;font-size:11px;color:#922B21">⚠️ '+_rhEsc(alerte)+'</div>';
@@ -9990,31 +10159,339 @@ function rhOuvrir(cat, motif){
   if(p && cont) cont.scrollTop += p.getBoundingClientRect().top - 120;
 }
 // Convergence : motif rhumatologique reconnu dans le motif de consultation (mots du cours, puis titres).
-function _rhMotifReconnu(mt){
+function _rhMotifReconnu(mt, DB){
   if(!mt || !mt.length) return null;
   let best = null;
-  Object.entries(RHUMATO_DB).forEach(([cat, C]) => Object.entries(C.motifs).forEach(([titre, M]) => {
+  Object.entries(DB||RHUMATO_DB).forEach(([cat, C]) => Object.entries(C.motifs).forEach(([titre, M]) => {
     (M.syn||[]).forEach(p => { const n = MTCNorm.tokens(p).length; if(n && MTCNorm.phraseIn(mt, p) && (!best || n > best.n)) best = {cat, titre, n}; });
   }));
   return best;
 }
-function _convRhumato(mt, impose){
+function _convRhumato(mt, impose){ return _convCours(RHUMATO_DB, mt, impose, rhAnalyse); }
+function _convPsy(mt, impose){ return _convCours(PSY_DB, mt, impose, psyAnalyse); }
+function _convCours(DB, mt, impose, analyse){
   let cat = '', titre = '';
-  if(impose){ Object.entries(RHUMATO_DB).forEach(([c, C]) => { if(C.motifs[impose]) { cat = c; titre = impose; } }); }
-  if(!titre){ const r = _rhMotifReconnu(mt); if(!r) return null; cat = r.cat; titre = r.titre; }
-  const M = RHUMATO_DB[cat].motifs[titre], pts = [];
+  if(impose){ Object.entries(DB).forEach(([c, C]) => { if(C.motifs[impose]) { cat = c; titre = impose; } }); }
+  if(!titre){ const r = _rhMotifReconnu(mt, DB); if(!r) return null; cat = r.cat; titre = r.titre; }
+  const M = DB[cat].motifs[titre], pts = [];
   (M.pointsBase||[]).forEach(p => pts.push({raw:p, w:1, why:'points de base'}));
   // Points présents dans au moins la moitié des tableaux du motif (socle commun)
   const S = (M.syndromes||[]).map(s => (s.pp||[]).map(p => _rhPt(p).oms).filter(Boolean));
   if(S.length >= 2){
     const cpt = {}; S.forEach(l => new Set(l).forEach(c => { cpt[c] = (cpt[c]||0) + 1; }));
     Object.entries(cpt).forEach(([c, n]) => { if(n >= Math.ceil(S.length/2)) pts.push({raw:c, w:.6, why:'commun à '+n+'/'+S.length+' tableaux'}); });
+    // Motif à nombreux tableaux sans socle commun (ex. angoisse) : points présents dans au moins un tiers d'entre eux
+    if(!pts.length) Object.entries(cpt).forEach(([c, n]) => { if(n >= Math.max(2, Math.ceil(S.length/3))) pts.push({raw:c, w:.5, why:'fréquent : '+n+'/'+S.length+' tableaux'}); });
   }
   // Tableau évoqué par l'examen dans ce motif
-  const A = rhAnalyse().find(a => a.cat===cat && a.motif===titre && a.idx!=null);
+  const A = analyse ? analyse().find(a => a.cat===cat && a.motif===titre && a.idx!=null) : null;
   if(A) (M.syndromes[A.idx].pp||[]).forEach(p => pts.push({raw:p, w:.8, why:M.syndromes[A.idx].nom+' (signes de l\'examen)'}));
   return {titre, cat, pts};
 }
+
+// ══════ PSYCHIATRIE — Référentiel Sorbonne Paris Nord (14/10/2026) ══════
+// Sources (fournies par le praticien) : « La psyché en médecine traditionnelle chinoise » (synthèse, octobre 2026) et les
+// supports de cours « Angoisse, tic, trac », « Dian Kuang », « Physiologie des émotions », « Les tics (Chou Chu) » (15/10/2026). Points en notation du cours (« 15V », « 26DM »),
+// convertis par _rhPt ; points hors méridien (Yin Tang, Si Shen Cong…) gardés tels quels. Incohérences signalées, non corrigées.
+const PSY_DB = {
+
+  dianKuang: {
+    label: 'Dian Kuang — les folies (Ling Shu 22)',
+    alerte: 'Trouble psychiatrique sévère : évaluer le risque suicidaire ou auto/hétéro-agressif et assurer la prise en charge psychiatrique conventionnelle. L\'acupuncture vient en complément.',
+    note: 'Nan Jing : Yang redoublé = Kuang (en dehors, agité) ; Yin redoublé = Dian (en dedans, fermé) ; Yang diminué : vision de fantômes ; Yin diminué : cécité (20e difficulté dans le texte classique ; la synthèse du cours cite la 27e, le support Dian Kuang le « chapitre 30 » — à vérifier). Éléments de la pathologie : déséquilibre Yin/Yang, Glaires, Feu qui monte agresser le haut, stagnation de Qi et stase de Sang, déséquilibre de l\'Âme éthérée. Le Dian qui persiste se transforme en Kuang ; un Kuang épuisé peut retomber en Dian. Correspondances occidentales : Dian = phase dépressive du trouble bipolaire, épisode dépressif, schizophrénie, épilepsie ; Kuang = phase maniaque, psychose, schizophrénie. Douleur chronique : 28 à 48 % d\'idées suicidaires — interroger régulièrement.',
+    motifs: {
+      'Dian — mélancolie, « folie en dedans » (Yin)': {
+        syn: ['dian','melancolie','hebetude','etat depressif','syndrome depressif','depression','repli sur soi','perte de l elan vital','apathie'],
+        note: 'Yu Yi (oppression) : Sang et Yang blessés, Souffles noués, Tan congelés, Bao Luo du Cœur obstrués, Shen Ming sans rayonnement. Nature Yin, Vide, début progressif (prodromes : tristesse intermittente, indifférence, refuge dans le sommeil, anorexie). Ling Shu 22 : au début, manque de joie, yeux rouges, lourds et douloureux, regard vers le haut. Signes : apathie, fatigue, hypersomnie, découragement, tristesse, pleurs, pessimisme, idées noires, culpabilité, troubles de la concentration, de la mémoire et de la décision. Principes : dissoudre les Glaires, ouvrir les orifices de l\'Esprit ; entre les crises, tonifier Cœur et Rate et faire circuler le Qi. Formule de base : 15V, 7C, 26DM, 7MC en dispersion ; 4R en tonification.',
+        pointsBase: ['15V','7C','26DM','7MC','4R'],
+        syndromes: [
+          {nom:'Consommation du Sang par atteinte de la Rate', signes:'Insomnie avec rêves, troubles de l\'attention, de la concentration et de la mémoire, palpitations, confusion, peurs fréquentes, tristesse et envie de pleurer, grande souffrance morale (surtout si le Rein est atteint), asthénie, anorexie, angoisse. Langue pâle ou rose | Pouls fin, sans force',
+           pp:['20V','15V','17V','10Rte','7C','6MC'], ps:[], tech:'17V et 10Rte = les deux points du Sang ; 20V si obsessions.'},
+          {nom:'Accumulation de glaires (Tan)', signes:'Souvent aggravation du tableau précédent : mélancolie, hébétude, perte de l\'élan vital, propos solitaires, pleurs alternant avec des rires immodérés, euphorie, colère et tristesse sans raison, perte du jugement et du sens de la propreté, réponses incohérentes. Langue rose, enduit blanc collant | Pouls tendu et fin, ou tendu et glissant',
+           pp:['26DM','15V','7C','7MC','40E'], ps:[], tech:'Toujours ajouter 40E si beaucoup de glaires.'},
+          {nom:'Désir inassouvi à l\'origine', signes:'Insatisfaction, désirs immodérés (richesse, puissance, honneurs) qui vicient le Souffle du Foie : Qi noué, Tan qui bouchent les Bao Luo du Cœur.',
+           pp:['18V','20V','40E','7C','15V'], ps:[], tech:'18V si désir inassouvi à l\'origine.'},
+          {nom:'Stagnation de Qi avec Glaires', signes:'Dépression, apathie, pensée terne, discours incohérent, soliloque, rires déplacés, oubli de se nourrir, émotions émoussées, alternance de colère et de rires sans raison. Langue gonflée, enduit collant | Pouls en corde et glissant',
+           pp:['6MC','3F','6TR','5MC','40E','12RM','9RM','6RP','20DM'], ps:[], tech:'Faire circuler le Qi, dissoudre les Glaires, ouvrir les orifices de l\'Esprit. 6MC, 3F, 6TR font circuler le Qi ; 5MC dissout les Glaires du Cœur ; 40E, 12RM, 9RM, 6RP dissolvent les Glaires ; 20DM améliore le moral.'},
+          {nom:'Vide du Cœur et de la Rate avec Glaires', signes:'Dépression, excès de rêves, insomnie, confusion, sursauts, hébétude, tristesse, pleurs, ferme les fenêtres, soliloque, hallucinations, palpitations, teint pâle et terne, mouvements lents, selles molles, fatigue, petit appétit. Langue pâle, gonflée, enduit collant | Pouls mou',
+           pp:['7C','5C','5MC','36E','12RM','20V','24DM','20DM'], ps:['40E','9RM','6RP'], tech:'36E, 12RM, 20V en tonification (Rate) ; 7C, 5C tonifient le Cœur ; 24DM, 20DM ouvrent les orifices ; 40E, 9RM, 6RP dissolvent les Glaires.'},
+          {nom:'Vide de Qi avec Glaires', signes:'Pathologie chronique, émotions émoussées, réticence à bouger ou à parler, regard fixe, rires inappropriés, soliloque, pensée incohérente, hallucinations, autoreproches, culpabilité, selles molles, teint pâle, fatigue, souffle court, pas d\'appétit. Langue pâle | Pouls mou',
+           pp:['9P','13V','12RM','20V','21V','36E','5MC','6MC','20DM','26DM'], ps:['9RM','6RP','40E'], tech:'9P, 13V tonifient le Qi du Poumon ; 12RM, 20V, 21V, 36E celui de l\'Estomac et de la Rate ; 9RM, 6RP, 40E dissolvent les Glaires ; 5MC, 6MC, 20DM, 26DM ouvrent les orifices.'},
+          {nom:'Chaleur nouée dans le méridien du Cœur', signes:'Dépression d\'apparition soudaine, énervement dans la région du cœur, rires sans raison, insomnie, chaleur du nez et des yeux, soif, aphtes. Langue rouge, pointe plus rouge, enduit jaune | Pouls vaste et rapide',
+           pp:['8C','7C','24DM','15RM','44V','8MC','5MC'], ps:[], tech:'Drainer le Feu du Cœur, ouvrir les orifices, calmer l\'Esprit. Pas de moxa.'},
+          {nom:'Glaires obstruant les orifices du Cœur', signes:'Dépression, esprit terne, lenteur, émotions émoussées, soliloque, discours incohérent, regard fixe, absence de cillement. Langue gonflée, enduit collant | Pouls glissant',
+           pp:['5MC','20DM','24DM','40E','6RP','9RM'], ps:[], tech:'Dissoudre les Glaires, ouvrir les orifices de l\'Esprit.'},
+          {nom:'Formule mixte', signes:'',
+           pp:['36E','6MC','15V','19V','5MC','4GI','7C','40E'], ps:[], tech:''},
+          {nom:'Points du Du Mai et du Shao Yang', signes:'12DM : patients agités, violents, « durs ». 13VB Ben Shen : point Shen sur Shao Yang, réunion avec Yang Wei. 24DM Shen Ting : frontière entre le caché et le visible.',
+           pp:['12DM','13DM','14DM','13VB','24DM'], ps:['1R'], tech:'Cas du cours : 1R (après échec de 4VC et 5VC) a « rallumé » en 2-3 séances une patiente éteinte, « qui n\'avait envie de rien ».'}
+        ]
+      },
+      'Kuang — agitation, « folie furieuse en dehors » (Yang)': {
+        syn: ['kuang','agitation psychomotrice','etat maniaque','acces maniaque','manie','delire','fureur','megalomanie','agitation violente'],
+        alerte: 'Agitation, délire, violence : urgence psychiatrique. Sécuriser le patient et l\'entourage avant tout geste.',
+        note: 'Les cinq volontés (Wu Zhi) se transforment en Feu, les Tan se congèlent, le Xin Bao Luo est obstrué : le Shen perd sa relation juste au monde. Ling Shu 22 : au début, peu de sommeil, pas de faim, glorification de soi, cris, pas de repos jour et nuit. Signes : euphorie expansive, énergie et agitation accrues, irritabilité, logorrhée, fuite des idées, distractibilité, grandeur, peu de sommeil, conduites à risque, dépenses, désinhibition, perte du sens de la réalité. Principes : dissoudre les Glaires, ouvrir les orifices de l\'Esprit ; réguler Yin et Yang, nourrir le Yin ou le Sang, éliminer la Chaleur vide. À la chronicité : vide de Yin (tableau « le Feu lèse le Yin »).',
+        pointsBase: ['26DM','8MC','14RM','11P','16DM'],
+        syndromes: [
+          {nom:'Saignée du Ling Shu', signes:'',
+           pp:['1DM'], ps:['8F'], tech:'Poncture et saignée de 1DM ; si échec, 8F.'},
+          {nom:'Formule de base', signes:'14RM Ju Que (Mu du Cœur) ouvre les orifices du Shen, restaure une perception juste ; 8MC Lao Gong, point des revenants ; 11P, Chaleur des organes en saignée ; 16DM calme le Vent dans la tête ; 15RM Shen Fu, point d\'expression (bégaiement, difficulté à s\'exprimer).',
+           pp:['26DM','8MC','14RM','11P','16DM'], ps:['15RM'], tech:'26DM, 8MC, 14RM, 11P en tonification ; 16DM en dispersion ; ± 15RM.'},
+          {nom:'Formule de Du Da Cheng', signes:'',
+           pp:['11GI','8IG','3C','5MC','5GI','5IG','10P','4TR','7C','2TR','42E','2F','65V','13V'], ps:[],
+           tech:'11GI = point des revenants ; 13V en moxa. Le cours écrit « 3Co » : lu 3C (Shao Hai) — à vérifier.'},
+          {nom:'Glaires-Feu agressant le haut', signes:'Manie d\'apparition soudaine, cris, invectives, frappe, force physique exceptionnelle, ni sommeil ni nourriture, regard coléreux, envie de grimper, brise les objets, impulsivité, constipation, céphalées, face et yeux rouges. Langue rouge, enduit jaune épais collant, fissure Cœur-Estomac | Pouls rapide, en corde, vaste, glissant',
+           pp:['7MC','5MC','2F','8C','8MC','19DM','17VB','18VB'], ps:['40E','12RM','9RM','6RP'], tech:'Calmer le Cœur, dissoudre les Glaires, drainer le Feu du Foie et du Cœur, ouvrir les orifices. Dispersion, pas de moxa.'},
+          {nom:'Feu dans le Yang Ming', signes:'Manie, déambulation, cris, injures, grimpe, chante et se déshabille, force inhabituelle, haleine fétide, face rouge, constipation. Langue rouge, enduit sec jaune foncé ou noir | Pouls profond et en corde',
+           pp:['44E','11GI','40E','8MC','8C','25E'], ps:['15RP','5MC'], tech:'Drainer le Feu de l\'Estomac vers le bas ; 25E stabilise Hun et Po ; 15RP facilite le transit. Pas de moxa.'},
+          {nom:'Feu du Foie et de la Vésicule Biliaire', signes:'Manie, irritabilité, accès de colère, face et yeux rouges, bouche amère, rires déplacés, cris, douleur des hypocondres et de la poitrine, palpitations. Langue rouge, enduit jaune foncé | Pouls rapide, en corde, glissant',
+           pp:['2F','44VB','11GI','7C','5MC'], ps:['40E','6RP','9RM'], tech:'Drainer le Feu du Foie, dissoudre les Glaires, calmer l\'Esprit. Pas de moxa.'},
+          {nom:'Le Feu lèse le Yin, avec Glaires (Kuang chronique)', signes:'Kuang chronique, logorrhée, sursauts, agitation mentale, amaigrissement, face et pommettes rouges, chaleur en soirée. Langue rouge, gonflée, sans enduit | Pouls fin et rapide',
+           pp:['7C','6C','7MC','3R','4RM','6RP'], ps:['40E','12RM','9RM','24DM','19DM','5MC'], tech:'Nourrir le Yin (3R, 4RM, 6RP), éliminer la Chaleur vide, calmer l\'Esprit, dissoudre les Glaires.'},
+          {nom:'Stagnation de Qi, stase de Sang, Glaires', signes:'Kuang chronique, logorrhée, sursauts, agitation, douleur abdominale, teint foncé, insomnie, agitation nocturne. Langue pourpre rougeâtre, gonflée | Pouls en corde, glissant',
+           pp:['6MC','7C','3F','10RP','17V'], ps:['40E','12RM','9RM','24DM','19DM','17VB','18VB','5MC'], tech:'Faire circuler le Qi, redonner de la vigueur au Sang, éliminer la stase, dissoudre les Glaires.'}
+        ]
+      },
+      'Les 13 points Gui (points des revenants)': {
+        syn: ['points gui','points des revenants','treize points gui','13 points gui','sun si miao'],
+        note: 'Prescription de Sun Si Miao pour les Dian Kuang : piquer les treize points l\'un après l\'autre, dans l\'ordre. Lecture du cours : 26DM réanime et remet en ordre ; 11P + 1Rte (points Jing) réunissent Ciel et Terre ; 7MC lié au Sang et à la singularité ; 62V marie Yin et Yang ; triade 16DM (Ciel), 24RM (Terre), 6E (Yang Ming, l\'aventure humaine) ; 8MC + 11GI épurent Cœur et Poumon.',
+        syndromes: [
+          {nom:'Les treize points, dans l\'ordre', signes:'Gui Gong 26DM · Gui Xin 11P · Gui Lei (ou Gui Yan) 1Rte · Gui Xin 7MC · Gui Lu 62V · Gui Zhen 16DM · Gui Chong (ou Gui Chuang) 6E · Gui Shi 24RM · Gui Jiao (ou Gui Ku) 8MC · Gui Tang 23DM · Gui Cang 1RM (homme) ou You Men Tou (femme) · Gui Tui (ou Gui Chen) 11GI · Gui Feng (Hai Quan, sous la langue sur la ligne médiane)',
+           pp:['26DM','11P','1Rte','7MC','62V','16DM','6E','24RM','8MC','23DM','1RM','11GI','Gui Feng (HM sous la langue)'], ps:['You Men Tou (HM, Gui Cang chez la femme)'],
+           tech:'Un point après l\'autre, dans l\'ordre. Gui Cang : 1RM chez l\'homme, You Men Tou (point hors méridien entre clitoris et vagin) chez la femme. Gui Feng en saignée.'}
+        ]
+      },
+      'Points à symptomatologie psychiatrique (par méridien)': {
+        syn: ['points psychiatriques','points du psychisme'],
+        note: 'Liste du cours pour les Dian Kuang : beaucoup de points sur les méridiens Yang, moins sur les Yin. À choisir selon le tableau, pas à piquer en bloc.',
+        syndromes: [
+          {nom:'Points qui ouvrent les orifices de l\'Esprit', signes:'3P : somnolence, insomnie, tristesse, « discours aux fantômes » · 5GI, 7GI : manie, rires déplacés · 25E : agitation, anxiété, manie, demeure de Hun et Po · 40E, 42E, 45E : Dian Kuang, désir de grimper et de chanter · 16IG, 10V : manie, logorrhée · 5MC : palpitations, oppression, manie, frayeur, mauvaise mémoire · 13VB : manie, frayeur · 17VB, 18VB : pensées obsessionnelles, démence · 16DM : manie, envie de mourir, tristesse, peur · 19DM : manie, anxiété, insomnie · 20DM : désorientation, tristesse, envie de mourir · 26DM : Dian Kuang',
+           pp:['3P','5GI','7GI','25E','40E','42E','45E','16IG','10V','5MC','13VB','17VB','18VB','16DM','19DM','20DM','26DM'], ps:[], tech:''},
+          {nom:'Du Mai', signes:'8DM : agitations musculaires ; 12DM : « envie de tuer » ; 24DM : très utilisé dans les dépressions.', pp:['1DM','8DM','12DM','16DM','17DM','18DM','19DM','20DM','23DM','24DM','25DM','26DM','28DM'], ps:[], tech:''},
+          {nom:'Tai Yang (IG, V)', signes:'', pp:['2IG','3IG','4IG','5IG','8IG','9IG','8V','9V','10V','13V','39V','40V','60V','61V','62V','63V','64V','65V','66V'], ps:[], tech:''},
+          {nom:'Ren Mai', signes:'13RM : « gens qui ne sont pas clairs ».', pp:['2RM','13RM','14RM','24RM'], ps:[], tech:''},
+          {nom:'Shao Yang (TR, VB)', signes:'9VB : « l\'assaut du Ciel » ; 12VB : Nao Gong.', pp:['2TR','3TR','10TR','16TR','17TR','23TR','9VB','12VB','19VB','20VB','24VB','34VB','36VB','37VB'], ps:[], tech:''},
+          {nom:'Yang Ming (GI, E)', signes:'', pp:['11GI','4GI','5GI','6GI','7GI','5E','23E','24E','27E','41E','42E','45E'], ps:['8GI'], tech:''},
+          {nom:'Tai Yin, Shao Yin, Jue Yin', signes:'', pp:['2P','5P','1Rte','4Rte','5Rte','3C','7C','8C','9C','2R','6R','9R','10R','20R','3MC','4MC','5MC','7MC','8MC','2F'], ps:[], tech:''}
+        ]
+      }
+    }
+  },
+
+  angoisse: {
+    label: 'Angoisse, spasmophilie, trac',
+    note: 'L\'angoisse est le « non-mouvement » : errance (les Souffles circulent sans but, le centre est perdu) puis saisissement (les énergies sont saisies comme par le froid). Règle topographique : plus l\'angoisse est haute (thorax, gorge), plus elle est liée à un événement conscient, accessible à la parole ; les angoisses basses (abdominales, péri-ombilicales) relèvent du ressenti et du silence. Dès qu\'un sentiment fort domine (haine, colère, tristesse, peur) : point Xi du méridien concerné + Shu dorsal correspondant.',
+    motifs: {
+      'Angoisse, anxiété': {
+        syn: ['angoisse','angoisses','anxiete','anxieux','anxieuse','crise d angoisse','attaque de panique','crise de panique','trouble anxieux','anxiete generalisee'],
+        alerte: 'Palpitations, oppression thoracique : éliminer une cause cardiaque ou endocrinienne avant de retenir une angoisse. Le vide de Yang du Cœur est une urgence cardiologique.',
+        note: 'Angoisse = anxiété + composante somatique (gastralgies, tremblements, diarrhée ou constipation, palpitations, striction laryngée), qui oriente le traitement. Angoisse et plénitude : calmer et disperser ; angoisse et stagnation : calmer et faire circuler ; angoisse et vide (plus difficile) : calmer et fortifier. Tableau Yin : sensation de froid = vide de Sang ou de Qi ; de chaleur = vide de Yin ; voix faible, souffle court = vide de Poumon ; frayeur facile = vide de Qi du Cœur ou de la VB ; peur = vide de Rein ou de Foie. Méridiens curieux si plusieurs méridiens atteints : Ren Mai, Chong Mai, Yin Qiao Mai, Yin Wei Mai.',
+        syndromes: [
+          {nom:'Angoisse Yang — Feu du Cœur', signes:'Agitation, nervosité, discours rapide, rougeur du visage, chaleur du corps. Langue rouge, enduit jaune et sec | Pouls plein et rapide',
+           pp:['20VG','17VC','8C','8MC','1R'], ps:[], tech:'Grande formule du stress, de l\'anxiété et de l\'angoisse Yang (20VG = Ciel, 17VC = Terre, 1R = Homme).'},
+          {nom:'Feu du Cœur et Feu du Foie', signes:'Angoisse Yang avec colère, irritabilité.',
+           pp:['2F','3F','34VB','18V','14F'], ps:[], tech:''},
+          {nom:'Feu du Cœur et Feu de l\'Estomac', signes:'Angoisse Yang avec signes digestifs hauts.',
+           pp:['44E','45E','21V','20V','6MC','3MC','12RM','5C','3C'], ps:[], tech:''},
+          {nom:'Stagnation du Qi du Cœur et du Foie (relativement Yang)', signes:'Angoisse, légère déprime, irritabilité, plénitude thoracique, gêne épigastrique. Langue normale ou légèrement entravée | Pouls plein ou en corde',
+           pp:['20VG','Si Shen Cong (HM31)','17VC','12VC','6MC','3F','14F','34VB'], ps:['6VC','4RP','5C','4MC','40E','37E','6RP'], tech:''},
+          {nom:'Stagnation du Shen — obstruction Rate-Cœur (chronique)', signes:'Troubles digestifs, soucis, rumination permanente, oppression, ballonnements, tête pleine. Pouls Terre fort',
+           pp:['5MC','8RP','7C','20VG','4GI','3F'], ps:['6RP','14E','15V','14VC'], tech:'5MC = très grand point de la pathologie mentale chronique ; 8RP = point Xi de la Rate ; 6RP pour tonifier le Yin ; 4GI + 3F débloquent les Guan ; 7C, point maître du Shen (ou 6C vers 7C) ; 14E si traumatisme, stress ou deuil même ancien. Séance suivante : régulariser le Cœur par 15V et 14VC.'},
+          {nom:'Vide de Qi du Cœur', signes:'Palpitations, angoisse, polypnée, crainte, transpiration, rêves abondants. Langue pâle | Pouls faible',
+           pp:['15V','14V','7C','6MC','6RP'], ps:['17VC','14VC','6VC','4VC','36E'], tech:'Variantes : 6MC, 17VC, 14VC, 6VC ; 6MC, 15V, 14V, 17VC, 7C, 4VC, 6VC ; 6MC, 36E, 15V.'},
+          {nom:'Déficience du Yang du Cœur', signes:'Angoisse, précordialgies, oppression thoracique, frilosité, membres froids, polypnée. Langue pâle, grosse | Pouls faible, menu',
+           pp:['15V','14VC','6MC','4VC'], ps:['7C','9P','9C','36E'], tech:'GRAVE : urgence cardiologique à éliminer d\'abord. Variantes : 7C, 15V, 9P, 6MC, 9C ; 6MC, 36E, 15V ; 14VC, 7C.'},
+          {nom:'Déficience du Yin du Cœur', signes:'Angoisse, palpitations, douleur thoracique avec gêne, chaleur précordiale, dysphorie, sommeil court avec rêves, chaleur des 5 cœurs, perte de mémoire, sueurs nocturnes, fébricule, pommettes rouges, gorge sèche.',
+           pp:['15V','7C','6MC','3R'], ps:['9P','9C','14V','11VG','9VG','6RT'], tech:'Variantes : 15V, 7C, 6MC, 9P, 9C ; 15V, 14V, 11VG ; 9VG, 6MC, 7C ; 6RT. Pas de moxa.'},
+          {nom:'Déficience du Sang du Cœur', signes:'Palpitations, teint blanc, angoisse, gêne thoracique, accès de frayeur, insomnie, sommeil agité, perte de mémoire, vertiges, lèvres pâles. Langue pâle | Pouls fin, faible',
+           pp:['6RT','36E','7C'], ps:['15V','7R'], tech:'Variantes : 7C, 6RT, 15V ; 7C, 15V, 7R, 6RT.'},
+          {nom:'Angoisse Yin — vide de Sang du Foie', signes:'Angoisse, yeux secs, insomnie, asthénie, ongles secs, vertiges, troubles des règles (dysménorrhée, aménorrhée). Langue pâle | Pouls fin, faible',
+           pp:['18V','17V','36E','6RT'], ps:['3F'], tech:'Variante : 18V, 37VB, 3GI, 6IG, 24VG, 10RP, 1V, 6RT, 19IG, 3F.'},
+          {nom:'Vide de Sang du Foie avec vent interne', signes:'Angoisse avec tremblements, vertiges.',
+           pp:['36E','6RT','20VB','10RT'], ps:['18V','17V','3F','11GI','34VB','7E'], tech:'Variante : 18V, 17V, 6RT, 3F, 11GI, 34VB, 7E.'},
+          {nom:'Vide de Yin du Foie', signes:'Angoisse avec sensation de chaleur.',
+           pp:['18V','3F','34VB','8F'], ps:['23V'], tech:'Variante : 3F, 18V, 23V.'},
+          {nom:'Déficience de la Vésicule Biliaire', signes:'Caractère plaintif, angoisse, palpitations, accès de frayeur, phobies, hésitation à décider, sommeil agité, rêves, vertiges, éblouissements, baisse de la vue, asthénie, lassitude mentale. Langue pâle | Pouls fin, faible',
+           pp:['6VC','34VB','19V'], ps:['24VB','37VB','43VB'], tech:'Variante : 19V, 24VB, 37VB, 43VB.'},
+          {nom:'Dissociation Rein / Cœur (Yin du Rein et du Cœur)', signes:'Palpitations, angoisse, insomnie, perte de mémoire, bouche sèche, sueurs nocturnes, vertiges, acouphènes, chaleur précordiale, chaleur des 5 cœurs, nervosité, oligurie, troubles sexuels. Langue rouge sans enduit | Pouls fin, rapide',
+           pp:['7C','3R','6RT','15V','23V'], ps:['6R','5C','8C','20VG','Yin Tang','1R'], tech:'Variantes : 15V, 23V, 6R, 5C, 7C ; 7C, 5C, 8C, 20VG, Yin Tang, 23V, 3R, 6RT, 1R.'},
+          {nom:'Vide de Qi du Poumon (très fréquent)', signes:'Toux, asthénie, voix faible, lassitude, dyspnée, transpiration spontanée, angoisse.',
+           pp:['1P','7P','13V','43V','36E'], ps:['17VC','9P','20V','10P','6VC'], tech:'Angoisse : 1P, 7P, 13V, 43V, 36E. Toux, asthénie, dyspnée : 17VC, 13V, 9P, 20V, 10P. Transpiration spontanée : 17VC, 13V, 9P, 6VC. Traiter aussi le Sang et les mucosités.'},
+          {nom:'Vide du Réchauffeur supérieur (Cœur-Poumon)', signes:'Angoisse, palpitations, toux, rhumes fréquents, oppression thoracique, asthénie, voix faible, lassitude, dyspnée, transpiration spontanée. Langue pâle, enduit blanc | Pouls vide',
+           pp:['17VC','6MC','36E','13V','9P'], ps:['14VG','40V','6RT','10RT','17V','4GI','3R','7C','15V','40E'], tech:'Formule : 6MC, 36E, 13V, 9P, 14VG, 40V, 6RT, 10RT, 17V, 17VC. Variante : 13V, 4GI, 3R, 7C, 15V. Si mucosités : 40E.'},
+          {nom:'Vide du Cœur et de la Rate', signes:'Anxiété, inquiétude, palpitations, perte d\'appétit, insomnie, teint pâle, vertiges, perte de mémoire, asthénie, gêne digestive, selles non moulées, ecchymoses, règles peu ou trop abondantes. Langue pâle | Pouls mou, fin, faible',
+           pp:['6MC','7C','6RT','15V','20V','14V','36E'], ps:['4MC','17V','1RT','Yin Tang','12VC','10RT'], tech:'Palpitations graves : 4MC. Manque de Sang : 17V. Variante : 7C, 6RT, 1RT, Yin Tang, 36E, 12VC, 15V, 20V, 17V, 10RT.'}
+        ]
+      },
+      'Spasmophilie, tétanie': {
+        syn: ['spasmophilie','tetanie','crise de tetanie','crise de spasmophilie','hyperventilation'],
+        alerte: 'Ne jamais piquer à jeun : 80 % des signes de tétanie correspondent à des signes d\'hypoglycémie.',
+        note: 'Vent interne (spasmes, tremblements) : mouvement VB en excès, sur un vide sous-jacent (Rein ou Sang du Foie) à rechercher. Conseils : sucres lents le matin, réduire ou arrêter le café.',
+        syndromes: [
+          {nom:'Avec tremblements et spasmes (dynamisme Jue Yin)', signes:'Spasmes, tremblements, asthénie.',
+           pp:['6MC','3F','8F','1F','18VC','20VB','18V'], ps:[], tech:'Points nœuds 1F et 18VC, très puissants. Tonification (aiguilles peu de temps) et moxa sur 1F, 8F, 18V ; harmonisation sur 3F, 6MC, 18VC.'},
+          {nom:'Avec angoisse et serrement de gorge (Yin Wei Mai)', signes:'Angoisse, gorge serrée.',
+           pp:['6MC','9R','15RP','14F','22VC','23VC'], ps:[], tech:''}
+        ]
+      },
+      'Trac, angoisse des examens': {
+        syn: ['trac','angoisse des examens','peur des examens','anxiete de performance','trac des artistes','trac du sportif','stress des examens'],
+        note: '« Avez-vous déjà échoué ? » Trac positif (pas d\'échec, il aide à se dépasser) ou trac qui paralyse (vide de VB, vide de Cœur). Auriculothérapie : point Oméga (127, lobe antérieur), aiguille laissée à demeure ; points O et O\'.',
+        syndromes: [
+          {nom:'Saturé, encore actif (stagnation du Qi du Foie et du Cœur)', signes:'Il travaille mais il est saturé ; énergie présente aux pouls.',
+           pp:['6MC','4GI','3F','20VG','15V','14VC','7C'], ps:[], tech:'Séance de détente de préparation, pour harmoniser le Shen.'},
+          {nom:'Épuisé, paralysé (vide de Sang du Foie ou de Yin du Cœur)', signes:'Ne peut plus travailler, fatigué, pâle, insomnie, déprime : surmenage sur un vide.',
+           pp:['14VC','15V','6MC','7C','3C','7IG'], ps:['23V','7R','4R','43V'], tech:'23V en moxa (Qi des Reins) ; 7R et 4R en moxa (volonté) ; 43V si épuisement.'},
+          {nom:'Vide de Rein, de Rate et de Cœur (trois Réchauffeurs)', signes:'',
+           pp:['4RP','6MC','20VG','Yin Tang'], ps:[], tech:'Méridien curieux (Chong Mai : 4RP + 6MC) pour amener Sang et énergie : y penser dès que trois méridiens sont atteints. La synthèse écrite donnait 6RP ; le support du cours écrit 4RP.'},
+          {nom:'Trac du sportif', signes:'',
+           pp:['20VG','20VB','7C','6RP'], ps:[], tech:'Électropuncture (Jing Ji Zong He Zheng) ; rééquilibrage général par acupuncture de détente et moxas.'},
+          {nom:'Points de la littérature', signes:'5C : cœur serré, trac des artistes · 7C : soupirs, horreur du froid · 9C : faiblesse, découragement · 12E : avec insomnie · 14E : gorge serrée, suite de choc · 36E : toute perturbation psychique · 41E : sans appétit pour la vie · 6MC : perte de mémoire, de décision · 9MC : peur irraisonnée · 10P : angoisse · 2RP : soucis exagérés · 5RP : anxiété sur l\'avenir · 2R : appréhension, « comme la peur d\'être arrêté » · 24R : anxieux soupçonneux, deux volontés opposées · 34VB : peur d\'être arrêté, gorge contractée · 35VB : esprit tremblant, remords · 39VB : surexcitation, soucis · 6VC : émotivité · 20VG : « oublie le passé » · 24VG : chagrin excessif',
+           pp:['5C','7C','9C','12E','14E','36E','41E','6MC','9MC','10P','2RP','5RP','2R','24R','34VB','35VB','39VB','6VC','20VG','24VG'], ps:[], tech:'« RN » = Rein dans le cours (confirmé par 9RN, point du Yin Wei Mai dans la spasmophilie) : 2R, 24R.'}
+        ]
+      },
+      'Céphalées et colopathie de stress': {
+        syn: ['cephalee de stress','cephalees de stress','cephalee de tension','cephalees de tension','colopathie','colon irritable','colopathie fonctionnelle'],
+        syndromes: [
+          {nom:'Céphalées de stress (stagnation de Qi)', signes:'', pp:['4GI','3F','7C','20VB','20VG','Tai Yang','39VB','34VB','7P','6MC'], ps:['11V','12V','13V'], tech:'Avec cervicalgies de stress : ajouter 11V, 12V, 13V.'},
+          {nom:'Migraine de l\'enfant', signes:'', pp:['7P','39VB'], ps:[], tech:''},
+          {nom:'Colopathie avec céphalées, stress et anxiété', signes:'', pp:['6MC','25E','12VC','4RP','37E','39E','20V','6RP','4R','27R'], ps:[], tech:'Plus passiflore et valériane.'}
+        ]
+      }
+    }
+  },
+
+  tics: {
+    label: 'Tics (Chou Chu)',
+    motifs: {
+      'Tics': {
+        syn: ['tic','tics','chou chu','tourette','tic facial','tics de l enfant','clignement des yeux','grimaces'],
+        note: 'Vent interne : dynamisme Shao Yang en excès. Tics par fatigue = chaleur vide ; tics de l\'enfant = plénitude de chaleur. Principes : débloquer le Qi du Foie, traiter un vide de Sang du Foie, un éventuel vent froid. Plénitude de Yang : disperser. Chez l\'enfant, très efficace : petites aiguilles laissées peu de temps. Conseils : sport, digestion (pas de boissons excitantes), pas de pression parentale. Souvent intégrés à un autre trouble (Tourette, anxiété, TOC, autisme).',
+        pointsBase: ['4GI','3F','20VB','6RP'],
+        syndromes: [
+          {nom:'Vent froid', signes:'', pp:['5TR'], ps:[], tech:''},
+          {nom:'Vide de Sang', signes:'Tics par fatigue, épuisement.', pp:['20V','18V','17V'], ps:[], tech:'En moxas.'},
+          {nom:'Blocage du Qi du Foie', signes:'', pp:['2F','14F','34VB'], ps:[], tech:''},
+          {nom:'Agitation, énervement (surtout chez l\'enfant)', signes:'', pp:['7C','3C'], ps:[], tech:''},
+          {nom:'Tics des yeux, des paupières', signes:'', pp:['Tai Yang','2V','1VB'], ps:['14VB'], tech:'Front : 14VB.'},
+          {nom:'Tics des lèvres, de la bouche', signes:'', pp:['4E','26VG','24VC'], ps:['Jia Cheng Jiang (HM5)'], tech:'Jia Cheng Jiang (HM5), sous 4E sur l\'horizontale de 24VC : point hors méridien des tics.'},
+          {nom:'Tics des joues, grimaces', signes:'', pp:['3E','6E','18IG'], ps:['12E'], tech:'Grimaces : 12E.'},
+          {nom:'Tics des épaules, du bras', signes:'', pp:['15GI','9IG','14TR','5TR','11GI'], ps:[], tech:''},
+          {nom:'Tics de la nuque et du cou', signes:'', pp:['14VG','10V','1E'], ps:[], tech:''},
+          {nom:'Lecture classique et indications plus rares', signes:'7P (même chez la femme enceinte) et 4VB ; tics et mouvements : 7TR. Les points Xi (63V + 6IG) agissent sur les stagnations de Qi et de Sang.',
+           pp:['7P','4VB','7TR'], ps:['14TR','15VG','18IG','8IG','20GI','27R','41VB','63V','6IG'], tech:'« 27RN » du cours = 27R (Rein).'}
+        ]
+      }
+    }
+  }
+};
+
+// ── Orientation psychiatrique d'après l'examen (15/10/2026) ──
+// Lit les signes psychiques de l'Examen (d-psy), la question 10 (Émotions & Mental) et les autres questions utiles,
+// la langue et le pouls. Chaque tableau reprend les signes des supports de cours (Dian Kuang, angoisse, trac,
+// spasmophilie, tics). Un domaine doit d'abord être évoqué (« porte »), puis le tableau est départagé par ses signes
+// propres (score ≥ 2). Proposition seulement : le praticien choisit.
+const PSY_SIGNES = ['Agitation / logorrhée','Euphorie / expansivité','Idées de grandeur','Violence / injures','Rires immotivés',
+  'Repli / mutisme','Discours incohérent / soliloque','Hallucinations','Idées noires','Idées suicidaires',
+  'Angoisse haute (gorge / thorax)','Angoisse basse (abdominale)','Crises de panique','Hésitation / indécision',
+  'Spasmes / tétanie','Tics','Trac / angoisse de performance','Début brutal','Évolution progressive','Épuisement / surmenage'];
+function psyAnalyse(){
+  const V = _rhVals, S = V('d-psy');
+  const tq = q => Array.from(document.querySelectorAll('#tr-'+q+' .tg.on')).map(t=>t.textContent);
+  const Q1=tq('q1'), Q2=tq('q2'), Q3=tq('q3'), Q4=tq('q4'), Q5=tq('q5'), Q6=tq('q6'), Q7=tq('q7'), Q8=tq('q8'), Q9=tq('q9'), Q10=tq('q10'), Q11=tq('q11');
+  const LC=V('l-couleur'), LF=V('l-forme'), LE=V('l-enduit-couleur'), LL=V('l-couleur-loc'), LH=V('l-humidite');
+  const P=[].concat(V('pq'),V('pq-force'),V('pq-forme'),V('pq-freq'));
+  const has=(a,x)=>a.includes(x), any=(a,re)=>a.some(x=>re.test(x));
+  const pouls=re=>any(P,re), lang=re=>any(LC.concat(LF,LE,LL,LH),re);
+  const rouge=any(LC,/^Rouge/), pale=has(LC,'Pâle'), gonflee=any(LF,/Gonflée/), collant=any(LH,/Collant/)||any(LE,/épais/i);
+  const insomnie=any(Q9,/Insomnie|Endormissement|Réveils/), palpit=has(Q6,'Palpitations'), oublis=any(Q10,/Oublis|concentration|Brouillard/);
+  // Portes (domaines)
+  const kuang = [has(S,'Agitation / logorrhée'),has(S,'Euphorie / expansivité'),has(S,'Idées de grandeur'),has(S,'Violence / injures'),has(Q10,'Joie excessive/agitation'),has(S,'Rires immotivés')].filter(Boolean).length;
+  const dian = [has(Q10,'Tristesse'),has(Q10,'Mélancolie'),has(Q10,'Apathie'),has(Q10,'Manque de motivation'),has(S,'Repli / mutisme'),has(S,'Idées noires'),has(Q9,'Hypersomnie')].filter(Boolean).length;
+  const angoisse = [has(Q10,'Anxiété'),has(Q10,'Inquiétude excessive'),has(Q10,'Peur'),has(Q10,'Frayeurs/sursauts'),has(S,'Crises de panique'),has(S,'Angoisse haute (gorge / thorax)'),has(S,'Angoisse basse (abdominale)')].filter(Boolean).length;
+  const D='dianKuang', A='angoisse';
+  const MD='Dian — mélancolie, « folie en dedans » (Yin)', MK='Kuang — agitation, « folie furieuse en dehors » (Yang)', MA='Angoisse, anxiété';
+  const R = [];
+  const regle=(cat,motif,nom,porte,crit,seuil)=>{ if(!porte) return; const ok=crit.filter(c=>c[0]); const sc=ok.reduce((a,c)=>a+c[1],0);
+    if(sc>=(seuil||2)) R.push({cat, motif, idx:_psyIdx(cat,motif,nom), nom, score:sc, raisons:ok.map(c=>c[2])}); };
+  // Kuang (plénitude, Yang)
+  const pk = kuang>=2;
+  regle(D,MK,'Glaires-Feu agressant le haut',pk,[[rouge,1,'langue rouge'],[collant||any(LE,/Jaune épais/),1,'enduit jaune épais collant'],[pouls(/Glissant|corde|Rapide|Ample/),1,'pouls glissant, en corde ou rapide'],[has(S,'Début brutal'),1,'début brutal'],[has(S,'Violence / injures'),1,'violence'],[has(Q4,'Constipation'),.5,'constipation']]);
+  regle(D,MK,'Feu dans le Yang Ming',pk,[[has(Q4,'Constipation')||has(Q4,'Selles sèches dures'),1,'constipation'],[has(Q8,'Halitose'),1,'haleine fétide'],[any(LE,/Noir|Jaune épais/),1,'enduit jaune foncé ou noir'],[has(Q8,'Soif intense boissons froides'),1,'soif de froid']]);
+  regle(D,MK,'Feu du Foie et de la Vésicule Biliaire',pk,[[has(Q10,'Irritabilité')||has(Q10,'Colère facile'),1,'irritabilité, colère'],[has(Q5,'Goût amer'),1,'bouche amère'],[any(LL,/Bords rouges/),1,'bords rouges'],[pouls(/corde/),1,'pouls en corde'],[any(Q6,/flancs/),1,'douleur des hypocondres']]);
+  regle(D,MK,'Le Feu lèse le Yin, avec Glaires (Kuang chronique)',pk,[[has(S,'Évolution progressive'),1,'évolution chronique'],[has(LE,'Absent (langue miroir)'),1,'langue sans enduit'],[pouls(/Fin/)&&pouls(/Rapide/),1,'pouls fin et rapide'],[any(Q1,/vespérale|5 centres/),1,'chaleur vespérale'],[has(LF,'Mince / Maigre'),1,'amaigrissement']]);
+  regle(D,MK,'Stagnation de Qi, stase de Sang, Glaires',pk,[[has(LC,'Violacé')||any(LL,/violac/),1,'langue pourpre'],[insomnie,1,'insomnie'],[any(Q6,/ombilicale|hypogastrique|Douleur fixe/),1,'douleur abdominale']]);
+  // Dian (vide, Yin)
+  const pd = dian>=2;
+  regle(D,MD,'Stagnation de Qi avec Glaires',pd,[[gonflee,1,'langue gonflée'],[collant,1,'enduit collant'],[pouls(/corde/)&&pouls(/Glissant/),1,'pouls en corde et glissant'],[has(Q10,'Labilité émotionnelle')||has(S,'Rires immotivés'),1,'alternance colère / rires'],[has(S,'Discours incohérent / soliloque'),1,'discours incohérent']]);
+  regle(D,MD,'Vide du Cœur et de la Rate avec Glaires',pd,[[palpit,1,'palpitations'],[has(Q5,'Peu d\'appétit'),1,'petit appétit'],[has(Q4,'Selles molles'),1,'selles molles'],[pale&&gonflee,1,'langue pâle gonflée'],[pouls(/Mou/),1,'pouls mou'],[any(Q9,/Rêves|Cauchemars/),1,'rêves abondants']]);
+  regle(D,MD,'Vide de Qi avec Glaires',pd,[[has(S,'Évolution progressive'),1,'chronicité'],[has(Q9,'Fatigue permanente'),1,'fatigue'],[has(Q4,'Selles molles'),1,'selles molles'],[pale,1,'langue pâle'],[pouls(/Mou/),1,'pouls mou'],[has(Q2,'Sueurs spontanées diurnes'),1,'sueurs spontanées']]);
+  regle(D,MD,'Chaleur nouée dans le méridien du Cœur',pd,[[has(S,'Début brutal'),1,'début soudain'],[any(LL,/Pointe rouge|Points rouges pointe/),1,'pointe rouge'],[has(Q8,'Aphtes récurrents'),1,'aphtes'],[has(S,'Rires immotivés'),1,'rires sans raison'],[pouls(/Ample|Rapide/),1,'pouls vaste et rapide']]);
+  regle(D,MD,'Glaires obstruant les orifices du Cœur',pd,[[has(S,'Discours incohérent / soliloque'),1,'discours incohérent'],[gonflee&&collant,1,'langue gonflée, enduit collant'],[pouls(/Glissant/),1,'pouls glissant'],[has(Q10,'Brouillard mental'),1,'esprit terne']]);
+  regle(D,MD,'Consommation du Sang par atteinte de la Rate',pd,[[insomnie&&any(Q9,/Rêves|Cauchemars/),1,'insomnie avec rêves'],[oublis,1,'troubles de la mémoire ou de la concentration'],[palpit,1,'palpitations'],[has(Q10,'Peur')||has(Q10,'Frayeurs/sursauts'),1,'peurs'],[pale,1,'langue pâle'],[pouls(/Fin|Vide/),1,'pouls fin, sans force']]);
+  // Angoisse
+  const pa = angoisse>=1;
+  regle(A,MA,'Angoisse Yang — Feu du Cœur',pa,[[has(Q10,'Joie excessive/agitation')||has(S,'Agitation / logorrhée'),1,'agitation'],[rouge,1,'langue rouge'],[any(LE,/Jaune/),1,'enduit jaune'],[pouls(/Plein|Rapide/),1,'pouls plein et rapide'],[any(LL,/Pointe rouge/),1,'pointe rouge'],[any(Q1,/Chaleur permanente/),1,'chaleur du corps']]);
+  regle(A,MA,'Feu du Cœur et Feu du Foie',pa,[[has(Q10,'Irritabilité')||has(Q10,'Colère facile'),1,'irritabilité'],[any(LL,/Bords rouges/),1,'bords rouges'],[pouls(/corde/)&&pouls(/Rapide/),1,'pouls en corde, rapide'],[has(Q5,'Goût amer'),1,'bouche amère']],3);
+  regle(A,MA,'Feu du Cœur et Feu de l\'Estomac',pa,[[has(Q6,'Brûlures épigastriques'),1,'brûlures épigastriques'],[has(Q8,'Soif intense boissons froides'),1,'soif de froid'],[has(Q8,'Halitose'),1,'haleine'],[any(LL,/Milieu rouge/),1,'milieu de langue rouge'],[has(Q5,'Faim rapide après repas'),1,'faim rapide']],2);
+  regle(A,MA,'Stagnation du Qi du Cœur et du Foie (relativement Yang)',pa,[[has(Q6,'Oppression thoracique'),1,'plénitude thoracique'],[has(Q6,'Plénitude épigastrique'),1,'gêne épigastrique'],[has(Q10,'Irritabilité')||has(Q10,'Frustration'),1,'irritabilité'],[pouls(/corde|Plein/),1,'pouls plein ou en corde'],[has(S,'Angoisse haute (gorge / thorax)'),1,'angoisse haute']]);
+  regle(A,MA,'Stagnation du Shen — obstruction Rate-Cœur (chronique)',pa,[[has(Q10,'Rumination')||has(Q10,'Pensées obsessionnelles'),1,'rumination'],[has(Q10,'Inquiétude excessive'),1,'soucis'],[any(Q6,/Distension|Plénitude épigastrique|Douleur épigastrique/),1,'ballonnements, troubles digestifs'],[has(S,'Angoisse basse (abdominale)'),1,'angoisse abdominale']]);
+  regle(A,MA,'Vide de Qi du Cœur',pa,[[palpit,1,'palpitations'],[has(Q2,'Sueurs spontanées diurnes'),1,'transpiration'],[any(Q9,/Rêves/),1,'rêves abondants'],[pale,1,'langue pâle'],[pouls(/Vide|Épuisé|Ténu/),1,'pouls faible']],3);
+  regle(A,MA,'Déficience du Yang du Cœur',pa,[[has(Q6,'Douleur thoracique'),1,'précordialgies'],[has(Q6,'Oppression thoracique'),1,'oppression'],[has(Q1,'Froid permanent')||has(Q1,'Extrémités froides malgré chaleur interne'),1,'frilosité, membres froids'],[pale&&gonflee,1,'langue pâle, grosse'],[pouls(/Épuisé|Ténu|Vide/),1,'pouls faible']],3);
+  regle(A,MA,'Déficience du Yin du Cœur',pa,[[palpit,1,'palpitations'],[any(Q1,/5 centres/),1,'chaleur des 5 cœurs'],[has(Q2,'Sueurs nocturnes'),1,'sueurs nocturnes'],[insomnie,1,'sommeil court'],[has(Q8,'Gorge sèche'),1,'gorge sèche'],[any(LL,/Pointe rouge/)||rouge,1,'langue rouge'],[pouls(/Fin/)&&pouls(/Rapide/),1,'pouls fin, rapide']],3);
+  regle(A,MA,'Déficience du Sang du Cœur',pa,[[palpit,1,'palpitations'],[has(Q10,'Frayeurs/sursauts'),1,'accès de frayeur'],[insomnie,1,'insomnie'],[oublis,1,'perte de mémoire'],[has(Q3,'Vertiges'),1,'vertiges'],[pale||any(LL,/Pointe pâle/),1,'langue pâle'],[pouls(/Fin/),1,'pouls fin']],3);
+  regle(A,MA,'Angoisse Yin — vide de Sang du Foie',pa,[[has(Q7,'Yeux secs'),1,'yeux secs'],[has(Q3,'Vertiges'),1,'vertiges'],[any(LL,/Bords pâles/),1,'bords pâles'],[any(Q11,/Aménorrhée|peu abondantes/),1,'règles peu abondantes'],[pouls(/Fin/),1,'pouls fin']],3);
+  regle(A,MA,'Vide de Sang du Foie avec vent interne',pa,[[has(Q3,'Tremblements'),1,'tremblements'],[has(Q3,'Vertiges'),1,'vertiges'],[pale,1,'langue pâle'],[pouls(/Fin/),1,'pouls fin']],3);
+  regle(A,MA,'Vide de Yin du Foie',pa,[[has(Q7,'Yeux secs'),1,'yeux secs'],[any(Q1,/5 centres/),1,'chaleur des 5 cœurs'],[any(LL,/Fissures bords/),1,'fissures des bords'],[has(LE,'Absent (langue miroir)'),1,'peu d\'enduit']],3);
+  regle(A,MA,'Déficience de la Vésicule Biliaire',pa,[[has(Q10,'Frayeurs/sursauts')||has(Q10,'Peur'),1,'frayeurs, phobies'],[has(S,'Hésitation / indécision'),2,'hésitation à décider'],[has(Q7,'Vision trouble')||has(Q7,'Baisse acuité visuelle'),1,'baisse de la vue'],[has(Q3,'Vertiges'),1,'vertiges'],[pale,1,'langue pâle']],3);
+  regle(A,MA,'Dissociation Rein / Cœur (Yin du Rein et du Cœur)',pa,[[palpit,1,'palpitations'],[insomnie,1,'insomnie'],[has(Q2,'Sueurs nocturnes'),1,'sueurs nocturnes'],[any(Q7,/Acouphènes/),1,'acouphènes'],[any(Q1,/5 centres/),1,'chaleur des 5 cœurs'],[has(LE,'Absent (langue miroir)')&&rouge,1,'langue rouge sans enduit'],[pouls(/Fin/)&&pouls(/Rapide/),1,'pouls fin, rapide']],3);
+  regle(A,MA,'Vide de Qi du Poumon (très fréquent)',pa,[[has(Q2,'Sueurs spontanées diurnes'),1,'transpiration spontanée'],[has(Q9,'Fatigue permanente')||has(Q9,'Manque de tonus général'),1,'asthénie'],[has(Q9,'Réveils 3h-5h (Poumon)'),1,'réveils 3h-5h'],[has(Q10,'Tristesse')||has(Q10,'Deuil prolongé'),1,'tristesse, deuil'],[pouls(/Vide|Ténu/),1,'pouls vide']],3);
+  regle(A,MA,'Vide du Cœur et de la Rate',pa,[[palpit,1,'palpitations'],[has(Q5,'Peu d\'appétit'),1,'perte d\'appétit'],[has(Q4,'Selles molles'),1,'selles non moulées'],[insomnie,1,'insomnie'],[oublis,1,'perte de mémoire'],[pale,1,'langue pâle'],[pouls(/Mou|Fin/),1,'pouls mou, fin']],3);
+  // Spasmophilie, trac, tics
+  const spasm = has(S,'Spasmes / tétanie');
+  regle(A,'Spasmophilie, tétanie','Avec tremblements et spasmes (dynamisme Jue Yin)',spasm,[[true,1,'spasmes, tétanie'],[has(Q3,'Tremblements'),1,'tremblements']]);
+  regle(A,'Spasmophilie, tétanie','Avec angoisse et serrement de gorge (Yin Wei Mai)',spasm,[[true,1,'spasmes, tétanie'],[has(S,'Angoisse haute (gorge / thorax)')||has(Q10,'Anxiété'),1,'angoisse, gorge serrée']]);
+  const trac = has(S,'Trac / angoisse de performance');
+  regle(A,'Trac, angoisse des examens','Saturé, encore actif (stagnation du Qi du Foie et du Cœur)',trac,[[true,1,'trac'],[!has(S,'Épuisement / surmenage'),1,'énergie présente'],[pouls(/Plein|corde/),1,'pouls plein ou en corde']]);
+  regle(A,'Trac, angoisse des examens','Épuisé, paralysé (vide de Sang du Foie ou de Yin du Cœur)',trac,[[true,1,'trac'],[has(S,'Épuisement / surmenage'),1,'épuisement'],[insomnie,1,'insomnie'],[pale,1,'pâleur']]);
+  const tics = has(S,'Tics');
+  regle('tics','Tics','Vide de Sang',tics,[[true,1,'tics'],[has(S,'Épuisement / surmenage')||has(Q9,'Fatigue permanente'),1,'fatigue, épuisement'],[pale,1,'langue pâle']]);
+  regle('tics','Tics','Agitation, énervement (surtout chez l\'enfant)',tics,[[true,1,'tics'],[has(Q11,'Agitation pédiatrique')||has(Q10,'Joie excessive/agitation'),1,'agitation'],[rouge,1,'plénitude de chaleur']]);
+  regle('tics','Tics','Blocage du Qi du Foie',tics,[[true,1,'tics'],[has(Q10,'Irritabilité')||has(Q10,'Frustration'),1,'irritabilité'],[pouls(/corde/),1,'pouls en corde']]);
+  // Domaine évoqué sans tableau départagé : proposer le motif
+  const motif=(porte,cat,motif,nom,raisons)=>{ if(porte && !R.some(r=>r.motif===motif)) R.push({cat,motif,idx:null,nom,score:1.5,raisons}); };
+  motif(pk,D,MK,'Kuang (agitation, signes Yang)',['signes d\'agitation maniaque']);
+  motif(pd,D,MD,'Dian (repli, signes Yin)',['tristesse, apathie, repli']);
+  motif(angoisse>=2,A,MA,'Angoisse (tableau à préciser par la langue et le pouls)',['anxiété, peur, angoisse']);
+  motif(tics,'tics','Tics','Tics',['tics']);
+  motif(spasm,A,'Spasmophilie, tétanie','Spasmophilie (vent interne sur vide)',['spasmes, tétanie']);
+  motif(trac,A,'Trac, angoisse des examens','Trac',['trac']);
+  return R.sort((a,b)=>b.score-a.score);
+}
+function _psyIdx(cat, motif, nom){
+  const M = PSY_DB[cat] && PSY_DB[cat].motifs[motif]; if(!M) return null;
+  const i = M.syndromes.findIndex(s => s.nom===nom); return i>=0 ? i : null;
+}
+function psyAnalyseHTML(){
+  const S = _rhVals('d-psy');
+  let h = '';
+  if(S.includes('Idées suicidaires') || S.includes('Idées noires'))
+    h += '<div style="font-size:11px;color:#922B21;background:#FDEDEC;border-radius:6px;padding:5px 9px;margin-bottom:4px">⚠️ Idées noires ou suicidaires : évaluer le risque suicidaire (intention, plan, moyens) et orienter vers une prise en charge psychiatrique si nécessaire (urgence : 15 ; 3114, numéro national de prévention du suicide).</div>';
+  if(S.includes('Hallucinations') || (S.includes('Idées de grandeur') && S.includes('Violence / injures')))
+    h += '<div style="font-size:11px;color:#922B21;margin-bottom:4px">⚠️ Signes psychotiques ou maniaques : avis psychiatrique ; l\'acupuncture vient en complément.</div>';
+  const L = psyAnalyse().slice(0,3);
+  if(!L.length) return h + '<div style="font-size:11px;color:var(--slate);font-style:italic">Orientation psychiatrique : renseignez les signes ci-dessus, la question 10 (Émotions & Mental), la langue et le pouls.</div>';
+  return h + '<div style="font-size:11px;font-weight:700;color:#6C3483;margin-bottom:3px">Orientation psychiatrique (référentiel Sorbonne) — proposition à confirmer</div>'
+    + L.map(r => '<div style="font-size:11px;margin:2px 0">• <strong>'+_rhEsc(r.nom)+'</strong> <span style="color:var(--slate)">('+_rhEsc(r.raisons.join(', '))+')</span> '
+      + '<button class="btn" style="font-size:10px;padding:1px 7px" onclick="psyOuvrir(\''+r.cat+'\',\''+_rhEsc(r.motif).replace(/'/g,"\\'")+'\',\''+_rhEsc(r.idx==null?'':PSY_DB[r.cat].motifs[r.motif].syndromes[r.idx].nom).replace(/'/g,"\\'")+'\')">→ Protocole</button></div>').join('');
+}
+function psyRafraichir(){
+  ['psy-analyse-examen','psy-analyse-points'].forEach(id => { const el = document.getElementById(id); if(el) el.innerHTML = psyAnalyseHTML(); });
+  const spec = (document.getElementById('spn-spec')||{}).value;
+  const pts = document.getElementById('psy-analyse-points'); if(pts) pts.style.display = spec==='psy' ? '' : 'none';
+}
+function psyOuvrir(cat, motif, synd){ navTo('points'); spnOuvrir('psy', cat, motif, synd||''); psyRafraichir(); }
+function _psySugg(cat, motif){ return new Map(psyAnalyse().filter(s => s.cat===cat && s.motif===motif && s.idx!=null).map(s => [s.idx, s])); }
 
 // ══════ Recherche dans le Référentiel Sorbonne Paris Nord (13/10/2026) ══════
 // Parcourt toutes les spécialités proposées pour ce patient (titres de motifs, mots-clés du cours, noms
@@ -10095,6 +10572,7 @@ function spnOuvrir(spec, cat, motif, synd){
   const m = document.getElementById('gyno-motif'); m.value = motif;
   spnShowProtocole();
   if(typeof rhRafraichir==='function') rhRafraichir();
+  if(typeof psyRafraichir==='function') psyRafraichir();
   const res = document.getElementById('gyno-result'); if(!res) return;
   let cible = null;
   if(synd){
@@ -10106,7 +10584,7 @@ function spnOuvrir(spec, cat, motif, synd){
   const el = cible || res;
   if(cible){ cible.classList.add('spn-cible'); setTimeout(() => cible.classList.remove('spn-cible'), 4000); }
   if(el.scrollIntoView){ el.scrollIntoView({behavior:'smooth', block:'start'});
-    setTimeout(() => { if(el.isConnected) el.scrollIntoView({block:'start'}); }, 400); } // la convergence se redessine au-dessus
+    [400, 1000].forEach(t => setTimeout(() => { if(el.isConnected) el.scrollIntoView({block:'start'}); }, t)); } // convergence et auriculothérapie se redessinent au-dessus
 }
 
 // Chargement d'une séance, changement de patient, remise à zéro : les cases décochées ne sont pas des
@@ -11604,6 +12082,7 @@ function togEx(el, inputId) {
   }
   // Orientation rhumatologique (le clic remplit le champ caché sans déclencher son oninput)
   if(/^(d-(aggrave|ameliore|type|rythme|rhumato)|l-enduit-couleur|l-couleur(-loc)?)$/.test(inputId) && typeof rhRafraichir==='function') rhRafraichir();
+  if(/^(d-psy|l-.*|pq.*)$/.test(inputId) && typeof psyRafraichir==='function') psyRafraichir();
 }
 
 // ══════ SCHÉMA DE LA LANGUE (dessin vivant + zones cliquables) ══════
@@ -13937,12 +14416,16 @@ function computeConvergence(){
   //    (protocole affiché : ses points de base + les points cochés par le praticien, pas tous ses tableaux)
   const specAff = (document.getElementById('spn-spec')||{}).value||'';
   const protAff = document.querySelectorAll('#gyno-result .gyno-chk').length ? ((document.getElementById('gyno-motif')||{}).value||'') : '';
-  const gyAff = specAff==='rhumato' ? '' : protAff;
-  const GY = specAff==='rhumato' && protAff ? null : _convGyno(mt, gyAff);
+  const cours = specAff==='rhumato' || specAff==='psy';
+  const gyAff = cours ? '' : protAff;
+  const GY = cours && protAff ? null : _convGyno(mt, gyAff);
   if(GY){ ctx.gyno = GY.titre; GY.pts.forEach(c => add(String(c).split(' ')[0],'gyno',1,'Référentiel SPN — '+GY.titre+' (points de base)')); }
   // 4 bis. Rhumatologie (Référentiel Sorbonne) : protocole affiché, sinon motif reconnu ; tableau évoqué par l'examen
   const RH = typeof _convRhumato==='function' ? _convRhumato(mt, specAff==='rhumato' ? protAff : '') : null;
   if(RH){ ctx.rhumato = RH.titre; RH.pts.forEach(p => { const o = _rhPt(p.raw).oms; if(o) add(o,'gyno',p.w,'Référentiel SPN — '+RH.titre+' ('+p.why+')'); }); }
+  // 4 ter. Psychiatrie (Référentiel Sorbonne) : protocole affiché, sinon motif reconnu
+  const PS = typeof _convPsy==='function' ? _convPsy(mt, specAff==='psy' ? protAff : '') : null;
+  if(PS){ ctx.psy = PS.titre; PS.pts.forEach(p => { const o = _rhPt(p.raw).oms; if(o) add(o,'gyno',p.w,'Référentiel SPN — '+PS.titre+' ('+p.why+')'); }); }
   document.querySelectorAll('#gyno-result .gyno-chk:checked').forEach(cb => add(cb.dataset.code,'gyno',1,'Référentiel SPN — coché',cb.dataset.nom));
   // 5. Mode Urgence : recettes reconnues dans le motif
   if(mt.length) URGENCE_RECIPES.forEach(r => {
@@ -14004,6 +14487,7 @@ function renderConvergence(){
   if(C.ctx.ebm) ctx.push('EBM : '+C.ctx.ebm);
   if(C.ctx.gyno) ctx.push('Sorbonne Paris Nord : '+C.ctx.gyno);
   if(C.ctx.rhumato) ctx.push('Sorbonne Paris Nord (rhumatologie) : '+C.ctx.rhumato);
+  if(C.ctx.psy) ctx.push('Sorbonne Paris Nord (psychiatrie) : '+C.ctx.psy);
   if(C.ctx.mtm && C.ctx.mtm.probable && C.ctx.mtm.mtm.length) ctx.push('MTM : '+C.ctx.mtm.mtm.map(x=>x.nom.replace(/\s*\(.*\)$/,'')).join(', ')+' (atteinte tendino-musculaire probable)');
   if(C.ctx.periop) ctx.push('Péri-op. : '+C.ctx.periop);
   if(!C.body.length){
