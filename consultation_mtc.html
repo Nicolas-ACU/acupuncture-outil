@@ -606,6 +606,11 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
         <div style="font-size:11px;color:var(--slate);font-style:italic;margin-bottom:8px">Cette liste s'enrichit à chaque amélioration de l'application — vous pouvez vérifier ici ce qui a changé depuis votre dernière utilisation. Remise à zéro le 1er octobre 2026, au lancement de la bêta.</div>
         <div id="guide-changelog" style="font-size:12px;color:var(--ink);line-height:1.8">
           <div style="font-size:12px;line-height:1.65;margin-bottom:10px">
+            <div style="font-weight:700;color:var(--jade);margin-bottom:4px">16 octobre 2026</div>
+            <div>• <strong>Psychiatrie complétée</strong> (cours de Capacité) : dépression Yu Zheng (6 tableaux), excès émotionnels (colère, rire, rumination, tristesse et deuil, peur et phobies, rêves et cauchemars), Zang Zao, Ben Tun (attaque de panique), syndrome Bai He, démence (Chi Dai), sevrage tabagique et addictions ; formules des 13 points de Maître Xu et des sept piqûres transperçantes. L'examen propose aussi ces tableaux (nouvelles étiquettes : boule dans la gorge, masse qui monte du bas-ventre, phobies, déclin cognitif…). Référentiel Psyché : rêves (Ling Shu 43), dix méthodes pour régulariser le Shen, psychothérapie par les émotions, répertoire du psychisme (plus de 400 symptômes).</div>
+            <div>• Le motif de la séance saisi en haut de page n'est plus effacé quand on ouvre les 10+1 Questions.</div>
+          </div>
+          <div style="font-size:12px;line-height:1.65;margin-bottom:10px">
             <div style="font-weight:700;color:var(--jade);margin-bottom:4px">15 octobre 2026</div>
             <div>• <strong>Orientation psychiatrique à l'examen</strong> : nouvelle carte « Signes psychiques et comportement » ; avec la question 10, le sommeil, la digestion, la langue et le pouls, l'application propose un tableau (Dian, Kuang, angoisse Yang ou Yin, trac, spasmophilie, tics), mis en évidence dans le protocole. Alerte en cas d'idées noires ou suicidaires.</div>
             <div>• <strong>Protocole psychiatrie enrichi</strong> d'après les supports de cours : 8 tableaux d'angoisse Yin avec leurs points, 5 tableaux Dian et 5 tableaux Kuang, points qui ouvrent les orifices de l'Esprit, noms variants des points Gui.</div>
@@ -730,7 +735,7 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
 
       <div class="card ref-sec" data-sec="P" id="ref-psy">
         <div class="ct">La psyché en MTC — tableaux de référence</div>
-        <div class="ref-doc" style="font-size:11px;color:var(--slate);margin-bottom:6px">Cours « La psyché en médecine traditionnelle chinoise » (octobre 2026). Les protocoles par motif sont dans Points › Motif clinique › Référentiel Sorbonne › Psychiatrie.</div>
+        <div class="ref-doc" style="font-size:11px;color:var(--slate);margin-bottom:6px">Cours « La psyché en médecine traditionnelle chinoise » (octobre 2026), cours de Capacité « Psychiatrie chinoise » et répertoire du psychisme. Les protocoles par motif sont dans Points › Motif clinique › Référentiel Sorbonne › Psychiatrie.</div>
         <div class="ref-tables" data-sec="P"></div>
       </div>
 
@@ -1580,6 +1585,12 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
               <span class="tg" onclick="togEx(this,'d-psy')">Début brutal</span>
               <span class="tg" onclick="togEx(this,'d-psy')">Évolution progressive</span>
               <span class="tg" onclick="togEx(this,'d-psy')">Épuisement / surmenage</span>
+              <span class="tg" onclick="togEx(this,'d-psy')">Boule dans la gorge</span>
+              <span class="tg" onclick="togEx(this,'d-psy')">Masse qui monte du bas-ventre</span>
+              <span class="tg" onclick="togEx(this,'d-psy')">Labilité / théâtralisme</span>
+              <span class="tg" onclick="togEx(this,'d-psy')">Phobies</span>
+              <span class="tg" onclick="togEx(this,'d-psy')">Déclin cognitif / désorientation</span>
+              <span class="tg" onclick="togEx(this,'d-psy')">Addiction (tabac / alcool / cannabis)</span>
         </div>
         <input id="d-psy" style="display:none" oninput="markDirty();psyRafraichir()">
         <div id="psy-analyse-examen" style="margin-top:6px"></div>
@@ -4265,7 +4276,12 @@ function updDixInfo(){
   if(a)a.textContent=sc?`N°${curScIdx+1} — ${fmtD(sc.date)}`:'Nouvelle séance';
   // Motif : séance en cours > motif sauvegardé > motif patient initial
   const motifInp=document.getElementById('dix-motif-input');
-  if(motifInp){
+  // Ne recharger le motif enregistré qu'en changeant de patient ou de séance : une saisie en cours (bandeau du haut,
+  // Synthèse) n'est plus effacée en ouvrant les 10+1 Questions (retour du 16/10/2026).
+  const ctxMotif = _ctxMotif();
+  if(motifInp && motifInp.dataset.ctx===ctxMotif && motifInp.value.trim()){ /* saisie en cours conservée */ }
+  else if(motifInp){
+    motifInp.dataset.ctx = ctxMotif;
     const motif=sc?.syn?.motif||'';
     // Pour la 1ère séance sans motif (aucune autre séance dans le dossier), pré-remplir avec le motif patient
     const premiere = !(curPt?.seances||[]).some(x => x !== sc);
@@ -4305,8 +4321,10 @@ function toggleTranscription(){
   if(tb.classList.contains('on')){ const x = document.getElementById('tbox'); if(x) x.focus(); }
 }
 
+function _ctxMotif(){ return (curPt ? (curPt.id||'nouveau')+(curPt._test?'-test':'') : '') + '|' + curScIdx; }
 function onMotifChange(){
   // Synchroniser le champ motif avec s-motif (Synthèse)
+  const di=document.getElementById('dix-motif-input'); if(di) di.dataset.ctx=_ctxMotif(); // saisie du praticien pour cette séance
   const val=(document.getElementById('dix-motif-input')||{}).value||'';
   const sm=document.getElementById('s-motif');
   if(sm)sm.value=val;
@@ -7453,7 +7471,7 @@ const REF_TABLES = [
    ['7','Gui Chong (Gui Chuang)','E6','« Lit du revenant »'],['8','Gui Shi','RM24','« Marché du revenant »'],['9','Gui Jiao (Gui Ku)','MC8','« Rencontre » (« Grotte ») du revenant'],
    ['10','Gui Tang','DM23','« Salle » (« Entrée ») du revenant'],['11','Gui Cang','RM1 (homme) ; You Men Tou (femme)','« Cachette » ; Cang = thésauriser'],
    ['12','Gui Tui (Gui Chen)','GI11','« Jambe » (« Ministre ») du revenant'],['13','Gui Feng','Hai Quan, point hors méridien sous la langue, ligne médiane (saignée)','« Sceau du revenant »']],
-  note:'À piquer l\'un après l\'autre, dans l\'ordre, dans les Dian Kuang. Triade Ciel-Homme-Terre : DM16 (Ciel), E6 (Homme, Yang Ming), RM24 (Terre).'},
+  note:'À piquer l\'un après l\'autre, dans l\'ordre, dans les Dian Kuang. Triade Ciel-Homme-Terre : DM16 (Ciel), E6 (Homme, Yang Ming), RM24 (Terre). Variante du cours de Capacité : 9e point (Gui Ku) = MC5 Jianshi au lieu de MC8 — à trancher. 62V et 11GI : aiguille chauffée ; Hai Quan : saignée.'},
 
  {id:'psy-classif', chap:'P', titre:'Troubles psychiques en médecine chinoise ancienne', src:'cours psyché',
   cols:['Entité','Description','Correspondances occidentales'],
@@ -7478,6 +7496,72 @@ const REF_TABLES = [
    ['IG16','Manie, Dian Kuang'],['V10','Manie, logorrhée'],['MC5','Palpitations, oppression thoracique, manie, frayeur, mauvaise mémoire ; dissout les Glaires de l\'Esprit'],
    ['VB13','Manie, frayeur'],['VB17','Pensées obsessionnelles, excès de réflexion, manie'],['VB18','Pensées obsessionnelles, démence'],
    ['DM16','Manie, envie de mourir, tristesse, peur'],['DM19','Manie, anxiété, agitation, insomnie'],['DM20','Désorientation, tristesse, pleurs, envie de mourir'],['DM26','Dian Kuang']]},
+
+ {id:'psy-cadres', chap:'P', titre:'Grands cadres cliniques de la psychiatrie chinoise', src:'cours psyché',
+  cols:['Cadre','Description','Correspondance occidentale','Protocole'],
+  rows:[
+   ['Yu Zheng','Syndromes de blocage émotionnel (stagnation du Qi du Foie)','Dépression réactionnelle, névroses, troubles psychiques de la ménopause','Psychiatrie › Dépression'],
+   ['Zang Zao','Agitation de l\'organe du Cœur','Hystérie (névrose de conversion)','Psychiatrie › Zang Zao, Ben Tun, Bai He'],
+   ['Dian Kuang','Folie « civile » Yin et folie « guerrière » Yang','Trouble bipolaire, psychoses','Psychiatrie › Dian Kuang'],
+   ['Chi Dai','Baisse des facultés intellectuelles','Démences','Psychiatrie › Démence'],
+   ['Wu Zhi Guo Ji','Cinq excès émotionnels','Colère, rire, rumination, tristesse, peur et phobies','Psychiatrie › Excès émotionnels'],
+   ['Bai He','Désordres psychiques liés au Poumon (syndrome du lis)','Distraction, tristesse, troubles du comportement','Psychiatrie › Zang Zao, Ben Tun, Bai He'],
+   ['Ben Tun Qi','Énergie du porcelet qui court (Qi qui remonte du bas-ventre)','Attaque de panique','Psychiatrie › Zang Zao, Ben Tun, Bai He']],
+  note:'Névrose : trouble conscient, critiqué, personnalité préservée ; psychose : altération du sens de la réalité (délire, hallucinations), anosognosie. Dian et Kuang recouvrent l\'ensemble des psychoses Yin et Yang ; dans le Dian il existe des signes Yang et inversement.'},
+ {id:'psy-reves-exces', chap:'P', titre:'Les rêves (Ling Shu 43) — douze surabondances : disperser', src:'cours psyché',
+  cols:['Surabondance','Rêve'],
+  rows:[['Yin','Traverser à gué de vastes étendues d\'eau, avoir peur'],['Yang','Grands incendies, être brûlé'],['Yin et Yang','Lutte meurtrière'],['Haut','Voler'],['Bas','Tomber'],['Grande faim','Recevoir'],['Satiété','Donner'],['Foie','Être en colère'],['Poumon','Peur, pleurs, flotter dans les airs'],['Cœur','Rire de joie, être terrifié'],['Rate','Chants et musique ; corps lourd, ne plus pouvoir bouger'],['Rein','Le dos et les lombes se séparent']],
+  note:'« Si on les disperse de façon appropriée, le malade sera immédiatement guéri. » Le pervers qui déborde vers les entrailles donne excès à l\'extérieur et insuffisance à l\'intérieur ; vers les organes, l\'inverse.'},
+ {id:'psy-reves-insuff', chap:'P', titre:'Les rêves (Ling Shu 43) — quinze insuffisances : tonifier', src:'cours psyché',
+  cols:['Le souffle Jue loge dans…','Rêve'],
+  rows:[['Cœur','Collines et montagnes, fumée et feu'],['Poumon','Flotter dans les airs, objets étranges en or ou en fer'],['Foie','Montagnes, forêts, arbres'],['Rate','Collines, grands étangs, maisons détruites par les orages'],['Rein','Bord d\'un abîme, être englouti dans l\'eau'],['Vessie','Errer'],['Estomac','Boire et manger'],['Gros Intestin','La campagne'],['Intestin Grêle','Villes animées, rues passantes'],['Vésicule Biliaire','Bagarres, procès, s\'ouvrir le ventre'],['Organes génitaux','Relations sexuelles'],['Cou','Être décapité'],['Jambes','Ne pas pouvoir avancer, cave profonde, endroit clos'],['Cuisses ou bras','Révérences à genoux'],['Vessie et rectum','Uriner, aller à la selle']],
+  note:'Les rêves d\'entrailles ne sont décrits que pour des vides. Points selon le contenu du rêve (école française) : passages étroits 3IG, défunts 15V, serpents 5DM (« 5 TM »), spectres 5MC, se tenir sur la tête 16TR, défilés rocheux et ruines sous la pluie 2RP, champs incultes 11GI, humiliation 43VB, formes noires 8RM, eau courante 18R, précipice ou être dans l\'eau 7R.'},
+ {id:'psy-dix-methodes', chap:'P', titre:'Dix méthodes pour régulariser le Shen', src:'cours psyché',
+  cols:['Méthode','Points','Indication'],
+  rows:[
+   ['Accroître le Qi','36E, 6RM, 6MC, 26DM','Troubles du Shen par vide de Qi'],
+   ['Nourrir le Sang','18V, 17V, 6RP, 6MC, 26DM','Par vide de Sang'],
+   ['Régler le Qi','6TR, 14F, 25E, 6MC, 26DM','Par stagnation du Qi'],
+   ['Activer le Sang','15V, 17V, 10RP, 6MC, 26DM','Par stase de Sang'],
+   ['Chasser le Froid','14DM, 4DM, 8RM, 6MC, 26DM','Par Froid et vide de Yang'],
+   ['Rafraîchir la Chaleur','11GI, 14DM, 6MC, 26DM','Par la Chaleur'],
+   ['Éliminer les Glaires','13V, 20V, 40E, 6MC, 26DM','Par les Glaires'],
+   ['Arrêter le Vent','20VB, 14DM, 3F, 18V, 6MC, 26DM','Par l\'agitation du Vent'],
+   ['Ouvrir les orifices','1R, 8RM, 8MC, 6MC, 26DM','Perte de connaissance, syncope'],
+   ['Éliminer l\'Humidité','36E, 9RP, 6TR, 6MC, 26DM','Par l\'Humidité']],
+  note:'6MC et 26DM sont communs aux dix méthodes. « Cinq aiguilles du Cœur » : 20DM, 1R, 8MC (première consultation, trois séances au plus). « Yeux du démon » : 11P et 1RP en moxa (Glaires abondantes). Points Jiaji du Cœur, du Foie, du Poumon, de la Rate et des Reins dans les maladies mentales chroniques.'},
+ {id:'psy-psychotherapie', chap:'P', titre:'Psychothérapie par les émotions (une émotion vainc l\'autre)', src:'cours psyché',
+  cols:['L\'émotion en excès','blesse','est vaincue par','En pratique'],
+  rows:[
+   ['Colère','le Foie','la tristesse','Parler d\'événements tristes pour susciter la compassion'],
+   ['Joie','le Cœur','la peur','Inquiéter (évoquer une menace)'],
+   ['Méditation, rumination','la Rate','la colère','Propos provocateurs ou déstabilisants'],
+   ['Tristesse','le Poumon','la joie','Propos plaisants, amuser'],
+   ['Peur','les Reins','la méditation','« Banaliser la peur » : exposition progressive au stimulus']],
+  note:'Su Wen 25, ordre des interventions : traiter l\'esprit, nourrir le corps, prescrire, piquer. Cette psychothérapie n\'était pas proposée pour les symptômes psychotiques.'},
+ {id:'psy-gui17', chap:'P', titre:'Les 17 points Gui (Sun Si Miao et Xu Qiufu)', src:'cours psyché',
+  cols:['Groupe','Points'],
+  rows:[
+   ['Communs aux deux listes','26DM, 16DM, 24RM, 6E, 11P, 1RP, 5MC, 7MC, Hai Quan'],
+   ['Propres à Sun Si Miao','62V, 23DM, 1RM, 11GI'],
+   ['Propres à Xu Qiufu','24DM, 17E, 34VB, 2F']],
+  note:'Ils régulent Yin et Yang (Du Mai, Ren Mai), le Cœur (Maître du Cœur), le Foie et la VB, le Qi et le Sang (points Jing-puits). Selon le cours de Capacité, le 9e point de Sun Si Miao (Gui Ku) est 5MC ; d\'autres sources donnent 8MC (Laogong).'},
+ {id:'psy-tristesse', chap:'P', titre:'Une émotion, plusieurs organes : la tristesse', src:'cours psyché',
+  cols:['Origine','Signes clés'],
+  rows:[
+   ['Vide de Qi du Poumon','Tristesse sans raison, pleurs, souffle court, voix basse ; pouls fin, faible'],
+   ['Vide de Qi de la Rate','Tristesse, pleurs, inappétence, bouche fade, manque de force'],
+   ['Vide de Qi du Cœur','Tristesse, palpitations, insomnie, rêves ; pouls noué ou intermittent'],
+   ['Vide de Qi du Foie','Tristesse, irritabilité, cauchemars ; pouls fin, en corde'],
+   ['Vide des Reins','Tristesse, vertiges, acouphènes, lombes faibles ; pouls profond, fin'],
+   ['Vide de la Vésicule Biliaire','Crainte, frayeur facile, inquiétude, pleurs sans raison'],
+   ['Glaires','Alternance de joie et de tristesse, pleurs et rires sans raison, oppression ; pouls glissant'],
+   ['Stase de Sang','Tristesse, agitation, pertes de mémoire ; langue à taches de stase, pouls rugueux']],
+  note:'Un symptôme seul n\'a pas de valeur : seul son contexte lui donne un sens. 7P n\'est pas un point de la tristesse dans les classiques, mais de l\'excès de rires, de la mémoire et du noyau de prune (avec 6R).'},
+ {id:'psy-repertoire', chap:'P', titre:'Répertoire du psychisme (lecture classique française)', src:'cours psyché',
+  cols:['Symptôme','Points'],
+  rows:[["Tout trouble", "2F, 6GI (-), 6MC, 16DM"], ["Tout trouble — trois pouls psychiques faibles", "6RM"], ["Tout trouble — avec excès ou insuffisance physique", "7C"], ["Tout trouble — par arrêt des règles", "27R"], ["Tout trouble — après un choc", "14E"], ["Agitation", "8C, 21E, 36E, 45E, 4F (+), 5P, 27R, 11V, 42V, 59V, 15DM, 16RM"], ["Agitation — a toujours besoin de remuer", "5MC"], ["Agitation — extrême", "17DM"], ["Agitation — avec faiblesse d'esprit", "13RM"], ["Agitation — avec insanité", "8IG"], ["Agitation — avec malaise", "4TR"], ["Agitation — avec mélancolie", "4IG"], ["Agitation — par anxiété", "2RP"], ["Agitation — par chaleur", "15TR"], ["Agitation — par cholera", "61V"], ["Agitation — par émotivité", "5C"], ["Agitation — des enfants", "9C"], ["Agitation — par fièvre", "7C, 5GI, 9MC, 3RP, 1TR (+), 14DM"], ["Agitation — par froid", "15TR"], ["Agitation — à la ménopause", "14F"], ["Agressivité", "20RP"], ["Agressivité — avant les règles", "5R (-)"], ["Altruisme — excessif, jusqu'à masochisme", "5RP"], ["Angoisse", "7C, 9C, 41E, 10P, 2RP, 2R (+), 34VB, 35VB"], ["Angoisse — cœur contracté", "5C"], ["Angoisse — et artères contractées, gorge contractée", "34VB (-)"], ["Angoisse — avec insomnie", "12E"], ["Angoisse — inquiétude", "13GI, 8MC"], ["Angoisse — saisi par les spectres", "26DM"], ["Anxiété", "6MC, 8MC, 9MC, 24R, 39VB, 20DM, 24DM"], ["Anxiété — dépression anxieuse", "2RP"], ["Appréhension", "9C, 36E, 5MC, 7MC, 1R, 2R (+), 4R, 30V, 14DM, 24DM, 14RM"], ["Appréhension — agitée", "5C"], ["Appréhension — surexcitée", "4IG, 7IG"], ["Appréhension — attend un malheur", "27R, 15RM"], ["Appréhension — comme craignant d'être arrêté", "2R (+), 34VB (-)"], ["Autoritarisme", "16RM"], ["Aversions — les aliments froids", "1DM"], ["Aversions — bruits humains", "44E"], ["Aversions — enfants petits, surtout les fillettes", "18RM"], ["Aversions — féculents", "2RP"], ["Aversions — gens: ne supporte pas les gens", "10TR"], ["Aversions — graisses", "2RP"], ["Aversions — lumière", "18R"], ["Aversions — maisons d'autrui", "45E"], ["Aversions — nourriture", "9RP"], ["Aversions — odeurs de nourriture", "36E"], ["Aversions — personnes inconnues", "43VB"], ["Aversions — être serré à la taille ou au cou", "12E"], ["Aversions — être touché ou même regardé", "14E"], ["Aversions — pour la vie: n'aime pas la vie", "17R, 25R"], ["Aversions — viande", "3IG, 2RP"], ["Aversions — voix humaines", "44E, 15RM"], ["Bruits — déteste les bruits humains", "44E"], ["Bruits — sursaute aux bruits soudains", "45E, 42E, 27R"], ["Capricieux", "9R"], ["Capricieux — enfants: crient pour avoir un objet, le jettent aussitôt", "21R"], ["Caractère — manque de caractère", "7R"], ["Catégorique", "7R"], ["Chagrin", "1C, 9C, 18E, 41E, 7IG, 7MC, 5P, 10P, 5RP, 7RP, 23VB, 20DM"], ["Chagrin — bouleversé facilement", "1R"], ["Chagrin — après choc psychique", "5C"], ["Chagrin — constant", "6R (-)"], ["Chagrin — excessif", "11DM"], ["Chagrin — s'arrache les cheveux", "24DM"], ["Chagrin — facile", "15RP, 1R, 24VB"], ["Chagrin — avec insomnie", "24DM"], ["Chagrin — grand chagrin, ne peut dormir", "10TR"], ["Chagrin — surexcité", "4C (+), 7C"], ["Colère", "9P"], ["Colère — aggravé par la colère", "21R"], ["Colère — emporté", "25E, 36E"], ["Colère — facile", "7R, 26R"], ["Colère — se calme vite, soupe au lait", "26R"], ["Colère — folle", "7C"], ["Colère — fureur", "36E"], ["Colère — soudaine", "38VB"], ["Colère — supporte beaucoup et soudain éclate", "38VB"], ["Colère — par hypertension", "7MC"], ["Colère — par vers parasites", "14RM"], ["Conscience morale — manque de conscience morale, voit ses désirs et non leurs conséquences", "2RP"], ["Contraires — enfants contraires", "1RP, 2RP, 6RP"], ["Courage — audace", "38VB"], ["Courage — grand courage", "38VB"], ["Courage — manque de courage, d'audace", "43VB, 6RM"], ["Courage — toute tâche, tout effort semblent trop difficiles", "43VB"], ["Courage — découragé", "36E, 28VB"], ["Courage — moments de faiblesse et découragement, jusqu'à crainte d'évanouissement", "9C"], ["Délire — par émotion", "62V (-)"], ["Délire — pendant la fièvre", "5GI, 37VB, 62V (-), 12DM"], ["Délire — de la typhoïde", "25E"], ["Délire — doutes surexcités, erreurs extravagantes", "43V"], ["Dépression", "1C, 3C, 7C, 28E, 2F, 11GI, 5P, 9VB, 19VB, 36VB, 8V, 1DM (+), 20DM, 24DM, 26DM, 6RM, 16RM"], ["Dépression — par choc", "41E, 7IG, 7VB"], ["Dépression — par émotion violente ou soudaine, grave dépression", "39E"], ["Dépression — par malaria", "25E"], ["Dépression — avant les règles", "5R (+)"], ["Dépression — dépression agitée", "5RP"], ["Dépression — anxieuse", "2RP"], ["Dépression — sans appétit pour la vie ni pour la nourriture", "41E"], ["Dépression — déprimé ou fatigué indûment et pour trop longtemps", "3IG"], ["Dépression — grave, jusqu'à perte de connaissance", "2V"], ["Dépression — jusqu'à anémie cérébrale", "7C"], ["Dépression — avec langue sortie", "58V, 24DM"], ["Dépression — moments de faiblesse et découragement", "9C"], ["Dépression — perd le rire pour longtemps", "26DM"], ["Dépression — sans entrain", "9C, 36E"], ["Désespoir", "20DM"], ["Désespoir — accès extraordinaire de désespoir", "8GI"], ["Désespoir — crises de désespoir", "7P"], ["Désirs — voit ses désirs et non leurs conséquences", "2RP"], ["Désirs — alcool, café", "13DM"], ["Désirs — eau froide", "7C"], ["Désirs — terre, plâtre", "13E"], ["Désirs — dormir", "12V, 12GI"], ["Désirs — être porté (enfants)", "21R"], ["Désirs — être couché", "1F"], ["Désirs — mourir", "2F, 6RM"], ["Désirs — faire du mal, jusqu'à tuer", "12DM"], ["Désirs — s'étendre", "3GI, 13GI, 10F, 4R"], ["Désirs — se reposer et ne pas parler", "17V"], ["Désirs — se tuer", "13V, 14DM, 16DM"], ["Désirs — s'exclure du monde et fermer sa porte", "4R"], ["Désirs — le silence", "44E"], ["Désirs — et l'obscurité", "13DM"], ["Discipline intérieure — manque de", "2RP"], ["Distrait", "14RP, 15RM"], ["Distrait — absences, distraction", "63V (-)"], ["Distrait — réflexion difficile", "26R"], ["Douleur morale", "18E"], ["Égoïste", "2RP"], ["Émotivité", "34E, 41E, 13GI, 3MC, 4IG, 5MC, 7P, 4R, 20R, 2TR, 10TR, 35VB, 30V, 64V, 66V, 1DM (+), 11DM, 22DM"], ["Émotivité — bloqué et noué par les émotions", "52V"], ["Émotivité — saisi par les émotions", "38VB"], ["Émotivité — faiblesse soudaine, troublé, bouleversé, ne peut respirer", "5GI (+)"], ["Émotivité — bouleversé facilement", "1R"], ["Émotivité — excessive", "27E, 45E, 3GI, 9VB"], ["Émotivité — cardiaque", "5C"], ["Émotivité — par entrevues, examens", "15V"], ["Émotivité — physique", "5C, 6C"], ["Émotivité — psychique", "5C"], ["Émotivité — vésicale", "5C"], ["Émotivité — avec agitation, des enfants", "9C"], ["Émotivité — ne boit ni ne mange", "64V"], ["Émotivité — avec boule à la gorge", "29E"], ["Émotivité — avec gorge contractée", "14E"], ["Émotivité — avec transpiration des paumes", "10V (-)"], ["Émotivité — avec tremblements", "9C"], ["Émotivité — réactions nerveuses exagérées", "45E"], ["Émotivité — rougit facilement", "7IG"], ["Émotivité — à la moindre émotion", "11R, 2RM"], ["Émotivité — sursaute aux bruits soudains", "42E, 45E, 27R"], ["Émotivité — apaise les mauvaises nouvelles", "44E (-)"], ["Émotivité — par choc", "7IG"], ["Émotivité — manque de contrôle émotionnel", "2RP"], ["Ennui", "14RP, 15RM, 41E"], ["Ennui — aveuglant", "13V"], ["Esprit tremblant", "8C, 27E, 41E, 5F, 13GI, 66V, 20R, 26R, 2TR, 10TR, 19VB, 35VB, 11DM, 20DM, 22DM"], ["Euphorique — amical", "2RP"], ["Évolué — association des idées, des sensations, des images, concentration, imagination", "40E, 22DM"], ["Évolué — affaibli", "37VB, 4DM (moxas), 9DM, 11DM, 22DM"], ["Évolué — excès", "37VB"], ["Évolué — logis du Shen", "7C, 22DM"], ["Faiblesse psychique", "9C, 6GI (+), 13RM, 15RM"], ["Faiblesse psychique — faiblesse et irritabilité des nerfs", "12E (+)"], ["Faiblesse psychique — moments de faiblesse et découragement", "9C"], ["Faiblesse psychique — par trop de soucis et de pensées", "20DM"], ["Fugues", "23E, 8GI, 5IG, 2VB, 8V, 16DM, 18DM"], ["Fugues — marche follement", "23E, 8GI, 5IG, 8V, 16DM, 18DM"], ["Fugues — marche sans but, par suite de malaria", "42E"], ["Fugues — marche tête baissée, regarde à droite et à gauche", "5IG"], ["Grimaces", "12E"], ["Hallucinations", "40E (-), 5GI (-), 7GI, 7P, 2V, 30V, 61V"], ["Hallucinations — pendant la fièvre", "12DM"], ["Hallucinations — violentes", "7C"], ["Hallucinations — tourmenté par les spectres", "36E, 5MC"], ["Hallucinations — spectres chats", "14RM"], ["Hallucinations — visions extravagantes", "7P"], ["Hostilité — haine, désir de faire mal jusqu'à tuer", "12DM"], ["Hostilité — s'attarde aux côtés déplaisants", "25R"], ["Humeur — mauvaise", "21R"], ["Humeur — au réveil", "96R (illisible)"], ["Humeur — sautes d'humeur", "9R, 26DM"], ["Hystérie", "4C (+), 4MC, 5RP, 7RP, 9R, 24VB, 35VB , 43V, 18DM, 14RM"], ["Hystérie — convulsions", "4C (+)"], ["Hystérie — plié en arrière", "18V"], ["Hystérie — raideur", "7RP"], ["Hystérie — vertiges, évanouissements, épilepsie", "58V"], ["Idées fausses", "20R, 15V, 61V, 11DM, 20DM, 3RM, 29 PMa (hors méridien)"], ["Idées fausses — sans arrêt", "14RM"], ["Idées fausses — idées fausses sans joie", "2VB, 8V, 13DM"], ["Idées fausses — pense que personne ne l'aime", "26R"], ["Idées fausses — perte du sens des réalités", "20DM"], ["Idées fausses — surexcitées", "7C"], ["Impatience", "17R"], ["Impulsions irraisonnées", "5DM"], ["Indécis", "3MC"], ["Indignation", "39VB"], ["Indignation — excès d'indignation ou de sentiments", "7MC"], ["Indignation — surexcitée, pouvant causer apoplexie", "39VB"], ["Indignation — par injustice", "22R"], ["Infériorité — complexe d'infériorité et d'insuccès, manque d'autorité", "4R"], ["Inquiétude", "13GI, 8MC"], ["Insanités", "40E (-), 45E, 7GI, 2TR, 64V, 19DM"], ["Insanités — agitées", "8IG"], ["Insanités — apparence d'insanités (paranoïa)", "9R"], ["Insanités — éprouve le besoin de jurer", "24R"], ["Insanités — étrangetés", "5MC"], ["Insanités — grandes insultes", "36E"], ["Insanités — avec muscles contractés, corps tordu, éblouissements, grande contracture", "11V"], ["Insanités — par vers", "67V"], ["Instabilité — de caractère, des adultes et des enfants", "9R"], ["Instabilité — d'humeur", "9R, 26DM"], ["Insécurité — sentiment d'insécurité", "5MC"], ["Instincts primitifs, primate", "37E, 8MC, 42V, 20DM"], ["Irritabilité", "25E, 20RP, 27R, 10TR, 38VB, 62V (-)"], ["Irritabilité — plusieurs jours avant les règles", "5R (-)"], ["Irritabilité — trouve tout mal", "38VB"], ["Joie — euphorique, amical", "2RP"], ["Joie — alternance de gaieté et de méchanceté", "14E"], ["Joie — alternance de gaieté et de mécontentement", "24VB"], ["Joie — sans joie", "1C, 1F, 5F, 5RP, 4R, 6R (-)"], ["Joie — sans joie après choc grave", "5C"], ["Lassitude psychique — lenteur et lassitude d'esprit", "62V (+)"], ["Maladresse — laisse tout tomber", "28VB"], ["Méchanceté — alternance de gaieté et de méchanceté", "14E"], ["Mécontentement", "8MC, 7R, 9R, 38VB, 18V"], ["Mécontentement — mécontentement surexcité, excès d'indignation ou de sentiments", "7MC"], ["Mécontentement — joie ou mécontentement par moments", "24VB"], ["Mécontentement — trouve tout mal", "38VB"], ["Mécontentement — par refoulements de soucis", "15E"], ["Mélancolie", "15E, 1F, 5F, 5P, 2R (+), 4R, 21R, 13DM, 14DM, 20DM"], ["Mélancolie — agitée", "4IG"], ["Mélancolie — bouleversé de mélancolie", "15V"], ["Mélancolie — prolongée", "36E"], ["Mélancolie — poitrine tordue de mélancolie", "21VB"], ["Misanthropie", "4R"], ["Misanthropie — déteste les bruits humains", "44E, 15RM"], ["Misanthropie — n'aime pas faire connaissance", "23VB"], ["Misanthropie — ne supporte pas les gens", "10TR"], ["Nerfs (crises de nerfs)", "36E, 40E (+), 3MC, 9P, 3RP, 4RP, 5RP, 10TR (-), 21VB, 16V"], ["Nerfs (crises de nerfs) — par faiblesse", "7RP"], ["Nerfs (crises de nerfs) — par émotivité", "6C"], ["Nerfs (crises de nerfs) — par grand choc", "15RP"], ["Nerfs (crises de nerfs) — à l'orgasme", "20E"], ["Nerfs (crises de nerfs) — avec teint bleuté, ne peut parler, corps humide et froid, mains glacées", "40E (+)"], ["Nerfs (crises de nerfs) — grands troubles nerveux avec surexcitation et douleur, grand malaise sans savoir où est le mal", "6R"], ["Nerfs (crises de nerfs) — faiblesse et Irritabilité des nerfs", "12E"], ["Nerfs (crises de nerfs) — nerfs excités ou crispés", "4TR (-)"], ["Nervosité", "4F, 30V"], ["Nervosité — avant les règles", "5R (-)"], ["Nervosité — avec vomissements", "5MC"], ["Nervosité — due aux vers", "67V"], ["Neurasthénie", "45E, 7RP, 21VB, 43V, 14DM, 6RM"], ["Obsessions", "14E, 5RP, 62V, 12RM, 14RM"], ["Orgueilleux et méprisant", "14RP, 14R"], ["Paresse", "40E (-), 6MC, 2RP, 3RP, 6RP"], ["Paresse — aime à s'étendre", "10F"], ["Paresse — indolence", "40E (-)"], ["Paresse — lourdeur", "3RP, 6RP"], ["Paresse — surtout au réveil", "3RP"], ["Parole — abondante et incorrecte", "24VB"], ["Parole — bavarde", "61V"], ["Parole — sans sagesse", "5F (+, 3 fois)"], ["Parole — bégaye", "1P"], ["Parole — gênée", "23VB"], ["Parole — par découragement", "9DM"], ["Parole — par insuffisance d'énergie", "9DM"], ["Parole — extravagante", "36E, 5IG, 2TR, 9R"], ["Parole — et insultante", "9R"], ["Parole — aux émotions violentes ou soudaines", "39E"], ["Parole — loquacité, logorrhée", "12E, 6GI (-), 7R, 61V, 8DM"], ["Parole — ne parle plus", "3P"], ["Parole — ne trouve plus ses mots", "15RM"], ["Parole — précipitée", "5C"], ["Parole — rapide", "4F (+)"], ["Parole — se parle a lui-même, parle seul", "3P"], ["Parole — surexcitée", "5GI (-), 7GI, 8GI, 4IG, 7IG, 61V"], ["Parole — bouche dépravée", "9P"], ["Parole — par malaria", "25E"], ["Passionné", "38VB"], ["Personnalité — maladies de la personnalité", "7C"], ["Personnalité — esprit superficiel, sans personnalité, pas de vie intérieure", "2RP"], ["Persécution — se croit persécuté", "5MC"], ["Persécution — se sent maltraité", "11V"], ["Pessimisme", "5RP"], ["Peur", "7C, 9C, 5F, 13F, 11GI, 13GI, 4MC, 7MC, 10P, 18TR, 15V, 30V, 1DM (+), 14RM"], ["Peur — dans la nuit", "12DM"], ["Peur — des enfants", "9MC, 23VB"], ["Peur — comme d'être arrêté", "34VB"], ["Peur — de l'obscurité", "16RM"], ["Peur — de l'orage", "16RM"], ["Peur — des visiteurs", "1RP, 6RP"], ["Peur — épilepsie de peur, des enfants", "4VB"], ["Peur — peur facile", "9VB"], ["Peur — par choc", "7IG"], ["Peur — craintif", "8C"], ["Peur — craint les gens", "8C, 4MC"], ["Peur — enfants comme contractés d'horreur, bouche convulsée", "23VB"], ["Peur — avec oppression", "14RM"], ["Peur — peurs irraisonnées", "9MC"], ["Peur — peurs surexcitées", "4C (+)"], ["Peur — terreurs nocturnes", "5MC"], ["Peur — des enfants", "9MC, 23VB"], ["Phobies", "12DM"], ["Phobies — hantises", "29 PMa (hors méridien)"], ["Pleurs", "2F, 7MC, 14RM"], ["Pleurs — aisés", "3IG"], ["Pleurs — avant les règles", "5R (+)"], ["Pleurs — la nuit", "20DM"], ["Pleurs — ou dans l'obscurité, des enfants", "9MC"], ["Pleurs — en entendant de la musique", "18R"], ["Pleurs — en partant de ses malheurs", "15V"], ["Pleurs — sanglots", "5P, 24DM"], ["Pleurs — bouleversants", "15RP"], ["Pleurs — extravagants", "7C"], ["Pleurs — suffocants", "11E"], ["Pleurs — violents", "9VB"], ["Pressé — toujours pressé", "17RM, 5DM"], ["Pressé — en avance", "17RM"], ["Pressé — agit avec hâte et précipitation", "13RM"], ["Prévoyance — manque de prévoyance", "2RP"], ["Propreté — très soucieux de propreté, jusqu'à exagération", "38VB"], ["Refoulements", "20R"], ["Refoulements — d'énergie par sentiments", "7IG"], ["Refoulements — de sentiments et d'idées, ne peut s'extérioriser", "62V (-)"], ["Refoulements — de soucis", "15E, 10TR, 8V"], ["Refoulements — avec rumination", "13DM"], ["Regrets", "1C, 7IG, 35VB"], ["Regrets — excessifs", "11DM"], ["Religiosite excessive", "5RP"], ["Remords", "35VB"], ["Remords — obsédants", "29 PMa (hors méridien)"], ["Ressassement — remâche ses malheurs", "18V"], ["Ressassement — refoulement et rumination de soucis", "13DM"], ["Rire — aisé", "7GI, 7P"], ["Rire — désordonné", "6MC"], ["Rire — extravagant", "7C, 36E, 5IG"], ["Rire — fou-rire", "8MC"], ["Rire — joyeux", "5GI (-)"], ["Scrupules", "5RP"], ["Sensibilité — hypersensibilité morale ou physique", "14E"], ["Sensibilité — hypersensibilité à toucher, douleur, air froid", "20RP"], ["Sensibilité — sensible à émotions, peur, toucher, air", "27E"], ["Sensibilité — morale", "5MC"], ["Sensibilité — pleure en entendant de la musique", "18R"], ["Sensibilité — réactions nerveuses exagérées", "45E"], ["Soucis", "14E, 12RM"], ["Soucis — exagération des soucis", "2RP, 5RP"], ["Soucis — préoccupations", "14E, 5F"], ["Soucis — refoulement de soucis", "15E, 10TR, 8V"], ["Soucis — rumination des soucis", "13DM"], ["Soucis — soucis surexcités", "39VB"], ["Soupirs", "1F, 5RP"], ["Soupirs — fréquents", "38VB"], ["Soupirs — incessants", "3F"], ["Soupirs — nombreux", "7C, 36E, 5F"], ["Soupirs — grands soupirs", "8C, 2F, 5RP, 15RP, 23VB, 24VB, 40VB"], ["Soupçonneux", "24R"], ["Stupéfié par grand choc", "10TR"], ["Stupidité", "3C, 4R, 2VB"], ["Stupidité — de nature et d'esprit", "7C"], ["Surexcitation", "4C, 36E, 40E (-), 7GI, 4IG, 7IG, 9R, 2TR, 35VB, 8V, 62V (-), 64V, 1DM (-), 24DM, 26DM"], ["Surexcitation — accès de surexcitation", "4RP, 1R, 12DM, 19DM"], ["Surexcitation — chante, monte sur les tables, rejette ses vêtements", "40E (-), 42E, 24DM"], ["Surexcitation — par émotion", "14RM"], ["Surexcitation — par faiblesse", "43V"], ["Surexcitation — continuelle", "42E"], ["Surexcitation — avec langue sortie", "23E"], ["Surexcitation — jusqu'à démence", "10TR (-)"], ["Surexcitation — des enfants, se renversant en arrière", "20DM (-)"], ["Surexcitation — esprit surexcité", "2V"], ["Surexcitation — fureur", "9R"], ["Surexcitation — grands troubles nerveux avec surexcitation et douleur", "6R"], ["Surexcitation — physique ou psychique", "3IG"], ["Surexcitation — surexcité indûment ou pour trop longtemps", "3IG"], ["Surexcitation — violente", "5MC"], ["Surexcitation — par émotions", "18V, 14RM"], ["Surexcitation — violentes ou soudaines", "39E"], ["Surexcitation — par fièvre", "63V"], ["Surexcitation — malaria", "12VB (+)"], ["Surexcitation — par suite de malaria", "42E"], ["Surexcitation — par indignation, pouvant causer apoplexie", "39VB"], ["Surexcitation — par vers", "67V"], ["Surexcitation — avec accès de vomissements", "24E, 14RM"], ["Surexcitation — avec hallucinations et cauchemars", "2V"], ["Surexcitation — avec insomnie", "12E"], ["Surexcitation — avec langue sortie", "23E, 45E"], ["Susceptible 25e", "26R, 38VB"], ["Sursauts — aux bruits inattendus, aux craquements de boiserie", "42E"], ["Sursauts — aux bruits soudains", "45E"], ["Sursauts — nerveux", "11V"], ["Sursauts — surtout la nuit", "21TR"], ["Synthèse — manque d'esprit de synthèse", "2RP"], ["Têtu", "38VB"], ["Timidité", "8MC, 1RP, 1R, 13DM"], ["Timidité — enfants timides", "6RP"], ["Timidité — reculant toujours", "5MC"], ["Timidité — n'aime pas faire connaissance", "23VB"], ["Trac — des artistes", "5C"], ["Trac — glacé, saisi aux entrevues, examens", "15V"], ["Tristesse", "9C, 36E, 18V, 12RM, 13RM"], ["Tristesse — avant les règles", "5R (-)"], ["Tristesse — profonde", "17R"], ["Volonté — excès de décision-volonté", "2R (-)"], ["Volonté — insuffisance de décision-volonté", "6MC, 7R"], ["Volonté — sensation d'avoir deux volontés opposées", "24R"]],
+  note:'Transcription d\'une copie : notations harmonisées (« 41g » → 4IG, « 120M » → 12DM, « 2BVb » → 28VB…) ; (+) tonifier, (-) disperser ; « 96R » illisible, « 29 PMa » point hors méridien non identifié — à vérifier sur l\'original.'},
  {id:'psy-litterature', chap:'P', titre:'Angoisse et anxiété — points de la littérature', src:'cours psyché',
   cols:['Point','Indication'],
   rows:[
@@ -10191,9 +10275,42 @@ function _convCours(DB, mt, impose, analyse){
 
 // ══════ PSYCHIATRIE — Référentiel Sorbonne Paris Nord (14/10/2026) ══════
 // Sources (fournies par le praticien) : « La psyché en médecine traditionnelle chinoise » (synthèse, octobre 2026) et les
-// supports de cours « Angoisse, tic, trac », « Dian Kuang », « Physiologie des émotions », « Les tics (Chou Chu) » (15/10/2026). Points en notation du cours (« 15V », « 26DM »),
+// supports de cours « Angoisse, tic, trac », « Dian Kuang », « Physiologie des émotions », « Les tics (Chou Chu) » (15/10/2026) ;
+// cours de Capacité « Psychiatrie chinoise », « Mental, pratiques quotidiennes », « Les rêves », répertoire du psychisme (16/10/2026). Points en notation du cours (« 15V », « 26DM »),
 // convertis par _rhPt ; points hors méridien (Yin Tang, Si Shen Cong…) gardés tels quels. Incohérences signalées, non corrigées.
 const PSY_DB = {
+
+  yuZheng: {
+    label: 'Dépression (Yu Zheng)',
+    alerte: 'Toujours rechercher des idées suicidaires (intention, plan, moyens) ; dépression sévère ou mélancolique : prise en charge psychiatrique, l\'acupuncture en complément.',
+    note: 'Yu Zheng = syndromes de blocage émotionnel ; correspond à la dépression réactionnelle (la forme mélancolique relève du Dian). Les six stases (Qi, Sang, Humidité, Glaires, Feu, aliments) ; la dépression est d\'abord un Yu du Qi. Tout part de la stagnation du Qi du Foie (parole non exprimée, colère refoulée) : trois formes de plénitude (Foie et ses transformations), puis trois formes de vide quand la mère (Foie) passe au fils (Cœur). Critères occidentaux : au moins 5 symptômes pendant 2 semaines (humeur dépressive, perte d\'intérêt, troubles du sommeil, du poids, ralentissement ou agitation, fatigue, culpabilité, troubles de la concentration, idées de mort).',
+    motifs: {
+      'Dépression (Yu Zheng)': {
+        syn: ['depression','etat depressif','syndrome depressif','depression reactionnelle','deprime','yu zheng','humeur depressive'],
+        note: 'Psychothérapie associée pendant la pose (Su Wen) : la tristesse vainc la colère, la joie vainc la tristesse, la colère vainc la rumination. Manipulation : dispersion pour les formes de plénitude, tonification pour les formes de vide.',
+        syndromes: [
+          {nom:'Stagnation du Qi du Foie', signes:'Pleurs, tristesse, abattement ; soupirs fréquents, douleur et gonflement de la poitrine, des flancs et du bas-ventre, instabilité émotionnelle ; nausées, éructations (Estomac) ou ballonnement, selles irrégulières (Rate) ; règles irrégulières, SPM. Enduit mince et gras | Pouls tendu',
+           pp:['18V','19V','6TR','34VB','6MC','14F','3F','17RM','36E'], ps:['12RM','25E','6RM','6RP','4RP','10RP','29E'],
+           tech:'Dispersion. 18V + 19V drainent le Foie ; 6TR + 34VB mobilisent le Qi (poitrine, flancs) ; 6MC + 14F + 3F ; 17RM ouvre la poitrine ; 12RM, 25E, 6RM si troubles digestifs ; 6RP si aménorrhée ; 10RP, 29E si SPM. Variante : 17RM, 18V + 14F, 3F.'},
+          {nom:'La stagnation du Qi se transforme en Feu', signes:'Dépression entrecoupée d\'épisodes de Feu : irritabilité, colère facile, insomnie, céphalée, yeux rouges, acouphènes, chaleur dans la tête, goût amer, bouche sèche, renvois acides, constipation. Langue rouge, enduit jaune | Pouls tendu et rapide',
+           pp:['Tai Yang','34VB','3F','43VB','2F','44E','17RM','6MC','7C'], ps:['12RM','6TR'],
+           tech:'Dispersion. Clarifier le Feu et calmer le Shen. Variante : 2F + 43VB ; 34VB + 6TR ; 12RM + 6MC.'},
+          {nom:'Stagnation de Qi et obstruction des Glaires (noyau de prune)', signes:'Dépression ; gêne dans la gorge qui ne peut être ni avalée ni crachée (Mei He Qi), oppression thoracique, étouffement, plénitude épigastrique, douleur des flancs, soupirs. Langue grosse, humide, enduit blanc et gras | Pouls tendu et glissant',
+           pp:['6MC','3F','17RM','12RM','9RP','6RP','40E','7P','36E','7C'], ps:['5C','23RM','22RM','24DM'],
+           tech:'Dispersion sauf 36E en tonification. 7P + 40E libèrent la gorge ; 5C + 23RM la dysphagie ; 22RM si blocage de la gorge. Si Humidité-Chaleur : 8F, 2F, 18V, 19V, 44E. Si vide de Yin du Rein : 3R. Si Vent interne : 20VB. Si vide de Yang du Rein : 23V, 4RM, 6RM en moxa. Si Humidité-Froid : 20V, 4RM, 36E, 9RP, 12RM réchauffés.'},
+          {nom:'Le Qi du Foie blesse le Cœur-Esprit', signes:'Dépression ; colère, joie excessive, hyperémotivité, agitation, palpitations, insomnie, bâillements, obnubilation, confusion, absences. Langue pâle, enduit mince blanc | Pouls tendu et fin',
+           pp:['26DM','4GI','20DM','9C','6MC','12RM','15V','17V','7C','6RP'], ps:[],
+           tech:'Tonification. Ouvrir les orifices (26DM, 4GI, 20DM), tonifier le Cœur (9C), nourrir le Yin et le Sang (15V, 17V, 7C, 6RP).'},
+          {nom:'Vide de Cœur et de Rate', signes:'Dépression ; asthénie physique et mentale, céphalées, vertiges, acouphènes, palpitations, insomnie ou rêves nombreux, perte de mémoire, pensées abondantes, inappétence, ballonnement, selles molles ; ongles, lèvres et teint pâles. Langue pâle | Pouls fin, faible',
+           pp:['20DM','Si Shen Cong (HM31)','20V','12RM','36E','6RP','6RM','15V','6MC','7C'], ps:['18V','3F','17RM','4DM','3R','23V','4RM'],
+           tech:'Tonification et réchauffement. Si vide de Sang du Foie : 18V, 3F en harmonisation (ne pas tonifier : risque de réveiller le Yang du Foie). Si vide de Qi : 6RM, 17RM, 4DM. Si vide de Yin du Rein : 6RP, 3R sans chauffer. Si vide de Yang du Rein : 4DM, 23V, 4RM, 6RM en moxa. Formule à quatre points : 7C, 36E, 6RP, 3F piqués de haut en bas, aiguilles laissées une heure.'},
+          {nom:'Yin déficient, Feu abondant', signes:'Dépression ; chaleur des cinq cœurs, sueurs nocturnes, bouche et gorge sèches, insomnie, agitation anxieuse, palpitations, perte de mémoire, migraine, colère, vertiges, lombes faibles. Langue rouge, peu ou pas d\'enduit | Pouls fin, rapide, tendu',
+           pp:['5C','6MC','15V','7C','20VB','3F','23V','3R','6RP'], ps:['6RM','20V','5F'],
+           tech:'5C, 6MC, 15V, 7C en harmonisation ou dispersion (Chaleur du Cœur) ; 20VB, 3F en dispersion ; 23V, 3R, 6RP en tonification. 6RM si règles irrégulières ; 20V pour la Rate. Variante : 3R (tonifié) + 5F (dispersé), 7C + 6MC. Pas de moxa.'}
+        ]
+      }
+    }
+  },
 
   dianKuang: {
     label: 'Dian Kuang — les folies (Ling Shu 22)',
@@ -10201,8 +10318,8 @@ const PSY_DB = {
     note: 'Nan Jing : Yang redoublé = Kuang (en dehors, agité) ; Yin redoublé = Dian (en dedans, fermé) ; Yang diminué : vision de fantômes ; Yin diminué : cécité (20e difficulté dans le texte classique ; la synthèse du cours cite la 27e, le support Dian Kuang le « chapitre 30 » — à vérifier). Éléments de la pathologie : déséquilibre Yin/Yang, Glaires, Feu qui monte agresser le haut, stagnation de Qi et stase de Sang, déséquilibre de l\'Âme éthérée. Le Dian qui persiste se transforme en Kuang ; un Kuang épuisé peut retomber en Dian. Correspondances occidentales : Dian = phase dépressive du trouble bipolaire, épisode dépressif, schizophrénie, épilepsie ; Kuang = phase maniaque, psychose, schizophrénie. Douleur chronique : 28 à 48 % d\'idées suicidaires — interroger régulièrement.',
     motifs: {
       'Dian — mélancolie, « folie en dedans » (Yin)': {
-        syn: ['dian','melancolie','hebetude','etat depressif','syndrome depressif','depression','repli sur soi','perte de l elan vital','apathie'],
-        note: 'Yu Yi (oppression) : Sang et Yang blessés, Souffles noués, Tan congelés, Bao Luo du Cœur obstrués, Shen Ming sans rayonnement. Nature Yin, Vide, début progressif (prodromes : tristesse intermittente, indifférence, refuge dans le sommeil, anorexie). Ling Shu 22 : au début, manque de joie, yeux rouges, lourds et douloureux, regard vers le haut. Signes : apathie, fatigue, hypersomnie, découragement, tristesse, pleurs, pessimisme, idées noires, culpabilité, troubles de la concentration, de la mémoire et de la décision. Principes : dissoudre les Glaires, ouvrir les orifices de l\'Esprit ; entre les crises, tonifier Cœur et Rate et faire circuler le Qi. Formule de base : 15V, 7C, 26DM, 7MC en dispersion ; 4R en tonification.',
+        syn: ['dian','melancolie','depression melancolique','hebetude','psychose depressive','repli sur soi','perte de l elan vital','mutisme','schizophrenie'],
+        note: 'Yu Yi (oppression) : Sang et Yang blessés, Souffles noués, Tan congelés, Bao Luo du Cœur obstrués, Shen Ming sans rayonnement. Nature Yin, Vide, début progressif (prodromes : tristesse intermittente, indifférence, refuge dans le sommeil, anorexie). Ling Shu 22 : au début, manque de joie, yeux rouges, lourds et douloureux, regard vers le haut. Signes : apathie, fatigue, hypersomnie, découragement, tristesse, pleurs, pessimisme, idées noires, culpabilité, troubles de la concentration, de la mémoire et de la décision. Principes : dissoudre les Glaires, ouvrir les orifices de l\'Esprit ; entre les crises, tonifier Cœur et Rate et faire circuler le Qi. Formule de base : 15V, 7C, 26DM, 7MC en dispersion ; 4R en tonification. Le Dian est une psychose Yin (mélancolie, mutisme, marmonnement, regard fixe, hallucinations) ; la dépression réactionnelle relève du Yu Zheng (domaine Dépression). Hallucinations auditives : 19IG (ou 17TR + 40E) ; visuelles : 1V ; tristesse : 9P. En cas d\'échec, Ling Shu 10 : 20 moxas sur 1DM ; on peut associer certains des 13 points Gui. Deux séances par semaine puis espacer (patients souvent sous traitement psychiatrique).',
         pointsBase: ['15V','7C','26DM','7MC','4R'],
         syndromes: [
           {nom:'Consommation du Sang par atteinte de la Rate', signes:'Insomnie avec rêves, troubles de l\'attention, de la concentration et de la mémoire, palpitations, confusion, peurs fréquentes, tristesse et envie de pleurer, grande souffrance morale (surtout si le Rein est atteint), asthénie, anorexie, angoisse. Langue pâle ou rose | Pouls fin, sans force',
@@ -10215,12 +10332,14 @@ const PSY_DB = {
            pp:['6MC','3F','6TR','5MC','40E','12RM','9RM','6RP','20DM'], ps:[], tech:'Faire circuler le Qi, dissoudre les Glaires, ouvrir les orifices de l\'Esprit. 6MC, 3F, 6TR font circuler le Qi ; 5MC dissout les Glaires du Cœur ; 40E, 12RM, 9RM, 6RP dissolvent les Glaires ; 20DM améliore le moral.'},
           {nom:'Vide du Cœur et de la Rate avec Glaires', signes:'Dépression, excès de rêves, insomnie, confusion, sursauts, hébétude, tristesse, pleurs, ferme les fenêtres, soliloque, hallucinations, palpitations, teint pâle et terne, mouvements lents, selles molles, fatigue, petit appétit. Langue pâle, gonflée, enduit collant | Pouls mou',
            pp:['7C','5C','5MC','36E','12RM','20V','24DM','20DM'], ps:['40E','9RM','6RP'], tech:'36E, 12RM, 20V en tonification (Rate) ; 7C, 5C tonifient le Cœur ; 24DM, 20DM ouvrent les orifices ; 40E, 9RM, 6RP dissolvent les Glaires.'},
+          {nom:'Vide de Qi et de Sang (psychose dépressive ancienne)', signes:'Psychose ancienne et modérée, lassitude, hébétude, réactions lentes, esprit confus, paroles sans ordre, tristesse, pleurs fréquents, manque de discernement ; insomnie, rêves, palpitations, frayeur au moindre bruit ; inappétence, selles molles ; teint terne, pâle. Langue pâle, parfois gonflée | Pouls fin, faible, sans force',
+           pp:['15V','14RM','7C','20V','13F','36E','6RP','20DM'], ps:['Si Shen Cong (HM31)','14V','9P','19IG','1V'], tech:'Tonification et réchauffement. 14V complète l\'action sur le Cœur ; 9P si tristesse ; 19IG si hallucinations auditives, 1V si visuelles.'},
           {nom:'Vide de Qi avec Glaires', signes:'Pathologie chronique, émotions émoussées, réticence à bouger ou à parler, regard fixe, rires inappropriés, soliloque, pensée incohérente, hallucinations, autoreproches, culpabilité, selles molles, teint pâle, fatigue, souffle court, pas d\'appétit. Langue pâle | Pouls mou',
-           pp:['9P','13V','12RM','20V','21V','36E','5MC','6MC','20DM','26DM'], ps:['9RM','6RP','40E'], tech:'9P, 13V tonifient le Qi du Poumon ; 12RM, 20V, 21V, 36E celui de l\'Estomac et de la Rate ; 9RM, 6RP, 40E dissolvent les Glaires ; 5MC, 6MC, 20DM, 26DM ouvrent les orifices.'},
+           pp:['9P','13V','12RM','20V','21V','36E','5MC','6MC','20DM','26DM'], ps:['9RM','6RP','40E','6RM','4RM','5C'], tech:'9P, 13V tonifient le Qi du Poumon ; 12RM, 20V, 21V, 36E celui de l\'Estomac et de la Rate ; 9RM, 6RP, 40E dissolvent les Glaires ; 5MC, 6MC, 20DM, 26DM ouvrent les orifices.'},
           {nom:'Chaleur nouée dans le méridien du Cœur', signes:'Dépression d\'apparition soudaine, énervement dans la région du cœur, rires sans raison, insomnie, chaleur du nez et des yeux, soif, aphtes. Langue rouge, pointe plus rouge, enduit jaune | Pouls vaste et rapide',
            pp:['8C','7C','24DM','15RM','44V','8MC','5MC'], ps:[], tech:'Drainer le Feu du Cœur, ouvrir les orifices, calmer l\'Esprit. Pas de moxa.'},
-          {nom:'Glaires obstruant les orifices du Cœur', signes:'Dépression, esprit terne, lenteur, émotions émoussées, soliloque, discours incohérent, regard fixe, absence de cillement. Langue gonflée, enduit collant | Pouls glissant',
-           pp:['5MC','20DM','24DM','40E','6RP','9RM'], ps:[], tech:'Dissoudre les Glaires, ouvrir les orifices de l\'Esprit.'},
+          {nom:'Glaires obstruant les orifices du Cœur', signes:'Dépression, esprit terne, lenteur, émotions émoussées, soliloque, mutisme, marmonnement, discours incohérent, regard fixe, absence de cillement, recherche de la solitude, raclements de gorge. Langue gonflée, enduit blanc et gras | Pouls glissant',
+           pp:['5MC','20DM','24DM','40E','6RP','9RM'], ps:['26DM','15V','7C','7MC','20V','18V','13VB','15VB','17RM','14RM'], tech:'Dissoudre les Glaires, ouvrir les orifices de l\'Esprit (dispersion). Formule particulière : Shu dorsaux 15V, 18V, 20V + 7C, 5MC + 20DM, 26DM + 40E. Oscillations maniaco-dépressives : 24DM, 13VB, 15VB.'},
           {nom:'Formule mixte', signes:'',
            pp:['36E','6MC','15V','19V','5MC','4GI','7C','40E'], ps:[], tech:''},
           {nom:'Points du Du Mai et du Shao Yang', signes:'12DM : patients agités, violents, « durs ». 13VB Ben Shen : point Shen sur Shao Yang, réunion avec Yang Wei. 24DM Shen Ting : frontière entre le caché et le visible.',
@@ -10233,6 +10352,8 @@ const PSY_DB = {
         note: 'Les cinq volontés (Wu Zhi) se transforment en Feu, les Tan se congèlent, le Xin Bao Luo est obstrué : le Shen perd sa relation juste au monde. Ling Shu 22 : au début, peu de sommeil, pas de faim, glorification de soi, cris, pas de repos jour et nuit. Signes : euphorie expansive, énergie et agitation accrues, irritabilité, logorrhée, fuite des idées, distractibilité, grandeur, peu de sommeil, conduites à risque, dépenses, désinhibition, perte du sens de la réalité. Principes : dissoudre les Glaires, ouvrir les orifices de l\'Esprit ; réguler Yin et Yang, nourrir le Yin ou le Sang, éliminer la Chaleur vide. À la chronicité : vide de Yin (tableau « le Feu lèse le Yin »).',
         pointsBase: ['26DM','8MC','14RM','11P','16DM'],
         syndromes: [
+          {nom:'Les sept piqûres transperçantes', signes:'Technique du cours de Capacité pour les Kuang.',
+           pp:['20VB','11GI','4GI','34VB','60V'], ps:['16DM','3C','3IG','9RP','3R'], tech:'1. 20VB gauche vers 20VB droit (le cours écrit « vers fengfu 20VB droit ») ; 2. un cun au-dessus du pli axillaire antérieur vers le pli postérieur ; 3. 11GI vers 3C ; 4. 4GI vers 3IG ; 5. un cun au-dessus et en arrière du pli de flexion interne du genou vers le pli externe ; 6. 34VB vers 9RP ; 7. 60V vers 3R.'},
           {nom:'Saignée du Ling Shu', signes:'',
            pp:['1DM'], ps:['8F'], tech:'Poncture et saignée de 1DM ; si échec, 8F.'},
           {nom:'Formule de base', signes:'14RM Ju Que (Mu du Cœur) ouvre les orifices du Shen, restaure une perception juste ; 8MC Lao Gong, point des revenants ; 11P, Chaleur des organes en saignée ; 16DM calme le Vent dans la tête ; 15RM Shen Fu, point d\'expression (bégaiement, difficulté à s\'exprimer).',
@@ -10241,13 +10362,13 @@ const PSY_DB = {
            pp:['11GI','8IG','3C','5MC','5GI','5IG','10P','4TR','7C','2TR','42E','2F','65V','13V'], ps:[],
            tech:'11GI = point des revenants ; 13V en moxa. Le cours écrit « 3Co » : lu 3C (Shao Hai) — à vérifier.'},
           {nom:'Glaires-Feu agressant le haut', signes:'Manie d\'apparition soudaine, cris, invectives, frappe, force physique exceptionnelle, ni sommeil ni nourriture, regard coléreux, envie de grimper, brise les objets, impulsivité, constipation, céphalées, face et yeux rouges. Langue rouge, enduit jaune épais collant, fissure Cœur-Estomac | Pouls rapide, en corde, vaste, glissant',
-           pp:['7MC','5MC','2F','8C','8MC','19DM','17VB','18VB'], ps:['40E','12RM','9RM','6RP'], tech:'Calmer le Cœur, dissoudre les Glaires, drainer le Feu du Foie et du Cœur, ouvrir les orifices. Dispersion, pas de moxa.'},
+           pp:['7MC','5MC','2F','8C','8MC','19DM','17VB','18VB'], ps:['40E','12RM','9RM','6RP','14DM','16DM','24DM','6TR','Tai Yang','Yin Tang','1R','5C','7C','6MC'], tech:'Calmer le Cœur, dissoudre les Glaires, drainer le Feu du Foie et du Cœur, ouvrir les orifices. Dispersion, pas de moxa. 14DM si forte plénitude ; 16DM, 20DM, 24DM, 26DM ouvrent les orifices ; 2F + 6TR : colères démentielles ; Tai Yang, Yin Tang : céphalées, insomnie ; 8MC + 1R : agitation permanente ; points Jing-puits des membres supérieurs saignés en crise aiguë. Une séance par jour au début.'},
           {nom:'Feu dans le Yang Ming', signes:'Manie, déambulation, cris, injures, grimpe, chante et se déshabille, force inhabituelle, haleine fétide, face rouge, constipation. Langue rouge, enduit sec jaune foncé ou noir | Pouls profond et en corde',
            pp:['44E','11GI','40E','8MC','8C','25E'], ps:['15RP','5MC'], tech:'Drainer le Feu de l\'Estomac vers le bas ; 25E stabilise Hun et Po ; 15RP facilite le transit. Pas de moxa.'},
           {nom:'Feu du Foie et de la Vésicule Biliaire', signes:'Manie, irritabilité, accès de colère, face et yeux rouges, bouche amère, rires déplacés, cris, douleur des hypocondres et de la poitrine, palpitations. Langue rouge, enduit jaune foncé | Pouls rapide, en corde, glissant',
            pp:['2F','44VB','11GI','7C','5MC'], ps:['40E','6RP','9RM'], tech:'Drainer le Feu du Foie, dissoudre les Glaires, calmer l\'Esprit. Pas de moxa.'},
           {nom:'Le Feu lèse le Yin, avec Glaires (Kuang chronique)', signes:'Kuang chronique, logorrhée, sursauts, agitation mentale, amaigrissement, face et pommettes rouges, chaleur en soirée. Langue rouge, gonflée, sans enduit | Pouls fin et rapide',
-           pp:['7C','6C','7MC','3R','4RM','6RP'], ps:['40E','12RM','9RM','24DM','19DM','5MC'], tech:'Nourrir le Yin (3R, 4RM, 6RP), éliminer la Chaleur vide, calmer l\'Esprit, dissoudre les Glaires.'},
+           pp:['7C','6C','7MC','3R','4RM','6RP','1R','6MC'], ps:['40E','12RM','9RM','24DM','19DM','5MC','3F','20DM','9C','Tai Yang','8MC'], tech:'Nourrir le Yin (3R, 4RM, 6RP), éliminer la Chaleur vide, calmer l\'Esprit, dissoudre les Glaires.'},
           {nom:'Stagnation de Qi, stase de Sang, Glaires', signes:'Kuang chronique, logorrhée, sursauts, agitation, douleur abdominale, teint foncé, insomnie, agitation nocturne. Langue pourpre rougeâtre, gonflée | Pouls en corde, glissant',
            pp:['6MC','7C','3F','10RP','17V'], ps:['40E','12RM','9RM','24DM','19DM','17VB','18VB','5MC'], tech:'Faire circuler le Qi, redonner de la vigueur au Sang, éliminer la stase, dissoudre les Glaires.'}
         ]
@@ -10258,7 +10379,9 @@ const PSY_DB = {
         syndromes: [
           {nom:'Les treize points, dans l\'ordre', signes:'Gui Gong 26DM · Gui Xin 11P · Gui Lei (ou Gui Yan) 1Rte · Gui Xin 7MC · Gui Lu 62V · Gui Zhen 16DM · Gui Chong (ou Gui Chuang) 6E · Gui Shi 24RM · Gui Jiao (ou Gui Ku) 8MC · Gui Tang 23DM · Gui Cang 1RM (homme) ou You Men Tou (femme) · Gui Tui (ou Gui Chen) 11GI · Gui Feng (Hai Quan, sous la langue sur la ligne médiane)',
            pp:['26DM','11P','1Rte','7MC','62V','16DM','6E','24RM','8MC','23DM','1RM','11GI','Gui Feng (HM sous la langue)'], ps:['You Men Tou (HM, Gui Cang chez la femme)'],
-           tech:'Un point après l\'autre, dans l\'ordre. Gui Cang : 1RM chez l\'homme, You Men Tou (point hors méridien entre clitoris et vagin) chez la femme. Gui Feng en saignée.'}
+           tech:'Un point après l\'autre, dans l\'ordre, de haut en bas ; points bilatéraux : d\'abord à gauche chez l\'homme, à droite chez la femme. Gui Cang : 1RM chez l\'homme, You Men Tou (point hors méridien entre clitoris et vagin) chez la femme. Gui Feng en saignée. 62V et 11GI : insertions promptes d\'une aiguille chauffée. Variante du cours de Capacité : Gui Ku = 5MC (Jianshi) au lieu de 8MC — à trancher. Adaptations : 14DM + 3IG si Chaleur grave ; 6TR + 40E si constipation ; 20VB + 2F si montée du Foie ; 40E, 8MC, 12RM si Glaires abondantes ; 6MC, 7C, 15V si confusion.'},
+          {nom:'Formule des treize points de Maître Xu (Dian)', signes:'Chagrin, affaiblissement intellectuel, indifférence, mutisme ou paroles incohérentes, alternance de pleurs et de rires, perte du jugement, oubli de manger. Enduit fin et gras | Pouls profond et glissant, ou tendu et glissant',
+           pp:['26DM','11P','1RP','7MC','34VB','16DM','6E','24RM','5MC','24DM','2F','Gui Feng (HM sous la langue)'], ps:['17E'], tech:'Dans l\'ordre, sans laisser les aiguilles. 17E (Ruzhong) figure dans la liste sans précision. Adaptations : céphalées Tai Yang + 20VB ; insomnie 6MC + 7C ; constipation 6TR + 40E ; comportement insensé 14RM + Si Shen Cong.'}
         ]
       },
       'Points à symptomatologie psychiatrique (par méridien)': {
@@ -10267,6 +10390,8 @@ const PSY_DB = {
         syndromes: [
           {nom:'Points qui ouvrent les orifices de l\'Esprit', signes:'3P : somnolence, insomnie, tristesse, « discours aux fantômes » · 5GI, 7GI : manie, rires déplacés · 25E : agitation, anxiété, manie, demeure de Hun et Po · 40E, 42E, 45E : Dian Kuang, désir de grimper et de chanter · 16IG, 10V : manie, logorrhée · 5MC : palpitations, oppression, manie, frayeur, mauvaise mémoire · 13VB : manie, frayeur · 17VB, 18VB : pensées obsessionnelles, démence · 16DM : manie, envie de mourir, tristesse, peur · 19DM : manie, anxiété, insomnie · 20DM : désorientation, tristesse, envie de mourir · 26DM : Dian Kuang',
            pp:['3P','5GI','7GI','25E','40E','42E','45E','16IG','10V','5MC','13VB','17VB','18VB','16DM','19DM','20DM','26DM'], ps:[], tech:''},
+          {nom:'Points des entités psychiques (Shu dorsaux et chaîne externe de la Vessie)', signes:'13V + 42V (porte du Po) : deuil · 15V + 44V (salle du Shen) : joie excessive · 18V + 47V (porte du Hun) : colère · 20V + 49V (demeure du Yi) : soucis, excès de pensée · 23V + 52V (chambre du Zhi) : peur. Shen : 7C, 8RM, 11DM, 24DM, 44V, 23R, 25R.',
+           pp:['13V','42V','15V','44V','18V','47V','20V','49V','23V','52V'], ps:['7C','11DM','24DM','23R','25R'], tech:'Le cours écrit « Zhishi 47V » et « 49V » : Zhishi = 52V.'},
           {nom:'Du Mai', signes:'8DM : agitations musculaires ; 12DM : « envie de tuer » ; 24DM : très utilisé dans les dépressions.', pp:['1DM','8DM','12DM','16DM','17DM','18DM','19DM','20DM','23DM','24DM','25DM','26DM','28DM'], ps:[], tech:''},
           {nom:'Tai Yang (IG, V)', signes:'', pp:['2IG','3IG','4IG','5IG','8IG','9IG','8V','9V','10V','13V','39V','40V','60V','61V','62V','63V','64V','65V','66V'], ps:[], tech:''},
           {nom:'Ren Mai', signes:'13RM : « gens qui ne sont pas clairs ».', pp:['2RM','13RM','14RM','24RM'], ps:[], tech:''},
@@ -10287,6 +10412,8 @@ const PSY_DB = {
         alerte: 'Palpitations, oppression thoracique : éliminer une cause cardiaque ou endocrinienne avant de retenir une angoisse. Le vide de Yang du Cœur est une urgence cardiologique.',
         note: 'Angoisse = anxiété + composante somatique (gastralgies, tremblements, diarrhée ou constipation, palpitations, striction laryngée), qui oriente le traitement. Angoisse et plénitude : calmer et disperser ; angoisse et stagnation : calmer et faire circuler ; angoisse et vide (plus difficile) : calmer et fortifier. Tableau Yin : sensation de froid = vide de Sang ou de Qi ; de chaleur = vide de Yin ; voix faible, souffle court = vide de Poumon ; frayeur facile = vide de Qi du Cœur ou de la VB ; peur = vide de Rein ou de Foie. Méridiens curieux si plusieurs méridiens atteints : Ren Mai, Chong Mai, Yin Qiao Mai, Yin Wei Mai.',
         syndromes: [
+          {nom:'Anxiété banale, stress — formule de détente', signes:'À condition que les pouls montrent un blocage avec une énergie de réserve (ni carence ni grand excès) et que la langue soit sans grande particularité.',
+           pp:['6MC','4GI','3F','6RP','36E','7C','20VG'], ps:['Yin Tang'], tech:'20VG ou Yin Tang.'},
           {nom:'Angoisse Yang — Feu du Cœur', signes:'Agitation, nervosité, discours rapide, rougeur du visage, chaleur du corps. Langue rouge, enduit jaune et sec | Pouls plein et rapide',
            pp:['20VG','17VC','8C','8MC','1R'], ps:[], tech:'Grande formule du stress, de l\'anxiété et de l\'angoisse Yang (20VG = Ciel, 17VC = Terre, 1R = Homme).'},
           {nom:'Feu du Cœur et Feu du Foie', signes:'Angoisse Yang avec colère, irritabilité.',
@@ -10355,7 +10482,187 @@ const PSY_DB = {
         syndromes: [
           {nom:'Céphalées de stress (stagnation de Qi)', signes:'', pp:['4GI','3F','7C','20VB','20VG','Tai Yang','39VB','34VB','7P','6MC'], ps:['11V','12V','13V'], tech:'Avec cervicalgies de stress : ajouter 11V, 12V, 13V.'},
           {nom:'Migraine de l\'enfant', signes:'', pp:['7P','39VB'], ps:[], tech:''},
+          {nom:'Cervicalgies et céphalées de stress', signes:'', pp:['6MC','3F','Yin Tang','Tai Yang','20VB','11V','12V','13V'], ps:[], tech:''},
+          {nom:'Gastralgie, acidité, ballonnement de stress', signes:'', pp:['25E','36E','37E','8F','34VB','18V','12RM','6MC'], ps:['39E','10RM','13RM'], tech:'37E ou 39E ; 12RM avec 10RM et 13RM si blocage du Triple Réchauffeur.'},
           {nom:'Colopathie avec céphalées, stress et anxiété', signes:'', pp:['6MC','25E','12VC','4RP','37E','39E','20V','6RP','4R','27R'], ps:[], tech:'Plus passiflore et valériane.'}
+        ]
+      }
+    }
+  },
+
+
+  emotions: {
+    label: 'Excès émotionnels, peur et phobies (Wu Zhi Guo Ji)',
+    note: 'Les cinq émotions sont physiologiques tant qu\'elles ne sont ni brutales, ni répétées, ni permanentes ; en excès elles deviennent les sept sentiments, causes internes de maladie (Su Wen 39 : la colère fait monter le Qi, la joie le relâche, le chagrin le dissipe, la peur le fait descendre, la frayeur le désorganise, la réflexion le noue). Une émotion n\'est pas liée à un seul organe : la tristesse peut venir du Poumon, du Cœur, de la Rate, du Foie, du Rein, de la Vésicule Biliaire, des Glaires ou d\'une stase de Sang — c\'est le contexte qui oriente.',
+    motifs: {
+      'Colère excessive': {
+        syn: ['colere','colere excessive','coleres','acces de colere','emportement','irascibilite'],
+        syndromes: [
+          {nom:'Stagnation du Qi du Foie', signes:'Nervosité, irritabilité, impatience, colère ; distension de la poitrine et des hypocondres, humeur changeante, soupirs ; éructations. Pouls tendu, avec force',
+           pp:['6MC','3F','7C','24DM','17RM'], ps:['18V','14F','40VB','14DM'], tech:'Dispersion. 18V + 14F (Shu-Mu du Foie) ; 40VB + 3F (points Yuan) ; 14DM calme la colère, excès de Yang.'},
+          {nom:'Feu du Foie et de la Vésicule Biliaire', signes:'Colère explosive, agitation, oppression thoracique, bouche sèche, goût amer, céphalée, vertige, urines foncées ; constipation (Yang Ming) ; rires, insomnie, cauchemars (Cœur). Langue à bords et pointe rouges, enduit jaune | Pouls tendu, rapide',
+           pp:['2F','43VB','44E','20DM','41VB','5MC','7MC'], ps:['8C','8MC','26DM','14DM'], tech:'Dispersion, pas de moxa.'},
+          {nom:'Dysharmonie Foie-Rate', signes:'Colère, agitation, distension de l\'abdomen et des hypocondres, alternance selles molles / constipation, asthénie, inappétence, borborygmes. Pouls tendu, fin',
+           pp:['6MC','3F','4RP','6RP','13F'], ps:['2F','12RM','36E','20V'], tech:'Disperser 6MC, 3F (ou 2F) ; tonifier ou harmoniser 4RP, 6RP, 13F (la Rate contient le Foie) ; 12RM harmonisé, 36E et 20V tonifiés.'},
+          {nom:'Vide de Yin du Foie et des Reins', signes:'Colère par Chaleur-vide ; vertiges, lombes et genoux faibles, bouche et gorge sèches, chaleur des cinq cœurs, sueurs nocturnes, yeux secs, insomnie, rêves. Langue rouge, peu d\'enduit | Pouls fin, rapide',
+           pp:['3R','7R','6RP','18V','23V','20VB','3F','1R'], ps:['6MC'], tech:'Tonifier 3R, 7R, 6RP, 18V, 23V ; disperser 20VB, 3F ; 1R simplement stimulé ancre le Yang.'}
+        ]
+      },
+      'Rire et joie excessifs': {
+        syn: ['rire excessif','rires immotives','fou rire','joie excessive','rires incessants','euphorie'],
+        note: 'Rire disproportionné et incontrôlé, sans raison apparente. Le Cœur est toujours en excès de Chaleur, pleine ou vide.',
+        syndromes: [
+          {nom:'Excès du Feu du Cœur', signes:'Rires à tout moment, propos extravagants, insomnie, agitation, soif de boissons fraîches, aphtes, glossite. Langue rouge surtout à la pointe | Pouls rapide',
+           pp:['15V','8C','7MC','24DM'], ps:['6RP','9RP','Yin Tang','5C','7IG','14DM','26DM','2F'], tech:'Dispersion. 5C + 7IG (points Luo couplés) purgent le Feu du Cœur vers l\'Intestin Grêle ; Yin Tang si agitation extrême et insomnie. Formule classique : 7C + 5IG.'},
+          {nom:'Glaires-Feu troublant le Cœur', signes:'Joies et rires déraisonnés et répétitifs, agitation, irritabilité, bouche amère, palpitations, perte de mémoire, insomnie, sursauts. Langue rouge, enduit jaune et gras | Pouls rapide, glissant',
+           pp:['20DM','14DM','7C','5MC','44E','40E'], ps:['Si Shen Cong (HM31)','Yin Tang','14RM','14F'], tech:'Dispersion.'},
+          {nom:'Le Feu du Foie perturbe le Cœur', signes:'Rires sans raison, cauchemars, humeur capricieuse, colère alternant avec la joie (sourit pendant la colère), soupirs. Langue rouge, enduit jaune | Pouls rapide, tendu',
+           pp:['4GI','3F','20VB','18V','2F','20DM','7C','6MC'], ps:['17RM','5MC','3IG'], tech:'Dispersion. Alternance de rires et de pleurs : 5MC + 3IG.'},
+          {nom:'Cœur et Reins sans échange', signes:'Rires et joies excessifs, insomnie, rêves, palpitations ; lombes faibles, chaleur des cinq cœurs, bouche sèche, vertiges, acouphènes, sueurs nocturnes. Langue rouge, peu d\'enduit | Pouls fin, rapide',
+           pp:['3R','7R','23V','6RP','15V','7C'], ps:['7MC','1R'], tech:'Tonifier 3R, 7R, 23V, 6RP ; disperser 15V, 7C (ou 7MC).'}
+        ]
+      },
+      'Rumination, soucis et anxiété excessifs': {
+        syn: ['rumination','ruminations','soucis excessifs','pensees obsessionnelles','idees fixes','inquietude excessive'],
+        note: 'Excès de pensée qui entraîne souci et anxiété (Rate et Cœur), ou Poumon affaibli par une tristesse prolongée.',
+        syndromes: [
+          {nom:'Rumination anxieuse — formule de pratique courante', signes:'Rumination, idées fixes, anxiété, à condition que les pouls montrent un blocage avec une énergie de réserve (ni carence ni grand excès).',
+           pp:['6MC','7C','6C','4GI','3F','12RM','8RP','36E','2RP','Yin Tang'], ps:['5MC'], tech:'6MC ou 5MC.'},
+          {nom:'Vide de Cœur et de Rate', signes:'Pensées permanentes et obsessionnelles, mal-être, endormissement difficile par les soucis, rêves abondants, oppression épigastrique, inappétence, souffle court, asthénie. Langue pâle | Pouls fin, faible',
+           pp:['20V','36E','12RM','6RP','15V','7C','20DM'], ps:['Si Shen Cong (HM31)'], tech:'Tonification ; 12RM harmonisé.'},
+          {nom:'Vide de Qi du Poumon', signes:'Inquiétude, anxiété, morosité, mélancolie, rumination, caractère taciturne ; asthénie, souffle court, transpiration spontanée, voix faible. Langue pâle | Pouls fin, faible, vide',
+           pp:['13V','43V','9P','36E','7C','Si Shen Cong (HM31)'], ps:['4RM','6RM'], tech:'Tonification.'}
+        ]
+      },
+      'Tristesse excessive, deuil': {
+        syn: ['tristesse excessive','chagrin','deuil','suite de deuil','deuil pathologique','pleurs frequents'],
+        note: 'Tristesse prolongée avec pleurs fréquents ; un deuil qui évolue normalement n\'entre pas dans ce cadre. Ne pas réduire la tristesse au Poumon : rechercher le contexte (Cœur, Rate, Foie, Rein, VB, Glaires, stase de Sang).',
+        syndromes: [
+          {nom:'Vide du Cœur et du Poumon', signes:'Tristesse et tendance à pleurer, palpitations, insomnie, asthénie, souffle court, transpiration spontanée, voix faible. Langue pâle | Pouls fin, faible',
+           pp:['15V','7C','13V','9P','20V','36E','12RM'], ps:['4GI','7R','44V','42V','20DM'], tech:'Tonification ; 12RM harmonisé. Transpiration abondante : 4GI (dispersé), 7R (tonifié). Tristesse profonde : 44V, 42V (Shu externes de l\'Esprit et du Po). Formule classique (« chagrin sous l\'emprise du Cœur ») : 19IG + 20V, avec 36E, 15V, 13V, 7C.'},
+          {nom:'Suite de deuil — formule de pratique courante', signes:'',
+           pp:['7C','20DM','12RM','6RP','14E','6MC','25E','4GI','3F'], ps:['13V','42V'], tech:'14E si deuil même ancien ; 13V + 42V (« fenêtre du Po ») pour les deuils.'}
+        ]
+      },
+      'Peur excessive, phobies': {
+        syn: ['peur excessive','peurs','phobie','phobies','frayeur','frayeurs','crainte','craintif','timidite'],
+        note: 'Toujours traiter la racine (le syndrome) et la branche (le symptôme phobique, au Cœur et à la tête) : on peut toujours piquer 15V, Si Shen Cong, 24DM (harmonisé vers le bas) et 7MC (dispersé). Le Cœur est l\'aboutissement : par vide de Qi et de Sang (Rate), de courage (VB), de volonté (Rein) ou par les Glaires.',
+        syndromes: [
+          {nom:'Vide de Jing des Reins', signes:'Peur ancienne, accès fréquents ; apathie, lassitude, lombes et genoux faibles, étourdissements, acouphènes, amnésie, sueurs nocturnes, insomnie, agitation. Langue normale ou rouge, peu d\'enduit | Pouls fin, faible',
+           pp:['23V','52V','4RM','3R','6RP','15V','7C','20DM'], ps:['Si Shen Cong (HM31)','24DM','7MC'], tech:'Tonification. 52V (chambre du Zhi) renforce la volonté contre la peur.'},
+          {nom:'Vide de Cœur et de Rate (vide de Sang du Cœur)', signes:'Peur intermittente, crainte au moindre événement, taciturne ; palpitations avec angoisse, insomnie, rêves, perte de mémoire, souffle court, transpiration spontanée ; teint, ongles et lèvres pâles. Langue pâle | Pouls fin, faible',
+           pp:['36E','6RP','17V','15V','7C','6MC','20V','20DM'], ps:['Si Shen Cong (HM31)','24DM','7MC'], tech:'Tonification et réchauffement ; 24DM harmonisé vers le bas, 7MC dispersé.'},
+          {nom:'Vide du Foie et de la Vésicule Biliaire (vide de Cœur et de VB)', signes:'Caractère craintif, facilement effrayé, indécision, manque de courage, susceptibilité, timidité, goût amer, vertiges, vision trouble, soupirs, sursauts, palpitations, insomnie. Enduit fin blanc | Pouls fin, faible, parfois tendu',
+           pp:['18V','19V','13F','14F','35VB','4RM','6MC','7C','24DM','47V'], ps:['40VB','15V','20R','9VB','6RM','Si Shen Cong (HM31)','7MC'], tech:'Tonifier les Shu dorsaux, harmoniser les autres. 47V (porte du Hun) stabilise le Hun. Association efficace : 15V + 19V (Shu) et 7C + 40VB (Yuan) du Cœur et de la VB. Points d\'expérience contre la peur : 20R, 9VB, 13F.'},
+          {nom:'Glaires-Chaleur troublant le Cœur', signes:'Peur, palpitations avec angoisse, perte de mémoire, agitation, insomnie, hyperémotivité, vertiges, tête lourde, expectorations, oppression ; tristesse, soupirs. Langue rouge, enduit jaune et gras | Pouls tendu, glissant, rapide',
+           pp:['15V','7C','7MC','12RM','9RP','40E','2F'], ps:['Si Shen Cong (HM31)','24DM','17V','10RP'], tech:'Dispersion ; 24DM harmonisé vers le bas. Stase de Sang : 17V, 10RP.'}
+        ]
+      },
+      'Rêves et cauchemars': {
+        syn: ['cauchemars','cauchemar','reves','reves agites','terreurs nocturnes','reves effrayants'],
+        note: 'Ling Shu 43 : douze surabondances (disperser) et quinze insuffisances (tonifier) — voir le Référentiel MTC › Psyché › Les rêves. Les rêves d\'entrailles ne sont décrits que pour des vides.',
+        syndromes: [
+          {nom:'Cauchemars — Glaires et Feu', signes:'Rêves effrayants qui font crier ; plénitude, Chaleur.', pp:['45E','1RP','40E','12RM','44VB'], ps:[], tech:'45E + 1RP (Bai Zheng Fu) en dispersion.'},
+          {nom:'Cauchemars — vide du Cœur et de la Rate', signes:'Rêves effrayants, sommeil léger, fatigue, pâleur.', pp:['45E','1RP','20V','15V','7C'], ps:[], tech:'Tonification-dispersion modérée.'},
+          {nom:'Points selon le contenu du rêve', signes:'Passages étroits : 3IG · défunts : 15V · serpents : 5DM · spectres : 5MC · se tenir sur la tête : 16TR · défilés rocheux, ruines sous la pluie : 2RP · champs incultes : 11GI · humiliation, être mal habillé en public : 43VB · formes noires : 8RM · eau courante : 18R · précipice, être dans l\'eau : 7R',
+           pp:['3IG','15V','5DM','5MC','16TR','2RP','11GI','43VB','8RM','18R','7R'], ps:[], tech:'Liste d\'expérience d\'une école française. « Serpents » : le support écrit « 5 TM » (Tou Mai), lu 5DM — à vérifier.'}
+        ]
+      }
+    }
+  },
+
+  nevroses: {
+    label: 'Zang Zao, Ben Tun, Bai He (hystérie, panique, syndrome du lis)',
+    motifs: {
+      'Zang Zao — agitation de l\'organe du Cœur (hystérie)': {
+        syn: ['zang zao','hysterie','nevrose hysterique','conversion hysterique'],
+        note: 'Mélange de racine-vide et de branche-plénitude : Cœur, Rate, Foie et Reins atteints ; stagnation de Qi, Glaires et Chaleur-vide du Cœur. Le Hun perturbé explique la théâtralisation et le changement constant des symptômes : adapter le traitement à chaque séance. On accompagne une conscience en souffrance avec une « neutralité bienveillante » ; tenir la séduction à distance. À distinguer du Kuang (Glaires-Feu, chaleur pleine).',
+        syndromes: [
+          {nom:'Stagnation du Qi du Foie', signes:'Dépression, tristesse, pleurs, humeur alternante, alternance diarrhée / constipation, soupirs, oppression, douleur des hypocondres, boule dans la gorge. Enduit fin blanc | Pouls tendu',
+           pp:['6MC','3F','20VB','4GI','7C','24DM'], ps:['17RM','14F','17V','6RP','36E','12RM'], tech:'Dispersion sauf 24DM et 6RP, 36E, 12RM (harmonisés). 17RM ou 14F si oppression ; 17V si stase de Sang.'},
+          {nom:'Stagnation de Qi et accumulation de Glaires (Chaleur-vide du Cœur)', signes:'Agitation mentale, hyperémotivité, alternance de rires et de pleurs, palpitations, perte de mémoire, insomnie, rêves ; dépression, soupirs ; asthénie, selles molles ; boule dans la gorge ; lombes faibles, gorge sèche, sueurs nocturnes. Langue grosse, pointe rouge, enduit gras | Pouls tendu, glissant, profond et fin aux pieds',
+           pp:['15V','7C','5MC','20DM','26DM','9RP','40E','2F','4GI','3F','36E','3R'], ps:['7MC','20V','12RM','6RP','20VB','17V','10RP','6MC','17RM','4C'],
+           tech:'Dispersion sauf 36E et 3R en tonification. Association : 9RP et 40E dispersés, 36E et 3R tonifiés. Croiser 4GI à gauche et 3F à droite. Si on disperse 9RP avec 12RM, tonifier 36E avec 20V.'},
+          {nom:'Le Qi du Foie blesse le Cœur-Esprit (voir Dépression)', signes:'Hyperémotivité, palpitations, insomnie, bâillements, confusion, absences.', pp:['26DM','4GI','20DM','9C','15V','17V','6MC','7C','6RP'], ps:[], tech:'Tonification.'},
+          {nom:'Vide de Qi et de Sang — Cœur, Rate, Foie (voir Dépression)', signes:'Asthénie, palpitations, insomnie, perte de mémoire, pâleur.', pp:['20DM','20V','36E','6RP','15V','6MC','7C'], ps:['18V','3F'], tech:'Tonification ; 18V, 3F harmonisés.'}
+        ]
+      },
+      'Ben Tun Qi — le porcelet qui court (attaque de panique)': {
+        syn: ['ben tun','bentun','porcelet qui court','masse qui monte du bas ventre','boule qui monte du ventre'],
+        alerte: 'Sensation de mort imminente, douleur thoracique : éliminer une urgence cardiaque ou respiratoire avant de retenir une crise d\'angoisse.',
+        note: 'Masse de Qi qui remonte brusquement du bas-ventre à la poitrine ou à la gorge, avec douleurs abdominales, dyspnée, palpitations, angoisse, effroi, membres froids, parfois spasmes. Lien étroit avec le Chong Mai. Principe : régler le Qi et abaisser le contre-courant.',
+        syndromes: [
+          {nom:'Le Qi du Foie et des Reins s\'élève à contre-courant', signes:'Terrain de stagnation du Qi du Foie ; crise après effroi, peur ou colère : remontée brutale du bas-ventre à la gorge, impression de mort imminente, palpitations, déteste les bruits et les voix, douleurs abdominales, dyspnée, vomissements, goût amer, soif, alternance froid/chaud. Pouls en corde, rapide',
+           pp:['6R','6MC','3F','36E'], ps:['4RP','12RM','16R','5F','14F','14RM','30E','15V','1R'], tech:'Disperser 6R, 6MC, 3F ; tonifier 36E. Variante : disperser 3F, 4RP ; harmoniser 12RM ; tonifier 16R.'},
+          {nom:'Le Froid et l\'Eau s\'élèvent à contre-courant', signes:'Après une transpiration excessive : battements sous l\'ombilic puis masse qui monte à l\'épigastre et à la gorge, crainte du froid, corps et membres froids, urines claires abondantes, lombes douloureuses, teint pâle. Langue pâle, enduit blanc | Pouls en corde, serré, glissant',
+           pp:['7MC','3R','4RM','3RM'], ps:['4RP','6RP','9RP','6RM','8RM','15V','3F','29E','30E','4DM'], tech:'Réchauffer (moxas). Variante : 4RP, 6RP ou 9RP, 6RM, 8RM, 15V, 3F. Attaque de Froid : moxas 29E, 30E, 4RM, 4DM et dispersion de 4RP.'}
+        ]
+      },
+      'Syndrome Bai He (du lis)': {
+        syn: ['bai he','syndrome du lis','baihe'],
+        note: 'Désordres psychologiques liés surtout au Poumon (et au Cœur) : distraction (être « en transe »), appétit déréglé, comportement anormal, goût amer, pouls légèrement rapide ; souvent après une dépression ou une maladie fébrile qui a consumé le Yin du Cœur et du Poumon. Shu externes des cinq entités : 42V (Po), 44V (Shen), 47V (Hun), 49V (Yi), 52V (Zhi).',
+        syndromes: [
+          {nom:'Vide de Yin du Cœur et du Poumon', signes:'Tristesse, envie de pleurer, distraction agitée, difficulté d\'endormissement, rêves, hallucinations, goût amer, bâillements, faim sans désir de manger, gorge sèche. Langue rouge | Pouls profond, fin, rapide',
+           pp:['13V','42V','43V','44V','7MC'], ps:['4P','8P','5MC','6R','Anmian (HM)'], tech:'Tonifier 13V, 42V, 43V ; harmoniser 44V ; disperser 7MC. Variante : 4P (harmonisé), 8P (tonifié), 5MC (dispersé), 6R (tonifié), Anmian (harmonisé).'},
+          {nom:'Dérangement interne par les Glaires-Chaleur', signes:'Distraction, se trompe de mots, rires et pleurs déplacés, colère, agitation, réveils, rêves, regrets ; céphalée, tête enflée, plénitude thoracique. Pointe rouge, enduit fin jaune légèrement gras | Pouls glissant, rapide',
+           pp:['7C','7MC','Yin Tang','14RM','40E','6RP'], ps:[], tech:'Disperser 7C, 7MC, Yin Tang, 14RM, 40E ; tonifier 6RP.'},
+          {nom:'Vide de Yin du Cœur', signes:'Distraction, rires déplacés, sommeil mauvais avec rêves, agitation, transpiration des paumes. Pointe rouge foncé | Pouls fin, rapide',
+           pp:['6C','6RP','7R','1R'], ps:['Anmian (HM)'], tech:'Tonifier 6C, 6RP, 7R ; harmoniser Anmian et 1R.'},
+          {nom:'Stagnation du Qi du Foie et vide de Yin', signes:'Soupirs, contrariétés, croit sa maladie grave, change de traitement mais reste méfiant, anxiété, rêves, plénitude thoracique, rots, régurgitations acides. Langue rouge, enduit légèrement jaune | Pouls tendu, fin, rapide',
+           pp:['6MC','12RM','34VB','3F','47V','41E'], ps:[], tech:'Disperser 6MC, 12RM, 34VB, 3F ; tonifier 47V, 41E.'},
+          {nom:'Stagnation du Qi de la Rate et atteinte du Poumon', signes:'Pensées incessantes sur chaque aspect de sa vie, membres froids et lourds, faiblesse des jambes, évite le mouvement et la parole, tremblements internes, mauvais sommeil ; visage inexpressif. Langue rouge | Pouls profond, fin',
+           pp:['24DM','17DM','11DM','42V','8P','5RP','6RP'], ps:[], tech:'Harmoniser 24DM, 17DM, 11DM ; tonifier 42V, 8P, 5RP, 6RP. Tableau sévère, peut évoluer vers une dépression grave.'},
+          {nom:'Vide de Yin du Poumon et des Reins', signes:'Tristesse, anxiété, rêves effrayants, fatigue, timidité, « comme s\'il allait être arrêté », chaleur des mains et des pieds, sueurs nocturnes, chaleur des os. Langue rouge | Pouls fin, rapide',
+           pp:['12DM','11DM','44V','43V','52V','8P','7R','6R'], ps:[], tech:'Choisir cinq points : harmoniser 12DM, 11DM, 44V ; tonifier 43V, 52V, 8P, 7R, 6R.'},
+          {nom:'Dysharmonie entre Cœur et Reins', signes:'Rires et pleurs déplacés, agitation, ne peut rester assis ni couché, bavardage, endormissement difficile, rêves, bâillements, membres inférieurs froids, urines foncées. Langue rouge | Pouls fin, rapide',
+           pp:['7MC','4C','4R','6R','14RM'], ps:[], tech:'Disperser 7MC ; tonifier 4C, 4R, 6R ; harmoniser 14RM. 4R + 7MC : Dian et psychoses dépressives.'}
+        ]
+      }
+    }
+  },
+
+  chiDai: {
+    label: 'Démence (Chi Dai)',
+    alerte: 'Déclin cognitif : bilan médical et neurologique (causes curables, imagerie) ; l\'acupuncture accompagne.',
+    note: 'Le cerveau est la mer des Moelles et le siège du Shen Ming : il a besoin de la quintessence des cinq Zang, d\'une bonne circulation du Qi et du Sang (Foie) et de l\'absence de Glaires (Rate). Cas aigus : traiter d\'abord la branche (Glaires, stagnation de Qi, stase de Sang) ; cas chroniques : d\'abord la racine (Jing du Rein, Qi de la Rate, Sang du Cœur, Yin du Foie et des Reins) ; une fois stabilisé, les deux. L\'interrogatoire est difficile : s\'appuyer sur les antécédents, la langue et le pouls. À ne pas confondre avec le Dian, parfois traduit « démence ».',
+    motifs: {
+      'Démence, baisse des facultés intellectuelles': {
+        syn: ['demence','chi dai','alzheimer','declin cognitif','troubles cognitifs','demence senile','maladie d alzheimer'],
+        syndromes: [
+          {nom:'Vide de la mer des Moelles (Reins)', signes:'Affaiblissement intellectuel, retard de croissance chez l\'enfant, fragilité osseuse, déchaussement dentaire, lombes et genoux faibles, marche instable, apathie, somnolence, vertiges, acouphènes. Langue pâle | Pouls fin, faible',
+           pp:['23V','4DM','3R','20V','36E','20DM','39VB','Si Shen Cong (HM31)'], ps:['18V'], tech:'Tonification : nourrir le Jing, renforcer la moelle, stimuler l\'intelligence.'},
+          {nom:'Vide de Qi et de Sang (Rate et Cœur)', signes:'Visage indifférent, anxiété, tristesse, fatigue, désir de s\'allonger, palpitations, dyspnée, anorexie ; soupirs, pleurs, oppression, distension des hypocondres. Langue pâle | Pouls fin, faible',
+           pp:['15V','7C','20V','36E','20DM'], ps:['Si Shen Cong (HM31)','17RM','14F','3F','6MC'], tech:'Tonification. Formule classique « Cœur-Esprit » : 15V + 7C (empereur et ministre) ; 17RM + 3F si gêne thoracique, 14RM si envie de pleurer.'},
+          {nom:'Vide de Yin du Foie et des Reins', signes:'Baisse progressive des facultés, regard sans éclat, apraxie, paraphasie, vertiges, acouphènes, lombes faibles, engourdissement des membres, peau sèche, chaleur des paumes et des plantes, sueurs nocturnes ; langue raide, bégaiement, convulsions si Vent. Langue rouge, peu d\'enduit | Pouls fin, parfois rapide',
+           pp:['23V','3R','6RP','20VB','3F','20DM'], ps:['18V','5C','15V','7C','43VB','Si Shen Cong (HM31)'], tech:'Tonifier 23V, 3R, 6RP ; disperser les autres.'},
+          {nom:'Obstruction des orifices par les Glaires', signes:'Esprit confus, silencieux, marmonne, renfermé, crachats fréquents, tête lourde, plénitude abdominale, inappétence ; alternance d\'améliorations et d\'aggravations. Enduit blanc et gras | Pouls tendu, glissant',
+           pp:['9RP','12RM','40E','22DM','8E','36E'], ps:['20V'], tech:'Disperser 9RP, 12RM, 40E, 22DM, 8E ; tonifier 36E.'},
+          {nom:'Stagnation de Qi et stase de Sang', signes:'Souvent traumatisme crânien ou naissance traumatique ; baisse des facultés, apathie, réactions lentes. Langue pourpre sombre ou points violacés | Pouls profond, fin, tendu',
+           pp:['20DM','14DM','11DM','15DM','Yin Tang','17V','10RP','6RP'], ps:['23DM','8E'], tech:'Dispersion ; points du Du Mai en priorité.'},
+          {nom:'Prévention et traitement des démences séniles', signes:'Formule pour stimuler le cerveau, ouvrir les orifices, activer le Sang et tonifier les Reins.',
+           pp:['20DM','Si Shen Cong (HM31)','6MC','39VB','3F'], ps:['15DM','8MC','36E','23V','14DM','15RM','6RP','1R'], tech:'20DM en sous-cutané vers l\'avant ; aiguilles 30 min, une séance par jour, cure de 10. Groupes alternés : 15DM, 8MC, 36E, 23V / 14DM, 15RM, 6RP, 1R ; moxa sur gingembre sur 14DM.'}
+        ]
+      }
+    }
+  },
+
+  addictions: {
+    label: 'Addictions et sevrage',
+    motifs: {
+      'Sevrage tabagique': {
+        syn: ['sevrage tabagique','arret du tabac','tabagisme','arreter de fumer'],
+        note: 'Piquer à J0, J3, J7 ; abstention 24 à 48 h avant. Déterminer si le sujet est plutôt Yin ou Yang et quelles sont ses difficultés : nervosité, boulimie, agressivité, alcool, environnement. Le tabac soutient le Poumon (saveur piquante) et le Cœur : il met la loge Poumon en excès, qui attaque le Foie.',
+        syndromes: [
+          {nom:'Sujet Yang — 1re séance', signes:'', pp:['4GI','3F','Yin Tang','1VB','8VB'], ps:['6MC','34VB','20VB','12RM'], tech:'+ point hors méridien (Chiapi…). Auriculothérapie : points O et O\', Poumon, Foie. Nervosité : 6MC, 34VB, 20VB ; troubles digestifs : 12RM. 2e séance : nervosité 7C ; faim 6RP, 45E.'},
+          {nom:'Sujet Yin — 1re séance', signes:'', pp:['4GI','3F','Yin Tang','1VB','8VB','7P','9P','13V','12V','10V','6RP'], ps:['6R','2R'], tech:'Mêmes points locaux, mais 7P et 9P au lieu des points du Cœur et du Maître du Cœur, 10V au lieu de 20VB ; 6R ou 2R.'}
+        ]
+      },
+      'Conduites addictives (alcool, cannabis)': {
+        syn: ['addiction','addictions','alcoolisme','alcool','cannabis','haschich','dependance'],
+        alerte: 'Sevrage alcoolique : risque de delirium tremens et de convulsions — sevrage encadré médicalement.',
+        note: 'Feu vide : un Shen « pervers », feu avec un vide. Le Shen cherche à être soutenu : café et thé vont directement au Cœur ; sucre et hyperphagie soutiennent la Rate en vide qui nourrit le Cœur. Alcool : harmoniser le Triple Réchauffeur, désobstruer l\'Esprit, ouvrir les orifices et renforcer le Shen, traiter l\'énergie en excès et renforcer les carences, nourrir le Yin ; la Chaleur-Humidité dérègle le Triple Réchauffeur, l\'excès du Foie donne agitation, irritabilité, colère.',
+        syndromes: [
+          {nom:'Cannabis (« yinise », atteint Cœur et Poumon)', signes:'Shen du Cœur et angoisse de l\'avenir (Poumon).', pp:['13V','9P','17RM','8VB'], ps:[], tech:'9P = point de tonification du Poumon. Auriculothérapie : Shen Men, épiphyse, Poumon, Foie, Cœur. Pour l\'alcool, le cours donne des principes sans formule chiffrée (voir la note).'}
         ]
       }
     }
@@ -10394,7 +10701,8 @@ const PSY_DB = {
 const PSY_SIGNES = ['Agitation / logorrhée','Euphorie / expansivité','Idées de grandeur','Violence / injures','Rires immotivés',
   'Repli / mutisme','Discours incohérent / soliloque','Hallucinations','Idées noires','Idées suicidaires',
   'Angoisse haute (gorge / thorax)','Angoisse basse (abdominale)','Crises de panique','Hésitation / indécision',
-  'Spasmes / tétanie','Tics','Trac / angoisse de performance','Début brutal','Évolution progressive','Épuisement / surmenage'];
+  'Spasmes / tétanie','Tics','Trac / angoisse de performance','Début brutal','Évolution progressive','Épuisement / surmenage',
+  'Boule dans la gorge','Masse qui monte du bas-ventre','Labilité / théâtralisme','Phobies','Déclin cognitif / désorientation','Addiction (tabac / alcool / cannabis)'];
 function psyAnalyse(){
   const V = _rhVals, S = V('d-psy');
   const tq = q => Array.from(document.querySelectorAll('#tr-'+q+' .tg.on')).map(t=>t.textContent);
@@ -10407,7 +10715,9 @@ function psyAnalyse(){
   const insomnie=any(Q9,/Insomnie|Endormissement|Réveils/), palpit=has(Q6,'Palpitations'), oublis=any(Q10,/Oublis|concentration|Brouillard/);
   // Portes (domaines)
   const kuang = [has(S,'Agitation / logorrhée'),has(S,'Euphorie / expansivité'),has(S,'Idées de grandeur'),has(S,'Violence / injures'),has(Q10,'Joie excessive/agitation'),has(S,'Rires immotivés')].filter(Boolean).length;
-  const dian = [has(Q10,'Tristesse'),has(Q10,'Mélancolie'),has(Q10,'Apathie'),has(Q10,'Manque de motivation'),has(S,'Repli / mutisme'),has(S,'Idées noires'),has(Q9,'Hypersomnie')].filter(Boolean).length;
+  const depr = [has(Q10,'Tristesse'),has(Q10,'Mélancolie'),has(Q10,'Apathie'),has(Q10,'Manque de motivation'),has(S,'Idées noires'),has(Q9,'Hypersomnie'),has(Q10,'Deuil prolongé')].filter(Boolean).length;
+  const psychot = [has(S,'Repli / mutisme'),has(S,'Discours incohérent / soliloque'),has(S,'Hallucinations')].filter(Boolean).length;
+  const dian = psychot ? psychot + depr : 0;
   const angoisse = [has(Q10,'Anxiété'),has(Q10,'Inquiétude excessive'),has(Q10,'Peur'),has(Q10,'Frayeurs/sursauts'),has(S,'Crises de panique'),has(S,'Angoisse haute (gorge / thorax)'),has(S,'Angoisse basse (abdominale)')].filter(Boolean).length;
   const D='dianKuang', A='angoisse';
   const MD='Dian — mélancolie, « folie en dedans » (Yin)', MK='Kuang — agitation, « folie furieuse en dehors » (Yang)', MA='Angoisse, anxiété';
@@ -10421,14 +10731,60 @@ function psyAnalyse(){
   regle(D,MK,'Feu du Foie et de la Vésicule Biliaire',pk,[[has(Q10,'Irritabilité')||has(Q10,'Colère facile'),1,'irritabilité, colère'],[has(Q5,'Goût amer'),1,'bouche amère'],[any(LL,/Bords rouges/),1,'bords rouges'],[pouls(/corde/),1,'pouls en corde'],[any(Q6,/flancs/),1,'douleur des hypocondres']]);
   regle(D,MK,'Le Feu lèse le Yin, avec Glaires (Kuang chronique)',pk,[[has(S,'Évolution progressive'),1,'évolution chronique'],[has(LE,'Absent (langue miroir)'),1,'langue sans enduit'],[pouls(/Fin/)&&pouls(/Rapide/),1,'pouls fin et rapide'],[any(Q1,/vespérale|5 centres/),1,'chaleur vespérale'],[has(LF,'Mince / Maigre'),1,'amaigrissement']]);
   regle(D,MK,'Stagnation de Qi, stase de Sang, Glaires',pk,[[has(LC,'Violacé')||any(LL,/violac/),1,'langue pourpre'],[insomnie,1,'insomnie'],[any(Q6,/ombilicale|hypogastrique|Douleur fixe/),1,'douleur abdominale']]);
-  // Dian (vide, Yin)
-  const pd = dian>=2;
+  // Dian (psychose Yin : repli, mutisme, discours incohérent, hallucinations, avec humeur dépressive)
+  const pd = psychot>=1 && dian>=2;
   regle(D,MD,'Stagnation de Qi avec Glaires',pd,[[gonflee,1,'langue gonflée'],[collant,1,'enduit collant'],[pouls(/corde/)&&pouls(/Glissant/),1,'pouls en corde et glissant'],[has(Q10,'Labilité émotionnelle')||has(S,'Rires immotivés'),1,'alternance colère / rires'],[has(S,'Discours incohérent / soliloque'),1,'discours incohérent']]);
   regle(D,MD,'Vide du Cœur et de la Rate avec Glaires',pd,[[palpit,1,'palpitations'],[has(Q5,'Peu d\'appétit'),1,'petit appétit'],[has(Q4,'Selles molles'),1,'selles molles'],[pale&&gonflee,1,'langue pâle gonflée'],[pouls(/Mou/),1,'pouls mou'],[any(Q9,/Rêves|Cauchemars/),1,'rêves abondants']]);
   regle(D,MD,'Vide de Qi avec Glaires',pd,[[has(S,'Évolution progressive'),1,'chronicité'],[has(Q9,'Fatigue permanente'),1,'fatigue'],[has(Q4,'Selles molles'),1,'selles molles'],[pale,1,'langue pâle'],[pouls(/Mou/),1,'pouls mou'],[has(Q2,'Sueurs spontanées diurnes'),1,'sueurs spontanées']]);
   regle(D,MD,'Chaleur nouée dans le méridien du Cœur',pd,[[has(S,'Début brutal'),1,'début soudain'],[any(LL,/Pointe rouge|Points rouges pointe/),1,'pointe rouge'],[has(Q8,'Aphtes récurrents'),1,'aphtes'],[has(S,'Rires immotivés'),1,'rires sans raison'],[pouls(/Ample|Rapide/),1,'pouls vaste et rapide']]);
   regle(D,MD,'Glaires obstruant les orifices du Cœur',pd,[[has(S,'Discours incohérent / soliloque'),1,'discours incohérent'],[gonflee&&collant,1,'langue gonflée, enduit collant'],[pouls(/Glissant/),1,'pouls glissant'],[has(Q10,'Brouillard mental'),1,'esprit terne']]);
   regle(D,MD,'Consommation du Sang par atteinte de la Rate',pd,[[insomnie&&any(Q9,/Rêves|Cauchemars/),1,'insomnie avec rêves'],[oublis,1,'troubles de la mémoire ou de la concentration'],[palpit,1,'palpitations'],[has(Q10,'Peur')||has(Q10,'Frayeurs/sursauts'),1,'peurs'],[pale,1,'langue pâle'],[pouls(/Fin|Vide/),1,'pouls fin, sans force']]);
+  // Yu Zheng — dépression réactionnelle (sans signe psychotique)
+  const Y='yuZheng', MY='Dépression (Yu Zheng)', py = depr>=2 && !psychot;
+  regle(Y,MY,'Stagnation du Qi du Foie',py,[[has(Q10,'Frustration')||has(Q10,'Irritabilité'),1,'frustration, irritabilité'],[any(Q6,/flancs/),1,'douleur des flancs'],[pouls(/corde/),1,'pouls tendu'],[has(Q11,'SPM irritabilité/seins'),1,'syndrome prémenstruel'],[has(Q6,'Distension abdominale')||has(Q6,'Plénitude épigastrique'),1,'distension']]);
+  regle(Y,MY,'La stagnation du Qi se transforme en Feu',py,[[has(Q10,'Colère facile'),1,'colère facile'],[has(Q5,'Goût amer'),1,'goût amer'],[has(Q7,'Yeux rouges'),1,'yeux rouges'],[rouge&&any(LE,/Jaune/),1,'langue rouge, enduit jaune'],[pouls(/corde/)&&pouls(/Rapide/),1,'pouls tendu et rapide'],[insomnie,.5,'insomnie']],3);
+  regle(Y,MY,'Stagnation de Qi et obstruction des Glaires (noyau de prune)',py,[[has(S,'Boule dans la gorge'),2,'boule dans la gorge'],[has(Q6,'Oppression thoracique'),1,'oppression thoracique'],[gonflee||collant,1,'langue grosse, enduit gras'],[pouls(/Glissant/),1,'pouls glissant']]);
+  regle(Y,MY,'Le Qi du Foie blesse le Cœur-Esprit',py,[[has(Q10,'Labilité émotionnelle')||has(S,'Labilité / théâtralisme'),1,'hyperémotivité'],[palpit,1,'palpitations'],[insomnie,1,'insomnie'],[has(Q10,'Brouillard mental'),1,'obnubilation, confusion'],[pouls(/corde/)&&pouls(/Fin/),1,'pouls tendu et fin']],3);
+  regle(Y,MY,'Vide de Cœur et de Rate',py,[[palpit,1,'palpitations'],[insomnie||any(Q9,/Rêves/),1,'insomnie, rêves'],[oublis,1,'perte de mémoire'],[has(Q5,'Peu d\'appétit'),1,'inappétence'],[has(Q4,'Selles molles'),1,'selles molles'],[pale,1,'langue pâle'],[pouls(/Fin|Vide|Épuisé/),1,'pouls fin, faible']],3);
+  regle(Y,MY,'Yin déficient, Feu abondant',py,[[any(Q1,/5 centres/),1,'chaleur des cinq cœurs'],[has(Q2,'Sueurs nocturnes'),1,'sueurs nocturnes'],[insomnie,1,'insomnie'],[palpit,1,'palpitations'],[rouge&&has(LE,'Absent (langue miroir)'),1,'langue rouge sans enduit'],[pouls(/Fin/)&&pouls(/Rapide/),1,'pouls fin, rapide']],3);
+  // Excès émotionnels (hors manie)
+  const E='emotions';
+  const pc = (has(Q10,'Colère facile')||has(Q10,'Irritabilité')) && kuang<2 && !py;
+  regle(E,'Colère excessive','Feu du Foie et de la Vésicule Biliaire',pc,[[has(Q5,'Goût amer'),1,'goût amer'],[any(LL,/Bords rouges/),1,'bords rouges'],[pouls(/corde/)&&pouls(/Rapide/),1,'pouls tendu, rapide'],[any(Q3,/Céphalées/),1,'céphalée'],[has(Q4,'Constipation'),.5,'constipation']],3);
+  regle(E,'Colère excessive','Dysharmonie Foie-Rate',pc,[[has(Q4,'Selles molles'),1,'selles molles'],[has(Q5,'Peu d\'appétit'),1,'inappétence'],[has(Q6,'Distension abdominale'),1,'distension'],[pouls(/corde/)&&pouls(/Fin/),1,'pouls tendu, fin']],3);
+  regle(E,'Colère excessive','Vide de Yin du Foie et des Reins',pc,[[any(Q1,/5 centres/),1,'chaleur des cinq cœurs'],[has(Q2,'Sueurs nocturnes'),1,'sueurs nocturnes'],[has(Q7,'Yeux secs'),1,'yeux secs'],[rouge&&has(LE,'Absent (langue miroir)'),1,'langue rouge, peu d\'enduit']],3);
+  regle(E,'Colère excessive','Stagnation du Qi du Foie',pc,[[has(Q10,'Frustration'),1,'frustration'],[any(Q6,/flancs/),1,'hypocondres'],[pouls(/corde/),1,'pouls tendu']]);
+  const pr = has(S,'Rires immotivés') && kuang<2;
+  regle(E,'Rire et joie excessifs','Excès du Feu du Cœur',pr,[[any(LL,/Pointe rouge/),1,'pointe rouge'],[has(Q8,'Aphtes récurrents'),1,'aphtes'],[has(Q8,'Soif intense boissons froides'),1,'soif de froid'],[insomnie,1,'insomnie']]);
+  regle(E,'Rire et joie excessifs','Glaires-Feu troublant le Cœur',pr,[[collant&&any(LE,/Jaune/),1,'enduit jaune et gras'],[pouls(/Glissant/),1,'pouls glissant'],[has(Q10,'Frayeurs/sursauts'),1,'sursauts'],[palpit,1,'palpitations']]);
+  regle(E,'Rire et joie excessifs','Le Feu du Foie perturbe le Cœur',pr,[[has(Q10,'Colère facile'),1,'colère alternant avec la joie'],[pouls(/corde/),1,'pouls tendu'],[any(Q9,/Cauchemars/),1,'cauchemars']]);
+  regle(E,'Rire et joie excessifs','Cœur et Reins sans échange',pr,[[any(Q1,/5 centres/),1,'chaleur des cinq cœurs'],[has(Q2,'Sueurs nocturnes'),1,'sueurs nocturnes'],[any(Q7,/Acouphènes/),1,'acouphènes'],[pouls(/Fin/)&&pouls(/Rapide/),1,'pouls fin, rapide']]);
+  const pu = (has(Q10,'Rumination')||has(Q10,'Pensées obsessionnelles')) && !py;
+  regle(E,'Rumination, soucis et anxiété excessifs','Vide de Cœur et de Rate',pu,[[has(Q5,'Peu d\'appétit'),1,'inappétence'],[any(Q6,/épigastrique|Distension/),1,'oppression épigastrique'],[insomnie,1,'endormissement difficile'],[pale,1,'langue pâle'],[pouls(/Fin|Épuisé/),1,'pouls fin, faible']]);
+  regle(E,'Rumination, soucis et anxiété excessifs','Vide de Qi du Poumon',pu,[[has(Q2,'Sueurs spontanées diurnes'),1,'transpiration spontanée'],[has(Q9,'Fatigue permanente'),1,'asthénie'],[has(Q10,'Mélancolie'),1,'morosité'],[pouls(/Vide|Ténu/),1,'pouls vide']]);
+  const pp = has(Q10,'Peur') || has(Q10,'Frayeurs/sursauts') || has(S,'Phobies');
+  regle(E,'Peur excessive, phobies','Vide de Jing des Reins',pp,[[any(Q7,/Acouphènes/),1,'acouphènes'],[has(Q3,'Vertiges'),1,'étourdissements'],[has(Q2,'Sueurs nocturnes'),1,'sueurs nocturnes'],[has(Q11,'Libido diminuée')||has(Q4,'Pollakiurie nocturne'),1,'signes du Rein'],[pouls(/Fin|Épuisé|Dispersé/),1,'pouls fin, faible']],3);
+  regle(E,'Peur excessive, phobies','Vide du Foie et de la Vésicule Biliaire (vide de Cœur et de VB)',pp,[[has(S,'Hésitation / indécision'),2,'indécision'],[has(Q5,'Goût amer'),1,'goût amer'],[has(Q7,'Vision trouble'),1,'vision trouble'],[has(Q10,'Frayeurs/sursauts'),1,'sursauts']],3);
+  regle(E,'Peur excessive, phobies','Glaires-Chaleur troublant le Cœur',pp,[[palpit,1,'palpitations'],[collant&&any(LE,/Jaune/),1,'enduit jaune et gras'],[pouls(/Glissant/),1,'pouls glissant'],[has(Q3,'Lourdeur tête'),1,'tête lourde']],3);
+  regle(E,'Peur excessive, phobies','Vide de Cœur et de Rate (vide de Sang du Cœur)',pp,[[palpit,1,'palpitations'],[insomnie,1,'insomnie'],[oublis,1,'perte de mémoire'],[pale,1,'pâleur'],[pouls(/Fin/),1,'pouls fin']],3);
+  const pcau = has(Q9,'Cauchemars');
+  regle(E,'Rêves et cauchemars','Cauchemars — Glaires et Feu',pcau,[[true,1,'cauchemars'],[collant||any(LE,/Jaune/),1,'enduit jaune ou gras'],[pouls(/Glissant|Rapide/),1,'pouls glissant ou rapide']]);
+  regle(E,'Rêves et cauchemars','Cauchemars — vide du Cœur et de la Rate',pcau,[[true,1,'cauchemars'],[pale,1,'pâleur'],[has(Q9,'Fatigue permanente'),1,'fatigue']]);
+  // Zang Zao, Ben Tun
+  const N='nevroses', MZ='Zang Zao — agitation de l\'organe du Cœur (hystérie)', MB='Ben Tun Qi — le porcelet qui court (attaque de panique)';
+  const pz = has(S,'Labilité / théâtralisme');
+  regle(N,MZ,'Stagnation de Qi et accumulation de Glaires (Chaleur-vide du Cœur)',pz,[[has(S,'Boule dans la gorge'),1,'boule dans la gorge'],[has(Q10,'Labilité émotionnelle')||has(S,'Rires immotivés'),1,'rires et pleurs alternés'],[palpit,1,'palpitations'],[gonflee||collant,1,'langue grosse, enduit gras'],[pouls(/Glissant/),1,'pouls glissant']]);
+  regle(N,MZ,'Stagnation du Qi du Foie',pz,[[any(Q6,/flancs/),1,'hypocondres'],[has(Q4,'Diarrhée après stress'),1,'alternance diarrhée / constipation'],[pouls(/corde/),1,'pouls tendu']]);
+  const pb = has(S,'Masse qui monte du bas-ventre');
+  regle(N,MB,'Le Qi du Foie et des Reins s\'élève à contre-courant',pb,[[true,1,'masse qui monte'],[has(Q10,'Colère facile')||has(Q10,'Frayeurs/sursauts'),1,'déclenché par colère ou frayeur'],[has(Q5,'Goût amer'),1,'goût amer'],[has(Q1,'Alternance froid/chaud'),1,'alternance froid / chaud'],[pouls(/corde/),1,'pouls en corde']]);
+  regle(N,MB,'Le Froid et l\'Eau s\'élèvent à contre-courant',pb,[[true,1,'masse qui monte'],[has(Q1,'Froid permanent')||has(Q1,'Aggravé par le froid'),1,'crainte du froid'],[has(Q4,'Urines claires abondantes'),1,'urines claires abondantes'],[pale,1,'langue pâle']]);
+  // Démence
+  const C='chiDai', MC='Démence, baisse des facultés intellectuelles', pdm = has(S,'Déclin cognitif / désorientation');
+  regle(C,MC,'Vide de la mer des Moelles (Reins)',pdm,[[any(Q7,/Acouphènes/),1,'acouphènes'],[has(Q3,'Vertiges'),1,'vertiges'],[has(Q9,'Hypersomnie'),1,'somnolence'],[pale,1,'langue pâle'],[pouls(/Fin|Épuisé/),1,'pouls fin, faible']],3);
+  regle(C,MC,'Vide de Qi et de Sang (Rate et Cœur)',pdm,[[palpit,1,'palpitations'],[has(Q5,'Peu d\'appétit'),1,'anorexie'],[has(Q10,'Tristesse'),1,'tristesse'],[pale,1,'langue pâle'],[has(Q9,'Fatigue permanente'),1,'fatigue']],3);
+  regle(C,MC,'Vide de Yin du Foie et des Reins',pdm,[[any(Q1,/5 centres/),1,'chaleur des paumes et des plantes'],[has(Q2,'Sueurs nocturnes'),1,'sueurs nocturnes'],[rouge&&has(LE,'Absent (langue miroir)'),1,'langue rouge, peu d\'enduit'],[pouls(/Fin/),1,'pouls fin']],3);
+  regle(C,MC,'Obstruction des orifices par les Glaires',pdm,[[has(Q3,'Lourdeur tête'),1,'tête lourde'],[collant,1,'enduit gras'],[pouls(/Glissant/),1,'pouls glissant'],[has(S,'Discours incohérent / soliloque'),1,'marmonne']],3);
+  regle(C,MC,'Stagnation de Qi et stase de Sang',pdm,[[has(LC,'Violacé')||any(LL,/violac/),1,'langue pourpre'],[has(Q6,'Douleur fixe'),1,'douleur fixe'],[pouls(/Rugueux|corde/),1,'pouls rugueux ou tendu']]);
   // Angoisse
   const pa = angoisse>=1;
   regle(A,MA,'Angoisse Yang — Feu du Cœur',pa,[[has(Q10,'Joie excessive/agitation')||has(S,'Agitation / logorrhée'),1,'agitation'],[rouge,1,'langue rouge'],[any(LE,/Jaune/),1,'enduit jaune'],[pouls(/Plein|Rapide/),1,'pouls plein et rapide'],[any(LL,/Pointe rouge/),1,'pointe rouge'],[any(Q1,/Chaleur permanente/),1,'chaleur du corps']]);
@@ -10466,6 +10822,12 @@ function psyAnalyse(){
   motif(tics,'tics','Tics','Tics',['tics']);
   motif(spasm,A,'Spasmophilie, tétanie','Spasmophilie (vent interne sur vide)',['spasmes, tétanie']);
   motif(trac,A,'Trac, angoisse des examens','Trac',['trac']);
+  motif(py,'yuZheng','Dépression (Yu Zheng)','Dépression (Yu Zheng)',['humeur dépressive']);
+  motif(pb,'nevroses',MB,'Ben Tun Qi (attaque de panique)',['masse qui monte du bas-ventre']);
+  motif(pz,'nevroses',MZ,'Zang Zao (hystérie)',['labilité, théâtralisme']);
+  motif(pdm,'chiDai',MC,'Démence (Chi Dai)',['déclin cognitif']);
+  motif(has(S,'Phobies'),'emotions','Peur excessive, phobies','Peur excessive, phobies',['phobies']);
+  motif(has(S,'Addiction (tabac / alcool / cannabis)'),'addictions','Conduites addictives (alcool, cannabis)','Addictions et sevrage',['addiction']);
   return R.sort((a,b)=>b.score-a.score);
 }
 function _psyIdx(cat, motif, nom){
