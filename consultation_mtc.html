@@ -606,6 +606,14 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
         <div style="font-size:11px;color:var(--slate);font-style:italic;margin-bottom:8px">Cette liste s'enrichit à chaque amélioration de l'application — vous pouvez vérifier ici ce qui a changé depuis votre dernière utilisation. Remise à zéro le 1er octobre 2026, au lancement de la bêta.</div>
         <div id="guide-changelog" style="font-size:12px;color:var(--ink);line-height:1.8">
           <div style="font-size:12px;line-height:1.65;margin-bottom:10px">
+            <div style="font-weight:700;color:var(--jade);margin-bottom:4px">Pneumologie (octobre 2026)</div>
+            <div>• <strong>Pneumologie</strong> dans le Référentiel Sorbonne : toux (Ke Sou, 12 tableaux), dyspnées (Chuan, 13 tableaux et points des troubles des souffles), grippe et rhume (Gan Mao), asthme en crise et en traitement de fond. Question 6 complétée (essoufflement, inspiration difficile, respiration sifflante, toux, crachats) ; nouvelle carte d'examen « Respiration, toux, nez et gorge » avec orientation proposée. Chapitre « Pneumologie » dans le Référentiel MTC.</div>
+          </div>
+          <div style="font-size:12px;line-height:1.65;margin-bottom:10px">
+            <div style="font-weight:700;color:var(--jade);margin-bottom:4px">17 octobre 2026</div>
+            <div>• <strong>Stress</strong> dans le Référentiel Sorbonne › Psychiatrie (protocole général Ciel-Homme-Terre, trois foyers, signes cardiaques, digestifs, épuisement, acouphènes, méridiens curieux) et tableau des trois phases dans le Référentiel MTC › Psyché.</div>
+          </div>
+          <div style="font-size:12px;line-height:1.65;margin-bottom:10px">
             <div style="font-weight:700;color:var(--jade);margin-bottom:4px">16 octobre 2026</div>
             <div>• <strong>Psychiatrie complétée</strong> (cours de Capacité) : dépression Yu Zheng (6 tableaux), excès émotionnels (colère, rire, rumination, tristesse et deuil, peur et phobies, rêves et cauchemars), Zang Zao, Ben Tun (attaque de panique), syndrome Bai He, démence (Chi Dai), sevrage tabagique et addictions ; formules des 13 points de Maître Xu et des sept piqûres transperçantes. L'examen propose aussi ces tableaux (nouvelles étiquettes : boule dans la gorge, masse qui monte du bas-ventre, phobies, déclin cognitif…). Référentiel Psyché : rêves (Ling Shu 43), dix méthodes pour régulariser le Shen, psychothérapie par les émotions, répertoire du psychisme (plus de 400 symptômes).</div>
             <div>• Le motif de la séance saisi en haut de page n'est plus effacé quand on ouvre les 10+1 Questions.</div>
@@ -662,6 +670,7 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
             <option value="8">8. Indications empiriques</option>
             <option value="R">Rhumatologie</option>
             <option value="P">Psyché</option>
+            <option value="N">Pneumologie</option>
             <option value="A">Associations de points</option>
             <option value="S">Synonymes (analyse croisée)</option>
           </select>
@@ -737,6 +746,12 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
         <div class="ct">La psyché en MTC — tableaux de référence</div>
         <div class="ref-doc" style="font-size:11px;color:var(--slate);margin-bottom:6px">Cours « La psyché en médecine traditionnelle chinoise » (octobre 2026), cours de Capacité « Psychiatrie chinoise » et répertoire du psychisme. Les protocoles par motif sont dans Points › Motif clinique › Référentiel Sorbonne › Psychiatrie.</div>
         <div class="ref-tables" data-sec="P"></div>
+      </div>
+
+      <div class="card ref-sec" data-sec="N" id="ref-pneumo">
+        <div class="ct">La pneumologie en MTC — tableaux de référence</div>
+        <div class="ref-doc" style="font-size:11px;color:var(--slate);margin-bottom:6px">Cours « La pneumologie en médecine traditionnelle chinoise » (DU Paris XIII). Les protocoles par motif sont dans Points › Motif clinique › Référentiel Sorbonne › Pneumologie.</div>
+        <div class="ref-tables" data-sec="N"></div>
       </div>
 
       <div class="card ref-sec" data-sec="S" id="ref-syn">
@@ -1560,6 +1575,58 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
         </div>
       </div>
 
+      <!-- RESPIRATION, TOUX, NEZ ET GORGE (15/10/2026) : orientation pneumologique -->
+      <div class="card" style="margin-top:12px" id="card-resp">
+        <div class="ct">Respiration, toux, nez et gorge 肺</div>
+        <div style="font-size:11px;color:var(--slate);margin-bottom:6px">Interrogatoire respiratoire détaillé : il complète l'inspection (« Respiration &amp; voix ») et la question 6. L'orientation lit aussi les questions 1, 2, 8, la langue et le pouls.</div>
+        <div class="tr">
+          <div style="flex-basis:100%;font-size:10px;font-weight:700;color:#1A5276;text-transform:uppercase;letter-spacing:.4px;margin:6px 0 1px">Toux</div>
+          <span class="tg" onclick="togEx(this,'d-resp')">Toux sèche</span>
+          <span class="tg" onclick="togEx(this,'d-resp')">Toux grasse</span>
+          <span class="tg" onclick="togEx(this,'d-resp')">Toux faible</span>
+          <span class="tg" onclick="togEx(this,'d-resp')">Toux forte / quinteuse</span>
+          <span class="tg" onclick="togEx(this,'d-resp')">Toux du soir ou nocturne</span>
+          <span class="tg" onclick="togEx(this,'d-resp')">Toux aggravée le matin</span>
+          <span class="tg" onclick="togEx(this,'d-resp')">Toux déclenchée par les émotions</span>
+          <div style="flex-basis:100%;font-size:10px;font-weight:700;color:#1A5276;text-transform:uppercase;letter-spacing:.4px;margin:6px 0 1px">Crachats</div>
+          <span class="tg" onclick="togEx(this,'d-resp')">Crachats blancs fluides / aqueux</span>
+          <span class="tg" onclick="togEx(this,'d-resp')">Crachats blancs épais abondants</span>
+          <span class="tg" onclick="togEx(this,'d-resp')">Crachats jaunes épais</span>
+          <span class="tg" onclick="togEx(this,'d-resp')">Crachats striés de sang</span>
+          <span class="tg" onclick="togEx(this,'d-resp')">Expectoration difficile</span>
+          <div style="flex-basis:100%;font-size:10px;font-weight:700;color:#1A5276;text-transform:uppercase;letter-spacing:.4px;margin:6px 0 1px">Respiration</div>
+          <span class="tg" onclick="togEx(this,'d-resp')">Essoufflement à l&#39;effort</span>
+          <span class="tg" onclick="togEx(this,'d-resp')">Essoufflement au repos</span>
+          <span class="tg" onclick="togEx(this,'d-resp')">Inspiration difficile</span>
+          <span class="tg" onclick="togEx(this,'d-resp')">Expiration difficile</span>
+          <span class="tg" onclick="togEx(this,'d-resp')">Sifflement (wheezing)</span>
+          <span class="tg" onclick="togEx(this,'d-resp')">Ne peut pas s&#39;allonger</span>
+          <span class="tg" onclick="togEx(this,'d-resp')">Dyspnée déclenchée par les émotions</span>
+          <div style="flex-basis:100%;font-size:10px;font-weight:700;color:#1A5276;text-transform:uppercase;letter-spacing:.4px;margin:6px 0 1px">Nez, gorge, voix</div>
+          <span class="tg" onclick="togEx(this,'d-resp')">Éternuements</span>
+          <span class="tg" onclick="togEx(this,'d-resp')">Nez bouché</span>
+          <span class="tg" onclick="togEx(this,'d-resp')">Rhinorrhée claire</span>
+          <span class="tg" onclick="togEx(this,'d-resp')">Rhinorrhée épaisse / jaune</span>
+          <span class="tg" onclick="togEx(this,'d-resp')">Gorge qui pique</span>
+          <span class="tg" onclick="togEx(this,'d-resp')">Gorge douloureuse</span>
+          <span class="tg" onclick="togEx(this,'d-resp')">Voix faible</span>
+          <span class="tg" onclick="togEx(this,'d-resp')">Voix rauque / aphonie</span>
+          <div style="flex-basis:100%;font-size:10px;font-weight:700;color:#1A5276;text-transform:uppercase;letter-spacing:.4px;margin:6px 0 1px">Contexte</div>
+          <span class="tg" onclick="togEx(this,'d-resp')">Début aigu</span>
+          <span class="tg" onclick="togEx(this,'d-resp')">Évolution chronique</span>
+          <span class="tg" onclick="togEx(this,'d-resp')">Crises récidivantes</span>
+          <span class="tg" onclick="togEx(this,'d-resp')">Entre les crises</span>
+          <span class="tg" onclick="togEx(this,'d-resp')">Déclenché par le froid / changement de temps</span>
+          <span class="tg" onclick="togEx(this,'d-resp')">Déclenché par l&#39;alimentation</span>
+          <span class="tg" onclick="togEx(this,'d-resp')">Déclenché par l&#39;effort / la fatigue</span>
+          <span class="tg" onclick="togEx(this,'d-resp')">Allergie (pollen / poussière)</span>
+          <span class="tg" onclick="togEx(this,'d-resp')">Cyanose des lèvres</span>
+          <span class="tg" onclick="togEx(this,'d-resp')">Œdèmes des chevilles</span>
+        </div>
+        <input id="d-resp" style="display:none" oninput="markDirty();pneumoRafraichir()">
+        <div id="pneumo-analyse-examen" style="margin-top:6px"></div>
+      </div>
+
       <!-- SIGNES PSYCHIQUES (15/10/2026) : orientation psychiatrique, avec la question 10, la langue et le pouls -->
       <div class="card" style="margin-top:12px" id="card-psy">
         <div class="ct">Signes psychiques et comportement 神志</div>
@@ -1991,6 +2058,7 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
           </div>
           <div id="rh-analyse-points" style="display:none;background:#F0F9F6;border-radius:6px;padding:6px 10px;margin-bottom:8px"></div>
           <div id="psy-analyse-points" style="display:none;background:#F5EEF8;border-radius:6px;padding:6px 10px;margin-bottom:8px"></div>
+          <div id="pneumo-analyse-points" style="display:none;background:#EBF5FB;border-radius:6px;padding:6px 10px;margin-bottom:8px"></div>
           <p id="spn-empty-msg" style="font-size:11px;color:var(--slate);font-style:italic">Sélectionnez une spécialité pour afficher ses domaines et motifs cliniques. D'autres spécialités du référentiel (ORL, pédiatrie…) seront ajoutées progressivement.</p>
           <div id="gyno-result-wrapper" style="display:none">
             <div id="gyno-result" style="font-size:12px"></div>
@@ -2607,7 +2675,7 @@ const DIX_Q=[
   {id:'q6',n:6,lbl:'Poitrine & Abdomen',zh:'胸腹',alt:false,
    hint:'oppression, palpitations, douleurs (localisation, type, horaire), rapport aux repas',
    itp:'Flancs → Foie/VB, Stase Qi | Épigastre → Estomac/Rate | Hypogastre → Rein/Utérus/VessIe | Douleur fixe → Stase Sang | Mobile → Stase Qi | Amélioré chaleur → Froid | Amélioré pression → Vide',
-   tags:['Oppression thoracique','Douleur thoracique','Palpitations','Sensation chaleur poitrine','Douleur épigastrique','Plénitude épigastrique','Brûlures épigastriques','Douleur flancs droit','Douleur flancs gauche','Distension abdominale','Borborygmes','Douleur hypogastrique','Douleur ombilicale','Aggravé après repas','Amélioré après repas','Amélioré par chaleur','Amélioré par pression','Aggravé par pression','Douleur fixe','Douleur mobile / crampes']},
+   tags:['Oppression thoracique','Douleur thoracique','Palpitations','Sensation chaleur poitrine','Douleur épigastrique','Plénitude épigastrique','Brûlures épigastriques','Douleur flancs droit','Douleur flancs gauche','Distension abdominale','Borborygmes','Douleur hypogastrique','Douleur ombilicale','Aggravé après repas','Amélioré après repas','Amélioré par chaleur','Amélioré par pression','Aggravé par pression','Douleur fixe','Douleur mobile / crampes','Essoufflement à l\'effort','Essoufflement au repos','Inspiration difficile','Respiration sifflante','Toux','Crachats']},
   {id:'q7',n:7,lbl:'Ouïe & Vision',zh:'耳目',alt:false,
    hint:'acouphènes (tonalité clé), surdité, yeux (sécheresse, rougeur, vision)',
    itp:'Acouphènes aigus soudains → Feu VB (Plénitude) | Acouphènes graves progressifs → Rein xu (Vide) | Surdité aiguë → Vent-Feu | Surdité chronique → Rein xu | Yeux secs/mouches volantes → Sang Foie xu | Yeux rouges → Feu Foie | Photophobie → Foie',
@@ -3581,6 +3649,7 @@ function navTo(pg){
   if(pg==='points') setTimeout(renderConvergence, 60);
   if((pg==='points' || pg==='examen') && typeof rhRafraichir==='function') setTimeout(rhRafraichir, 40);
   if((pg==='points' || pg==='examen') && typeof psyRafraichir==='function') setTimeout(psyRafraichir, 45);
+  if((pg==='points' || pg==='examen') && typeof pneumoRafraichir==='function') setTimeout(pneumoRafraichir, 50);
   if(pg==='fiche') setTimeout(toggleSAfield, 30);
   if(pg==='synthese') setTimeout(autoFillSynthese, 50);
   if(pg==='points'){
@@ -3868,7 +3937,7 @@ function loadSeance(sc){
     'palp-oreille':ex.palpOreille, 'palp-oreille-notes':ex.palpOreilleNotes,
     // Douleur
     'd-localisation':ex.dLocalisation, 'd-type':ex.dType, 'd-rythme':ex.dRythme,
-    'd-aggrave':ex.dAggrave, 'd-ameliore':ex.dAmeliore, 'd-rhumato':ex.dRhumato, 'd-psy':ex.dPsy, 'd-libre':ex.dLibre,
+    'd-aggrave':ex.dAggrave, 'd-ameliore':ex.dAmeliore, 'd-rhumato':ex.dRhumato, 'd-psy':ex.dPsy, 'd-resp':ex.dResp, 'd-libre':ex.dLibre,
     // Langue
     'l-forme':ex.lForme, 'l-epaisseur':ex.lEpaisseur, 'l-couleur':ex.lCouleur, 'l-couleur-loc':ex.lCouleurLoc,
     'l-enduit-couleur':ex.lEnduitCouleur, 'l-enduit-dist':ex.lEnduitDist,
@@ -4006,7 +4075,7 @@ function collectSc(){
     palpAhshiT:gT('palp-ahshi-t'),palpAhshi:g('palp-ahshi'),palpNotes:g('palp-notes'),
     palpOreille:gT('palp-oreille'),palpOreilleNotes:g('palp-oreille-notes'),
     dLocalisation:gT('d-localisation'),dType:gT('d-type'),dRythme:gT('d-rythme'),
-    dAggrave:gT('d-aggrave'),dAmeliore:gT('d-ameliore'),dRhumato:gT('d-rhumato'),dPsy:gT('d-psy'),dLibre:g('d-libre'),dZones:g('d-zones')};
+    dAggrave:gT('d-aggrave'),dAmeliore:gT('d-ameliore'),dRhumato:gT('d-rhumato'),dPsy:gT('d-psy'),dResp:gT('d-resp'),dLibre:g('d-libre'),dZones:g('d-zones')};
   sc.ccmq={};CQ.forEach(i=>{const v=g('c-'+i.n);if(v)sc.ccmq[i.n]=v;});
   const syndChk2=document.querySelectorAll('.pt-chk:checked:not(.ebm-chk):not(.auri-chk):not(.gyno-chk):not(.libre-chk)');
   const ebmChk2=document.querySelectorAll('.ebm-chk:checked');
@@ -7400,6 +7469,110 @@ function buildShuAntiqueDiagram(nom){
 // Notation d'origine du cours conservée (P, GI, E, Rt/RP, C, IG, V, R/Rn, MC/EC, TR/TF, VB, F, RM, DM, HM).
 // chap = chapitre du plan (1…8) ; src = image/section d'origine dans le document source.
 const REF_TABLES = [
+ // ── Pneumologie (15/10/2026) — chap 'N' ──
+ {id:'pn-poumon', chap:'N', titre:'Le Poumon — l\'essentiel', src:'cours pneumologie',
+  cols:['Fonction','Rappel'],
+  rows:[
+   ['Gouverne le Qi et la respiration','Zong Qi (air + essences alimentaires), « mer des souffles » au milieu de la poitrine (RM17) ; l\'inspir et l\'expir en dépendent'],
+   ['Descente et diffusion','Du Qi et des Liquides : la pathologie pulmonaire est une perte de la descente (toux, dyspnée = Qi rebelle)'],
+   ['Voie des Eaux','« Disperser en haut, faire couler en bas » : œdèmes, urines'],
+   ['Gouverne la surface','Peau, poils, Wei Qi : premier atteint par les pervers externes'],
+   ['S\'ouvre au nez ; manifestation : la voix','Congestion, rhinorrhée, aphonie'],
+   ['Résidence du Po','Âme corporelle ; souffle rythmique, axe Poumon-Rein'],
+   ['Poumon et Rein','Le Rein gouverne l\'inspiration ; le Poumon, l\'expiration'],
+   ['Respiration et pelvis','Inspiration : descente des souffles ; expiration : appui sur le pelvis et remontée (Chong Mai, Rein)']],
+  note:'Le Poumon est le « toit des viscères », le seul organe Yin ouvert à l\'extérieur, intermédiaire entre le Ciel et l\'Homme. Respiration abdominale normale (bouddhiste) : nourrit le Yin, apaise le mental ; inversée (taoïste) : nourrit le Yang — contre-indiquée si HTA, Feu du Cœur, Yang en haut.'},
+ {id:'pn-souffles', chap:'N', titre:'Troubles des souffles et points', src:'cours pneumologie',
+  cols:['Terme','Sens','Points'],
+  rows:[
+   ['Chuan','Dyspnée, essoufflement','V4, V45, VB41, E44'],
+   ['Chuan Ni','Dyspnée par reflux','P9, C7, RP9, V60, VB41'],
+   ['Chuan He','Halètement bruyant','DM24, P3'],
+   ['Chuan Man','Dyspnée avec plénitude','GI3, GI1, E44'],
+   ['Yang Xi','Halètement avec extension du cou','R1'],
+   ['Jian Xi','Haussement des épaules, bouche ouverte, respiration sonore','P1, E13, E19'],
+   ['Ni Qi','Reflux du souffle (souvent après une colère), ne peut s\'allonger','P5, RP5, RP3, RP6'],
+   ['Shang Qi','Montée du souffle : expiration longue, inspiration courte','P3, P7, P11, V13, V17, RM5, RM19, RM22, RM23, MC1, C7, IG15'],
+   ['Shao Qi','Manque de souffle, respiration faible','DM9, RM3, RM14, P5, P7, GI13, E33, E39, V17, V23, R22, R4, R2, MC5, F4, F13'],
+   ['Duan Qi','Souffle court','DM1, R1, F2, V18, RM17, RM14, E10, RM22, P10'],
+   ['Xi Ben','Amas du Poumon, reflux vers le haut','RM14']]},
+ {id:'pn-semeio', chap:'N', titre:'Séméiologie énergétique pulmonaire', src:'cours pneumologie',
+  cols:['Atteinte','Signes','Points'],
+  rows:[
+   ['Poumon « premier ministre »','Toux chronique ± expectoration, dyspnée d\'effort','V13, P9, R22'],
+   ['Mer des souffles','Dyspnée inspiratoire et expiratoire, quinte de toux, respiration courte','RM17'],
+   ['Distribution des souffles','Stagnation, plénitude, blocage dans la poitrine','P9, V12, RM17, E12'],
+   ['Distribution du centre','—','GI10, RM12'],
+   ['Glaires','—','E40']]},
+ {id:'pn-toux-organes', chap:'N', titre:'La toux des organes (Su Wen 38)', src:'cours pneumologie',
+  cols:['Organe','Toux','Transmission au viscère Yang'],
+  rows:[
+   ['Poumon','Toux avec dyspnée bruyante, énergie qui remonte, hémoptysie au pire ; aggravée le soir','Gros Intestin : incontinence des matières'],
+   ['Cœur','Douleur précordiale, épine dans la gorge, parfois angine','Intestin Grêle : incontinence des gaz'],
+   ['Foie','Douleur bilatérale sous les côtes empêchant le mouvement','Vésicule Biliaire : vomissements de bile'],
+   ['Rate','Douleur de l\'hémithorax droit vers le haut du dos, aggravée au mouvement','Estomac : vomissements en toussant'],
+   ['Rein','Douleur des lombes au dos, salivation importante','Vessie : incontinence d\'urine']],
+  note:'Toux chronique aussi dans les troubles du Du Mai et du Ren Mai. Son : faible (vide), fort (plénitude), rauque (Chaleur), gras (Glaires). Horaire : soir (vide de Yin), matin (Glaires). Expectoration : absente (vide ou Chaleur), abondante (Glaires), jaune (Chaleur), blanche (Froid), sanglante (Chaleur), aqueuse (Glaires fluides).'},
+ {id:'pn-points', chap:'N', titre:'Points clés de la pneumologie', src:'cours pneumologie',
+  cols:['Point','Indication'],
+  rows:[
+   ['P7 Lieque','Luo, clé du Ren Mai (avec R6) : libère l\'Extérieur, restaure la descente — LE point du Poumon'],
+   ['P9 Taiyuan','Shu-Source : tonifie le Qi et le Yin du Poumon'],
+   ['P5 Chize','Élimine la Chaleur du Poumon, dissout les Glaires'],
+   ['P6 Kongzui','Xi : dyspnées aiguës, hémoptysie'],
+   ['P10 Yuji','Rafraîchit la Chaleur (gorge)'],
+   ['P11 Shaoshang','Jing-puits en saignée : Vent, Chaleur, gorge'],
+   ['P1 Zhongfu','Mu du Poumon : plénitude et Chaleur de poitrine'],
+   ['V13 Feishu','Shu du Poumon : tonifie, disperse'],
+   ['V12 Fengmen','« Porte du Vent » : ventouses et moxas'],
+   ['V43 Gaohuangshu','Nourrit le Yin du Poumon, cas très chroniques, « Cent Fatigues »'],
+   ['RM17 Tanzhong','Mer des souffles, Mu du Réchauffeur supérieur'],
+   ['RM22 Tiantu','Descente du Qi, dissout les Glaires, calme la toux'],
+   ['E40 Fenglong','Dissout les Glaires — incontournable'],
+   ['Dingchuan','Hors méridien, 0,5 cun en dehors de DM14 : arrête les dyspnées aiguës'],
+   ['DM14 Dazhui','Disperse la Chaleur, renforce la surface (moxas)'],
+   ['VB20, DM16','Grands points du Vent'],
+   ['R6 + P7','Ouvrent le Ren Mai : vide de Yin du Poumon et du Rein, gorge sèche'],
+   ['R25 Shencang','Point local : dyspnée chronique par vide du Rein']]},
+ {id:'pn-vent', chap:'N', titre:'Points du Vent selon le pervers', src:'cours pneumologie',
+  cols:['Point','Vent-Froid','Vent-Chaleur','Vent-Humidité'],
+  rows:[['DM20','Oui','Oui','Oui'],['DM14','Oui','Oui','Non'],['DM13','Oui','Oui','Non'],['DM12','Oui','Oui','Non'],['V12','Oui','Oui','Non'],['V13','Oui','Oui','Non'],['VB20','Oui','Oui','Oui'],['TR5','Oui','Non','Non'],['P7','Oui','Non','Non'],['GI4','Oui','Oui','Oui'],['GI11','Non','Oui','Oui'],['E36','Non','Non','Oui']],
+  note:'Prévention des rhumes à répétition : moxas DM14, DM12 ; disperser V12 ; tonifier E36 ; moxas sur V18 en hiver.'},
+ {id:'pn-langue-pouls', chap:'N', titre:'Toux et dyspnées — repères langue et pouls', src:'cours pneumologie',
+  cols:['Cadre','Langue','Pouls'],
+  rows:[
+   ['Vent-Froid (surface)','Normale ou enduit mince blanc','Superficiel ; serré si le Froid prédomine'],
+   ['Vent-Chaleur','Bords légèrement rouges, enduit mince blanc','Superficiel, rapide'],
+   ['Glaires-Humidité','Enduit blanc, gras, épais','Glissant, mou, lent'],
+   ['Glaires-Chaleur','Rouge, enduit collant et jaune','Glissant, rapide'],
+   ['Qi du Foie rebelle','Bords rouges','En corde'],
+   ['Feu du Foie → Poumon','Rouge, bords plus rouges et gonflés, enduit jaune','En corde, rapide'],
+   ['Vide de Qi du Poumon','Pâle','Faible, surtout au pouce droit'],
+   ['Vide de Yin du Poumon','Rouge, sèche, sans enduit, fissures zone Poumon','Fin, rapide, faible au pouce droit'],
+   ['Vide de Yang Poumon-Rein','Pâle, gonflée (mouillée si débordement des Liquides)','Profond, faible, lent'],
+   ['Vide de Yang Poumon-Cœur-Rein','Pourpre-bleuâtre, gonflée','Profond, lent, noué']]},
+ {id:'pn-dyspnee-chronique', chap:'N', titre:'La dyspnée chronique — physiopathologie énergétique', src:'cours pneumologie',
+  cols:['Origine','Mécanisme','Conséquence'],
+  rows:[
+   ['Facteurs déclenchants','Vent externe, surmenage, excès sexuels, constitution, alimentation, émotions','Déclenchent ou entretiennent la dyspnée chronique'],
+   ['Vide de Qi du Poumon','Le Qi du Poumon ne descend pas','Dyspnée d\'effort, voix basse ; favorise l\'agression par le Yang ou le Feu du Foie'],
+   ['Vide du Rein','Le Rein ne « prend » pas le Qi','Inspiration difficile, aggravée au mouvement'],
+   ['Vide de la Rate','Les Liquides non transformés obstruent le Poumon','Mucosités'],
+   ['Yang ou Feu du Foie','Le Qi du Foie rebelle agresse le Poumon','Composante émotionnelle des crises'],
+   ['Vide du Cœur','Le Qi et le Yang ne transforment plus l\'Eau','Les Liquides débordent sur le Poumon : œdèmes, cyanose']],
+  note:'Traiter le vide sous-jacent (racine) tout en gérant les poussées (branche). Signes de stase en fin d\'évolution (cyanose des lèvres, langue pourpre) : ajouter V17, RP10.'},
+ {id:'pn-asthme', chap:'N', titre:'Asthme — crise et rémission', src:'cours pneumologie',
+  cols:['Tableau','Respiration, crachats','Langue, pouls','Points'],
+  rows:[
+   ['Crise — Froid','Dyspnée, sifflement, gêne étouffante ; crachats blancs fluides écumeux','Enduit blanc lisse ; pouls en corde et serré','Dingchuan, V12, V13, RM22, P7, V43, RM17, RM12'],
+   ['Crise — Chaleur','Dyspnée bruyante, épaules haussées ; crachats jaunes épais visqueux','Rouge, enduit jaune gras ; pouls glissant rapide','V13, P7, P11, RM22, E40, E44, RM17, P10 ; saignées DM14, V12, V13'],
+   ['Crise — Glaires','Peut s\'asseoir mais pas se coucher ; « bruit de sciage »','Enduit épais ; pouls glissant et plein','RM22, E40, RM17, E36, V13'],
+   ['Crise — vide-Froid / vide-Chaleur','Crises persistantes, voix basse, dyspnée au moindre mouvement','Pâle, pouls profond fin / rouge, pouls fin rapide','RM4, P7, E40 (moxas) / P9, R7, E40, R6 + P7'],
+   ['Rémission — Poumon','Respiration courte, voix basse ; déclenché par le changement de temps','Pouls fin et faible','GI4, P9, V43, V13, Dingchuan'],
+   ['Rémission — Rate','Crachats abondants blancs ; déclenché par l\'alimentation','Pâle, pouls fin et mou','RP9, E36, V20'],
+   ['Rémission — Reins','Respiration courte, rapide, inspiration difficile ; déclenché par la fatigue','Yang : pouls profond ; Yin : fin rapide','Yang : RM4, R7, V23 ; Yin : RM6, V23, R3']],
+  note:'Base commune de rémission : V13, V20, V21, V23, E36 (tonifier) ; RM6, RM4 (tonifier, moxer) ; P9, V43 (tonifier) ; Dingchuan (disperser). Gravité d\'une crise (GINA) : difficulté à parler, cyanose, FR > 30, FC > 120, agitation, silence auscultatoire → urgence. « Tout ce qui siffle n\'est pas asthme » (corps étranger, reflux, insuffisance cardiaque, bêta-bloquants…).'},
+
  // ── Psyché (14/10/2026) — chap 'P' ──
  {id:'psy-entites', chap:'P', titre:'Le Shen et les cinq entités psychiques', src:'cours psyché',
   cols:['Entité','Organe','Fonctions psychiques'],
@@ -7562,6 +7735,19 @@ const REF_TABLES = [
   cols:['Symptôme','Points'],
   rows:[["Tout trouble", "2F, 6GI (-), 6MC, 16DM"], ["Tout trouble — trois pouls psychiques faibles", "6RM"], ["Tout trouble — avec excès ou insuffisance physique", "7C"], ["Tout trouble — par arrêt des règles", "27R"], ["Tout trouble — après un choc", "14E"], ["Agitation", "8C, 21E, 36E, 45E, 4F (+), 5P, 27R, 11V, 42V, 59V, 15DM, 16RM"], ["Agitation — a toujours besoin de remuer", "5MC"], ["Agitation — extrême", "17DM"], ["Agitation — avec faiblesse d'esprit", "13RM"], ["Agitation — avec insanité", "8IG"], ["Agitation — avec malaise", "4TR"], ["Agitation — avec mélancolie", "4IG"], ["Agitation — par anxiété", "2RP"], ["Agitation — par chaleur", "15TR"], ["Agitation — par cholera", "61V"], ["Agitation — par émotivité", "5C"], ["Agitation — des enfants", "9C"], ["Agitation — par fièvre", "7C, 5GI, 9MC, 3RP, 1TR (+), 14DM"], ["Agitation — par froid", "15TR"], ["Agitation — à la ménopause", "14F"], ["Agressivité", "20RP"], ["Agressivité — avant les règles", "5R (-)"], ["Altruisme — excessif, jusqu'à masochisme", "5RP"], ["Angoisse", "7C, 9C, 41E, 10P, 2RP, 2R (+), 34VB, 35VB"], ["Angoisse — cœur contracté", "5C"], ["Angoisse — et artères contractées, gorge contractée", "34VB (-)"], ["Angoisse — avec insomnie", "12E"], ["Angoisse — inquiétude", "13GI, 8MC"], ["Angoisse — saisi par les spectres", "26DM"], ["Anxiété", "6MC, 8MC, 9MC, 24R, 39VB, 20DM, 24DM"], ["Anxiété — dépression anxieuse", "2RP"], ["Appréhension", "9C, 36E, 5MC, 7MC, 1R, 2R (+), 4R, 30V, 14DM, 24DM, 14RM"], ["Appréhension — agitée", "5C"], ["Appréhension — surexcitée", "4IG, 7IG"], ["Appréhension — attend un malheur", "27R, 15RM"], ["Appréhension — comme craignant d'être arrêté", "2R (+), 34VB (-)"], ["Autoritarisme", "16RM"], ["Aversions — les aliments froids", "1DM"], ["Aversions — bruits humains", "44E"], ["Aversions — enfants petits, surtout les fillettes", "18RM"], ["Aversions — féculents", "2RP"], ["Aversions — gens: ne supporte pas les gens", "10TR"], ["Aversions — graisses", "2RP"], ["Aversions — lumière", "18R"], ["Aversions — maisons d'autrui", "45E"], ["Aversions — nourriture", "9RP"], ["Aversions — odeurs de nourriture", "36E"], ["Aversions — personnes inconnues", "43VB"], ["Aversions — être serré à la taille ou au cou", "12E"], ["Aversions — être touché ou même regardé", "14E"], ["Aversions — pour la vie: n'aime pas la vie", "17R, 25R"], ["Aversions — viande", "3IG, 2RP"], ["Aversions — voix humaines", "44E, 15RM"], ["Bruits — déteste les bruits humains", "44E"], ["Bruits — sursaute aux bruits soudains", "45E, 42E, 27R"], ["Capricieux", "9R"], ["Capricieux — enfants: crient pour avoir un objet, le jettent aussitôt", "21R"], ["Caractère — manque de caractère", "7R"], ["Catégorique", "7R"], ["Chagrin", "1C, 9C, 18E, 41E, 7IG, 7MC, 5P, 10P, 5RP, 7RP, 23VB, 20DM"], ["Chagrin — bouleversé facilement", "1R"], ["Chagrin — après choc psychique", "5C"], ["Chagrin — constant", "6R (-)"], ["Chagrin — excessif", "11DM"], ["Chagrin — s'arrache les cheveux", "24DM"], ["Chagrin — facile", "15RP, 1R, 24VB"], ["Chagrin — avec insomnie", "24DM"], ["Chagrin — grand chagrin, ne peut dormir", "10TR"], ["Chagrin — surexcité", "4C (+), 7C"], ["Colère", "9P"], ["Colère — aggravé par la colère", "21R"], ["Colère — emporté", "25E, 36E"], ["Colère — facile", "7R, 26R"], ["Colère — se calme vite, soupe au lait", "26R"], ["Colère — folle", "7C"], ["Colère — fureur", "36E"], ["Colère — soudaine", "38VB"], ["Colère — supporte beaucoup et soudain éclate", "38VB"], ["Colère — par hypertension", "7MC"], ["Colère — par vers parasites", "14RM"], ["Conscience morale — manque de conscience morale, voit ses désirs et non leurs conséquences", "2RP"], ["Contraires — enfants contraires", "1RP, 2RP, 6RP"], ["Courage — audace", "38VB"], ["Courage — grand courage", "38VB"], ["Courage — manque de courage, d'audace", "43VB, 6RM"], ["Courage — toute tâche, tout effort semblent trop difficiles", "43VB"], ["Courage — découragé", "36E, 28VB"], ["Courage — moments de faiblesse et découragement, jusqu'à crainte d'évanouissement", "9C"], ["Délire — par émotion", "62V (-)"], ["Délire — pendant la fièvre", "5GI, 37VB, 62V (-), 12DM"], ["Délire — de la typhoïde", "25E"], ["Délire — doutes surexcités, erreurs extravagantes", "43V"], ["Dépression", "1C, 3C, 7C, 28E, 2F, 11GI, 5P, 9VB, 19VB, 36VB, 8V, 1DM (+), 20DM, 24DM, 26DM, 6RM, 16RM"], ["Dépression — par choc", "41E, 7IG, 7VB"], ["Dépression — par émotion violente ou soudaine, grave dépression", "39E"], ["Dépression — par malaria", "25E"], ["Dépression — avant les règles", "5R (+)"], ["Dépression — dépression agitée", "5RP"], ["Dépression — anxieuse", "2RP"], ["Dépression — sans appétit pour la vie ni pour la nourriture", "41E"], ["Dépression — déprimé ou fatigué indûment et pour trop longtemps", "3IG"], ["Dépression — grave, jusqu'à perte de connaissance", "2V"], ["Dépression — jusqu'à anémie cérébrale", "7C"], ["Dépression — avec langue sortie", "58V, 24DM"], ["Dépression — moments de faiblesse et découragement", "9C"], ["Dépression — perd le rire pour longtemps", "26DM"], ["Dépression — sans entrain", "9C, 36E"], ["Désespoir", "20DM"], ["Désespoir — accès extraordinaire de désespoir", "8GI"], ["Désespoir — crises de désespoir", "7P"], ["Désirs — voit ses désirs et non leurs conséquences", "2RP"], ["Désirs — alcool, café", "13DM"], ["Désirs — eau froide", "7C"], ["Désirs — terre, plâtre", "13E"], ["Désirs — dormir", "12V, 12GI"], ["Désirs — être porté (enfants)", "21R"], ["Désirs — être couché", "1F"], ["Désirs — mourir", "2F, 6RM"], ["Désirs — faire du mal, jusqu'à tuer", "12DM"], ["Désirs — s'étendre", "3GI, 13GI, 10F, 4R"], ["Désirs — se reposer et ne pas parler", "17V"], ["Désirs — se tuer", "13V, 14DM, 16DM"], ["Désirs — s'exclure du monde et fermer sa porte", "4R"], ["Désirs — le silence", "44E"], ["Désirs — et l'obscurité", "13DM"], ["Discipline intérieure — manque de", "2RP"], ["Distrait", "14RP, 15RM"], ["Distrait — absences, distraction", "63V (-)"], ["Distrait — réflexion difficile", "26R"], ["Douleur morale", "18E"], ["Égoïste", "2RP"], ["Émotivité", "34E, 41E, 13GI, 3MC, 4IG, 5MC, 7P, 4R, 20R, 2TR, 10TR, 35VB, 30V, 64V, 66V, 1DM (+), 11DM, 22DM"], ["Émotivité — bloqué et noué par les émotions", "52V"], ["Émotivité — saisi par les émotions", "38VB"], ["Émotivité — faiblesse soudaine, troublé, bouleversé, ne peut respirer", "5GI (+)"], ["Émotivité — bouleversé facilement", "1R"], ["Émotivité — excessive", "27E, 45E, 3GI, 9VB"], ["Émotivité — cardiaque", "5C"], ["Émotivité — par entrevues, examens", "15V"], ["Émotivité — physique", "5C, 6C"], ["Émotivité — psychique", "5C"], ["Émotivité — vésicale", "5C"], ["Émotivité — avec agitation, des enfants", "9C"], ["Émotivité — ne boit ni ne mange", "64V"], ["Émotivité — avec boule à la gorge", "29E"], ["Émotivité — avec gorge contractée", "14E"], ["Émotivité — avec transpiration des paumes", "10V (-)"], ["Émotivité — avec tremblements", "9C"], ["Émotivité — réactions nerveuses exagérées", "45E"], ["Émotivité — rougit facilement", "7IG"], ["Émotivité — à la moindre émotion", "11R, 2RM"], ["Émotivité — sursaute aux bruits soudains", "42E, 45E, 27R"], ["Émotivité — apaise les mauvaises nouvelles", "44E (-)"], ["Émotivité — par choc", "7IG"], ["Émotivité — manque de contrôle émotionnel", "2RP"], ["Ennui", "14RP, 15RM, 41E"], ["Ennui — aveuglant", "13V"], ["Esprit tremblant", "8C, 27E, 41E, 5F, 13GI, 66V, 20R, 26R, 2TR, 10TR, 19VB, 35VB, 11DM, 20DM, 22DM"], ["Euphorique — amical", "2RP"], ["Évolué — association des idées, des sensations, des images, concentration, imagination", "40E, 22DM"], ["Évolué — affaibli", "37VB, 4DM (moxas), 9DM, 11DM, 22DM"], ["Évolué — excès", "37VB"], ["Évolué — logis du Shen", "7C, 22DM"], ["Faiblesse psychique", "9C, 6GI (+), 13RM, 15RM"], ["Faiblesse psychique — faiblesse et irritabilité des nerfs", "12E (+)"], ["Faiblesse psychique — moments de faiblesse et découragement", "9C"], ["Faiblesse psychique — par trop de soucis et de pensées", "20DM"], ["Fugues", "23E, 8GI, 5IG, 2VB, 8V, 16DM, 18DM"], ["Fugues — marche follement", "23E, 8GI, 5IG, 8V, 16DM, 18DM"], ["Fugues — marche sans but, par suite de malaria", "42E"], ["Fugues — marche tête baissée, regarde à droite et à gauche", "5IG"], ["Grimaces", "12E"], ["Hallucinations", "40E (-), 5GI (-), 7GI, 7P, 2V, 30V, 61V"], ["Hallucinations — pendant la fièvre", "12DM"], ["Hallucinations — violentes", "7C"], ["Hallucinations — tourmenté par les spectres", "36E, 5MC"], ["Hallucinations — spectres chats", "14RM"], ["Hallucinations — visions extravagantes", "7P"], ["Hostilité — haine, désir de faire mal jusqu'à tuer", "12DM"], ["Hostilité — s'attarde aux côtés déplaisants", "25R"], ["Humeur — mauvaise", "21R"], ["Humeur — au réveil", "96R (illisible)"], ["Humeur — sautes d'humeur", "9R, 26DM"], ["Hystérie", "4C (+), 4MC, 5RP, 7RP, 9R, 24VB, 35VB , 43V, 18DM, 14RM"], ["Hystérie — convulsions", "4C (+)"], ["Hystérie — plié en arrière", "18V"], ["Hystérie — raideur", "7RP"], ["Hystérie — vertiges, évanouissements, épilepsie", "58V"], ["Idées fausses", "20R, 15V, 61V, 11DM, 20DM, 3RM, 29 PMa (hors méridien)"], ["Idées fausses — sans arrêt", "14RM"], ["Idées fausses — idées fausses sans joie", "2VB, 8V, 13DM"], ["Idées fausses — pense que personne ne l'aime", "26R"], ["Idées fausses — perte du sens des réalités", "20DM"], ["Idées fausses — surexcitées", "7C"], ["Impatience", "17R"], ["Impulsions irraisonnées", "5DM"], ["Indécis", "3MC"], ["Indignation", "39VB"], ["Indignation — excès d'indignation ou de sentiments", "7MC"], ["Indignation — surexcitée, pouvant causer apoplexie", "39VB"], ["Indignation — par injustice", "22R"], ["Infériorité — complexe d'infériorité et d'insuccès, manque d'autorité", "4R"], ["Inquiétude", "13GI, 8MC"], ["Insanités", "40E (-), 45E, 7GI, 2TR, 64V, 19DM"], ["Insanités — agitées", "8IG"], ["Insanités — apparence d'insanités (paranoïa)", "9R"], ["Insanités — éprouve le besoin de jurer", "24R"], ["Insanités — étrangetés", "5MC"], ["Insanités — grandes insultes", "36E"], ["Insanités — avec muscles contractés, corps tordu, éblouissements, grande contracture", "11V"], ["Insanités — par vers", "67V"], ["Instabilité — de caractère, des adultes et des enfants", "9R"], ["Instabilité — d'humeur", "9R, 26DM"], ["Insécurité — sentiment d'insécurité", "5MC"], ["Instincts primitifs, primate", "37E, 8MC, 42V, 20DM"], ["Irritabilité", "25E, 20RP, 27R, 10TR, 38VB, 62V (-)"], ["Irritabilité — plusieurs jours avant les règles", "5R (-)"], ["Irritabilité — trouve tout mal", "38VB"], ["Joie — euphorique, amical", "2RP"], ["Joie — alternance de gaieté et de méchanceté", "14E"], ["Joie — alternance de gaieté et de mécontentement", "24VB"], ["Joie — sans joie", "1C, 1F, 5F, 5RP, 4R, 6R (-)"], ["Joie — sans joie après choc grave", "5C"], ["Lassitude psychique — lenteur et lassitude d'esprit", "62V (+)"], ["Maladresse — laisse tout tomber", "28VB"], ["Méchanceté — alternance de gaieté et de méchanceté", "14E"], ["Mécontentement", "8MC, 7R, 9R, 38VB, 18V"], ["Mécontentement — mécontentement surexcité, excès d'indignation ou de sentiments", "7MC"], ["Mécontentement — joie ou mécontentement par moments", "24VB"], ["Mécontentement — trouve tout mal", "38VB"], ["Mécontentement — par refoulements de soucis", "15E"], ["Mélancolie", "15E, 1F, 5F, 5P, 2R (+), 4R, 21R, 13DM, 14DM, 20DM"], ["Mélancolie — agitée", "4IG"], ["Mélancolie — bouleversé de mélancolie", "15V"], ["Mélancolie — prolongée", "36E"], ["Mélancolie — poitrine tordue de mélancolie", "21VB"], ["Misanthropie", "4R"], ["Misanthropie — déteste les bruits humains", "44E, 15RM"], ["Misanthropie — n'aime pas faire connaissance", "23VB"], ["Misanthropie — ne supporte pas les gens", "10TR"], ["Nerfs (crises de nerfs)", "36E, 40E (+), 3MC, 9P, 3RP, 4RP, 5RP, 10TR (-), 21VB, 16V"], ["Nerfs (crises de nerfs) — par faiblesse", "7RP"], ["Nerfs (crises de nerfs) — par émotivité", "6C"], ["Nerfs (crises de nerfs) — par grand choc", "15RP"], ["Nerfs (crises de nerfs) — à l'orgasme", "20E"], ["Nerfs (crises de nerfs) — avec teint bleuté, ne peut parler, corps humide et froid, mains glacées", "40E (+)"], ["Nerfs (crises de nerfs) — grands troubles nerveux avec surexcitation et douleur, grand malaise sans savoir où est le mal", "6R"], ["Nerfs (crises de nerfs) — faiblesse et Irritabilité des nerfs", "12E"], ["Nerfs (crises de nerfs) — nerfs excités ou crispés", "4TR (-)"], ["Nervosité", "4F, 30V"], ["Nervosité — avant les règles", "5R (-)"], ["Nervosité — avec vomissements", "5MC"], ["Nervosité — due aux vers", "67V"], ["Neurasthénie", "45E, 7RP, 21VB, 43V, 14DM, 6RM"], ["Obsessions", "14E, 5RP, 62V, 12RM, 14RM"], ["Orgueilleux et méprisant", "14RP, 14R"], ["Paresse", "40E (-), 6MC, 2RP, 3RP, 6RP"], ["Paresse — aime à s'étendre", "10F"], ["Paresse — indolence", "40E (-)"], ["Paresse — lourdeur", "3RP, 6RP"], ["Paresse — surtout au réveil", "3RP"], ["Parole — abondante et incorrecte", "24VB"], ["Parole — bavarde", "61V"], ["Parole — sans sagesse", "5F (+, 3 fois)"], ["Parole — bégaye", "1P"], ["Parole — gênée", "23VB"], ["Parole — par découragement", "9DM"], ["Parole — par insuffisance d'énergie", "9DM"], ["Parole — extravagante", "36E, 5IG, 2TR, 9R"], ["Parole — et insultante", "9R"], ["Parole — aux émotions violentes ou soudaines", "39E"], ["Parole — loquacité, logorrhée", "12E, 6GI (-), 7R, 61V, 8DM"], ["Parole — ne parle plus", "3P"], ["Parole — ne trouve plus ses mots", "15RM"], ["Parole — précipitée", "5C"], ["Parole — rapide", "4F (+)"], ["Parole — se parle a lui-même, parle seul", "3P"], ["Parole — surexcitée", "5GI (-), 7GI, 8GI, 4IG, 7IG, 61V"], ["Parole — bouche dépravée", "9P"], ["Parole — par malaria", "25E"], ["Passionné", "38VB"], ["Personnalité — maladies de la personnalité", "7C"], ["Personnalité — esprit superficiel, sans personnalité, pas de vie intérieure", "2RP"], ["Persécution — se croit persécuté", "5MC"], ["Persécution — se sent maltraité", "11V"], ["Pessimisme", "5RP"], ["Peur", "7C, 9C, 5F, 13F, 11GI, 13GI, 4MC, 7MC, 10P, 18TR, 15V, 30V, 1DM (+), 14RM"], ["Peur — dans la nuit", "12DM"], ["Peur — des enfants", "9MC, 23VB"], ["Peur — comme d'être arrêté", "34VB"], ["Peur — de l'obscurité", "16RM"], ["Peur — de l'orage", "16RM"], ["Peur — des visiteurs", "1RP, 6RP"], ["Peur — épilepsie de peur, des enfants", "4VB"], ["Peur — peur facile", "9VB"], ["Peur — par choc", "7IG"], ["Peur — craintif", "8C"], ["Peur — craint les gens", "8C, 4MC"], ["Peur — enfants comme contractés d'horreur, bouche convulsée", "23VB"], ["Peur — avec oppression", "14RM"], ["Peur — peurs irraisonnées", "9MC"], ["Peur — peurs surexcitées", "4C (+)"], ["Peur — terreurs nocturnes", "5MC"], ["Peur — des enfants", "9MC, 23VB"], ["Phobies", "12DM"], ["Phobies — hantises", "29 PMa (hors méridien)"], ["Pleurs", "2F, 7MC, 14RM"], ["Pleurs — aisés", "3IG"], ["Pleurs — avant les règles", "5R (+)"], ["Pleurs — la nuit", "20DM"], ["Pleurs — ou dans l'obscurité, des enfants", "9MC"], ["Pleurs — en entendant de la musique", "18R"], ["Pleurs — en partant de ses malheurs", "15V"], ["Pleurs — sanglots", "5P, 24DM"], ["Pleurs — bouleversants", "15RP"], ["Pleurs — extravagants", "7C"], ["Pleurs — suffocants", "11E"], ["Pleurs — violents", "9VB"], ["Pressé — toujours pressé", "17RM, 5DM"], ["Pressé — en avance", "17RM"], ["Pressé — agit avec hâte et précipitation", "13RM"], ["Prévoyance — manque de prévoyance", "2RP"], ["Propreté — très soucieux de propreté, jusqu'à exagération", "38VB"], ["Refoulements", "20R"], ["Refoulements — d'énergie par sentiments", "7IG"], ["Refoulements — de sentiments et d'idées, ne peut s'extérioriser", "62V (-)"], ["Refoulements — de soucis", "15E, 10TR, 8V"], ["Refoulements — avec rumination", "13DM"], ["Regrets", "1C, 7IG, 35VB"], ["Regrets — excessifs", "11DM"], ["Religiosite excessive", "5RP"], ["Remords", "35VB"], ["Remords — obsédants", "29 PMa (hors méridien)"], ["Ressassement — remâche ses malheurs", "18V"], ["Ressassement — refoulement et rumination de soucis", "13DM"], ["Rire — aisé", "7GI, 7P"], ["Rire — désordonné", "6MC"], ["Rire — extravagant", "7C, 36E, 5IG"], ["Rire — fou-rire", "8MC"], ["Rire — joyeux", "5GI (-)"], ["Scrupules", "5RP"], ["Sensibilité — hypersensibilité morale ou physique", "14E"], ["Sensibilité — hypersensibilité à toucher, douleur, air froid", "20RP"], ["Sensibilité — sensible à émotions, peur, toucher, air", "27E"], ["Sensibilité — morale", "5MC"], ["Sensibilité — pleure en entendant de la musique", "18R"], ["Sensibilité — réactions nerveuses exagérées", "45E"], ["Soucis", "14E, 12RM"], ["Soucis — exagération des soucis", "2RP, 5RP"], ["Soucis — préoccupations", "14E, 5F"], ["Soucis — refoulement de soucis", "15E, 10TR, 8V"], ["Soucis — rumination des soucis", "13DM"], ["Soucis — soucis surexcités", "39VB"], ["Soupirs", "1F, 5RP"], ["Soupirs — fréquents", "38VB"], ["Soupirs — incessants", "3F"], ["Soupirs — nombreux", "7C, 36E, 5F"], ["Soupirs — grands soupirs", "8C, 2F, 5RP, 15RP, 23VB, 24VB, 40VB"], ["Soupçonneux", "24R"], ["Stupéfié par grand choc", "10TR"], ["Stupidité", "3C, 4R, 2VB"], ["Stupidité — de nature et d'esprit", "7C"], ["Surexcitation", "4C, 36E, 40E (-), 7GI, 4IG, 7IG, 9R, 2TR, 35VB, 8V, 62V (-), 64V, 1DM (-), 24DM, 26DM"], ["Surexcitation — accès de surexcitation", "4RP, 1R, 12DM, 19DM"], ["Surexcitation — chante, monte sur les tables, rejette ses vêtements", "40E (-), 42E, 24DM"], ["Surexcitation — par émotion", "14RM"], ["Surexcitation — par faiblesse", "43V"], ["Surexcitation — continuelle", "42E"], ["Surexcitation — avec langue sortie", "23E"], ["Surexcitation — jusqu'à démence", "10TR (-)"], ["Surexcitation — des enfants, se renversant en arrière", "20DM (-)"], ["Surexcitation — esprit surexcité", "2V"], ["Surexcitation — fureur", "9R"], ["Surexcitation — grands troubles nerveux avec surexcitation et douleur", "6R"], ["Surexcitation — physique ou psychique", "3IG"], ["Surexcitation — surexcité indûment ou pour trop longtemps", "3IG"], ["Surexcitation — violente", "5MC"], ["Surexcitation — par émotions", "18V, 14RM"], ["Surexcitation — violentes ou soudaines", "39E"], ["Surexcitation — par fièvre", "63V"], ["Surexcitation — malaria", "12VB (+)"], ["Surexcitation — par suite de malaria", "42E"], ["Surexcitation — par indignation, pouvant causer apoplexie", "39VB"], ["Surexcitation — par vers", "67V"], ["Surexcitation — avec accès de vomissements", "24E, 14RM"], ["Surexcitation — avec hallucinations et cauchemars", "2V"], ["Surexcitation — avec insomnie", "12E"], ["Surexcitation — avec langue sortie", "23E, 45E"], ["Susceptible 25e", "26R, 38VB"], ["Sursauts — aux bruits inattendus, aux craquements de boiserie", "42E"], ["Sursauts — aux bruits soudains", "45E"], ["Sursauts — nerveux", "11V"], ["Sursauts — surtout la nuit", "21TR"], ["Synthèse — manque d'esprit de synthèse", "2RP"], ["Têtu", "38VB"], ["Timidité", "8MC, 1RP, 1R, 13DM"], ["Timidité — enfants timides", "6RP"], ["Timidité — reculant toujours", "5MC"], ["Timidité — n'aime pas faire connaissance", "23VB"], ["Trac — des artistes", "5C"], ["Trac — glacé, saisi aux entrevues, examens", "15V"], ["Tristesse", "9C, 36E, 18V, 12RM, 13RM"], ["Tristesse — avant les règles", "5R (-)"], ["Tristesse — profonde", "17R"], ["Volonté — excès de décision-volonté", "2R (-)"], ["Volonté — insuffisance de décision-volonté", "6MC, 7R"], ["Volonté — sensation d'avoir deux volontés opposées", "24R"]],
   note:'Transcription d\'une copie : notations harmonisées (« 41g » → 4IG, « 120M » → 12DM, « 2BVb » → 28VB…) ; (+) tonifier, (-) disperser ; « 96R » illisible, « 29 PMa » point hors méridien non identifié — à vérifier sur l\'original.'},
+
+ {id:'psy-stress', chap:'P', titre:'Le stress — trois phases et lecture énergétique', src:'cours psyché',
+  cols:['Phase ou niveau','Manifestations'],
+  rows:[
+   ['Phase d\'alarme','Choc : adrénaline, mydriase, tachycardie, fatigabilité musculaire, baisse de la glycémie ; parfois euphorie (stress positif)'],
+   ['Phase de résistance','Cortisol, dopamine, endorphines : agitation, tremblements, irritabilité, agressivité, insomnie, rêves ; conduites addictives, fuites, rituels'],
+   ['Phase d\'épuisement','Baisse des défenses, susceptibilité, fatigue, colère, dépression, bouffées d\'angoisse, gastralgies, précordialgies, phobies, obsessions'],
+   ['1. Tai Yin (Terre)','Soucis, agression extérieure, gastralgies'],
+   ['2. Tai Yang','Épuisement des réserves, sécrétions endocrines, repli sur soi'],
+   ['3. Yang Ming','Oppression, asthme ; névrodermite, eczéma, psoriasis ; colopathie, rectocolite'],
+   ['4. Jue Yin / Shao Yang','Inhibition du mouvement, fatigue musculaire, troubles de l\'équilibre, perte du désir d\'agir'],
+   ['5. Shao Yin','Atteinte du Shen : insomnie, agitation, délire, douleur « cardiaque »']],
+  note:'Protocole général : 20DM, 17RM, 1R (axe Ciel-Homme-Terre), 4GI, 3F, 4RM. Traitement itératif, fréquent et de longue durée ; écoute ; évaluer le terrain dépressif et les atteintes organiques. Protocoles détaillés : Points › Référentiel Sorbonne › Psychiatrie › Angoisse, spasmophilie, trac › Stress.'},
  {id:'psy-litterature', chap:'P', titre:'Angoisse et anxiété — points de la littérature', src:'cours psyché',
   cols:['Point','Indication'],
   rows:[
@@ -9342,10 +9528,16 @@ const SPN_SPECIALTIES = [
     initSelects: ()=>_spnCoursSelects(PSY_DB),
     showProtocole: (cat,motif)=>_spnCoursAfficher(PSY_DB, cat, motif, _psySugg(cat, motif)),
     get db(){ return PSY_DB; }
+  },
+  { key:'pneumo', label:'Pneumologie 肺', prefixe:'Pneumo',
+    get domaineOptions(){ return Object.entries(PNEUMO_DB).map(([value, C]) => ({value, label:C.label})); },
+    initSelects: ()=>_spnCoursSelects(PNEUMO_DB),
+    showProtocole: (cat,motif)=>_spnCoursAfficher(PNEUMO_DB, cat, motif, _pneumoSugg(cat, motif)),
+    get db(){ return PNEUMO_DB; }
   }
 ];
 // Préfixe des points cochés dans le référentiel (« [Gynéco] RM4 », « [Rhumato] V23 ») — reconnu à la réouverture.
-const SPN_PREFIXE_RE = /^\[(Gynéco|Rhumato|Psy)\] /;
+const SPN_PREFIXE_RE = /^\[(Gynéco|Rhumato|Psy|Pneumo)\] /;
 function spnPrefixe(){
   const v = (document.getElementById('spn-spec')||{}).value;
   const sp = SPN_SPECIALTIES.find(s => s.key===v);
@@ -9353,7 +9545,7 @@ function spnPrefixe(){
 }
 function spnLibelleGroupe(){
   const v = (document.getElementById('spn-spec')||{}).value;
-  return v==='rhumato' ? 'Rhumatologie (réf. Sorbonne)' : v==='psy' ? 'Psychiatrie (réf. Sorbonne)' : 'Gynéco-Obstétrical';
+  return v==='rhumato' ? 'Rhumatologie (réf. Sorbonne)' : v==='psy' ? 'Psychiatrie (réf. Sorbonne)' : v==='pneumo' ? 'Pneumologie (réf. Sorbonne)' : 'Gynéco-Obstétrical';
 }
 
 // Remplit le select Spécialité selon le sexe du patient (une spécialité avec sexeRestrict
@@ -9416,6 +9608,7 @@ function onSpnSpecChange(){
   if(emptyMsg) emptyMsg.style.display='none';
   if(typeof rhRafraichir==='function') rhRafraichir();
   if(typeof psyRafraichir==='function') psyRafraichir();
+  if(typeof pneumoRafraichir==='function') pneumoRafraichir();
   if(catSel) catSel.innerHTML = '<option value="">— Sélectionner —</option>' +
     spec.domaineOptions.map(o=>`<option value="${o.value}">${o.label}</option>`).join('');
   if(motifSel) motifSel.innerHTML = '<option value="">— Sélectionner un motif —</option>';
@@ -10276,7 +10469,8 @@ function _convCours(DB, mt, impose, analyse){
 // ══════ PSYCHIATRIE — Référentiel Sorbonne Paris Nord (14/10/2026) ══════
 // Sources (fournies par le praticien) : « La psyché en médecine traditionnelle chinoise » (synthèse, octobre 2026) et les
 // supports de cours « Angoisse, tic, trac », « Dian Kuang », « Physiologie des émotions », « Les tics (Chou Chu) » (15/10/2026) ;
-// cours de Capacité « Psychiatrie chinoise », « Mental, pratiques quotidiennes », « Les rêves », répertoire du psychisme (16/10/2026). Points en notation du cours (« 15V », « 26DM »),
+// cours de Capacité « Psychiatrie chinoise », « Mental, pratiques quotidiennes », « Les rêves », répertoire du psychisme (16/10/2026) ;
+// cours « Le stress » (17/10/2026). Points en notation du cours (« 15V », « 26DM »),
 // convertis par _rhPt ; points hors méridien (Yin Tang, Si Shen Cong…) gardés tels quels. Incohérences signalées, non corrigées.
 const PSY_DB = {
 
@@ -10448,6 +10642,31 @@ const PSY_DB = {
            pp:['17VC','6MC','36E','13V','9P'], ps:['14VG','40V','6RT','10RT','17V','4GI','3R','7C','15V','40E'], tech:'Formule : 6MC, 36E, 13V, 9P, 14VG, 40V, 6RT, 10RT, 17V, 17VC. Variante : 13V, 4GI, 3R, 7C, 15V. Si mucosités : 40E.'},
           {nom:'Vide du Cœur et de la Rate', signes:'Anxiété, inquiétude, palpitations, perte d\'appétit, insomnie, teint pâle, vertiges, perte de mémoire, asthénie, gêne digestive, selles non moulées, ecchymoses, règles peu ou trop abondantes. Langue pâle | Pouls mou, fin, faible',
            pp:['6MC','7C','6RT','15V','20V','14V','36E'], ps:['4MC','17V','1RT','Yin Tang','12VC','10RT'], tech:'Palpitations graves : 4MC. Manque de Sang : 17V. Variante : 7C, 6RT, 1RT, Yin Tang, 36E, 12VC, 15V, 20V, 17V, 10RT.'}
+        ]
+      },
+      'Stress (syndrome d\'adaptation)': {
+        syn: ['stress','stress chronique','stresse','surmenage','tension nerveuse','pression au travail'],
+        alerte: 'Évaluer le terrain dépressif (idées suicidaires) et rechercher une atteinte organique (cardiaque, digestive) avant de retenir le stress.',
+        note: 'Perturbations biologiques et psychiques provoquées par une agression ; l\'énergie qui aurait dû servir à l\'action, inhibée, se transforme en angoisse, malaise et troubles somatiques. Trois phases : alarme (adrénaline, tachycardie, parfois euphorie), résistance (agitation, irritabilité, insomnie, rêves, conduites addictives, rituels), épuisement (baisse des défenses, susceptibilité, fatigue, colère, dépression, bouffées d\'angoisse, gastralgies, précordialgies, phobies, obsessions). Lecture énergétique : Tai Yin (soucis, agression extérieure, gastralgies) → Tai Yang (épuisement des réserves, repli) → Yang Ming (oppression, asthme, dermatoses, colopathies) → Jue Yin / Shao Yang (inhibition du mouvement, perte du désir d\'agir) → Shao Yin (atteinte du Shen : insomnie, agitation, douleur « cardiaque ») ; atteinte des trois foyers et de l\'axe vertical Ciel-Homme-Terre. Prise en charge globale, séances répétées, écoute, association (psychologue, psychiatre, sophrologie, thérapie comportementale), suivi de deux ans et plus.',
+        pointsBase: ['20DM','17RM','1R','4GI','3F','4RM'],
+        syndromes: [
+          {nom:'Protocole général (axe Ciel-Homme-Terre)', signes:'20DM (Ciel), 17RM (Homme), 1R (Terre) ; 4GI + 3F (quatre barrières) ; 4RM.',
+           pp:['20DM','17RM','1R','4GI','3F','4RM'], ps:['15RM'], tech:'15RM apaise le Cœur et calme le Shen ; les points Jing-puits permettent le passage Yin / Yang.'},
+          {nom:'Atteinte des trois foyers', signes:'Oppression, troubles digestifs, fatigue ; plusieurs étages atteints.',
+           pp:['17RM','14RM','12RM','6RM','5RM','4RM'], ps:['22V'], tech:'17RM régularise l\'énergie et soulage l\'oppression ; 14RM calme le Shen (troubles psychosomatiques) ; 12RM harmonise Rate et Estomac ; 6RM, 5RM (Mu du Triple Réchauffeur), 4RM renforcent l\'énergie originelle ; 22V harmonise le Triple Réchauffeur.'},
+          {nom:'Mobiliser l\'énergie (faire descendre le Yang, monter le Yin)', signes:'',
+           pp:['25E','4GI','36E','4RP','6RP'], ps:[], tech:'25E régularise la montée et la descente ; 4GI met en mouvement Sang et énergie ; 36E et 6RP renforcent la Rate (Tai Yin) ; 4RP (Chong Mai) : gastralgies, colopathie.'},
+          {nom:'Stress avec signes cardiaques', signes:'Palpitations, oppression thoracique, précordialgies, sensation de mort imminente (urgence cardiaque éliminée).',
+           pp:['12RM','7C','15RM','6MC'], ps:['3C','8C','9C','1C','7MC','8MC'], tech:'Harmoniser le Feu : 3C (état maniaco-dépressif), 8C (faiblesse émotionnelle), 9C (idées fixes), 7MC, 8MC (action sédative).'},
+          {nom:'Stress avec troubles digestifs', signes:'Gastralgies, diarrhée ou constipation, reflux, nausées, colopathie, boulimie ou anorexie.',
+           pp:['12RM','6MC','25E','6RP','3F','4GI'], ps:['13F','14F','21V','20V','21R','40E'], tech:''},
+          {nom:'Phase d\'épuisement, fatigue', signes:'Fatigue, baisse des défenses, susceptibilité, dépression.',
+           pp:['36E','23V','13V','18V','20V','7R','4RM'], ps:['3R','6R','8F','52V'], tech:'Tonification.'},
+          {nom:'Stress avec acouphènes', signes:'', pp:['5TR','17TR','18TR','2VB','3VB','2IG'], ps:[], tech:''},
+          {nom:'Systèmes de régulation (méridiens curieux)', signes:'Choisir selon le terrain.',
+           pp:['4RP','30E','6MC','6R','41VB'], ps:['13R'], tech:'Chong Mai : 4RP + 30E (13R régularise le Chong Mai) ; Yin Wei Mai : 6MC ; Yin Qiao Mai : 6R ; Dai Mai : 41VB.'},
+          {nom:'Points d\'appoint (troubles psychosomatiques, sommeil)', signes:'62V : troubles du sommeil, action sédative ; 65V, 7IG, 2IG : calment le Shen ; 40E : point des « humeurs » ; 17V : fait baisser le Qi à contre-courant ; 10RP : équilibre le Sang du Foie ; 15V, 18V : Shu du Cœur et du Foie.',
+           pp:['62V','65V','7IG','40E','15V','18V'], ps:['2IG','17V','10RP','10V','27R','47V','49V'], tech:''}
         ]
       },
       'Spasmophilie, tétanie': {
@@ -10822,6 +11041,7 @@ function psyAnalyse(){
   motif(tics,'tics','Tics','Tics',['tics']);
   motif(spasm,A,'Spasmophilie, tétanie','Spasmophilie (vent interne sur vide)',['spasmes, tétanie']);
   motif(trac,A,'Trac, angoisse des examens','Trac',['trac']);
+  motif(has(S,'Épuisement / surmenage') && !trac && !R.length, A,'Stress (syndrome d\'adaptation)','Stress (phase d\'épuisement)',['épuisement, surmenage']);
   motif(py,'yuZheng','Dépression (Yu Zheng)','Dépression (Yu Zheng)',['humeur dépressive']);
   motif(pb,'nevroses',MB,'Ben Tun Qi (attaque de panique)',['masse qui monte du bas-ventre']);
   motif(pz,'nevroses',MZ,'Zang Zao (hystérie)',['labilité, théâtralisme']);
@@ -10854,6 +11074,267 @@ function psyRafraichir(){
 }
 function psyOuvrir(cat, motif, synd){ navTo('points'); spnOuvrir('psy', cat, motif, synd||''); psyRafraichir(); }
 function _psySugg(cat, motif){ return new Map(psyAnalyse().filter(s => s.cat===cat && s.motif===motif && s.idx!=null).map(s => [s.idx, s])); }
+
+// ══════ PNEUMOLOGIE — Référentiel Sorbonne Paris Nord (15/10/2026) ══════
+// Source (fournie par le praticien) : « La pneumologie en médecine traditionnelle chinoise » — anatomo-physiologie de
+// la respiration, toux (Ke Sou), dyspnées (Chuan), grippe et rhume (Gan Mao), asthme (Xiao Chuan), DU Paris XIII.
+// Points en notation du cours, convertis par _rhPt ; points hors méridien (Dingchuan, Bitong…) gardés tels quels.
+const PNEUMO_DB = {
+
+  toux: {
+    label: 'Toux (Ke Sou)',
+    note: 'Ke = toux avec bruit sans Glaires (lésion du Poumon) ; Sou = Glaires sans bruit (Rate obstruée) ; Ke Sou = les deux. « La toux est due au Qi du Poumon qui se rebelle vers le haut. » Su Wen 38 : tous les Zang Fu peuvent causer la toux, mais le Poumon est toujours atteint.',
+    motifs: {
+      'Toux (Ke Sou)': {
+        syn: ['toux','toux seche','toux grasse','toux aigue','toux chronique','toux persistante','ke sou','quintes de toux','bronchite'],
+        alerte: 'Toux persistante (> 3 semaines), crachats sanglants, amaigrissement, fièvre prolongée, douleur thoracique : avis médical et imagerie avant de traiter.',
+        note: 'Deux questions : aiguë ou chronique ? externe ou interne ? Les toux aiguës sont toujours de plénitude ; les toux chroniques, toujours internes, de vide ou de plénitude. Son : faible (vide), fort (plénitude), rauque (Chaleur), gras (Glaires). Horaire : soir (vide de Yin), matin (Glaires). Expectoration : absente (vide ou Chaleur), abondante (Glaires), jaune (Chaleur), blanche (Froid), sanglante (Chaleur), aqueuse (Glaires fluides). Toux des organes (Su Wen 38) : Cœur (douleur précordiale, épine dans la gorge), Foie (douleur sous les côtes), Rate (hémithorax droit vers le dos), Rein (lombes vers le dos, salivation).',
+        syndromes: [
+          {nom:'Vent-Froid, Vent prédominant (Zhong Feng) — surface', signes:'Pouls superficiel, raideur de la nuque, crainte du froid et du vent, fièvre, légère transpiration ; éternuements +++ (« toux du nez »), nez bouché, rhinorrhée aqueuse, gorge qui pique. Langue normale',
+           pp:['4GI','7R','16DM','12V','20VB'], ps:['23DM','2V','20GI','7P','Tai Yang','Bitong','14VB','4V','7V','17TR','58V','67V'], tech:'Tonifier 4GI et 7R, disperser, puis moxas sur 16DM, 12V, 20VB (points du Vent). Points symptomatiques selon le besoin.'},
+          {nom:'Vent-Froid, Froid prédominant (Shang Han) — surface', signes:'Fièvre élevée sans transpiration, courbatures, lombalgies, frissons +++, aversion pour le froid ; nez bouché, rhinorrhée aqueuse peu abondante, toux sèche forte (« toux laryngée »). Enduit mince blanc | Pouls superficiel et serré',
+           pp:['9P','10P','1RP','2RP'], ps:['4GI','7P','14DM','12V','3IG','20VB','60V'], tech:'Avant 48 h : sudorification — disperser 9P, 10P, tonifier 1RP, 2RP (une séance par jour). Après 48 h : tonifier 4GI, disperser 7P, puis moxas 14DM, 12V ; 3IG, 20VB, 60V.'},
+          {nom:'Vent-Chaleur — surface (couche Wei)', signes:'Fièvre élevée, légère crainte du froid, peu de transpiration, légère soif, céphalées battantes ; nez bouché, rhinorrhée épaisse parfois striée de sang, toux sèche forte, gorge qui brûle, larmoiement. Bords de langue légèrement rouges, enduit mince blanc | Pouls superficiel et rapide',
+           pp:['4GI','11GI','20VB','13DM','14DM','11P','5TR'], ps:['2V'], tech:'Dispersion, pas de moxa.'},
+          {nom:'Vent-Sécheresse', signes:'Toux sèche ou mucosités concentrées parfois striées de sang ; sécheresse du nez, de la bouche, de la gorge et des lèvres, soif, mal de gorge. Enduit blanc et sec ou jaune et sec | Pouls superficiel et rapide, ou fin et rapide',
+           pp:['13V','12V','5P','7P','10P','6R','6RP'], ps:[], tech:'Disperser 13V, 12V, 5P, 7P, 10P ; tonifier 6R, 6RP.'},
+          {nom:'Vent-Froid du Poumon (organe)', signes:'Toux forte et profonde, mucosités claires et fluides, signes rhinopharyngés de Froid. Enduit mince blanc | Pouls superficiel et serré',
+           pp:['20VB','12V','13V','7P','5P','4GI','22RM'], ps:[], tech:'Dispersion et moxas sur 20VB, 12V, 13V.'},
+          {nom:'Vent-Chaleur du Poumon (organe)', signes:'Fièvre élevée, toux sévère, bruyante, sèche ou difficile à expectorer, gorge rouge, enflée et douloureuse, céphalées, nez bouché. Bords et pointe rouges, enduit blanc | Pouls superficiel et rapide',
+           pp:['12V','14DM','11GI','4GI','6P','7P','10P','22RM'], ps:[], tech:'Dispersion, pas de moxa.'},
+          {nom:'Mucosités-Chaleur du Poumon', signes:'Fièvre élevée, transpiration abondante, soif de boissons fraîches ; toux productive et puissante, expectorations épaisses et jaunes, douleurs thoraciques à type de brûlure. Langue rouge, enduit jaune gras | Pouls glissant et rapide',
+           pp:['14DM','1P','5P','6MC','22RM','40E','6RP'], ps:[], tech:'Disperser, sauf 6RP en tonification. Pas de moxa.'},
+          {nom:'Vide de Qi du Poumon (toux chronique)', signes:'Toux faible, étouffée, persistante ou récidivante, mucosités claires, essoufflement au moindre effort, voix faible, transpiration spontanée, teint pâle, crainte du froid et des courants d\'air. Langue pâle, enduit fin blanc | Pouls faible',
+           pp:['13V','20V','23V','9P','17RM','12DM','40E'], ps:[], tech:'Tonification et moxas.'},
+          {nom:'Vide de Yin du Poumon (toux chronique)', signes:'Toux sèche, peu sonore, expectoration rare parfois striée de sang, bouche sèche, voix rauque, aphonie par périodes, fièvre vespérale, sommeil difficile, sueurs nocturnes. Langue rouge, enduit fin et sec | Pouls fin et rapide',
+           pp:['13V','43V','9P','7P','6R','4RM','12RM','36E','6RP'], ps:[], tech:'Tonification, pas de moxa.'},
+          {nom:'Glaires-Humidité dans le Poumon', signes:'Toux productive persistante, expectoration facile de mucosités abondantes, blanches et épaisses, aggravée par les aliments gras, améliorée après expectoration ; plénitude thoracique et épigastrique, inappétence, nausées, selles molles. Enduit blanc, gras, épais | Pouls glissant, mou, lent',
+           pp:['13V','20V','36E','5P','7P','12RM','17RM','22RM'], ps:['14DM','11GI'], tech:'Tonifier et moxer 13V, 20V, 36E ; disperser 5P, 7P ; tonifier 12RM, 17RM, 22RM. Si Glaires-Chaleur (crachats jaune-vert, enduit jaune gras, pouls rapide) : pas de moxa, ajouter 14DM, 11GI.'},
+          {nom:'Glaires fluides dans le Poumon', signes:'Tableau très chronique sur vide de Yang de la Rate et du Rein : toux faible persistante, expectoration blanche et aqueuse, inspiration difficile, respiration haletante à l\'effort, oppression, froid général, membres froids. Langue pâle | Pouls fin, profond',
+           pp:['13V','20V','23V','4DM','12DM','9RP','3R','9P','4RM'], ps:[], tech:'Tonification et moxas.'},
+          {nom:'Le Feu du Foie agresse le Poumon', signes:'Quintes soudaines déclenchées par les tensions émotionnelles, visage rouge, mucosités visqueuses jaunes peu abondantes, douleurs cuisantes de la poitrine et des flancs, gorge sèche avec corps étranger, goût amer, irritabilité. Langue rouge, enduit jaune sec | Pouls en corde, rapide',
+           pp:['18V','3F','34VB','14VB','6MC','5P','13V'], ps:[], tech:'Dispersion.'}
+        ]
+      }
+    }
+  },
+
+  dyspnee: {
+    label: 'Dyspnées (Chuan)',
+    note: 'Le Poumon gouverne le Qi et l\'expiration ; le Rein est la racine du Qi et gouverne l\'inspiration. La dyspnée chronique est toujours l\'aboutissement d\'un vide (Poumon et/ou Rein), parfois entretenu par un excès (Foie, facteurs externes, alimentation, émotions) ; la Rate produit les Glaires ; le Cœur est atteint en fin d\'évolution (stase, cyanose). Au stade aigu, toujours libérer l\'Extérieur, même sur terrain chronique ; traiter la racine en dehors des poussées.',
+    motifs: {
+      'Dyspnée (Chuan)': {
+        syn: ['dyspnee','essoufflement','souffle court','manque de souffle','difficulte a respirer','bpco','emphyseme','insuffisance respiratoire','dyspnee chronique','chuan'],
+        alerte: 'Dyspnée aiguë, au repos, avec cyanose, douleur thoracique, tirage, impossibilité de parler ou de s\'allonger, œdèmes : urgence médicale (15). Dyspnée chronique : bilan cardiologique et pneumologique.',
+        syndromes: [
+          {nom:'Plénitude — invasion du Poumon par le Vent-Froid', signes:'Crise aiguë ou aggravation d\'une dyspnée chronique : crainte du froid, frissons, fièvre, toux, oppression, expectoration blanche et fluide, céphalées, pas de transpiration. Pouls superficiel et serré',
+           pp:['7P','6P','12V','13V','Dingchuan'], ps:[], tech:'Tout en dispersion ; saignée de 12V et 13V ; si le Froid prédomine, moxas directs sur 12V après puncture et ventouses. 6P (Xi) arrête la dyspnée aiguë ; Dingchuan (0,5 cun en dehors de 14DM) arrête les dyspnées aiguës.'},
+          {nom:'Plénitude — Vent-Froid extérieur et Glaires-Fluides intérieures', signes:'Aggravation aiguë fréquente d\'une dyspnée chronique : frissons, fièvre, pas de transpiration, toux avec crachats blancs aqueux abondants, ne peut s\'allonger, gonflement des membres. Enduit collant et blanc | Pouls superficiel',
+           pp:['7P','6P','5P','12V','13V','Dingchuan','6MC','40E','22RM'], ps:[], tech:'Dispersion.'},
+          {nom:'Plénitude — Froid à l\'extérieur, Chaleur à l\'intérieur', signes:'Dyspnée, distension ou douleur de poitrine, respiration forte, toux, glaires collantes ; sensation de chaleur, membres froids, irritabilité, courbatures, soif. Langue rouge, enduit blanc ou jaune | Pouls glissant et rapide',
+           pp:['7P','6P','10P','11GI','1P'], ps:[], tech:'Dispersion ou harmonisation.'},
+          {nom:'Plénitude — Glaires-Chaleur dans le Poumon', signes:'Toux, dyspnée, douleur de poitrine, crachats abondants jaunes, collants ou striés de sang, chaleur, transpiration, soif, visage rouge, urines sombres, constipation. Langue rouge, enduit collant et jaune | Pouls glissant et rapide',
+           pp:['5P','1P','11GI','40E','14DM'], ps:[], tech:'Dispersion, pas de moxa.'},
+          {nom:'Plénitude — obstruction du Qi du Poumon (Qi du Foie rebelle)', signes:'Crises brutales déclenchées par les émotions, sans sifflement ; suffocation, gorge serrée (Glaires-Qi), oppression ou douleur de poitrine, palpitations, sommeil agité. Bords de langue rouges | Pouls en corde',
+           pp:['3F','14F','4RP','6MC','1P','17RM','7P'], ps:['40E','7C'], tech:'4RP + 6MC ouvrent le Chong Mai et soumettent le Qi rebelle ; 40E dissout les Glaires ; 7C calme l\'Esprit.'},
+          {nom:'Plénitude — le Feu du Foie envahit le Poumon', signes:'Crises déclenchées par les émotions, oppression et douleur thoraciques, rêves, tempérament coléreux, soif, bouche amère, urines sombres, constipation ; assez fréquent chez l\'enfant. Langue rouge, bords plus rouges et gonflés, enduit jaune | Pouls en corde et rapide',
+           pp:['2F','14F','7P','17RM','1P','18V','13V'], ps:[], tech:'Dispersion ou harmonisation.'},
+          {nom:'Vide de Qi du Poumon', signes:'Respiration courte, bruits respiratoires faibles, léger raclement de gorge, transpiration, frilosité, pâleur, voix faible, peu d\'expectoration. Langue pâle | Pouls faible, surtout au pouce droit',
+           pp:['7P','9P','13V','12DM','12RM','6RM','36E'], ps:[], tech:'Tonification, moxas possibles sur 13V et 12DM. 36E fortifie la Terre pour tonifier le Métal.'},
+          {nom:'Vide de Yin du Poumon', signes:'Respiration courte, dyspnée chronique, sueurs nocturnes, chaleur des cinq cœurs, gorge sèche, toux sèche, pommettes rouges ; fréquent chez la personne âgée. Langue rouge et sèche sans enduit, fissures zone Poumon | Pouls fin, rapide, faible au pouce droit',
+           pp:['9P','7P','6R','43V','4RM','13V','12DM'], ps:[], tech:'Tonification. 7P + 6R ouvrent le Ren Mai : association idéale des dyspnées chroniques par vide de Yin ; 43V très efficace dans les cas très chroniques.'},
+          {nom:'Vide du Poumon et du Rein (Yang) — « plénitude en haut, vide en bas »', signes:'Dyspnée chronique, crises à l\'effort, inspiration difficile, amaigrissement, dépression, œdèmes des chevilles, membres froids, rachialgies, vertiges, genoux faibles. Langue pâle et gonflée | Pouls profond, faible, lent',
+           pp:['23V','13V','4DM','7R','25R','3R','7P'], ps:[], tech:'Tonification avec moxas (4DM tonifie fortement le Yang ; 25R point local de la plénitude de poitrine par vide du Rein).'},
+          {nom:'Vide de Yin du Poumon et du Rein', signes:'Dyspnée chronique, inspiration difficile, gorge sèche, toux sèche, sueurs nocturnes, chaleur des cinq cœurs, pommettes rouges. Langue rouge, sèche, sans enduit | Pouls superficiel et vide',
+           pp:['9P','17RM','36E','6RP','12RM','4RM','3R','7P','6R','25R'], ps:[], tech:'Tonification.'},
+          {nom:'Vide de Yang du Poumon et du Rein — les Liquides débordent dans le Cœur et le Poumon', signes:'Dyspnée chronique, crachats blancs aqueux, oppression, palpitations, œdèmes, urines rares, frilosité. Langue pâle, gonflée, mouillée | Pouls profond, faible, lent',
+           pp:['7P','6GI','17RM','12RM','9RM','7R','6RM','6RP','40E','6MC','20V','23V','22V','13V','15V'], ps:[], tech:'Tonification sauf 7P, 6GI, 9RM en harmonisation. Moxas.'},
+          {nom:'Vide de Yang du Poumon, du Cœur et du Rein — stase (personne âgée)', signes:'Dyspnée chronique, oppression et douleur de poitrine, lèvres cyanosées, visage et ongles pourpres, crachats aqueux, ne peut s\'étendre, œdèmes, frilosité, lombalgies, urines rares. Langue pourpre-bleuâtre, gonflée | Pouls profond, lent, noué',
+           pp:['7P','6GI','17RM','12RM','9RM','7R','6RM','6RP','40E','6MC','20V','23V','22V','13V','15V','17V','10RP'], ps:[], tech:'Formule précédente + 17V, 10RP (faire circuler le Sang). Tonification sauf 7P, 6GI, 9RM, 6RP, 40E en harmonisation. Moxas. Urgence cardiologique à éliminer.'},
+          {nom:'Dyspnées par vide — soutenir le correct', signes:'Vide d\'autres organes : Rate (teint terne, mucosités abondantes, selles pâteuses), Rein (visage grisâtre, polypnée au mouvement, acouphènes, lombalgies), Cœur (palpitations, sueurs, cyanose).',
+           pp:['Dingchuan','43V','9P','13V'], ps:['20V','36E','23V','3R','6MC','7C','6RM','4RM','4DM'], tech:'Harmonisation (Ping Bu Ping Xie), moxas éventuels. Poumon + Rate : 20V, 36E ; Poumon + Rein : 23V, 3R ; Qi du Poumon + Yang du Cœur : 6MC, 7C, moxas sur 6RM, 4RM, 4DM.'}
+        ]
+      },
+      'Troubles des souffles — points d\'expérience': {
+        syn: ['halètement','respiration haletante','dyspnee de decubitus','troubles des souffles'],
+        note: 'Vocabulaire : Chuan (dyspnée), Chuan He (halètement bruyant), Chuan Xi (reprendre son souffle), Chuan Zhang (dilatation de la poitrine), Chuan Ji (polypnée), Chuan Man (dyspnée avec plénitude), Chuan Ni (dyspnée par reflux).',
+        syndromes: [
+          {nom:'Yang Xi — halètement avec extension du cou', signes:'', pp:['1R'], ps:[], tech:''},
+          {nom:'Jian Xi — haussement des épaules, bouche ouverte, respiration sonore', signes:'', pp:['1P','13E','19E'], ps:[], tech:''},
+          {nom:'Ni Qi — reflux du souffle (souvent après une colère), ne peut s\'allonger', signes:'', pp:['5P','5RP','3RP','6RP'], ps:[], tech:''},
+          {nom:'Shang Qi — montée du souffle, expiration longue, inspiration courte', signes:'', pp:['3P','7P','11P','13V','17V','5RM','19RM','22RM','23RM','1MC','7C','15IG'], ps:[], tech:''},
+          {nom:'Shao Qi — manque de souffle, respiration faible, douleur thoracique', signes:'', pp:['9DM','3RM','14RM','5P','7P','13GI','33E','39E','17V','23V','22R','4R','2R','5MC','4F','13F'], ps:[], tech:''},
+          {nom:'Duan Qi — souffle court (si plénitude, le souffle s\'inverse et se bloque)', signes:'', pp:['1DM','1R','2F','18V','17RM','14RM','10E','22RM','10P'], ps:['14RM'], tech:'Xi Ben (amas du Poumon, reflux vers le haut) : 14RM.'},
+          {nom:'Points des Chuan', signes:'Chuan : 4V, 45V, 41VB, 44E · Chuan Ni : 9P, 7C, 9RP, 60V, 41VB · Chuan He : 24DM, 3P · Chuan Man : 3GI, 1GI, 44E',
+           pp:['4V','45V','41VB','44E','9P','7C','9RP','60V','24DM','3P','3GI','1GI'], ps:['13E','27R','17RM','20RM','8P','11P','14F','7MC','8R'], tech:'Aussi : 13E et 27R (entre clavicule et 1re côte), 17RM et 20RM, 8P, 11P, 3P, 14F, 7MC, 8R, 45V.'}
+        ]
+      }
+    }
+  },
+
+  ganMao: {
+    label: 'Grippe et rhume (Gan Mao)',
+    note: 'Gan = atteinte, Mao = attaque : Vent externe qui attaque sur un vide du Qi correct. Disperser le Vent externe et restaurer la fonction d\'abaissement du Poumon. Points du Vent valables pour tous les Vents : 20DM, 14DM, 13DM, 12DM, 12V, 13V, 20VB ; Vent-Froid : 5TR, 7P ; Vent-Chaleur : 11GI ; Vent-Humidité : 36E ; universel : 4GI.',
+    motifs: {
+      'Grippe, rhume (Gan Mao)': {
+        syn: ['grippe','rhume','etat grippal','syndrome grippal','rhinopharyngite','gan mao','coryza','refroidissement','virose'],
+        alerte: 'Signes de gravité (dyspnée, confusion, fièvre élevée prolongée, terrain fragile, nourrisson, sujet âgé) : avis médical.',
+        syndromes: [
+          {nom:'Vent-Froid externe', signes:'Peu ou pas de fièvre, crainte importante du froid, pas de sueurs, pas de soif, toux, céphalée, gorge qui démange, rhinorrhée claire et fluide, nez bouché, courbatures. Enduit fin et blanc | Pouls superficiel et serré',
+           pp:['20VB','12V','13V','14DM','7P','4GI'], ps:['5TR','20DM'], tech:'Disperser ; ventouse sur 12V, moxa (« rouge ») sur 12V et 14DM. 7P + 4GI : puncture Luo-Source. 20VB + 7P + 5TR dispersent le Vent-Froid ; 20DM + 20VB + 5TR : tout Vent externe.'},
+          {nom:'Vent-Chaleur externe', signes:'Fièvre plus importante, peu de crainte du froid, sueurs avec crainte du vent, soif, toux, céphalées, mal de gorge, rhinorrhée épaisse et jaune, urines foncées. Enduit fin et jaune | Pouls superficiel et rapide',
+           pp:['20VB','12V','5TR','14DM','4GI','11GI'], ps:['20DM'], tech:'Dispersion ; ventouse sur 12V.'},
+          {nom:'Toux par Vent-Chaud', signes:'', pp:['13V','5P'], ps:['7P'], tech:'Disperser 13V + 5P (ou 5P + 7P).'},
+          {nom:'Toux par Vent-Froid', signes:'', pp:['13V','9P','7P'], ps:[], tech:'13V dispersé et moxé ; 9P (Shu-Source) + 7P (Luo).'},
+          {nom:'Douleur de gorge', signes:'', pp:['11P','10P'], ps:[], tech:'11P en saignée (Jing-puits, Vent et Chaleur) + 10P dispersé.'},
+          {nom:'Céphalée', signes:'Générale : 16DM, 20DM, 23DM · postérieure : 10V + 7P · antérieure : 8E + 7P · locale : Tai Yang, Yin Tang', pp:['Tai Yang','Yin Tang','16DM','20DM','23DM','10V','7P','8E'], ps:[], tech:'Dispersion.'},
+          {nom:'Raideur de la nuque et du dos, torticolis', signes:'', pp:['20VB','16DM','10V','11V','12V','Ashi'], ps:['6IG','40V','16IG','16GI','26DM','24RM','3IG'], tech:'Irradiation à l\'épaule : 6IG ; à la colonne : 40V ; torticolis : 16IG, 16GI, 6IG ; stase du cou : 26DM, 24RM, 3IG.'},
+          {nom:'Rhinorrhée et congestion nasale', signes:'', pp:['20GI','23DM','Yin Tang','Bitong'], ps:['40E'], tech:'40E si mucosités abondantes.'},
+          {nom:'Anhidrose ou hypersudation', signes:'', pp:['4GI','7R'], ps:[], tech:'Disperser 4GI, tonifier 7R.'},
+          {nom:'Fatigue persistante après la grippe', signes:'', pp:['36E','6RM'], ps:['18V','23V','43V'], tech:'Tonification et moxas ; points des « Cent Fatigues » : 18V, 23V, 43V.'},
+          {nom:'Prévention des atteintes répétées (vide du Wei Qi)', signes:'Rhumes à répétition, sujet fragile ou allergique.', pp:['14DM','12DM','12V','36E'], ps:['18V'], tech:'Moxas sur 14DM et 12DM ; disperser 12V ; tonifier 36E ; moxas sur 18V au cours de l\'hiver.'}
+        ]
+      }
+    }
+  },
+
+  asthme: {
+    label: 'Asthme (Xiao Chuan)',
+    alerte: 'Signes de gravité d\'une crise (difficulté à parler, cyanose, fréquence respiratoire > 30, pouls > 120, agitation, silence auscultatoire) : urgence (15) et traitement de crise conventionnel. Ne jamais arrêter un traitement de fond ou une corticothérapie sans le médecin.',
+    note: 'Xiao Chuan = sifflement + dyspnée ; trois maladies distinctes du Poumon : asthme, dyspnée, toux. Dans l\'asthme, les pervers persistent des années : les Glaires (Tan) cachées dans le Poumon, « vieille souche » (Shugen), issues du vide du Poumon (ne diffuse plus), de la Rate (ne transforme plus) et du Rein (ne vaporise plus l\'Eau). Lecture moderne : bronchospasme et inflammation = « Vent dans les bronches » (Bois en excès sur un Métal en carence ; asthme tardif de la ménopause : Chong Mai). Crise = plénitude, attaquer les pervers ; rémission = vide, soutenir le Qi correct ; asthme ancien grave : les deux.',
+    motifs: {
+      'Asthme — crise': {
+        syn: ['asthme','crise d asthme','xiao chuan','respiration sifflante','sifflements','bronchospasme','asthmatique'],
+        syndromes: [
+          {nom:'Plénitude-Froid', signes:'Dyspnée, sifflement, toux bénigne, crachats blancs fluides écumeux peu abondants, oppression, corps froid ; crises par temps froid, parfois syndrome superficiel Vent-Froid ; teint foncé légèrement bleu. Enduit blanc lisse | Pouls serré',
+           pp:['Dingchuan','12V','13V','22RM','7P','43V','17RM','12RM'], ps:['6P','5P','7C','15RM','20VB','21VB','5TR','4GI','14DM','11GI','40E','9RP','6MC','36E','5MC','13RM'],
+           tech:'Si besoin : 6P (Xi), 5P (syndrome fébrile léger), 7C + 15RM (Shen), 20VB + 21VB (nuque tendue, Vent interne), 5TR + 4GI (céphalées). Autre formule : 4GI, 7P, 5P, 17RM, Dingchuan. Vent-Froid sévère : 12V, 13V, 14DM, 11GI. Mucosités +++ : 40E, 9RP, 12RM. Vomissements : 6MC. Facteur alimentaire : 36E. Crise après colère : 5MC, 12RM, 13RM, 36E.'},
+          {nom:'Vide-Froid', signes:'Crises à répétition, maladie chronique : sifflements, voix basse, manque de souffle, crachats clairs et fluides, teint blanc, transpiration au moindre effort, frilosité. Langue pâle, enduit blanc | Pouls profond et fin',
+           pp:['4RM','6V','7P','40E'], ps:[], tech:'Avec moxas. Le cours écrit « 6V » : peut-être 6RM (Qihai) — à vérifier.'},
+          {nom:'Plénitude-Chaleur', signes:'Dyspnée bruyante, sifflement, poitrine soulevée, distension des hypocondres, quintes, crachats blancs ou jaunes épais et visqueux, difficiles à expectorer, angoisse, transpiration, teint rouge, goût amer, fièvre. Langue rouge, enduit jaune et gras | Pouls glissant et rapide',
+           pp:['13V','7P','11P','22RM','40E','17RM','6P','44E','10P','4GI','11GI','Dingchuan'], ps:['14DM','12V','5TR','1P','2P','9RP','12RM','25E','36E'],
+           tech:'Tout en dispersion. 22RM : aiguille glissée 1 à 2 cm derrière le sternum. 14DM, 12V, 13V : picoter 3 à 5 fois à l\'aiguille triangulaire puis grande ventouse. 11P en saignée. Chaleur abondante : 5TR + saignée de 14DM ; douleurs thoraciques : 1P, 2P ; hémoptysie : 6P ; Glaires-Chaleur abondantes : 40E + 9RP ; distension abdominale : 12RM, 25E, 36E.'},
+          {nom:'Vide-Chaleur (épuisement du Yin)', signes:'Dyspnée persistante, quintes, crachats visqueux peu abondants, gorge et bouche sèches, bouffées de chaleur, nervosité, pommettes rouges. Langue rouge peu d\'enduit | Pouls fin et rapide',
+           pp:['9P','7R','40E','6R','7P'], ps:['13V','43V'], tech:'Tonifier 9P, 7R, 6R, 7P ; disperser 40E. 13V et 43V dans les maladies chroniques du Poumon.'},
+          {nom:'Asthme dû aux Glaires', signes:'Mucosités abondantes au premier plan, Froid ou Chaleur peu manifeste : plénitude du thorax, ne peut s\'allonger, sifflement « bruit de sciage », crachats visqueux abondants difficiles à expectorer. Enduit épais | Pouls glissant et plein',
+           pp:['22RM','40E','17RM','36E','13V'], ps:[], tech:'Dispersion.'},
+          {nom:'Asthme allergique et émotionnel (Foie, Yang, brutal)', signes:'Oppression et distension de la poitrine et des hypocondres, crises brutales. Pouls en corde',
+           pp:['17RM','14F','18V','4RP','6MC','7P','Dingchuan'], ps:['2F'], tech:'14F + 18V (Shu-Mu) ; 4RP + 6MC ouvrent le Chong Mai ; 2F si signes de Feu.'}
+        ]
+      },
+      'Asthme — traitement de fond (rémission)': {
+        syn: ['asthme chronique','traitement de fond de l asthme','prevention de l asthme','asthme en remission','entre les crises'],
+        note: 'Reconstituer le Qi en rémission diminue la fréquence et l\'intensité des crises ; acupuncture préventive au printemps et à l\'automne (contrôle des pouls) ; diététique, Tai Chi, yoga ; traiter l\'Esprit (7C, 15RM) et les émotions (Foie : 14F, 18V, 2F, 20DM) ; méridiens curieux (6MC, 4RP). Corticoïdes au long cours : stimuler le Yang du Rein pour espérer diminuer les doses, mais tonifier aussi le Yin.',
+        syndromes: [
+          {nom:'Proposition commune aux trois asthmes en rémission', signes:'',
+           pp:['13V','20V','21V','23V','36E','6RM','4RM','9P','Dingchuan','43V'], ps:[], tech:'Tonifier 13V, 20V, 21V, 23V, 36E, 9P, 43V ; tonifier et moxer 6RM, 4RM ; disperser Dingchuan.'},
+          {nom:'Déficience du Poumon', signes:'Transpiration spontanée, crainte du vent, rhumes au moindre changement de temps, éternuements, nez bouché, rhinorrhée claire avant chaque crise, voix basse, crachats clairs, sifflements permanents. Langue pâle, enduit blanc | Pouls vide et fin',
+           pp:['4GI','9P','43V','13V','Dingchuan'], ps:['40E','7P','22RM','9RP','36E'], tech:'Tonification et moxas. Mucosités importantes : 4GI, 9P, 43V (tonifiés) + 13V, 40E (dispersés) ; ou 7P, 40E, 22RM ; ou 9RP, 36E.'},
+          {nom:'Déficience de la Rate', signes:'Perte d\'appétit, obstruction gastrique, selles non moulées, diarrhée après aliments gras, crises déclenchées par l\'alimentation, fatigue, voix faible, crachats abondants et opaques. Langue pâle, enduit fin gras | Pouls fin et mou',
+           pp:['9RP','36E','20V'], ps:['12RM','22RM','13V','7P','40E','9P','43V','3RP'], tech:'Si Rate et Poumon faibles : 9P, 43V, 9RP, 36E, 20V, 13V (ou 3RP, 36E).'},
+          {nom:'Déficience des Reins — vide de Yang', signes:'Respiration courte et rapide aggravée au moindre mouvement, inspiration difficile, crises après fatigue, palpitations, vertiges, acouphènes, lombalgies, frilosité, membres froids. Langue grosse, enduit pâle blanc | Pouls profond',
+           pp:['4RM','7R','23V'], ps:['9RP','3R','20V','40E'], tech:'Tonification et moxas. Mucosités : disperser 40E, 9RP. Rate + Rein : 4RM ± moxa, 9RP, 3R, 20V, 23V.'},
+          {nom:'Déficience des Reins — vide de Yin', signes:'Inspiration difficile, pommettes rouges, dysphorie, transpiration des mains. Langue rouge peu d\'enduit | Pouls fin et rapide',
+           pp:['6RM','23V','3R'], ps:['9P','13V'], tech:'Tonification. Vide de Yin du Poumon et du Rein : 9P, 3R, 13V, 23V.'},
+          {nom:'Asthme par vide de Yin du Foie', signes:'Crises nocturnes peu fréquentes, gorge sèche, toux sèche, yeux secs, vision trouble. Langue rouge sans enduit | Pouls superficiel vide',
+           pp:['8F','4RM','3R','6RP','6MC','4RP'], ps:[], tech:'Nourrir le Yin du Foie (8F, 4RM) et du Rein (3R, 6RP) ; Chong Mai et Yin Wei Mai (4RP, 6MC).'},
+          {nom:'Traiter l\'Esprit et les émotions', signes:'Composante émotionnelle des crises.',
+           pp:['7C','15RM','20DM','2F','18V','12RM','20V','40E','36E'], ps:[], tech:'7C + 15RM calment l\'Esprit ; Feu du Foie : 20DM, 2F, 18V ; soucis (Rate) : 12RM, 20V, 40E, 36E.'}
+        ]
+      }
+    }
+  }
+};
+
+// ── Orientation pneumologique d'après l'examen (15/10/2026) ──
+// Lit la carte « Respiration, toux, nez et gorge » (d-resp), l'inspection (e-resp), les questions 1, 2, 5, 6, 8, 9, 10,
+// la langue et le pouls. Domaine évoqué d'abord (toux, dyspnée, asthme, grippe/rhume), puis tableau départagé par ses signes.
+function pneumoAnalyse(){
+  const V = _rhVals, tq = q => Array.from(document.querySelectorAll('#tr-'+q+' .tg.on')).map(t=>t.textContent);
+  const S = V('d-resp').concat(V('e-resp'), tq('q6'));
+  const Q1=tq('q1'), Q2=tq('q2'), Q3=tq('q3'), Q4=tq('q4'), Q5=tq('q5'), Q6=tq('q6'), Q8=tq('q8'), Q9=tq('q9'), Q10=tq('q10');
+  const LC=V('l-couleur'), LE=V('l-enduit-couleur'), LL=V('l-couleur-loc'), LH=V('l-humidite'), LF=V('l-forme');
+  const P=[].concat(V('pq'),V('pq-force'),V('pq-forme'),V('pq-freq'),V('pq-prof'));
+  const has=(a,x)=>a.includes(x), any=(a,re)=>a.some(x=>re.test(x)), pouls=re=>any(P,re);
+  const rouge=any(LC,/^Rouge/), pale=has(LC,'Pâle'), gras=any(LH,/Collant|Gras/)||any(LE,/épais/i), sec=any(LH,/Sec/);
+  const aigu=has(S,'Début aigu'), chronique=has(S,'Évolution chronique')||has(S,'Crises récidivantes');
+  const surface=pouls(/Superficiel/), froidExt=has(Q1,'Frissons')||has(Q1,'Aggravé par le froid'), fievre=has(Q1,'Fièvre');
+  const toux=any(S,/^Toux/)||has(Q6,'Toux'), essouf=any(S,/Essoufflement|Courte/)||any(Q6,/Essoufflement/);
+  const siffl=has(S,'Sifflement (wheezing)')||has(Q6,'Respiration sifflante');
+  const crBlFl=has(S,'Crachats blancs fluides / aqueux'), crBlEp=has(S,'Crachats blancs épais abondants'), crJa=has(S,'Crachats jaunes épais');
+  const nez=any(S,/Éternuements|Nez bouché|Rhinorrhée/), gorge=any(S,/Gorge/);
+  const R=[];
+  const regle=(cat,motif,nom,porte,crit,seuil)=>{ if(!porte) return; const ok=crit.filter(c=>c[0]); const sc=ok.reduce((a,c)=>a+c[1],0);
+    if(sc>=(seuil||2)){ const M=PNEUMO_DB[cat].motifs[motif]; const i=M.syndromes.findIndex(s=>s.nom===nom);
+      R.push({cat, motif, idx:i>=0?i:null, nom, score:sc, raisons:ok.map(c=>c[2])}); } };
+  // Grippe, rhume
+  const G='ganMao', MG='Grippe, rhume (Gan Mao)', pg = (fievre||froidExt||surface) && (nez||gorge) && !chronique;
+  regle(G,MG,'Vent-Froid externe',pg,[[froidExt,1,'frissons, crainte du froid'],[has(Q2,'Pas de transpiration'),1,'pas de sueurs'],[has(S,'Rhinorrhée claire'),1,'rhinorrhée claire'],[has(Q3,'Courbatures'),1,'courbatures'],[pouls(/Serré/),1,'pouls serré']]);
+  regle(G,MG,'Vent-Chaleur externe',pg,[[fievre,1,'fièvre'],[has(S,'Gorge douloureuse'),1,'mal de gorge'],[has(S,'Rhinorrhée épaisse / jaune'),1,'rhinorrhée épaisse'],[any(Q8,/Soif/)||has(Q8,'Soif modérée'),1,'soif'],[pouls(/Rapide/),1,'pouls rapide']]);
+  // Toux
+  const T='toux', MT='Toux (Ke Sou)', pt = toux;
+  regle(T,MT,'Vent-Froid, Vent prédominant (Zhong Feng) — surface',pt&&!chronique,[[surface,1,'pouls superficiel'],[has(S,'Éternuements'),1,'éternuements'],[has(S,'Rhinorrhée claire'),1,'rhinorrhée claire'],[has(Q1,'Sensible au vent'),1,'crainte du vent'],[has(S,'Gorge qui pique'),1,'gorge qui pique']],3);
+  regle(T,MT,'Vent-Froid, Froid prédominant (Shang Han) — surface',pt&&!chronique,[[has(Q1,'Frissons'),1,'frissons'],[has(Q2,'Pas de transpiration'),1,'pas de sueurs'],[has(Q3,'Courbatures'),1,'courbatures'],[has(S,'Toux sèche'),1,'toux sèche'],[pouls(/Serré/),1,'pouls serré']],3);
+  regle(T,MT,'Vent-Chaleur — surface (couche Wei)',pt&&!chronique,[[fievre,1,'fièvre'],[has(S,'Gorge douloureuse'),1,'gorge qui brûle'],[has(S,'Rhinorrhée épaisse / jaune'),1,'rhinorrhée épaisse'],[surface&&pouls(/Rapide/),1,'pouls superficiel et rapide']],3);
+  regle(T,MT,'Vent-Sécheresse',pt,[[has(S,'Toux sèche'),1,'toux sèche'],[any(Q8,/Gorge sèche|Lèvres sèches|Bouche sèche/),1,'sécheresse'],[sec,1,'langue sèche'],[has(S,'Crachats striés de sang'),.5,'crachats striés']],3);
+  regle(T,MT,'Mucosités-Chaleur du Poumon',pt,[[crJa,2,'crachats jaunes épais'],[fievre,1,'fièvre'],[has(Q8,'Soif intense boissons froides'),1,'soif de froid'],[rouge&&any(LE,/Jaune/),1,'langue rouge, enduit jaune'],[pouls(/Glissant/)&&pouls(/Rapide/),1,'pouls glissant et rapide']],3);
+  regle(T,MT,'Vide de Qi du Poumon (toux chronique)',pt,[[has(S,'Toux faible'),1,'toux faible'],[essouf,1,'essoufflement à l\'effort'],[has(Q2,'Sueurs spontanées diurnes'),1,'transpiration spontanée'],[has(S,'Voix faible'),1,'voix faible'],[pale,1,'teint pâle'],[pouls(/Vide|Ténu|Épuisé/),1,'pouls faible']],3);
+  regle(T,MT,'Vide de Yin du Poumon (toux chronique)',pt,[[has(S,'Toux sèche'),1,'toux sèche'],[has(S,'Toux du soir ou nocturne'),1,'toux du soir'],[has(Q2,'Sueurs nocturnes'),1,'sueurs nocturnes'],[has(S,'Voix rauque / aphonie'),1,'voix rauque'],[any(Q1,/vespérale/),1,'fièvre vespérale'],[rouge&&has(LE,'Absent (langue miroir)'),1,'langue rouge sans enduit'],[pouls(/Fin/)&&pouls(/Rapide/),1,'pouls fin et rapide']],3);
+  regle(T,MT,'Glaires-Humidité dans le Poumon',pt,[[crBlEp,2,'crachats blancs épais abondants'],[has(S,'Toux aggravée le matin'),1,'aggravée le matin'],[has(Q4,'Selles molles')||has(Q5,'Peu d\'appétit'),1,'signes de la Rate'],[gras,1,'enduit gras'],[pouls(/Glissant/),1,'pouls glissant']],3);
+  regle(T,MT,'Glaires fluides dans le Poumon',pt&&chronique,[[crBlFl,1,'crachats aqueux'],[has(Q1,'Froid permanent'),1,'froid général'],[essouf||has(S,'Inspiration difficile'),1,'respiration haletante'],[pale,1,'langue pâle'],[pouls(/Profond/),1,'pouls profond']],3);
+  regle(T,MT,'Le Feu du Foie agresse le Poumon',pt,[[has(S,'Toux déclenchée par les émotions'),2,'déclenchée par les émotions'],[has(Q5,'Goût amer'),1,'goût amer'],[has(Q10,'Irritabilité')||has(Q10,'Colère facile'),1,'irritabilité'],[any(LL,/Bords rouges/),1,'bords rouges'],[pouls(/corde/),1,'pouls en corde']],3);
+  // Asthme
+  const A='asthme', MAc='Asthme — crise', MAf='Asthme — traitement de fond (rémission)';
+  const pac = siffl && !has(S,'Entre les crises'), paf = siffl && has(S,'Entre les crises');
+  regle(A,MAc,'Plénitude-Froid',pac,[[crBlFl,1,'crachats blancs écumeux'],[has(S,'Déclenché par le froid / changement de temps'),1,'crises par temps froid'],[has(Q1,'Froid permanent')||froidExt,1,'sensation de froid'],[pouls(/Serré/),1,'pouls serré']]);
+  regle(A,MAc,'Plénitude-Chaleur',pac,[[crJa,2,'crachats jaunes épais'],[fievre,1,'fièvre'],[has(Q5,'Goût amer'),1,'goût amer'],[rouge&&any(LE,/Jaune/),1,'langue rouge, enduit jaune'],[pouls(/Glissant/)&&pouls(/Rapide/),1,'pouls glissant et rapide']],3);
+  regle(A,MAc,'Asthme dû aux Glaires',pac,[[crBlEp,1,'crachats visqueux abondants'],[has(S,'Ne peut pas s\'allonger'),1,'ne peut s\'allonger'],[gras,1,'enduit épais'],[pouls(/Glissant/),1,'pouls glissant']],3);
+  regle(A,MAc,'Vide-Froid',pac&&chronique,[[has(S,'Voix faible'),1,'voix basse'],[has(Q2,'Sueurs spontanées diurnes')||has(Q2,'Sueurs à l\'effort'),1,'sueurs au moindre effort'],[pale,1,'teint blanc'],[pouls(/Profond/)&&pouls(/Fin/),1,'pouls profond et fin']],3);
+  regle(A,MAc,'Vide-Chaleur (épuisement du Yin)',pac&&chronique,[[any(Q8,/Gorge sèche|Bouche sèche/),1,'gorge sèche'],[has(Q1,'Bouffées de chaleur'),1,'bouffées de chaleur'],[rouge,1,'langue rouge'],[pouls(/Fin/)&&pouls(/Rapide/),1,'pouls fin et rapide']],3);
+  regle(A,MAc,'Asthme allergique et émotionnel (Foie, Yang, brutal)',pac,[[has(S,'Allergie (pollen / poussière)'),1,'allergie'],[has(S,'Toux déclenchée par les émotions')||has(Q10,'Anxiété'),1,'composante émotionnelle'],[any(Q6,/Oppression|flancs/),1,'oppression, hypocondres'],[pouls(/corde/),1,'pouls en corde']]);
+  regle(A,MAf,'Déficience du Poumon',paf,[[has(Q2,'Sueurs spontanées diurnes'),1,'transpiration spontanée'],[has(S,'Déclenché par le froid / changement de temps'),1,'déclenché par le temps'],[has(S,'Éternuements')||has(S,'Rhinorrhée claire'),1,'rhinite précurseur'],[has(Q1,'Sensible au vent'),1,'crainte du vent']]);
+  regle(A,MAf,'Déficience de la Rate',paf,[[has(S,'Déclenché par l\'alimentation'),2,'déclenché par l\'alimentation'],[has(Q4,'Selles molles'),1,'selles molles'],[has(Q5,'Peu d\'appétit'),1,'perte d\'appétit'],[crBlEp,1,'crachats abondants']]);
+  regle(A,MAf,'Déficience des Reins — vide de Yang',paf,[[has(S,'Inspiration difficile'),1,'inspiration difficile'],[has(S,'Déclenché par l\'effort / la fatigue'),1,'crises après fatigue'],[has(Q1,'Froid permanent'),1,'frilosité'],[pale,1,'langue pâle'],[pouls(/Profond/),1,'pouls profond']],3);
+  regle(A,MAf,'Déficience des Reins — vide de Yin',paf,[[has(S,'Inspiration difficile'),1,'inspiration difficile'],[any(Q1,/5 centres|Bouffées/),1,'chaleur'],[rouge,1,'langue rouge'],[pouls(/Fin/)&&pouls(/Rapide/),1,'pouls fin et rapide']],3);
+  // Dyspnée (hors asthme)
+  const D='dyspnee', MD='Dyspnée (Chuan)', pd = essouf && !siffl;
+  regle(D,MD,'Plénitude — invasion du Poumon par le Vent-Froid',pd&&aigu,[[froidExt,1,'frissons'],[fievre,1,'fièvre'],[crBlFl,1,'expectoration blanche fluide'],[surface,1,'pouls superficiel']]);
+  regle(D,MD,'Plénitude — Glaires-Chaleur dans le Poumon',pd,[[crJa,2,'crachats jaunes'],[rouge&&any(LE,/Jaune/),1,'langue rouge, enduit jaune'],[pouls(/Glissant/)&&pouls(/Rapide/),1,'pouls glissant et rapide']],3);
+  regle(D,MD,'Plénitude — obstruction du Qi du Poumon (Qi du Foie rebelle)',pd,[[has(S,'Toux déclenchée par les émotions')||has(S,'Dyspnée déclenchée par les émotions'),2,'crises émotionnelles'],[any(Q6,/Oppression/),1,'oppression'],[pouls(/corde/),1,'pouls en corde']],3);
+  regle(D,MD,'Vide de Qi du Poumon',pd&&chronique,[[has(S,'Voix faible'),1,'voix faible'],[has(Q2,'Sueurs spontanées diurnes'),1,'transpiration'],[pale,1,'pâleur'],[pouls(/Vide|Ténu|Épuisé/),1,'pouls faible']],3);
+  regle(D,MD,'Vide de Yin du Poumon',pd&&chronique,[[has(Q2,'Sueurs nocturnes'),1,'sueurs nocturnes'],[any(Q1,/5 centres/),1,'chaleur des cinq cœurs'],[has(S,'Toux sèche'),1,'toux sèche'],[rouge&&has(LE,'Absent (langue miroir)'),1,'langue rouge sans enduit'],[pouls(/Fin/)&&pouls(/Rapide/),1,'pouls fin et rapide']],3);
+  regle(D,MD,'Vide du Poumon et du Rein (Yang) — « plénitude en haut, vide en bas »',pd&&chronique,[[has(S,'Inspiration difficile'),2,'inspiration difficile'],[has(S,'Œdèmes des chevilles'),1,'œdèmes des chevilles'],[has(Q1,'Froid permanent')||has(Q1,'Extrémités froides malgré chaleur interne'),1,'membres froids'],[pouls(/Profond/),1,'pouls profond']],3);
+  regle(D,MD,'Vide de Yang du Poumon, du Cœur et du Rein — stase (personne âgée)',pd&&chronique,[[has(S,'Cyanose des lèvres'),2,'cyanose'],[has(S,'Œdèmes des chevilles'),1,'œdèmes'],[any(LC,/Violacé|Bleuté/),1,'langue pourpre'],[pouls(/Noué/),1,'pouls noué']],3);
+  // Motif seul si aucun tableau ne se détache
+  const motif=(porte,cat,m,nom,raisons)=>{ if(porte && !R.some(r=>r.motif===m)) R.push({cat,motif:m,idx:null,nom,score:1.5,raisons}); };
+  motif(siffl && !paf, A, MAc, 'Asthme (crise)', ['sifflement']);
+  motif(paf, A, MAf, 'Asthme — traitement de fond', ['entre les crises']);
+  motif(pd, D, MD, 'Dyspnée (Chuan)', ['essoufflement']);
+  motif(pt, T, MT, 'Toux (Ke Sou)', ['toux']);
+  motif(pg, G, MG, 'Grippe, rhume (Gan Mao)', ['fièvre ou frissons avec signes du nez ou de la gorge']);
+  return R.sort((a,b)=>b.score-a.score);
+}
+function pneumoAnalyseHTML(){
+  const S = _rhVals('d-resp');
+  let h = '';
+  if(S.includes('Cyanose des lèvres') || (S.includes('Essoufflement au repos') && S.includes('Ne peut pas s\'allonger')))
+    h += '<div style="font-size:11px;color:#922B21;background:#FDEDEC;border-radius:6px;padding:5px 9px;margin-bottom:4px">⚠️ Cyanose ou dyspnée de repos empêchant de s\'allonger : signes de gravité — urgence médicale (15) avant tout geste.</div>';
+  if(S.includes('Crachats striés de sang'))
+    h += '<div style="font-size:11px;color:#922B21;margin-bottom:4px">⚠️ Crachats sanglants : avis médical et imagerie.</div>';
+  const L = pneumoAnalyse().slice(0,3);
+  if(!L.length) return h + '<div style="font-size:11px;color:var(--slate);font-style:italic">Orientation pneumologique : renseignez la toux, les crachats, la respiration, le nez et la gorge, avec les questions 1, 2 et 6, la langue et le pouls.</div>';
+  return h + '<div style="font-size:11px;font-weight:700;color:#1A5276;margin-bottom:3px">Orientation pneumologique (référentiel Sorbonne) — proposition à confirmer</div>'
+    + L.map(r => '<div style="font-size:11px;margin:2px 0">• <strong>'+_rhEsc(r.nom)+'</strong> <span style="color:var(--slate)">('+_rhEsc(r.raisons.join(', '))+')</span> '
+      + '<button class="btn" style="font-size:10px;padding:1px 7px" onclick="pneumoOuvrir(\''+r.cat+'\',\''+_rhEsc(r.motif).replace(/'/g,"\\'")+'\',\''+_rhEsc(r.idx==null?'':PNEUMO_DB[r.cat].motifs[r.motif].syndromes[r.idx].nom).replace(/'/g,"\\'")+'\')">→ Protocole</button></div>').join('');
+}
+function pneumoRafraichir(){
+  ['pneumo-analyse-examen','pneumo-analyse-points'].forEach(id => { const el = document.getElementById(id); if(el) el.innerHTML = pneumoAnalyseHTML(); });
+  const spec = (document.getElementById('spn-spec')||{}).value;
+  const pts = document.getElementById('pneumo-analyse-points'); if(pts) pts.style.display = spec==='pneumo' ? '' : 'none';
+}
+function pneumoOuvrir(cat, motif, synd){ navTo('points'); spnOuvrir('pneumo', cat, motif, synd||''); pneumoRafraichir(); }
+function _pneumoSugg(cat, motif){ return new Map(pneumoAnalyse().filter(s => s.cat===cat && s.motif===motif && s.idx!=null).map(s => [s.idx, s])); }
+function _convPneumo(mt, impose){ return _convCours(PNEUMO_DB, mt, impose, pneumoAnalyse); }
 
 // ══════ Recherche dans le Référentiel Sorbonne Paris Nord (13/10/2026) ══════
 // Parcourt toutes les spécialités proposées pour ce patient (titres de motifs, mots-clés du cours, noms
@@ -10897,6 +11378,7 @@ function spnChercher(texte){
     if(!n) return;
     if(exiges.length) bonus.forEach(q => { sc += poids(e, q)*0.3; });
     if(n===req.length && req.every(q => e.champs[0][0].some(w=>_spnRechEgal(q,w)))) sc += 1; // l'entrée elle-même porte les mots cherchés
+    if(e.champs[0][0].length && _spnRechEgal(req[0], e.champs[0][0][0])) sc += 0.5; // son titre commence par le mot cherché
     res.push(Object.assign({score:sc, trouves:n}, e));
   });
   // Tous les mots exigés si possible ; sinon les entrées qui en contiennent le plus (ex. « épaule gelée »)
@@ -10935,6 +11417,7 @@ function spnOuvrir(spec, cat, motif, synd){
   spnShowProtocole();
   if(typeof rhRafraichir==='function') rhRafraichir();
   if(typeof psyRafraichir==='function') psyRafraichir();
+  if(typeof pneumoRafraichir==='function') pneumoRafraichir();
   const res = document.getElementById('gyno-result'); if(!res) return;
   let cible = null;
   if(synd){
@@ -12445,6 +12928,7 @@ function togEx(el, inputId) {
   // Orientation rhumatologique (le clic remplit le champ caché sans déclencher son oninput)
   if(/^(d-(aggrave|ameliore|type|rythme|rhumato)|l-enduit-couleur|l-couleur(-loc)?)$/.test(inputId) && typeof rhRafraichir==='function') rhRafraichir();
   if(/^(d-psy|l-.*|pq.*)$/.test(inputId) && typeof psyRafraichir==='function') psyRafraichir();
+  if(/^(d-resp|e-resp|l-.*|pq.*)$/.test(inputId) && typeof pneumoRafraichir==='function') pneumoRafraichir();
 }
 
 // ══════ SCHÉMA DE LA LANGUE (dessin vivant + zones cliquables) ══════
@@ -14778,7 +15262,7 @@ function computeConvergence(){
   //    (protocole affiché : ses points de base + les points cochés par le praticien, pas tous ses tableaux)
   const specAff = (document.getElementById('spn-spec')||{}).value||'';
   const protAff = document.querySelectorAll('#gyno-result .gyno-chk').length ? ((document.getElementById('gyno-motif')||{}).value||'') : '';
-  const cours = specAff==='rhumato' || specAff==='psy';
+  const cours = specAff==='rhumato' || specAff==='psy' || specAff==='pneumo';
   const gyAff = cours ? '' : protAff;
   const GY = cours && protAff ? null : _convGyno(mt, gyAff);
   if(GY){ ctx.gyno = GY.titre; GY.pts.forEach(c => add(String(c).split(' ')[0],'gyno',1,'Référentiel SPN — '+GY.titre+' (points de base)')); }
@@ -14788,6 +15272,9 @@ function computeConvergence(){
   // 4 ter. Psychiatrie (Référentiel Sorbonne) : protocole affiché, sinon motif reconnu
   const PS = typeof _convPsy==='function' ? _convPsy(mt, specAff==='psy' ? protAff : '') : null;
   if(PS){ ctx.psy = PS.titre; PS.pts.forEach(p => { const o = _rhPt(p.raw).oms; if(o) add(o,'gyno',p.w,'Référentiel SPN — '+PS.titre+' ('+p.why+')'); }); }
+  // 4 quater. Pneumologie (Référentiel Sorbonne) : protocole affiché, sinon motif reconnu ; tableau évoqué par l'examen
+  const PN = typeof _convPneumo==='function' ? _convPneumo(mt, specAff==='pneumo' ? protAff : '') : null;
+  if(PN){ ctx.pneumo = PN.titre; PN.pts.forEach(p => { const o = _rhPt(p.raw).oms; if(o) add(o,'gyno',p.w,'Référentiel SPN — '+PN.titre+' ('+p.why+')'); }); }
   document.querySelectorAll('#gyno-result .gyno-chk:checked').forEach(cb => add(cb.dataset.code,'gyno',1,'Référentiel SPN — coché',cb.dataset.nom));
   // 5. Mode Urgence : recettes reconnues dans le motif
   if(mt.length) URGENCE_RECIPES.forEach(r => {
@@ -14850,6 +15337,7 @@ function renderConvergence(){
   if(C.ctx.gyno) ctx.push('Sorbonne Paris Nord : '+C.ctx.gyno);
   if(C.ctx.rhumato) ctx.push('Sorbonne Paris Nord (rhumatologie) : '+C.ctx.rhumato);
   if(C.ctx.psy) ctx.push('Sorbonne Paris Nord (psychiatrie) : '+C.ctx.psy);
+  if(C.ctx.pneumo) ctx.push('Sorbonne Paris Nord (pneumologie) : '+C.ctx.pneumo);
   if(C.ctx.mtm && C.ctx.mtm.probable && C.ctx.mtm.mtm.length) ctx.push('MTM : '+C.ctx.mtm.mtm.map(x=>x.nom.replace(/\s*\(.*\)$/,'')).join(', ')+' (atteinte tendino-musculaire probable)');
   if(C.ctx.periop) ctx.push('Péri-op. : '+C.ctx.periop);
   if(!C.body.length){
