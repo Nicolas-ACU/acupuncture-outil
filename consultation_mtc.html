@@ -229,6 +229,12 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
 .ez-bar{display:flex;gap:6px;align-items:center;padding:8px 10px;border-bottom:1px solid var(--border);flex-wrap:wrap;background:var(--cream,#FBF8F2)}
 .ez-bar .btn{font-size:13px;padding:4px 10px;min-width:34px}
 .ez-bar input:not([type=checkbox]){flex:1;min-width:150px;font-size:13px;padding:5px 8px}
+.ez-search-wrap{position:relative;flex:1;min-width:150px}
+.ez-bar .ez-search-wrap input{width:100%;min-width:0}
+.ez-sugg{position:absolute;left:0;right:0;top:100%;z-index:20;background:#fff;border:1px solid var(--border);border-radius:6px;box-shadow:0 4px 14px rgba(0,0,0,.15);max-height:280px;overflow:auto;font-size:13px}
+.ez-sugg div{padding:6px 10px;cursor:pointer;border-bottom:1px solid var(--cream2,#eee)}
+.ez-sugg div:hover{background:var(--jade-lt,#E6F2EC)}
+.ez-sugg small{color:var(--slate)}
 .ez-bar input[type=checkbox]{width:auto;min-width:0;flex:none;margin:0}
 .ez-stage{flex:1;position:relative;overflow:hidden;touch-action:none;background:#fff;cursor:grab}
 .ez-stage.drag{cursor:grabbing}
@@ -607,6 +613,7 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
         <div id="guide-changelog" style="font-size:12px;color:var(--ink);line-height:1.8">
           <div style="font-size:12px;line-height:1.65;margin-bottom:10px">
             <div style="font-weight:700;color:var(--jade);margin-bottom:4px">Auriculothérapie : sélection des points (octobre 2026)</div>
+            <div>• Recherche de point dans la fenêtre agrandie : les suggestions ne tiennent plus compte des accents ni des majuscules (« omega », « epaule », « oeil »), et les synonymes indiquent le point du schéma (« 84. Oméga 1 = Cortex cingulaire »).</div>
             <div>• Nouveau bouton <strong>« ✕ Effacer les points palpés »</strong> sur les schémas de l'oreille (Examen, Points et fenêtre agrandie). • Décocher le dernier point ne colore plus toute la catégorie en orange, ce qui donnait l'impression que tous les points étaient sélectionnés sauf celui cliqué. • Le survol d'un point est un contour bleu pointillé, distinct du point palpé (rouge plein), et il est désactivé sur tablette. • Cliquer sur l'oreille ne décoche plus les points déjà cochés dans la liste ; plus de doublon dans la liste ni dans le motif affiché.</div>
           </div>
           <div style="font-size:12px;line-height:1.65;margin-bottom:10px">
@@ -12634,7 +12641,7 @@ const EAR_PT_NUM = {'Apex (Pointe)':1,'Point Zéro':2,'Trachée':3,'Clavicule':4
 const EAR_ALIAS = {'Rein (SHEN)':'Rein (SHEN) / Détoxification','Détoxification':'Rein (SHEN) / Détoxification','Appétit / Faim':'Faim (Appétit)',
   'Point Hormonal':'Endocrine','Immunité (Rate-Poumon)':'Interféron',
   // Synonymes de « L'auriculothérapie simplifiée » : Foie Yang = tubercule de Darwin ; Oméga 1 = gyrus (cortex) cingulaire
-  'Yang du Foie':'Point maître de Darwin','Foie Yang':'Point maître de Darwin','Oméga 1':'Cortex cingulaire'};
+  'Yang du Foie':'Point maître de Darwin','Foie Yang':'Point maître de Darwin','Oméga 1':'Cortex cingulaire','Oméga principal':'Point oméga'};
 // Numéro du point sur le schéma auriculaire (face antérieure 1-92, postérieure 93-103), alias compris ; 0 si sans repère.
 function earNum(name){ return EAR_PT_NUM[name] || EAR_PT_NUM[EAR_ALIAS[name]] || 0; }
 // « Shen Men n° 26 » (ou le nom seul suivi de « sans repère sur le schéma »), pour tout affichage d'un point d'oreille
@@ -13666,8 +13673,11 @@ function _ezBuild(){
     post.appendChild(g2); post.style.display='none';
     stage.appendChild(post); _ez.post=post;
   }
-  const dl=document.getElementById('ez-search-list');
-  if(dl) dl.innerHTML=[...Object.entries(EAR_PT_NUM), ...Object.keys(EAR_ALIAS).filter(a=>earNum(a)).map(a=>[a, earNum(a)])].sort((a,b)=>a[1]-b[1]).map(([n,num])=>`<option value="${num}. ${n}">`).join('');
+  // Liste de suggestions maison (la <datalist> du navigateur filtrait en tenant compte des accents :
+  // « omega » ne proposait rien). Les synonymes renvoient au point du schéma (« Oméga 1 = Cortex cingulaire »).
+  _ez.entries=[...Object.entries(EAR_PT_NUM).map(([n,num])=>({num, name:n, label:n})),
+    ...Object.keys(EAR_ALIAS).filter(a=>earNum(a)).map(a=>({num:earNum(a), name:EAR_ALIAS[a], label:a, alias:true}))]
+    .sort((a,b)=>a.num-b.num || (a.alias?1:0)-(b.alias?1:0));
   _ezBindStage(stage);
 }
 function openEarZoom(face){
@@ -13766,9 +13776,30 @@ function _ezBindStage(stage){
   stage.addEventListener('click',e=>{ if(_ez.moved){ e.stopPropagation(); e.preventDefault(); _ez.moved=false; } },true);
 }
 // Recherche par numéro (« 82 », « 82. Tempe ») ou par nom (sans accents ni casse).
+const _ezNorm=x=>MTCNorm.strip(x).replace(/[^a-z0-9 ]+/g,' ').replace(/\s+/g,' ').trim();
+function _ezSuggClose(){ const b=document.getElementById('ez-sugg'); if(b) b.style.display='none'; }
+function _ezSuggPick(i){
+  const e=(_ez.sugg||[])[i]; if(!e) return;
+  document.getElementById('ez-search').value=e.num+'. '+e.label;
+  _ezSuggClose(); earZoomSearch(true);
+}
+// Suggestions sans accents ni casse : numéro, début du nom, début d'un mot, puis n'importe où.
+function _ezSuggFill(q){
+  const box=document.getElementById('ez-sugg'); if(!box) return [];
+  const nq=_ezNorm(q);
+  if(!nq || /^\d+\. /.test(q)){ box.style.display='none'; return []; }
+  const rang=e=>{ const n=_ezNorm(e.label);
+    return String(e.num)===nq ? 0 : n.startsWith(nq) ? 1 : (' '+n).includes(' '+nq) ? 2 : n.includes(nq) ? 3 : 9; };
+  _ez.sugg=(_ez.entries||[]).map(e=>({e,r:rang(e)})).filter(x=>x.r<9).sort((a,b)=>a.r-b.r||a.e.num-b.e.num).slice(0,12).map(x=>x.e);
+  box.innerHTML=_ez.sugg.map((e,i)=>`<div onmousedown="event.preventDefault();_ezSuggPick(${i})"><b>${e.num}</b>. ${e.label}${e.alias?` <small>= ${e.name}</small>`:''}</div>`).join('')
+    || '<div style="cursor:default;color:var(--slate)">Aucun point</div>';
+  box.style.display='';
+  return _ez.sugg;
+}
 function earZoomSearch(center){
   const q=(document.getElementById('ez-search')||{}).value||'';
-  const norm=x=>MTCNorm.strip(x).replace(/[^a-z0-9 ]+/g,' ').replace(/\s+/g,' ').trim();
+  const norm=_ezNorm;
+  if(!center) _ezSuggFill(q);
   const nq=norm(q); if(!nq||!_ez.svg) return null;
   const pts=[...document.querySelectorAll('#ez-stage .ear-pt')];  // les deux faces
   const mNum=nq.match(/^(\d+)\b/);
@@ -13776,7 +13807,7 @@ function earZoomSearch(center){
   if(!hit) hit = pts.find(c=>norm(c.dataset.name)===nq) || pts.find(c=>norm(c.dataset.name).startsWith(nq)) || pts.find(c=>norm(c.dataset.name).includes(nq));
   if(!hit){ const al = Object.keys(EAR_ALIAS).find(k=>norm(k)===nq || norm(k).startsWith(nq)); if(al) hit = pts.find(c=>c.dataset.name===EAR_ALIAS[al]); }
   if(!hit) return null;
-  const exact = mNum || norm(hit.dataset.name)===nq || /^\d+\. /.test(q);
+  const exact = mNum || norm(hit.dataset.name)===nq || /^\d+\. /.test(q) || Object.keys(EAR_ALIAS).some(k=>norm(k)===nq);
   if(center || exact){
     const onPost = !!hit.closest('#ez-svg-post');
     if(onPost !== (_ez.face==='post')) earZoomFace(onPost?'post':'ant');
@@ -15594,8 +15625,8 @@ function _flushUrgPending(navigateBack){
       <strong style="font-size:13px;color:var(--jade)">Schéma auriculaire</strong>
       <button class="btn ez-tab on" id="ez-tab-ant" onclick="earZoomFace('ant')">Face antérieure</button>
       <button class="btn ez-tab" id="ez-tab-post" onclick="earZoomFace('post')">Face postérieure</button>
-      <input id="ez-search" placeholder="Rechercher un point : nom ou numéro (ex. Tempe, 82)…" oninput="earZoomSearch(false)" onkeydown="if(event.key==='Enter')earZoomSearch(true)" list="ez-search-list">
-      <datalist id="ez-search-list"></datalist>
+      <div class="ez-search-wrap"><input id="ez-search" autocomplete="off" placeholder="Rechercher un point : nom ou numéro (ex. Tempe, 82)…" oninput="earZoomSearch(false)" onkeydown="if(event.key==='Enter'){earZoomSearch(true);_ezSuggClose();}else if(event.key==='Escape'){_ezSuggClose();event.stopPropagation();}" onblur="setTimeout(_ezSuggClose,150)">
+      <div id="ez-sugg" class="ez-sugg" style="display:none"></div></div>
       <button class="btn" onclick="earZoomBy(1/1.4)" title="Zoomer">＋</button>
       <button class="btn" onclick="earZoomBy(1.4)" title="Dézoomer">－</button>
       <button class="btn" onclick="earZoomReset()" title="Vue entière">⤢</button>
