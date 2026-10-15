@@ -606,6 +606,10 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
         <div style="font-size:11px;color:var(--slate);font-style:italic;margin-bottom:8px">Cette liste s'enrichit à chaque amélioration de l'application — vous pouvez vérifier ici ce qui a changé depuis votre dernière utilisation. Remise à zéro le 1er octobre 2026, au lancement de la bêta.</div>
         <div id="guide-changelog" style="font-size:12px;color:var(--ink);line-height:1.8">
           <div style="font-size:12px;line-height:1.65;margin-bottom:10px">
+            <div style="font-weight:700;color:var(--jade);margin-bottom:4px">Convergence des points (octobre 2026)</div>
+            <div>• La convergence indique maintenant d'où viennent les protocoles liés au motif : <strong>choisis</strong> dans « Motif clinique », ou <strong>reconnus dans le texte du motif</strong> de la séance (badge °), avec « Voir le protocole » et « Écarter » pour une reconnaissance erronée.</div>
+          </div>
+          <div style="font-size:12px;line-height:1.65;margin-bottom:10px">
             <div style="font-weight:700;color:var(--jade);margin-bottom:4px">Pneumologie (octobre 2026)</div>
             <div>• <strong>Pneumologie</strong> dans le Référentiel Sorbonne : toux (Ke Sou, 12 tableaux), dyspnées (Chuan, 13 tableaux et points des troubles des souffles), grippe et rhume (Gan Mao), asthme en crise et en traitement de fond. Question 6 complétée (essoufflement, inspiration difficile, respiration sifflante, toux, crachats) ; nouvelle carte d'examen « Respiration, toux, nez et gorge » avec orientation proposée. Chapitre « Pneumologie » dans le Référentiel MTC.</div>
           </div>
@@ -1903,7 +1907,7 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
             <select id="conv-n" onchange="convSetN(this.value)" style="font-size:11px;padding:2px 4px"><option>6</option><option selected>8</option><option>10</option><option>12</option></select>
             <button class="btn" style="font-size:11px;padding:3px 10px" onclick="renderConvergence()">🔄 Actualiser</button></span>
         </div>
-        <p style="font-size:11px;color:var(--slate);margin:0 0 8px">Tous les points proposés par le syndrome, l'analyse méridienne, le motif (EBM, Mode Urgence, péri-opératoire), le protocole gynécologique et la palpation Shu/Mu, regroupés et classés par nombre de sources concordantes. Retenir en priorité les points convergents limite le nombre d'aiguilles sans perdre la cohérence du traitement.</p>
+        <p style="font-size:11px;color:var(--slate);margin:0 0 8px">Regroupe les points proposés par chaque source et les classe par nombre de sources concordantes : syndrome et analyse méridienne (10+1 Questions, examen), palpation Shu/Mu, et protocoles liés au <strong>motif de la séance</strong> (EBM, Référentiel Sorbonne, Mode Urgence, péri-opératoire). Ces protocoles sont ceux que vous choisissez dans « Motif clinique » ci-dessous ; à défaut, l'application les <strong>reconnaît dans le texte du motif</strong> et vous l'indique (badge °) — vous pouvez alors les vérifier ou les écarter. Retenir en priorité les points convergents limite le nombre d'aiguilles.</p>
         <div id="conv-result"></div>
       </div>
 
@@ -15214,6 +15218,18 @@ function _convGyno(mt, impose){
   if(S.length >= 2) S[0].forEach(c => { if(S.every(l => l.includes(c))) pts.push(c); });
   return {titre:hit, cat, pts};
 }
+// Protocoles reconnus dans le motif et écartés par le praticien : propres à la séance (et au texte reconnu).
+let _convEcart = {ctx:null, set:new Set()};
+function _convEcartes(){ const c = _ctxMotif(); if(_convEcart.ctx !== c) _convEcart = {ctx:c, set:new Set()}; return _convEcart.set; }
+function convEcarter(cle){ _convEcartes().add(cle); renderConvergence(); }
+function convRetablir(cle){ _convEcartes().delete(cle); renderConvergence(); }
+function convVoirProtocole(i){
+  const p = (_conv.ctx.prot||[])[i]; if(!p) return;
+  if(p.key==='ebm'){ setMotifMode('ebm'); const s = document.getElementById('ebm-sel'); if(s){ s.value = p.titre; showEBM(); }
+    const el = document.getElementById('motif-panel-ebm'); if(el) el.scrollIntoView({behavior:'smooth', block:'start'}); return; }
+  if(p.spec) spnOuvrir(p.spec, p.cat, p.titre, '');
+}
+const CONV_PROT_LBL = {ebm:'EBM', gyno:'Référentiel Sorbonne (gynéco-obstétrique)', rhumato:'Référentiel Sorbonne (rhumatologie)', psy:'Référentiel Sorbonne (psychiatrie)', pneumo:'Référentiel Sorbonne (pneumologie)', urg:'Recette du Mode Urgence', periop:'Indication péri-opératoire'};
 function computeConvergence(){
   const pts = new Map(), names = {};
   const add = (raw, src, w, why, nom) => {
@@ -15255,8 +15271,15 @@ function computeConvergence(){
     if(c){ add(c.pointCle,'merid',1*fm,m+' — point clé'); add(c.pointCouple,'merid',.8*fm,m+' — point couplé'); }
   });
   if(MT.probable) _mtmPoints(MT).forEach(([c,w,why]) => add(c,'mtm',w,why));
+  // Protocoles tirés du motif : « choisi » (Motif clinique) ou « reconnu » dans le texte du motif de la séance.
+  // Un protocole reconnu peut être écarté par le praticien (retour du 15/10/2026 : l'origine n'était pas affichée).
+  ctx.motifTxt = [((document.getElementById('dix-motif-input')||{}).value||''), ((document.getElementById('s-motif')||{}).value||'')].map(x=>x.trim()).filter(Boolean).filter((x,i,a)=>a.indexOf(x)===i).join(' / ');
+  ctx.prot = []; const ecartes = _convEcartes();
+  const garder = (key, titre, auto, cat, spec) => { const e = auto && ecartes.has(key+'|'+titre); ctx.prot.push({key, titre, auto, cat, spec, ecarte:e}); return !e; };
   // 3. Motif EBM
-  const ek = _convEbmKey(mt); ctx.ebm = ek;
+  let ek = _convEbmKey(mt);
+  if(ek && !garder('ebm', ek, !((document.getElementById('ebm-sel')||{}).value))) ek = '';
+  ctx.ebm = ek;
   if(ek){ (EBM_DB[ek].pp||[]).forEach(p=>add(p.c,'ebm',1,ek+' (principal)',p.n)); (EBM_DB[ek].ps||[]).forEach(p=>add(p.c,'ebm',.6,ek+' (secondaire)',p.n)); }
   // 4. Protocole gynéco-obstétrical (Référentiel Sorbonne Paris Nord) : celui affiché, sinon reconnu dans le motif
   //    (protocole affiché : ses points de base + les points cochés par le praticien, pas tous ses tableaux)
@@ -15264,24 +15287,29 @@ function computeConvergence(){
   const protAff = document.querySelectorAll('#gyno-result .gyno-chk').length ? ((document.getElementById('gyno-motif')||{}).value||'') : '';
   const cours = specAff==='rhumato' || specAff==='psy' || specAff==='pneumo';
   const gyAff = cours ? '' : protAff;
-  const GY = cours && protAff ? null : _convGyno(mt, gyAff);
+  let GY = cours && protAff ? null : _convGyno(mt, gyAff);
+  if(GY && !garder('gyno', GY.titre, !(specAff==='gyneco' && protAff), GY.cat, 'gyneco')) GY = null;
   if(GY){ ctx.gyno = GY.titre; GY.pts.forEach(c => add(String(c).split(' ')[0],'gyno',1,'Référentiel SPN — '+GY.titre+' (points de base)')); }
   // 4 bis. Rhumatologie (Référentiel Sorbonne) : protocole affiché, sinon motif reconnu ; tableau évoqué par l'examen
-  const RH = typeof _convRhumato==='function' ? _convRhumato(mt, specAff==='rhumato' ? protAff : '') : null;
+  let RH = typeof _convRhumato==='function' ? _convRhumato(mt, specAff==='rhumato' ? protAff : '') : null;
+  if(RH && !garder('rhumato', RH.titre, !(specAff==='rhumato' && protAff), RH.cat, 'rhumato')) RH = null;
   if(RH){ ctx.rhumato = RH.titre; RH.pts.forEach(p => { const o = _rhPt(p.raw).oms; if(o) add(o,'gyno',p.w,'Référentiel SPN — '+RH.titre+' ('+p.why+')'); }); }
   // 4 ter. Psychiatrie (Référentiel Sorbonne) : protocole affiché, sinon motif reconnu
-  const PS = typeof _convPsy==='function' ? _convPsy(mt, specAff==='psy' ? protAff : '') : null;
+  let PS = typeof _convPsy==='function' ? _convPsy(mt, specAff==='psy' ? protAff : '') : null;
+  if(PS && !garder('psy', PS.titre, !(specAff==='psy' && protAff), PS.cat, 'psy')) PS = null;
   if(PS){ ctx.psy = PS.titre; PS.pts.forEach(p => { const o = _rhPt(p.raw).oms; if(o) add(o,'gyno',p.w,'Référentiel SPN — '+PS.titre+' ('+p.why+')'); }); }
   // 4 quater. Pneumologie (Référentiel Sorbonne) : protocole affiché, sinon motif reconnu ; tableau évoqué par l'examen
-  const PN = typeof _convPneumo==='function' ? _convPneumo(mt, specAff==='pneumo' ? protAff : '') : null;
+  let PN = typeof _convPneumo==='function' ? _convPneumo(mt, specAff==='pneumo' ? protAff : '') : null;
+  if(PN && !garder('pneumo', PN.titre, !(specAff==='pneumo' && protAff), PN.cat, 'pneumo')) PN = null;
   if(PN){ ctx.pneumo = PN.titre; PN.pts.forEach(p => { const o = _rhPt(p.raw).oms; if(o) add(o,'gyno',p.w,'Référentiel SPN — '+PN.titre+' ('+p.why+')'); }); }
   document.querySelectorAll('#gyno-result .gyno-chk:checked').forEach(cb => add(cb.dataset.code,'gyno',1,'Référentiel SPN — coché',cb.dataset.nom));
   // 5. Mode Urgence : recettes reconnues dans le motif
   if(mt.length) URGENCE_RECIPES.forEach(r => {
-    if(r.keywords.some(k=>MTCNorm.phraseIn(mt,k)) && !(r.exclude||[]).some(k=>MTCNorm.phraseIn(mt,k)))
+    if(r.keywords.some(k=>MTCNorm.phraseIn(mt,k)) && !(r.exclude||[]).some(k=>MTCNorm.phraseIn(mt,k)) && garder('urg', r.nom, true))
       r.acu.forEach(p=>add(p.c,'urg',.8,r.nom,p.n)); });
   // 6. Péri-opératoire : indication reconnue dans le motif
-  const PI = mt.length ? PERIOP_INDICATIONS.find(I=>I.keywords.some(k=>MTCNorm.phraseIn(mt,k))) : null;
+  let PI = mt.length ? PERIOP_INDICATIONS.find(I=>I.keywords.some(k=>MTCNorm.phraseIn(mt,k))) : null;
+  if(PI && !garder('periop', PI.label, true)) PI = null;
   if(PI){ ctx.periop = PI.label; _periopPts(PI.acu, PI.ea).forEach(c=>add(c,'periop',.8,PI.label)); }
   // 7. Points Shu et Mu sensibles à la palpation
   const pv = id => ((document.getElementById(id)||{}).value||'').split(',').map(x=>x.trim()).filter(Boolean);
@@ -15329,21 +15357,34 @@ function renderConvergence(){
   const el = document.getElementById('conv-result'); if(!el) return;
   const nSel = document.getElementById('conv-n'); if(nSel) nSel.value = String(_conv.n);
   const C = computeConvergence(), deja = _convDejaRetenus(), N = _conv.n;
-  const badge = k => `<span style="font-size:9.5px;font-weight:700;color:#fff;background:${CONV_SOURCES[k].col};border-radius:8px;padding:1px 6px;margin:1px 3px 1px 0;display:inline-block;white-space:nowrap">${CONV_SOURCES[k].lbl}</span>`;
+  // Sources du motif entièrement « reconnues » (aucun protocole choisi) : badge marqué °
+  const P = (C.ctx.prot||[]).filter(x => !x.ecarte);
+  const autoKey = k => { const L = P.filter(x => (k==='gyno' ? ['gyno','rhumato','psy','pneumo'].includes(x.key) : x.key===k)); return L.length && L.every(x => x.auto) && !(k==='gyno' && document.querySelector('#gyno-result .gyno-chk:checked')); };
+  const badge = k => `<span style="font-size:9.5px;font-weight:700;color:#fff;background:${CONV_SOURCES[k].col};border-radius:8px;padding:1px 6px;margin:1px 3px 1px 0;display:inline-block;white-space:nowrap">${CONV_SOURCES[k].lbl}${autoKey(k)?' °':''}</span>`;
   const ctx = [];
   if(C.ctx.synds.length) ctx.push((C.ctx.syndChoisi?'Syndrome retenu : ':'Syndromes suggérés : ')+C.ctx.synds.join(' + '));
   if(C.ctx.mer.length) ctx.push('Méridiens : '+C.ctx.mer.join(' + '));
-  if(C.ctx.ebm) ctx.push('EBM : '+C.ctx.ebm);
-  if(C.ctx.gyno) ctx.push('Sorbonne Paris Nord : '+C.ctx.gyno);
-  if(C.ctx.rhumato) ctx.push('Sorbonne Paris Nord (rhumatologie) : '+C.ctx.rhumato);
-  if(C.ctx.psy) ctx.push('Sorbonne Paris Nord (psychiatrie) : '+C.ctx.psy);
-  if(C.ctx.pneumo) ctx.push('Sorbonne Paris Nord (pneumologie) : '+C.ctx.pneumo);
+
   if(C.ctx.mtm && C.ctx.mtm.probable && C.ctx.mtm.mtm.length) ctx.push('MTM : '+C.ctx.mtm.mtm.map(x=>x.nom.replace(/\s*\(.*\)$/,'')).join(', ')+' (atteinte tendino-musculaire probable)');
+  // Bloc « motif » : ce qui a été choisi, ce qui a été reconnu dans le texte (avec Voir / Écarter), ce qui est écarté
+  const esc = x => String(x).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
+  const q = x => esc(x).replace(/'/g,"\\'");
+  const protHTML = (C.ctx.prot||[]).map((p,i) => {
+    const cle = p.key+'|'+p.titre, lbl = '<strong>'+CONV_PROT_LBL[p.key]+'</strong> : '+esc(p.titre);
+    if(p.ecarte) return '<div style="color:var(--slate);text-decoration:line-through;opacity:.8">'+lbl+' <button class="btn" style="font-size:10px;padding:0 6px;text-decoration:none" onclick="convRetablir(\''+q(cle)+'\')">Rétablir</button></div>';
+    const voir = (p.key==='ebm' || p.spec) ? '<button class="btn" style="font-size:10px;padding:0 6px" onclick="convVoirProtocole('+i+')">Voir le protocole</button> ' : '';
+    return '<div>'+lbl+' — '+(p.auto ? '<em style="color:#B9770E">reconnu dans le texte du motif</em> '+voir+'<button class="btn" style="font-size:10px;padding:0 6px" onclick="convEcarter(\''+q(cle)+'\')">Écarter</button>' : '<em style="color:#1E8449">choisi dans « Motif clinique »</em>')+'</div>';
+  }).join('');
+  const motifHTML = C.ctx.sansMotif ? '' : '<div style="font-size:11px;background:#F4F6F7;border:1px solid var(--border);border-radius:8px;padding:6px 10px;margin-bottom:6px;line-height:1.7">'
+    + '<div>Motif de la séance : <strong>« '+esc(C.ctx.motifTxt||'')+' »</strong></div>'
+    + (protHTML || '<div style="color:var(--slate)">Aucun protocole EBM, Référentiel Sorbonne, Mode Urgence ou péri-opératoire reconnu dans ce texte : choisissez-en un dans « Motif clinique » ci-dessous si besoin.</div>')
+    + ((C.ctx.prot||[]).some(p=>p.auto && !p.ecarte) ? '<div style="color:var(--slate);font-style:italic">° badge d\'un protocole reconnu automatiquement : vérifiez-le, écartez-le, ou choisissez le bon dans « Motif clinique » (EBM, Référentiel Sorbonne, Motif libre IA).</div>' : '')
+    + '</div>';
   if(C.ctx.periop) ctx.push('Péri-op. : '+C.ctx.periop);
   if(!C.body.length){
     el.innerHTML = '<p style="font-size:12px;color:var(--slate);font-style:italic">'+(C.ctx.sansMotif
       ? 'En attente du motif de consultation (bandeau des 10+1 Questions) : les points sont proposés à partir du motif, des signes recueillis et de l\'examen.'
-      : 'Aucune proposition encore : complétez les 10+1 Questions et l\'examen (ou choisissez un syndrome), puis actualisez.')+'</p>';
+      : 'Aucune proposition encore : complétez les 10+1 Questions et l\'examen (ou choisissez un syndrome), puis actualisez.')+'</p>' + motifHTML;
     return;
   }
   const conv = C.body.filter(p=>p.n>=2).length;
@@ -15359,7 +15400,7 @@ function renderConvergence(){
   };
   const socle = C.body.slice(0, N), reste = C.body.slice(N);
   const aSocle = socle.filter(p=>!deja.has(p.canon)).length;
-  el.innerHTML = `
+  el.innerHTML = motifHTML + `
     <div style="font-size:11px;color:var(--slate);margin-bottom:6px">${ctx.join(' · ')}</div>
     <div style="font-size:12px;margin-bottom:6px"><strong>${C.body.length}</strong> points proposés par l'ensemble des sources, dont <strong>${conv}</strong> convergents (≥ 2 sources). Socle proposé : les <strong>${Math.min(N,C.body.length)}</strong> premiers.</div>
     <table style="width:100%;border-collapse:collapse;font-size:12px">
