@@ -753,8 +753,11 @@
   </div>
   <div class="result-box">
     <h2>Votre code personnel</h2>
-    <p>Ce code contient vos 60 réponses. Copiez-le et collez-le dans votre réponse au mail de votre praticien(ne), ou appuyez sur "Envoyer par mail" puis choisissez son adresse.</p>
+    <p>Ce code contient vos 60 réponses. Copiez-le et collez-le dans votre réponse au mail de votre praticien(ne), ou appuyez sur "Envoyer par mail".</p>
     <div class="code-display" id="code-display">—</div>
+    <label for="nom-patient" style="display:block;margin:12px 0 4px;font-weight:600">Vos nom et prénom (pour que votre praticien(ne) reconnaisse votre message)</label>
+    <input id="nom-patient" type="text" autocomplete="name" style="width:100%;padding:10px;border:1px solid #ccc;border-radius:8px;font-size:16px;box-sizing:border-box">
+    <p id="dest-info" style="margin:10px 0 0;font-size:14px"></p>
     <button class="btn-copy" id="btn-copy" onclick="copierCode()">📋 Copier le code</button>
     <button class="btn-mail" onclick="envoyerMail()">📧 Envoyer par mail</button>
     <div class="instruc">
@@ -813,6 +816,7 @@ function terminer() {
   document.getElementById('ecran-result').style.display = 'block';
   window.scrollTo(0, 0);
   window._ccmqCode = code;
+  afficherDestinataire();
 }
 
 function copierCode() {
@@ -834,18 +838,38 @@ function copierCode() {
   });
 }
 
+/* Adresse de retour (19/10/2026) : le lien envoyé par le praticien contient son adresse (?a=). Elle est vérifiée,
+   affichée au patient et utilisée comme destinataire du bouton « Envoyer par mail » ; sans elle, le patient choisit
+   l'adresse lui-même (comportement d'origine). Aucune donnée du patient ne passe par le lien. */
+const ADRESSE_RETOUR = (function(){
+  try{ const a = (new URLSearchParams(location.search).get('a') || '').trim();
+    return /^[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}$/.test(a) ? a : ''; }catch(e){ return ''; }
+})();
+function afficherDestinataire(){
+  const el = document.getElementById('dest-info'); if(!el) return;
+  el.textContent = '';
+  if(ADRESSE_RETOUR){
+    el.appendChild(document.createTextNode('Le bouton « Envoyer par mail » est déjà adressé à votre praticien(ne) : '));
+    const b = document.createElement('b'); b.textContent = ADRESSE_RETOUR; el.appendChild(b);
+    el.appendChild(document.createTextNode('. Vérifiez qu\'il s\'agit bien de son adresse, puis envoyez le message.'));
+  } else {
+    el.textContent = '⚠️ Le bouton « Envoyer par mail » ouvre un message sans destinataire : saisissez l\'adresse de votre praticien(ne), ou répondez plutôt au mail que vous avez reçu en y collant le code.';
+    el.style.color = '#92400E';
+  }
+}
 function envoyerMail() {
   const code = window._ccmqCode || '';
+  const nom = ((document.getElementById('nom-patient') || {}).value || '').trim();
   const sujet = encodeURIComponent('Mon questionnaire acupuncture - Code CCMQ');
   const corps = encodeURIComponent(
     'Bonjour,\n\n' +
     'Veuillez trouver ci-dessous mon code questionnaire :\n\n' +
     code + '\n\n' +
-    'Cordialement'
+    'Cordialement' + (nom ? '\n' + nom : '')
   );
   // Pas de destinataire imposé : l'appli est utilisée par plusieurs praticiens ; le patient choisit
   // l'adresse de son praticien (ou répond directement au mail qu'il a reçu).
-  window.location.href = 'mailto:?subject=' + sujet + '&body=' + corps;
+  window.location.href = 'mailto:' + (ADRESSE_RETOUR ? encodeURIComponent(ADRESSE_RETOUR).replace('%40', '@') : '') + '?subject=' + sujet + '&body=' + corps;
 }
 </script>
 </body>
