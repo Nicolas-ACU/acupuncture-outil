@@ -613,6 +613,10 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
         <div style="font-size:11px;color:var(--slate);font-style:italic;margin-bottom:8px">Cette liste s'enrichit à chaque amélioration de l'application — vous pouvez vérifier ici ce qui a changé depuis votre dernière utilisation. Remise à zéro le 1er octobre 2026, au lancement de la bêta.</div>
         <div id="guide-changelog" style="font-size:12px;color:var(--ink);line-height:1.8">
           <div style="font-size:12px;line-height:1.65;margin-bottom:10px">
+            <div style="font-weight:700;color:var(--jade);margin-bottom:4px">Convergence : protocole écarté (octobre 2026)</div>
+            <div>• Écarter une recette du Mode Urgence reconnue dans le motif retire maintenant aussi ses points d'oreille (seuls les points du corps disparaissaient). Un point également proposé par une autre source reste affiché pour cette source ; « Rétablir » remet tout.</div>
+          </div>
+          <div style="font-size:12px;line-height:1.65;margin-bottom:10px">
             <div style="font-weight:700;color:var(--jade);margin-bottom:4px">Questionnaire CCMQ : adresse de retour (octobre 2026)</div>
             <div>• Nouveau bouton <strong>« ✉️ Adresse de retour »</strong> (fiche patient) : chaque praticien indique l'adresse à laquelle ses patients renvoient leur code. Elle est ajoutée au lien du questionnaire : le bouton « Envoyer par mail » de la page patient est alors déjà adressé au bon praticien (avant, il ouvrait un message sans destinataire). • La page patient affiche cette adresse pour vérification et demande les nom et prénom, ajoutés au message. Aucune donnée du patient ne passe par le lien.</div>
           </div>
@@ -15696,7 +15700,8 @@ function computeConvergence(){
   synds.forEach(sn => { const k = SYND_TO_AURI_KEY[sn] || (typeof normalizeSynd==='function' ? normalizeSynd(sn) : sn); (AURI_SYND_MAP[k]||[]).forEach(n=>addA(n,'Syndrome')); });
   Object.entries(AURI_MOTIF_MAP).forEach(([kw,l]) => { if(mt.length && MTCNorm.phraseIn(mt,kw)) l.forEach(n=>addA(n,'Motif')); });
   pv('palp-oreille').forEach(n => addA(n,'Palpation'));
-  if(mt.length) URGENCE_RECIPES.forEach(r => { if(r.keywords.some(k=>MTCNorm.phraseIn(mt,k))) (r.auri||[]).forEach(n=>addA(n,'Mode Urgence')); });
+  // Recette écartée par le praticien : ses points d'oreille sont retirés aussi (24/10/2026 ; avant, seuls les points du corps l'étaient).
+  if(mt.length) URGENCE_RECIPES.forEach(r => { if(r.keywords.some(k=>MTCNorm.phraseIn(mt,k)) && !(r.exclude||[]).some(k=>MTCNorm.phraseIn(mt,k)) && !ecartes.has('urg|'+r.nom)) (r.auri||[]).forEach(n=>addA(n,'Mode Urgence')); });
   if(PI) PI.auriPts.forEach(n=>addA(n,'Péri-op.'));
   const auri = [...au.values()].map(e=>({nom:e.nom, src:[...e.src], n:e.src.size}))
     .sort((a,b) => (b.n-a.n) || ((b.src.includes('Palpation')?1:0)-(a.src.includes('Palpation')?1:0)) || a.nom.localeCompare(b.nom));
