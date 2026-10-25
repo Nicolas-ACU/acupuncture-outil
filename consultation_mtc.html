@@ -613,6 +613,10 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
         <div style="font-size:11px;color:var(--slate);font-style:italic;margin-bottom:8px">Cette liste s'enrichit à chaque amélioration de l'application — vous pouvez vérifier ici ce qui a changé depuis votre dernière utilisation. Remise à zéro le 1er octobre 2026, au lancement de la bêta.</div>
         <div id="guide-changelog" style="font-size:12px;color:var(--ink);line-height:1.8">
           <div style="font-size:12px;line-height:1.65;margin-bottom:10px">
+            <div style="font-weight:700;color:var(--jade);margin-bottom:4px">Deux syndromes retenus (octobre 2026)</div>
+            <div>• Quand un syndrome principal est choisi et qu'un 2ème syndrome (champ libre) est ajouté, la Synthèse reprend maintenant les deux (« Vide de Yang des Reins + Vide de Qi de Rate ») au lieu du seul 2ème. La convergence des points et la page « Points réalisés » tiennent compte aussi des deux. Pour une séance déjà remplie, videz le champ « Syndromes retenus » puis transférez de nouveau, ou corrigez-le à la main.</div>
+          </div>
+          <div style="font-size:12px;line-height:1.65;margin-bottom:10px">
             <div style="font-weight:700;color:var(--jade);margin-bottom:4px">Convergence : protocole écarté (octobre 2026)</div>
             <div>• Écarter une recette du Mode Urgence reconnue dans le motif retire maintenant aussi ses points d'oreille (seuls les points du corps disparaissaient). Un point également proposé par une autre source reste affiché pour cette source ; « Rétablir » remet tout.</div>
           </div>
@@ -5892,7 +5896,7 @@ function restoreLanguePhoto(b64){
 // ══════ ONGLET POINTS RÉALISÉS ══════
 function updateRealisesPage(){
   // Syndrome
-  const syn = getSyndrome()||'—';
+  const syn = _syndromesRetenus().join(' + ') || getSyndrome() || '—';
   const sv = document.getElementById('realises-synd-val');
   if(sv) sv.textContent = syn;
   // Points cochés (toutes sections)
@@ -15618,13 +15622,15 @@ function computeConvergence(){
   if(!mt.length){ _conv = {n:_conv.n, body:[], auri:[], ctx:{synds:[], mer:[], sansMotif:true}}; return _conv; }
   // 1. Syndrome : celui retenu par le praticien, sinon meilleure Racine + meilleure Branche suggérées
   let synds = [];
-  const choisi = (typeof getSyndrome==='function' ? getSyndrome() : '') || '';
-  const cle = choisi && typeof findPDBKey==='function' ? (findPDBKey(choisi) || choisi) : '';
-  if(cle && PDB[cle]) synds = [cle];
+  // Syndrome principal ET 2ème syndrome retenus (avant : le champ libre seul) ; à défaut, motif gynéco/EBM via getSyndrome
+  const retenus = _syndromesRetenus();
+  const choisis = (retenus.length ? retenus : [(typeof getSyndrome==='function' ? getSyndrome() : '') || ''].filter(Boolean))
+    .map(x => (typeof findPDBKey==='function' ? (findPDBKey(x) || x) : x)).filter(k => PDB[k]);
+  if(choisis.length) synds = choisis;
   else {
     synds = _syndSuggeres().filter(n=>PDB[n]);
   }
-  ctx.synds = synds; ctx.syndChoisi = !!(cle && PDB[cle]);
+  ctx.synds = synds; ctx.syndChoisi = choisis.length > 0;
   synds.forEach(sn => { const d = PDB[sn];
     (d.pp||[]).forEach(p => add(p.c, 'synd', 1, sn+' (principal)', p.n));
     (d.ps||[]).forEach(p => add(p.c, 'synd', .6, sn+' (secondaire)', p.n)); });
@@ -15717,8 +15723,16 @@ function _syndSuggeres(){
 }
 // Champ « Syndromes retenus » de la Synthèse : le syndrome choisi par le praticien, sinon celui suggéré par
 // l'analyse (signalé comme tel). Plus le motif du référentiel ou de l'EBM, qui n'est pas un syndrome.
+// Syndromes retenus par le praticien (25/10/2026) : le syndrome principal (liste) PUIS le syndrome libre ou 2ème
+// syndrome. Avant, le champ libre l'emportait seul et le syndrome principal disparaissait de la Synthèse.
+function _syndromesRetenus(){
+  const sel = ((document.getElementById('synd-sel')||{}).value||'').trim();
+  const libre = ((document.getElementById('synd-libre')||{}).value||'').trim();
+  const L = [sel, libre].filter(Boolean);
+  return L.filter((x, i) => L.findIndex(y => normSyndKey(y) === normSyndKey(x)) === i);
+}
 function _syndromePourSynthese(){
-  const choisi = ((document.getElementById('synd-libre')||{}).value||'').trim() || (document.getElementById('synd-sel')||{}).value || '';
+  const choisi = _syndromesRetenus().join(' + ');
   if(choisi) return choisi;
   const sug = _syndSuggeres();
   return sug.length ? sug.join(' + ')+' (suggéré par l\'analyse)' : '';
@@ -15740,7 +15754,7 @@ function renderConvergence(){
   const autoKey = k => { const L = P.filter(x => (k==='gyno' ? ['gyno','rhumato','psy','pneumo','onco'].includes(x.key) : x.key===k)); return L.length && L.every(x => x.auto) && !(k==='gyno' && document.querySelector('#gyno-result .gyno-chk:checked')); };
   const badge = k => `<span style="font-size:9.5px;font-weight:700;color:#fff;background:${CONV_SOURCES[k].col};border-radius:8px;padding:1px 6px;margin:1px 3px 1px 0;display:inline-block;white-space:nowrap">${CONV_SOURCES[k].lbl}${autoKey(k)?' °':''}</span>`;
   const ctx = [];
-  if(C.ctx.synds.length) ctx.push((C.ctx.syndChoisi?'Syndrome retenu : ':'Syndromes suggérés : ')+C.ctx.synds.join(' + '));
+  if(C.ctx.synds.length) ctx.push((C.ctx.syndChoisi?(C.ctx.synds.length>1?'Syndromes retenus : ':'Syndrome retenu : '):'Syndromes suggérés : ')+C.ctx.synds.join(' + '));
   if(C.ctx.mer.length) ctx.push('Méridiens : '+C.ctx.mer.join(' + '));
 
   if(C.ctx.mtm && C.ctx.mtm.probable && C.ctx.mtm.mtm.length) ctx.push('MTM : '+C.ctx.mtm.mtm.map(x=>x.nom.replace(/\s*\(.*\)$/,'')).join(', ')+' (atteinte tendino-musculaire probable)');
