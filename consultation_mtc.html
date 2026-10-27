@@ -613,6 +613,10 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
         <div style="font-size:11px;color:var(--slate);font-style:italic;margin-bottom:8px">Cette liste s'enrichit à chaque amélioration de l'application — vous pouvez vérifier ici ce qui a changé depuis votre dernière utilisation. Remise à zéro le 1er octobre 2026, au lancement de la bêta.</div>
         <div id="guide-changelog" style="font-size:12px;color:var(--ink);line-height:1.8">
           <div style="font-size:12px;line-height:1.65;margin-bottom:10px">
+            <div style="font-weight:700;color:var(--jade);margin-bottom:4px">Synthèse MTC automatique (octobre 2026)</div>
+            <div>• Le <strong>compte-rendu / synthèse clinique</strong> se rédige maintenant sans IA à partir du dossier : motif, signes recueillis (10+1 questions, langue, pouls, inspection), syndromes retenus avec les arguments relevés par l'analyse, principe de traitement et points choisis. Un compte-rendu vide est rempli d'office lors du transfert vers la Synthèse ; sinon, bouton <strong>« 📝 Synthèse MTC automatique »</strong> (ajout en tête, texte existant conservé, mise à jour sans doublon). • Le courrier au médecin adresseur cite le bilan MTC avec ses arguments cliniques.</div>
+          </div>
+          <div style="font-size:12px;line-height:1.65;margin-bottom:10px">
             <div style="font-weight:700;color:var(--jade);margin-bottom:4px">Deux syndromes retenus (octobre 2026)</div>
             <div>• Quand un syndrome principal est choisi et qu'un 2ème syndrome (champ libre) est ajouté, la Synthèse reprend maintenant les deux (« Vide de Yang des Reins + Vide de Qi de Rate ») au lieu du seul 2ème. La convergence des points et la page « Points réalisés » tiennent compte aussi des deux. Pour une séance déjà remplie, videz le champ « Syndromes retenus » puis transférez de nouveau, ou corrigez-le à la main.</div>
           </div>
@@ -2592,7 +2596,7 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
           <div class="f"><label>Durée</label><input id="s-duree" oninput="markDirty()"></div>
           <div class="f" style="grid-column:1/-1"><label>Réactions pendant la séance</label><textarea id="s-react" rows="2" oninput="markDirty()"></textarea></div>
           <div class="f" style="grid-column:1/-1"><label>Conseils donnés</label><textarea id="s-conseils" rows="2" oninput="markDirty()"></textarea></div>
-          <div class="f" style="grid-column:1/-1"><label>Compte-rendu / Synthèse clinique</label><textarea id="s-cr" rows="5" oninput="markDirty()"></textarea></div>
+          <div class="f" style="grid-column:1/-1"><label style="display:flex;justify-content:space-between;align-items:center;gap:8px">Compte-rendu / Synthèse clinique <button type="button" class="btn" style="font-size:10px;padding:1px 8px" onclick="insererSyntheseMTC()" title="Résumé rédigé automatiquement : motif, signes recueillis, syndromes retenus et leurs arguments, principe de traitement, points">📝 Synthèse MTC automatique</button></label><textarea id="s-cr" rows="5" oninput="markDirty()"></textarea></div>
           <div class="f"><label>Prochain RDV</label><input id="s-rdv" type="date" oninput="markDirty()"></div>
         </div>
       </div>
@@ -5914,6 +5918,91 @@ function updateRealisesPage(){
   if(notesEl) notesEl.textContent = nl||'—';
 }
 
+// ══════ SYNTHÈSE MTC AUTOMATIQUE (27/10/2026) ══════
+// Résumé à minima, sans IA, qui rend visible le raisonnement MTC pour le médecin adresseur : motif, signes recueillis
+// (10+1 questions, langue, pouls, inspection), syndromes retenus avec les arguments relevés par l'analyse, principe de
+// traitement, points choisis. Rempli d'office dans un compte-rendu vide ; sinon, bouton « 📝 Synthèse MTC automatique ».
+const _SYN_MTC_TITRE = 'Synthèse MTC (rédigée automatiquement, à relire)';
+const _SYN_Q_LBL = {q1:'froid et chaleur', q2:'transpiration', q3:'tête et corps', q4:'selles et urines', q5:'appétit et goût', q6:'poitrine et abdomen',
+  q7:'ouïe et vision', q8:'soif et bouche', q9:'sommeil et énergie', q10:'émotions', q11:'gynécologie / urologie'};
+const _synMin = t => String(t||'').trim().replace(/\s+—\s+[A-Z][a-zé]+$/,'').replace(/^./, c => c.toLowerCase());
+function _synVal(id){ return ((document.getElementById(id)||{}).value||'').split(',').map(x=>x.trim()).filter(Boolean); }
+function _synSignes(){
+  const out = [];
+  const q = Object.keys(_SYN_Q_LBL).map(id => {
+    const tr = document.getElementById('tr-'+id);
+    const tags = tr ? [...tr.querySelectorAll('.tg.on')].map(t => _synMin(t.textContent)) : [];
+    const libre = ((document.getElementById('rep-'+id)||{}).value||'').trim();
+    const v = tags.concat(libre ? [libre.replace(/[.\s]+$/,'')] : []);
+    return v.length ? _SYN_Q_LBL[id] + ' : ' + v.join(', ') : '';
+  }).filter(Boolean);
+  if(q.length) out.push('À l\'interrogatoire (10+1 questions) — ' + q.join(' ; ') + '.');
+  const langue = [..._synVal('l-couleur').map(_synMin), ..._synVal('l-forme').map(_synMin), ...(_synVal('l-enduit-couleur').length ? ['enduit ' + _synVal('l-enduit-couleur').map(_synMin).join(', ')] : []), ..._synVal('l-humidite').map(_synMin)];
+  // Pouls : positions regroupées par qualité (« lent, profond : Cun, Guan ; mou : Chi »)
+  const POS = [['cun-g','Cun G'],['cun-d','Cun D'],['guan-g','Guan G'],['guan-d','Guan D'],['chi-g','Chi G'],['chi-d','Chi D']];
+  const groupes = new Map();
+  POS.forEach(([id, lb]) => { const v = _synVal(id).map(x => _synMin(x).replace(/\s+—\s+.*$/,'')); if(v.length){ const k = v.join(', '); groupes.set(k, (groupes.get(k)||[]).concat(lb)); } });
+  const pouls = [...groupes.entries()].map(([k, l]) => k + (groupes.size > 1 || l.length < 6 ? ' (' + l.join(', ') + ')' : ''));
+  const insp = [..._synVal('e-shen').map(x => 'Shen : ' + _synMin(x)), ..._synVal('e-teint').map(x => 'teint ' + _synMin(x))];
+  const ex = [langue.length ? 'langue ' + langue.join(', ') : '', pouls.length ? 'pouls ' + pouls.join(' ; ') : '', insp.join(', ')].filter(Boolean);
+  if(ex.length) out.push('À l\'examen — ' + ex.join(' ; ') + '.');
+  return out;
+}
+// Arguments relevés par l'analyse pour un syndrome (« Langue couleur: Pâle » → « langue pâle »)
+function _synArguments(nom){
+  const L = window._lastSynd || [], k = normSyndKey(nom);
+  const e = L.find(x => normSyndKey(x.nom) === k); if(!e || !e.det) return [];
+  return e.det.filter(x => !/^⚠️/.test(x) && !/^Motif\s*:/i.test(x)).map(x => {
+    const m = String(x).match(/^([^:]+):\s*(.+)$/); if(!m) return _synMin(x);
+    const lab = m[1].trim(), val = _synMin(m[2].replace(/\s+—\s+.*$/,''));
+    if(/^Langue couleur/i.test(lab)) return 'langue ' + val;
+    if(/^Enduit/i.test(lab)) return 'enduit ' + val;
+    if(/^Langue/i.test(lab)) return 'langue ' + val;
+    if(/^P-?(cun|guan|chi)/i.test(lab)) return 'pouls ' + val + ' (' + lab.replace(/^P-?/i,'').replace(/G$/,' gauche').replace(/D$/,' droit').replace(/^./,c=>c.toUpperCase()) + ')';
+    if(/^Pouls/i.test(lab)) return 'pouls ' + val;
+    if(/^Q\d+/i.test(lab)) return val;
+    return _synMin(lab) + ' ' + val;
+  }).filter((x, i, a) => x && a.indexOf(x) === i).slice(0, 6);
+}
+// Syndromes cités : ceux de la Synthèse (éventuellement corrigés par le praticien), sinon ceux retenus page Points.
+function _synListeSyndromes(){
+  const t = ((document.getElementById('s-syndromes')||{}).value||'').replace(/\s*\(suggéré par l'analyse\)/g,'').trim();
+  if(t) return t.split(/\s*(?:\+|\bet\b|;|\n)\s*/).map(x => x.trim()).filter(Boolean);
+  return (typeof _syndromesRetenus === 'function' ? _syndromesRetenus() : []);
+}
+/** Phrase du diagnostic avec ses arguments (Synthèse et courrier au médecin adresseur). */
+function syntheseDiagPhrase(){
+  // Analyse recalculée sur le dossier affiché : jamais d'arguments restés d'un autre patient ou d'une autre séance
+  window._lastSynd = [];
+  if(typeof suggestSyndromes === 'function'){ try{ suggestSyndromes(); }catch(e){} }
+  const L = _synListeSyndromes(); if(!L.length) return '';
+  const parts = L.map(n => { const a = _synArguments(n); return n + (a.length ? ' (' + a.join(', ') + ')' : ''); });
+  return parts.length > 1 ? parts.slice(0, -1).join(', ') + ' et ' + parts[parts.length-1] : parts[0];
+}
+function syntheseMTCTexte(){
+  const g = id => ((document.getElementById(id)||{}).value||'').trim();
+  const motif = g('s-motif') || g('dix-motif-input');
+  const L = [_SYN_MTC_TITRE];
+  if(motif) L.push('Motif : ' + motif.replace(/[.\s]+$/,'') + '.');
+  L.push(..._synSignes());
+  const diag = syntheseDiagPhrase();
+  if(diag) L.push('Diagnostic selon la médecine traditionnelle chinoise : ' + diag + '.');
+  if(g('s-principe')) L.push('Principe de traitement : ' + g('s-principe').replace(/[.\s]+$/,'') + '.');
+  const pts = typeof _courrierPoints === 'function' ? _courrierPoints(g('s-points')) : '';
+  if(pts) L.push('Points choisis en conséquence : ' + pts.replace(/[.\s]+$/,'') + '.');
+  return L.length > 1 && (diag || g('s-principe')) ? L.join('\n') : '';
+}
+// Remplace un bloc automatique déjà présent ; sinon le place en tête du compte-rendu (le texte existant est conservé).
+function insererSyntheseMTC(){
+  const el = document.getElementById('s-cr'); if(!el) return;
+  const t = syntheseMTCTexte();
+  if(!t){ showToast('Renseignez au moins les syndromes retenus ou le principe de traitement'); return; }
+  const v = el.value, i = v.indexOf(_SYN_MTC_TITRE);
+  if(i >= 0){ const fin = v.indexOf('\n\n', i); el.value = v.slice(0, i) + t + (fin >= 0 ? v.slice(fin) : ''); }
+  else el.value = v.trim() ? t + '\n\n' + v : t;
+  markDirty(); showToast('📝 Synthèse MTC ' + (i >= 0 ? 'mise à jour' : 'ajoutée') + ' dans le compte-rendu');
+}
+
 function autoFillSynthese(){
   const sPoints    = document.getElementById('s-points');
   const sPrincipe  = document.getElementById('s-principe');
@@ -5949,6 +6038,14 @@ function autoFillSynthese(){
   // Points cochés (même règle que syncPts : une saisie manuelle n'est pas écrasée, une alerte le signale)
   syncPts();
 }
+// Compte-rendu vide : la synthèse MTC automatique y est placée d'office (27/10/2026) ; jamais d'écrasement.
+const _autoFillSyntheseSansCR = autoFillSynthese;
+autoFillSynthese = function(){
+  const r = _autoFillSyntheseSansCR.apply(this, arguments);
+  const cr = document.getElementById('s-cr');
+  if(cr && !cr.value.trim()){ const t = syntheseMTCTexte(); if(t){ cr.value = t; if(typeof markDirty === 'function') markDirty(); } }
+  return r;
+};
 
 function applyRealises(){
   // Pousser les données de l'onglet Réalisés vers la Synthèse
@@ -7009,7 +7106,7 @@ function suggestSyndromes() {
   });
 
   const all=Object.entries(scores).sort((a,b)=>b[1].sc-a[1].sc);
-  window._lastSynd = all.map(([nom,d])=>({nom, sc:d.sc, axe:(d.rule||{}).axe}));  // lu par le panneau Convergence
+  window._lastSynd = all.map(([nom,d])=>({nom, sc:d.sc, axe:(d.rule||{}).axe, det:d.det||[]}));  // lu par le panneau Convergence
   if(!all.length){
     el.style.display='';
     el.innerHTML='<p style="font-size:12px;color:var(--slate);font-style:italic">Données insuffisantes — renseignez la langue, le pouls et les 10 questions.</p>';
@@ -14517,7 +14614,10 @@ function genererCourrier(){
     ? 'Je vous remercie de m\'avoir adressé ' + patientE + ' ' + qui + ', que j\'ai reçu' + (F?'e':'') + ' le ' + dateSc + ' en consultation d\'acupuncture' + (motif ? ' (motif : ' + motif.replace(/[.\s]+$/,'') + ')' : '') + '.'
     : 'Je vous donne des nouvelles de ' + patientE + ' ' + qui + ', que j\'ai revu' + (F?'e':'') + ' le ' + dateSc + ' pour sa ' + num + 'e séance d\'acupuncture' + (motif ? ' (' + motif.replace(/[.\s]+$/,'') + ')' : '') + '.');
   const par = [];
-  if(synd) par.push('Le bilan selon la médecine traditionnelle chinoise retrouve : ' + synd.replace(/[.\s]+$/,'') + '.');
+  // Bilan MTC avec ses arguments cliniques (27/10/2026), pour valoriser le raisonnement auprès du médecin adresseur
+  const diagArg = (typeof syntheseDiagPhrase === 'function') ? syntheseDiagPhrase() : '';
+  if(diagArg) par.push('Le bilan selon la médecine traditionnelle chinoise retrouve : ' + diagArg.replace(/[.\s]+$/,'') + '.');
+  else if(synd) par.push('Le bilan selon la médecine traditionnelle chinoise retrouve : ' + synd.replace(/[.\s]+$/,'') + '.');
   if(g('s-principe')) par.push('Principe de traitement : ' + g('s-principe').replace(/[.\s]+$/,'') + '.');
   const modal = [g('s-tech').replace(/[.\s]+$/,''), g('s-duree') ? 'durée ' + g('s-duree') : ''].filter(Boolean).join(', ');
   if(pts) par.push('Points réalisés' + (modal ? ' (' + modal + ')' : '') + ' : ' + pts.replace(/[.\s]+$/,'') + '.');
