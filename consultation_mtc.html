@@ -613,6 +613,12 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
         <div style="font-size:11px;color:var(--slate);font-style:italic;margin-bottom:8px">Cette liste s'enrichit à chaque amélioration de l'application — vous pouvez vérifier ici ce qui a changé depuis votre dernière utilisation. Remise à zéro le 1er octobre 2026, au lancement de la bêta.</div>
         <div id="guide-changelog" style="font-size:12px;color:var(--ink);line-height:1.8">
           <div style="font-size:12px;line-height:1.65;margin-bottom:10px">
+            <div style="font-weight:700;color:var(--jade);margin-bottom:4px">ORL et maladies auto-immunes (novembre 2026)</div>
+            <div>• Nouvelle spécialité <strong>ORL</strong> (Référentiel Sorbonne) : oreille (acouphènes et surdité, vertiges et Ménière, surdité brusque, otites), œil (conjonctivite, kératite, œil sec, glaucome, orgelet), nez (rhinite aiguë, rhinite allergique, sinusite, épistaxis, anosmie), gorge (angine, laryngite et aphonie), bouche (aphtes, gingivite, douleur dentaire, trismus), avec signes d'alerte. Notations des supports corrigées (45V Yixi, 17V Ge Shu, 17TR dans la surdité brusque…).</div>
+            <div>• Nouvelle spécialité <strong>Maladies auto-immunes</strong> (cours complémentaire SAMP) : terrain inflammatoire chronique en 8 tableaux (stagnation du Qi du Foie, Chaleur toxique, Chaleur-Humidité, vide de Rate, vide de Yin et vide de Yang des Reins, stase, Feu du Cœur) et pathogène résiduel par couche (Qi, Yang Ming, Chaleur-Humidité, Shao Yang, Ying, Sang). Rappel : jamais d'arrêt de corticoïde sans le prescripteur.</div>
+            <div>• Les deux sont reconnues dans le motif (convergence des points), cherchables, et ont leur chapitre dans le Référentiel MTC (ORL : 23 tableaux ; maladies auto-immunes : 10 tableaux). Pas encore d'orientation automatique depuis l'examen pour ces deux spécialités.</div>
+          </div>
+          <div style="font-size:12px;line-height:1.65;margin-bottom:10px">
             <div style="font-weight:700;color:var(--jade);margin-bottom:4px">Psychiatrie : insomnies et addictions (novembre 2026)</div>
             <div>• Nouveau domaine <strong>Insomnies</strong> (Référentiel Sorbonne › Psychiatrie) : 12 tableaux (6 de plénitude, 6 de vide) avec le socle commun 7C, 6MC, Anmian, Yin Tang et la lecture du profil du sommeil. • <strong>Addictions</strong> refondues en 6 motifs : principes et motivation, tabac (méthode du point Bitong, femme enceinte, 2e consultation, auriculothérapie), alcool (signes de sevrage, points spécifiques), sucre, sodas et produits laitiers, jeu et sexualité, cannabis et opiacés. • Dépression : les 7 formes de la synthèse du DU, à côté des tableaux existants. • Rêves : les rêves d'insuffisance par organe et leurs points. • Référentiel MTC › Psyché : 12 nouveaux tableaux (profil du sommeil, hygiène du sommeil, 7 formes de la dépression, classification des rêves, motivation et stades du changement, questionnaires FACE et CAST…).</div>
             <div>• <strong>Orientation de l'examen vers les insomnies</strong> : à partir du profil du sommeil (question 9 : réveils entre 1 h et 3 h, réveils nocturnes, cauchemars, rêves…), des autres questions, de la langue et du pouls, le panneau d'orientation psychiatrique (Examen et Points) propose le tableau d'insomnie correspondant ; le protocole s'ouvre avec ce tableau mis en évidence. • Points corrigés : 6R sur les Qiao (insomnie par le Foie), 23V (insomnie Foie-Rein), 3RP (rêves de vide de Rate).</div>
@@ -719,6 +725,8 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
             <option value="P">Psyché</option>
             <option value="N">Pneumologie</option>
             <option value="O">Oncologie</option>
+            <option value="L">ORL</option>
+            <option value="M">Maladies auto-immunes</option>
             <option value="A">Associations de points</option>
             <option value="S">Synonymes (analyse croisée)</option>
           </select>
@@ -806,6 +814,18 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
         <div class="ct">L'oncologie en MTC — tableaux de référence</div>
         <div class="ref-doc" style="font-size:11px;color:var(--slate);margin-bottom:6px">Cours « Oncologie et médecine traditionnelle chinoise — acupuncture et soins oncologiques de support » (référentiel Sorbonne, compte rendu du congrès 2025, indications AFSOS 2024). Les protocoles par motif sont dans Points › Motif clinique › Référentiel Sorbonne › Oncologie.</div>
         <div class="ref-tables" data-sec="O"></div>
+      </div>
+
+      <div class="card ref-sec" data-sec="L" id="ref-orl">
+        <div class="ct">L'ORL en MTC — tableaux de référence</div>
+        <div class="ref-doc" style="font-size:11px;color:var(--slate);margin-bottom:6px">Cours « L'ORL en MTC » (orifices de la face, oreille, œil, nez et sinus, gorge et voix, bouche et dents — DU Sorbonne Paris Nord, synthèse de novembre 2026). Les protocoles par motif sont dans Points › Motif clinique › Référentiel Sorbonne › ORL.</div>
+        <div class="ref-tables" data-sec="L"></div>
+      </div>
+
+      <div class="card ref-sec" data-sec="M" id="ref-mai">
+        <div class="ct">Maladies auto-immunes et inflammation chronique en MTC — tableaux de référence</div>
+        <div class="ref-doc" style="font-size:11px;color:var(--slate);margin-bottom:6px">Cours complémentaire de la Société d'acupuncture de Midi-Pyrénées (Toulouse 2017, version 2019), synthèse de novembre 2026. L'acupuncture complète le traitement de fond, sans jamais le remplacer. Les protocoles sont dans Points › Motif clinique › Référentiel Sorbonne › Maladies auto-immunes.</div>
+        <div class="ref-tables" data-sec="M"></div>
       </div>
 
       <div class="card ref-sec" data-sec="S" id="ref-syn">
@@ -7725,6 +7745,40 @@ const REF_TABLES = [
  {"id": "onco-greffe", "chap": "O", "titre": "Greffe de moelle osseuse (CSH) — parcours et place de l'acupuncture", "src": "congrès 2025", "cols": ["Phase", "Corps", "Esprit", "Acupuncture"], "rows": [["Avant la greffe", "Conditionnement", "Choc de l'annonce", "Apaiser l'esprit : 7C, 6MC, Yin Tang, 3F"], ["Court terme (< 3 mois)", "Pancytopénie, infections opportunistes, mucites, GVH aiguë, alopécie totale", "Corps étranger ressenti, isolement, vulnérabilité extrême", "Nausées : 6MC, 36E, 12RM ; anxiété, dépression : 7C, 6MC, 20VB ; isolement en chambre stérile ; aidant"], ["Moyen terme (3 mois - 2 ans)", "GVH chronique (peau, foie, muqueuses), fatigue, fragilité immunitaire", "Anxiété, dépression, syndrome post-traumatique, retour à une vie « normale »", "Fatigue, reconstitution hématologique ; GVH : 17V, 11GI, 6RP (+ 6R) ; anxiété de rechute"], ["Long terme (> 2 ans)", "Fatigue chronique, séquelles, cicatrices, GVH chronique, infertilité", "Anxio-dépression chronique, « trou » identitaire", "Fatigue chronique, aide à la procréation médicalement assistée, deuil, aidants"]], "note": "Rechute après greffe : toujours grave (pronostic selon le délai, la sensibilité de l'hémopathie, l'état général) ; « Cure » si possible, « Care » toujours, sans limite dans le temps. Alerte pour l'équipe palliative : rechute sans traitement curatif, GVH réfractaire, refus de soin."},
  {"id": "onco-yangsheng", "chap": "O", "titre": "Prévention et Yang Sheng (entretien de la vie)", "src": "cours oncologie", "cols": ["Pilier", "Contenu"], "rows": [["Alimentation (Shi Liao)", "Équilibre, saisons, 5 saveurs, anti-inflammatoire ; limiter sucres, alcool, viandes transformées"], ["Mouvement (Dao Yin)", "Qi Gong, Tai Chi, marche régulière (30 min par jour), yoga, activité physique adaptée"], ["Sommeil et repos", "Rythme régulier, sieste courte si besoin ; ne pas forcer après 22 h (heure du Triple Réchauffeur)"], ["Régulation émotionnelle", "Méditation, respiration (Qi Gong respiratoire), expression des émotions, soutien psychologique"], ["Soins préventifs", "Acupuncture une fois par mois, automassages (Tui Na), moxa à domicile"], ["36E (Zusanli)", "Point de longévité : moxa 7 cônes par jour pendant les cures (« mille maladies ne viennent pas »)"], ["6RM (Qihai)", "Mer du Qi : moxa pour renforcer l'énergie vitale"], ["14DM (Dazhui)", "Wei Qi : automassage circulaire"], ["23V (Shenshu)", "Jing des Reins : chaleur (bouillotte, moxa)"]]},
  {"id": "onco-congres", "chap": "O", "titre": "Thématiques du congrès 2025 (synthèse)", "src": "congrès 2025", "cols": ["Thème", "Points clés MTC", "Points"], "rows": [["Sexualité et hormonothérapie", "Vide de Yin des Reins + Yang flottant : bouffées, arthralgies, sécheresse, libido, érection", "Hormonothérapie : 6R + 6RP + 4DM + 23V ; érection : 23V + 4DM + 4RM + 3R ; libido : 3C + 9C + 6MC + 4RM"], ["Addictions", "Vide du Shen et du Jing ; tabac → Poumon, alcool → Foie", "Anxiété : 7C + 6MC + 3F + Yin Tang ; détox du Foie : 3F + 18V + 14F ; volonté : 23V + 1R + 36E"], ["Nutrition anti-cancer", "5 catégories : angiogenèse, immunité, microbiome, régénération, ADN", "Yang Sheng : moxa 36E ; digestif : 12RM + 3RP + 36E ; drainer les toxines : 3F + 11GI"], ["Greffe de moelle osseuse", "Corps et esprit marqués en 3 phases (< 3 mois, 3-24 mois, > 2 ans)", "Nausées : 6MC + 36E ; anxiété : 7C + 6MC + Yin Tang ; GVH : 17V + 11GI + 6RP + 6R"]]},
+ // ── ORL (10/11/2026) — chap 'L' ; maladies auto-immunes, cours SAMP (10/11/2026) — chap 'M' ──
+ {"id": "orl-01", "chap": "L", "titre": "Les sept orifices du haut", "src": "cours ORL", "cols": ["Orifice", "Organe prépondérant", "Entité psychique"], "rows": [["2 yeux", "Foie", "Shen et Hun"], ["2 oreilles", "Reins", "Shen et Hun"], ["2 narines", "Poumon", "Po"], ["1 bouche", "Rate", "Po"]]},
+ {"id": "orl-02", "chap": "L", "titre": "Contexte clinique", "src": "cours ORL", "cols": ["Pathologie", "Nature habituelle"], "rows": [["Aiguë", "Souvent plénitude ; souvent maladie externe"], ["Chronique", "Souvent vide ; souvent maladie interne"]]},
+ {"id": "orl-03", "chap": "L", "titre": "L'interrogatoire en ORL", "src": "cours ORL", "cols": ["Question", "Ce qu'elle oriente"], "rows": [["1. Saisonnier ou toute l'année ?", "Saisonnier = énergie perverse externe : été Chaleur (Feu), printemps Vent (Bois), automne Sécheresse (Métal), hiver Froid (Eau). Toute l'année = origine émotionnelle"], ["2. Traumatisme, notamment psychologique ?", "Deuil, événement particulier"], ["3. Horaire de survenue ?", "Matin : vide de Yang, Froid vide · 13-14 h : problème alimentaire · soir : vide de Yin, Chaleur vide. Mêmes horaires répétés : faiblesse d'un méridien ou d'une loge (horloge circadienne, règle midi-minuit)"], ["4. Influence du climat ?", "Six climats pervers : froid, chaleur céleste, feu de la Terre, vent, sécheresse, humidité — aggravation ou amélioration"], ["5. Influence des saveurs ?", "Acide Bois · amer Feu · doux Terre · piquant Métal · salé Eau"], ["6. Influence des émotions ?", "Colère Foie · joie Feu · rumination Terre · tristesse Poumon · peur Rein — penser aux excès autant qu'aux manques (un excès de Feu assèche les liquides, qui deviennent mucosités)"], ["7. Signes associés ?", "Vertiges, acouphènes, palpitations, essoufflement, reflux, soupirs, urines ; compléter par les 10 questions"]]},
+ {"id": "orl-04", "chap": "L", "titre": "Horloge des méridiens (règle midi-minuit)", "src": "cours ORL", "cols": ["Heure", "Méridien", "Heure", "Méridien"], "rows": [["3 h - 5 h", "Poumon", "15 h - 17 h", "Vessie"], ["5 h - 7 h", "Gros Intestin", "17 h - 19 h", "Rein"], ["7 h - 9 h", "Estomac", "19 h - 21 h", "Maître du Cœur"], ["9 h - 11 h", "Rate", "21 h - 23 h", "Triple Réchauffeur"], ["11 h - 13 h", "Cœur", "23 h - 1 h", "Vésicule Biliaire"], ["13 h - 15 h", "Intestin Grêle", "1 h - 3 h", "Foie"]]},
+ {"id": "orl-05", "chap": "L", "titre": "Diagnostic et étiologies", "src": "cours ORL", "cols": ["Étiologie", "Mécanisme"], "rows": [["L'émotion", "Chagrin, tristesse, angoisse morbide → Poumon ; anxiété → Rate"], ["La faiblesse immunitaire", "Pathologie chronique allergique ou infectieuse. Le Zheng Qi est fabriqué et diffusé par le Poumon, la Rate et le Rein ; le Xie Qi l'emporte sur le Zheng Qi. Terrain : Poumon/GI, Rate/Estomac/Rein ; l'axe Jue Yin doit bien fonctionner"], ["L'énergie perverse", "Le Vent, « empereur des cent maladies », embarque Chaleur, Humidité, Froid, Sécheresse et Feu vers la sphère ORL et le Poumon : palper systématiquement les points Vent"]]},
+ {"id": "orl-06", "chap": "L", "titre": "Points principaux de l'ORL", "src": "cours ORL", "cols": ["Point", "Indications"], "rows": [["20 VB Feng Chi", "Point Vent, à piquer vers la pointe du nez ; oreille : vertiges, acouphènes, surdité, oreilles bouchées"], ["12 VB Wan Gu", "Point Vent ; névralgie d'Arnold. 20 VB + 12 VB : névralgie de la face"], ["21 VB, 31 VB Feng Qi", "Points Vent"], ["17 TR Yi Feng", "Trompe d'Eustache, otite séreuse, grand point des acouphènes, vertiges de Ménière, inflammation chronique de type trijumeau"], ["7 TR Hui Zong + 36 VB", "Points Xi du Shao Yang : acouphènes, vertiges de Ménière ; problème ORL dans un moment de rigidité, « charnière Shao Yang »"], ["5 TR, 7 TR", "Oreille : acouphènes, surdité, otalgie, prurit, gonflement"], ["43 VB", "Oreille : acouphènes, surdité, démangeaisons, otalgie"], ["41 V", "Point de l'éternuement (au niveau de 12 V)"], ["12 DM", "Point de l'immunité, en tonification : beaucoup de Wei Qi à la face"], ["16 DM", "Sensation verticale vers l'intérieur du cerveau"], ["10 RP", "Point du prurit (prurit = vide de Sang)"], ["12 V", "Signes thoraciques ou pulmonaires associés"], ["1 GI", "Point sec : gorge, oreilles, assèche le nez"], ["2 GI", "Intolérance au bruit ; point de dispersion du GI"], ["3 GI", "Point Shu : chasse Vent et Froid ; obstruction du nez et de la gorge, éternuements"], ["4 GI", "Gorge, dents, oreilles : chasse le Vent, calme la douleur, épistaxis, congestion nasale"], ["11 GI", "Point Terre : disperse les Mucosités-Chaleur"], ["17 GI", "« Chaudron du ciel » : voix, gorge, aphonie d'origine émotionnelle"], ["18 GI Futu", "Gorge gonflée et douloureuse, voix, nœud dans la gorge, antécédent de strangulation ou d'étouffement"], ["11 P", "Gorge, amygdales : à saigner (point des angines). 11 P + 4 F rééquilibrent Bois et Métal (mucus, muqueuses)"], ["5 MC + 10 TR", "Transforment les mucosités en liquide clair"], ["19 RM, 20 RM", "Trompe d'Eustache ; 20 RM : bégaiement"], ["23 DM", "Dégage le nez (si vide : éclair de lumière blanche possible pendant la séance)"], ["24 DM", "Chasse la Chaleur : rhinite claire, congestion nasale, épistaxis ; plénitude si les sinus sont douloureux à la pression"], ["10 V / 9 E", "10 V abaisse le Yang de la tête (sinusite frontale) ; 9 E fait monter le Qi"], ["17 IG", "Amène la nutrition au Ciel, reconstruit les tissus"], ["16 IG", "Réunion centrale Cœur-Intestin Grêle"]]},
+ {"id": "orl-07", "chap": "L", "titre": "Méridiens Luo, curieux, Yang Ming et grands méridiens", "src": "cours ORL", "cols": ["Méridien", "Utilisation en ORL"], "rows": [["Luo du GI : 6 GI", "Nombreuses indications ORL"], ["Luo de l'Estomac : 40 E", "Mucosités"], ["Luo de la Vessie : 58 V", "Nez bouché (plénitude), épistaxis (vide) ; douleur du cou"], ["Luo du Poumon : 7 P", "Fait descendre le Qi, libère la surface ; 7 P + 4 GI équilibrent le Biao Li"], ["Foie : 3 F + 20 DM", "« Épine dans la gorge », ça gratte"], ["Luo du TR : 5 TR", "Ouverture du Yang Wei Mai (relation du Yang avec l'extérieur)"], ["Du Mai", "Fragilité immunitaire, grands vides (surtout autour de 18 IG) ; 14 DM réunion des Yang ; 23-24 DM libèrent la Chaleur (cauchemars) ; 25 DM + 45 E ivresse ; 26 DM aphtes, gingivites"], ["Ren Mai", "Syndromes secs (Gougerot-Sjögren, sécheresse vaginale, lichen), apport de liquides ; personnes qui s'oublient à force de s'occuper des autres. Ren et Du Mai (7 P et 3 IG) : trouble immunitaire d'origine émotionnelle"], ["Chong Mai : 4 RP", "Vide de Qi, de Sang, troubles complexes des Zang Fu ; Mer du Sang, mère des 12 méridiens ; 4 RP → 30 E → Rein → face → 1 E ; réunit l'inné et l'acquis"], ["Dai Mai", "Nutrition des énergies de la tête, contrainte latérale ; 41 VB + 5 TR + un point du Dai Mai (26, 27 ou 28 VB) + 20 R : mal des transports ; 41 VB fait couler les larmes"], ["Yang Wei Mai", "Relation du corps avec le Yang extérieur, printemps, trigramme du Tonnerre (Zhen) ; sensibilité à la neige, à l'orage ; sinusite après insolation : 41 VB, 15 VB, 5 TR ; surdité ou acouphènes par montée du Yang du Foie : 41 VB, 19 VB, 5 TR"], ["Yang Qiao Mai", "Ouverture des yeux le matin ; fatigue et congestion nasale à 17 h et 5 h"], ["Yang Ming : 4 GI + 11 GI", "Évacuer la Chaleur en cas de fièvre ; 11 GI en triple dispersion puis triple tonification (« descente de la fraîcheur céleste »)"], ["Grand méridien Tai Yin", "1 RP et 11 P, point nœud 12 RM"], ["Grand méridien Jue Yin", "1 F et 5 MC, point nœud 18 RM : vide de Wei Qi après chimiothérapie, fragilité immunitaire, fatigue (pouls du Foie diminué) ; si pouls du Foie faible, ne pas faire 5 F + 40 VB mais 1 F + 18 RM, associer au Tai Yin (1 RP, 12 RM, 1 P)"], ["Méridiens distincts", "Symptômes unilatéraux, intermittents, rythmés par les émotions : points Jing distaux du côté sain, points de réunion périphérique du côté atteint, point de confluence central bilatéral, puis 20 DM"]]},
+ {"id": "orl-08", "chap": "L", "titre": "Physiopathologie et cadres (Zheng)", "src": "cours ORL", "cols": ["Forme", "Cadre", "Causes"], "rows": [["Plénitude", "Feu du Foie", "Parole non exprimée, refoulement émotionnel → stagnation du Qi du Foie → Feu, qui monte par la VB et le TR (Shao Yang) et obstrue les orifices purs"], ["Plénitude", "Mucosités-Feu", "Alimentation irrégulière, grasse, lactée, chaude, alcool → l'Humidité devient Mucosités, qui s'associent à la Chaleur et obstruent les orifices"], ["Vide", "Vide de Jing", "Âge, constitution faible, maladie chronique, surmenage, excès sexuels"], ["Vide", "Vide de Qi et de Sang", "Maladie chronique, surmenage"]]},
+ {"id": "orl-09", "chap": "L", "titre": "Les causes en dehors des Zheng", "src": "cours ORL", "cols": ["Cause", "Repères et points"], "rows": [["La charnière occipito-cervicale (1re cause)", "Ligne horizontale : 20 VB et 10 V (points Vent), 16 DM (fenêtre du Ciel), 12 VB (zone du Zong Mai) ; ligne verticale 15, 16, 17 DM (« l'axe décapité »). Symptômes « projetés » (otalgie, acouphène, nez bouché sans cause ORL) chez des gens insécurisés (divorce, chômage) ou après un traumatisme (coup du lapin, shampooing en hyperextension, manipulation). Points souvent spontanément douloureux ; si 9 V est en cause, douleur dès que la tête touche l'oreiller. Sur 1000 acouphènes, 152 relevaient de la charnière, 77 % améliorés ou guéris"], ["La typologie Rate (2e cause)", "Stress prolongé, surmenage, rumination ; acouphène fluctuant, aggravé par l'alcool, non pulsatile (le pulsatile est d'origine « Sang »), empreintes dentaires ; terrain spasmophile, claustrophobe, sentiment d'enfermement (Yin Wei Mai). Points : 17 R, 2 ou 3 RP, 6 ou 7 MC, 13 F"], ["Points uniques d'expérience", "3 VB (bouche ouverte, du côté atteint ; acouphène par vide de l'Estomac : ulcère, hernie hiatale, œsophagite) ; 19 IG ; 21 TR ; 20 VB ; 16 TR ; 26 DM (algie faciale après un deuil) ; 18 RM Yu Tang (notion de lignée) ; 9 E (dysphonie, troubles circulatoires du haut)"], ["L'endocrâne (diagnostic différentiel)", "Acouphènes souvent bilatéraux, Mer des moelles : 2 VB ; 7 et 8 V si tête pleine ; 22 DM (entend sans comprendre), avec 20 et 21 DM ; 23 E, 14 RM, 7 C (angoisse épigastrique, écoute altérée). « Entendre » : 21 TR (écoute), 19 DM (audition), 22 VB (entendement)"]]},
+ {"id": "orl-10", "chap": "L", "titre": "Vertiges et maladie de Ménière (Xuan Yun)", "src": "cours ORL", "cols": ["Forme", "Cadres (Zheng)"], "rows": [["Externe", "Vent-Froid (plénitude) ; Vent-Chaleur (plénitude)"], ["Interne", "Mucosités bloquant le Foyer médian (plénitude) ; Feu du Foie (plénitude) ; élévation du Yang du Foie (sur vide de Yin du Foie) ; vide de Sang du Cœur et de Qi de la Rate ; vide de Jing-Yin des Reins ; vide de Jing-Yang des Reins"]]},
+ {"id": "orl-11", "chap": "L", "titre": "Proposition de traitement du Ménière", "src": "cours ORL", "cols": ["Groupe", "Points"], "rows": [["Points Ye", "2 TR (porte des liquides) en dispersion : oui ; 22 VB non concerné"], ["Points Shui (Eau : 28 E, 9 RM…)", "Inefficaces ici"], ["Zu Shao Yang", "2 VB Ting Hui (Ménière à début acouphène) ; 5 VB Xuan Lu (début vertigineux) ; 11 VB (perméabilise les orifices, début acouphène) ; 12 VB Wan Gu (zone du Zong Mai)"], ["Shou Shao Yang", "18 TR, 21 TR : peu utiles"], ["Zu Tai Yang", "7 et 8 V : plénitude endocrânienne (« plein la tête »)"], ["Autres", "19 VB (creux du cerveau), 10 V (fait monter les liquides), 17 DM"], ["Points du haut", "1 TR ; 5 TR (bruits de tonnerre avec vertiges) ; 8 TR (ouvre les orifices) ; 9 TR ; 1, 2, 3 IG (glaucome, hypertension oculaire)"], ["Points du bas", "41, 42, 44 VB"]]},
+ {"id": "orl-12", "chap": "L", "titre": "Les cinq roues (Wu Lun)", "src": "cours ORL", "cols": ["Roue", "Organe", "Structures"], "rows": [["Roue de l'Eau", "Rein", "Pupille, humeur aqueuse, cristallin, vitré"], ["Roue du Vent", "Foie", "Iris, uvée, rétine, nerf optique, muscles oculomoteurs"], ["Roue de l'Énergie", "Poumon", "Sclérotique, blanc de l'œil"], ["Roue du Sang", "Cœur", "Canthus, vaisseaux"], ["Roue de la Chair", "Rate", "Paupières"]]},
+ {"id": "orl-13", "chap": "L", "titre": "Diagnostic par les roues", "src": "cours ORL", "cols": ["Roue", "Signe", "Lecture MTC"], "rows": [["Eau (pupille)", "Myosis", "Feu de la VB avec insuffisance du Rein"], ["Eau", "Mydriase", "Vide ou stagnation d'énergie"], ["Eau", "Changement de couleur", "Insuffisance du Foie et du Rein, montée du Feu par vide de Yin (ou faiblesse Rate-Estomac)"], ["Vent (iris)", "Ulcérations, opacités cornéennes", "Chaleur ou insuffisance de Yin du Foie ; blanches ou grises : Humidité, Humidité-Chaleur Foie/VB, Vent-Chaleur ; rouges néovascularisées : Chaleur du Sang ; jaunâtres : Chaleur de la Rate"], ["Vent", "Exsudat, hypopion", "Chaleur-Humidité et Glaires du Foie et de la VB"], ["Vent", "Hyperhémie périkératique, photophobie, larmoiement", "Chaleur du Foie"], ["Sang (vaisseaux)", "Vaisseaux dilatés, canthus rouges et gonflés", "Feu plénitude (Cœur)"], ["Sang", "Sécheresse, vaisseaux fins", "Feu vide"], ["Sang", "Rougeur, gonflement, écoulement des commissures", "Chaleur-Humidité du Cœur avec Vent-Humidité"], ["Chair (paupières)", "Œdème blanc non inflammatoire", "Vide de Rate, de Yang des Reins et de la Rate"], ["Chair", "Pâleur palpébrale et conjonctivale", "Vide de Rate avec diminution du Sang"], ["Chair", "Ptosis", "Insuffisance du Foyer moyen, ou du Foie et des Reins"], ["Chair", "Clignements répétés", "Vide de Rate et Vent"], ["Chair", "Œdème rouge inflammatoire", "Vent-Chaleur, Chaleur ou Chaleur-Humidité de la Rate et de l'Estomac"], ["Chair", "Œdème rouge violacé induré", "Stase de Sang sur amas de Chaleur (ou Froid figé)"], ["Chair", "Nodules, chalazion", "Chaleur Rate-Estomac, Chaleur sur vide de Rate, ou Humidité-Chaleur"], ["Chair", "Ulcérations et vésicules du bord", "Humidité-Froid ou Humidité-Chaleur sur vide de Rate (écoulement) ; squames, croûtes : Sécheresse du Sang avec Vent"], ["Chair", "Ectropion, conjonctive épaisse congestive", "Grand Feu de l'Estomac"], ["Énergie (sclère)", "Rougeur, sécrétions, nodosités", "Chaleur plénitude ; vaisseaux fins localisés : Chaleur vide ; hémorragie de la sclère : Feu du Poumon ; hémorragie périkératique : Chaleur du Foie"], ["Énergie", "Sécrétions", "Épaisses et jaunes : Chaleur plénitude ; fines et blanches : Sécheresse du Poumon"], ["Énergie", "Œdème des conjonctives blanches ; sclère bleutée, amincie", "Défaillance de la diffusion du Poumon et de la voie des eaux ; diminution de l'énergie de la Rate (et du Poumon)"]]},
+ {"id": "orl-14", "chap": "L", "titre": "Larmoiement", "src": "cours ORL", "cols": ["Larmoiement", "Signes", "Syndrome"], "rows": [["Chaud, avec attaque du Vent", "Douleur, rougeur, inflammation, acouphènes, bouche sèche ; langue rouge ; pouls fin, tendu, rapide", "Chaleur plénitude du Foie"], ["Chaud, permanent", "Douleur, rougeur, trouble visuel, vertiges ; langue rouge à enduit fin ; pouls fin, rapide", "Montée du Feu par vide du Foie et du Rein (Chaleur vide)"], ["Froid, limpide, intermittent", "Teint pâle, amaigrissement, palpitations, mémoire ; pire le matin, en automne et en hiver ; langue pâle ; pouls fin, lent", "Vide de Sang (vide de Yang)"], ["Permanent, aggravé par le froid", "Vision faible, hypoacousie, vertiges, acouphènes, lombes et genoux faibles, insomnie ; pouls fin, faible ; enduit blanc", "Vide de Yang du Rein et du Foie"]]},
+ {"id": "orl-15", "chap": "L", "titre": "Œil sec", "src": "cours ORL", "cols": ["Cause", "Détail"], "rows": [["Énergie perverse", "Vent, Froid, Chaleur, Sécheresse consomment les liquides"], ["Causes internes", "Vide de Sang et de Yin du Cœur ; vide de Rate ; vide de Yin du Poumon ; vide du Rein ; excès alimentaire ; Feu du Foie par pathologie des sentiments"], ["Forme plénitude", "Chaleur-Sécheresse Poumon-Rate : nez bouché, gorge sèche, œil sec qui gratte ; langue rouge et sèche ; pouls rapide"], ["Forme vide", "Vide de Yin (Rein et/ou Foie) : chaleur des cinq centres, lombes faibles, acouphènes, vertiges, fatigue visuelle, bouche et gorge sèches, insomnie"], ["Terrains", "Sujet âgé ; syndrome de Gougerot-Sjögren (femme de 50 ans)"]]},
+ {"id": "orl-16", "chap": "L", "titre": "Glaucome", "src": "cours ORL", "cols": ["Situation", "Points"], "rows": [["Rééquilibrer Yin et Yang", "8 F, 14 F, 6 MC, 52 V, 23 V, 10 R, 25 VB, 2 F, 20 VB"], ["Tonifier les Reins", "2 R, 3 R"], ["Selon la forme", "1 V, 2 V, 2 E"], ["Glaucome aigu", "63 V, 62 V, 2 F et 20 VB en dispersion — et hospitalisation"], ["Glaucome chronique", "36 E, 6 RP"], ["Base", "20 DM, Qiu Hou, Tai Yang, 1 V, 4 GI, 2 F"], ["Feu du Foie", "18 V, 19 V, 2 F, 34 VB"], ["Humidité interne", "20 V, 17 V, 36 E, 6 RP"], ["Vertiges, éblouissements", "Si Shen Cong, Ba Huang Xue, 34 VB"], ["Vide de Yin", "15 V, 18 V, 3 R, 8 F, 17 TR, Ba Huang Xue, 3 F, 19 IG, 2 R"]]},
+ {"id": "orl-17", "chap": "L", "titre": "Rhinite aiguë (Ji Xing Bi Yan)", "src": "cours ORL", "cols": ["", "Vent-Froid externe", "Vent-Chaleur externe"], "rows": [["Mécanisme", "Le Froid ralentit le Wei Qi de surface et la diffusion-abaissement du Poumon : liquides non abaissés, rhinorrhée claire", "La Chaleur gêne l'abaissement et assèche les liquides : obstruction, rhinorrhée jaune"], ["Symptômes", "Peu de fièvre, crainte importante du froid, pas de sueurs, pas de soif, céphalée, toux, gorge qui gratte, rhinorrhée claire, congestion, éternuements, courbatures", "Fièvre plus forte, peu de crainte du froid, sueurs avec crainte du vent, soif, céphalée, toux, gorge douloureuse, rhinorrhée épaisse jaune, urines foncées"], ["Pouls / langue", "Superficiel, serré / enduit fin blanc", "Superficiel, rapide / enduit fin jaune"], ["Traitement", "Dispersion et réchauffement : 20 VB, 12 V, 14 DM (moxas possibles) ; 7 P + 4 GI (Luo-Yuan) ; 23 DM, 20 GI, Yin Tang ; Bitong", "Dispersion : 20 VB, 12 V, 5 TR ; 4 GI ; 14 DM, 4 GI, 11 GI si fièvre ; 23 DM, 20 GI, Yin Tang ; 4 GI, 10 P, 5 P ; Bitong"]]},
+ {"id": "orl-18", "chap": "L", "titre": "Allergie et saisons (approche par les Zang Fu)", "src": "cours ORL", "cols": ["", "Foie (printemps)", "Poumon (automne)"], "rows": [["Cadres", "Vide de Yin, vide de Sang du Foie, vide de Qi de la VB", "Vide de Qi du Poumon et de la Rate ; Sécheresse et Humidité (eczéma)"], ["Points", "Nourrir et faire descendre le Qi : 8 F, 14 F, 5 F (Luo), 40 VB (Yuan), 36 E, 1 P ; asthme associé : 3 R, 3 RM, 4 RM", "Fin septembre (donner du Qi) : 13 V, 20 V (21 V si reflux), 1 P, 25 E, 36 E, 7 R, 9 P, 8 P si sécrétions ; 11 GI"]]},
+ {"id": "orl-19", "chap": "L", "titre": "Laryngite, aphonie", "src": "cours ORL", "cols": ["Classement", "Formes"], "rows": [["Selon le Biao Li", "Externes : Vent-Froid, Vent-Chaleur, Mucosités-Chaleur obstruant le Poumon · Internes : troubles des sentiments, vide de Yin du Poumon (et des Reins), vide de Qi du Poumon (et des Reins)"], ["Selon l'apparition", "Brutales : Vent-Froid, Vent-Chaleur, aphonie des orateurs, troubles des sentiments · Progressives : Mucosités-Chaleur, vide de Yin du Poumon et des Reins"]]},
+ {"id": "orl-20", "chap": "L", "titre": "Toux", "src": "cours ORL", "cols": ["Cadre", "Signes", "Points"], "rows": [["Vent-Froid", "Gorge qui gratte, crachats aqueux blancs, céphalée, fièvre, pas de sueurs ; pouls superficiel, tendu ; enduit mince blanc", "13 V, 7 P, 20 VB, 16 E, 10 E (aiguilles laissées + moxa)"], ["Vent-Chaleur", "Crachats jaunes, fièvre, soif, mal de gorge ; pouls superficiel, rapide ; enduit mince jaune", "7 P, 4 GI, 11 P, 13 V (stimulation forte)"], ["Sécheresse-Chaleur", "Toux sèche, gorge sèche qui démange, mucosités rares, collantes", "1 P, 2 P, 9 P, 11 GI, 8 MC + produire les liquides : 4 RM, 2 R, 6 R, 12 RM, 21 V"], ["Humidité (vide de Rate)", "Crachats collants, distension thoracique, anorexie ; enduit blanc collant ; pouls mou, glissant", "3 RP, 40 E, 9 P, 12 RM ; quintes : 20 RP ; toux violente : 18 RP ; suffocante : 23 R ; émétisante : 13 E"], ["Le Foie méprise le Poumon", "Douleur thoracique ou des hypocondres, toux par Qi qui monte, visage rouge, gorge sèche ; pouls en corde, rapide", "2 MC, 2 F, 14 F, 6 MC, 11 GI, 17 RM, 22 RM, 7 P, 8 P (pas de moxa)"], ["Vide de Yin (et de Qi) du Poumon", "Toux sèche, fièvre, insomnie, sueurs nocturnes, langue rouge, pouls fin rapide", "9 P, 7 P, 1 P, 2 P, 12 E, 12 DM, 13 V, 6 RM, 36 E"], ["Le Rein ne reçoit plus le Qi", "Toux asthmatiforme, suffocante, épuisante ; pouls faible", "13 V, 23 V, 9 P, 3 R, 27 R, 25 R, 23 R, 4 RP, 10 E"]]},
+ {"id": "orl-21", "chap": "L", "titre": "Méridiens de la bouche", "src": "cours ORL", "cols": ["Type", "Méridiens"], "rows": [["Principaux", "GI, Estomac, TR, VB, Foie, Rate, Rein"], ["Tendino-musculaires", "Vessie, IG, TR, GI"], ["Distincts", "Rein, Estomac, Rate"], ["Luo longitudinaux", "Cœur, GI"], ["Luo transversaux", "Estomac, VB"], ["Merveilleux vaisseaux", "Du Mai, Ren Mai, Chong Mai"]]},
+ {"id": "orl-22", "chap": "L", "titre": "Séméiologie des orifices", "src": "cours ORL", "cols": ["Signe", "Lecture"], "rows": [["Salive en excès", "Froid et plénitude de Sang ; vide de l'IG, du Rein, de la Rate"], ["Hyposialorrhée", "Chaleur et plénitude d'énergie ; plénitude de l'IG, de la Rate, du Chong Mai"], ["Larmes abondantes", "Vide et Froid ; yeux embrumés et larmoyants : vide de VB, de Foie ; larmoiement abondant : Vessie, Yin Wei Mai, Ren Mai"], ["Zones de l'œil", "Iris : Foie, VB · pupille : Rein, Vessie · sclère : Poumon (portion médiale : GI) · angle médial : Cœur · angle latéral : IG · paupières : Rate, Estomac. Rouge ou jaune = plénitude ou Chaleur ; bleu, vert, blanc, noir = vide ou Froid"], ["Regard", "Terne : vide du Rein, de l'Estomac, de la VB ; fixe ou grand ouvert : Chaleur ; yeux rouges : Chaleur du Foie, plénitude de l'Estomac ; regarde le sol : Poumon"], ["Vision", "Diminuée : vide du Foie, de la VB ; baisse brutale : arrêt de la circulation du TR ; myopie et presbytie : IG ; paralysie oculaire : Yang Qiao Mai ; éblouissement : vide du Foie, de la VB, du MC, Vent, Du Mai, Yang Wei Mai"], ["Douleurs de l'œil", "Piqûre : Vessie ; névralgie ophtalmique : Yang Wei Mai ; angle latéral : TR, Yang Wei Mai ; mouvements latéraux : plénitude de la VB ; douleur avec larmoiement et prurit : Ren Mai ; conjonctivite : Yang Wei, Du, Dai, Yang Qiao Mai ; spasmes des paupières : Ren Mai, Yang Qiao Mai"], ["Oreille", "Fonction sensorielle : Rein ; conduit auditif : Cœur ; pavillons rouges et chauds : Vent-Chaleur externe ; pointe froide ou chaude : Froid ou Chaleur du Cœur ; douleur du pavillon : plénitude de la VB, Yang Wei Mai ; prurit : Yang Wei Mai"], ["Audition", "Hypoacousie : vide du Rein, de la Vessie, de la VB, du Foie, du MC, Ren Mai ; surdité intermittente : plénitude de la VB ; surdité brusque : arrêt de la circulation du TR ; bourdonnements : vide du Rein, du Foie, plénitude du Rein, de la VB, Yang Wei Mai"], ["Bouche", "Sèche : Chaleur, plénitude (GI, Estomac, Rate, Chong Mai) ; sèche et haleine fétide : Chaleur de l'Estomac ; sèche sans soif : Chaleur de la Rate ; inflammation : Chaleur du GI, Yang Wei Mai ; se mord les joues : plénitude du Luo de la VB"], ["Dents et gencives", "Dents = manifestation du Rein ; jaunes : Chaleur du Rein ; violacées ou desséchées : Chaleur de l'Estomac ; gingivorragies douloureuses : Chaleur de l'Estomac, indolores : Chaleur du Rein ; caries : Chaleur de l'Estomac ; froid des incisives : vide du Luo du GI"], ["Gorge", "Sèche : Chaleur du Poumon, plénitude du Foie, du Cœur, Du Mai ; enflée : méridien du Rein ; douloureuse : plénitude ou Chaleur du Rein, méridiens GI, Estomac, TR, IG, Du et Chong Mai"]]},
+ {"id": "orl-23", "chap": "L", "titre": "Fiche de révision rapide — ORL", "src": "cours ORL", "cols": ["Pathologie", "Cadre", "Points clés"], "rows": [["Acouphène", "Charnière · Rate · endocrâne", "20 VB, 10 V, 16 DM, 12 VB · 17 R, 3 RP, 6 MC, 13 F · 2 VB, 7-8 V, 22 DM ; 3 VB, 19 IG, 21 TR, 17 TR"], ["Ménière", "Liquides Ye", "2 TR, 2 VB, 5 VB, 11-12 VB, 7-8 V, 19 VB, 10 V"], ["Surdité brusque", "Stress, vasculaire", "16 TR ; 19 IG + 17 TR + 2 VB (après bilan ORL urgent)"], ["Otite", "Vent-Chaleur, Humidité-Chaleur VB, Humidité", "17 TR, 2 VB, 19 IG + 2 F, 43 VB ou 9 RP, 36 E, 3 R"], ["Conjonctivite", "Vent-Chaleur · Feu du Foie · vide Yin F-R", "20 VB, 4 GI, 11 GI, 11 P saigné · 2 F, 43 VB, 3 F · 8 F, 14 F, 7 R"], ["Œil sec", "Sécheresse-Chaleur · vide de Yin", "11 RM, 13 RM ; 5 R, 6 R, 7 P, 7 RP, 7 R ; Sjögren : 1 IG, 4 IG, 17 IG, 24 RM, 7 P"], ["Glaucome", "Rein, Foie", "8 F, 14 F, 6 MC, 52 V, 23 V, 2 R, 3 R ; aigu : 63 V, 62 V, 2 F, 20 VB + hospitalisation"], ["Rhinite aiguë", "Vent-Froid · Vent-Chaleur", "20 VB, 12 V, 14 DM, 7 P, 4 GI · 5 TR, 11 GI, 10 P ; 23 DM, 20 GI, Yin Tang, Bitong"], ["Rhinite allergique", "Vide Poumon-Rate-Reins-Du Mai", "13 V, 12 DM, 9 P, 23 V, 4 DM moxa, 20 V, 36 E ; 3 IG + 62 V"], ["Sinusite", "Vent-Chaleur · Humidité-Chaleur · Feu F-VB · stase", "4 GI, 20 GI, Yin Tang, Bitong, 23 DM + 9 RM, 22 V, 9 RP · 2 F, 43 VB · 17 V, 10 RP"], ["Épistaxis", "Chaleur · vide de Qi et de Sang", "4 GI, 23 DM, 11 P, 44 E, 2 F · 15 V, 17 V, 20 V, 36 E, 1 RP moxa"], ["Anosmie", "Selon le cadre", "7 V, 23 DM, 20 GI, Bitong ; grippe : 19 GI, 20 GI, 23 DM, 5 V"], ["Angine", "Vent-Chaleur · Chaleur-plénitude · Chaleur-vide", "11 P saigné, 4 GI, 11 GI · 1 GI, 44 E, 1 TR · 3 R, 6 R, 10 P"], ["Aphonie", "Poumon (porte), Reins (racine)", "7 R + 13 V + 9 P + 23 RM ; 17 GI, 18 GI ; émotion : 5 C, 6 C, 3 F"], ["Aphtes", "Feu plénitude · Feu vide", "12-13 RM, 8 MC, 44 E · 6 RP, 4 RM, 1 R, 27 R ; 24 RM"], ["Douleur dentaire", "Rein · Estomac · Vent", "3 R, 2 R, 23 V · 4 GI, 44 E, 6 E · 4 GI, 2 F, 20 VB"]]},
+ {"id": "mai-01", "chap": "M", "titre": "Historique : la maladie Hu Huo", "src": "cours maladies auto-immunes", "cols": ["Signe de la maladie de Behçet (Hu Huo)", "Interprétation MTC"], "rows": [["Ulcérations de la bouche (Rate) et de la langue (Cœur) — Huo", "Chaleur de la Rate (bouche, plus rare) ; Chaleur-Feu du Cœur (langue)"], ["Ulcérations des organes génitaux externes — Hu", "Feu-Chaleur du Foie"], ["Inflammation des yeux", "Feu-Chaleur du Foie"], ["Artérite, thrombose vasculaire", "Feu du Cœur, stase de Sang, Chaleur du Sang"], ["Troubles psychiatriques et de la personnalité", "Le Feu du Cœur agite le Shen"], ["Arthrite des genoux et des grosses articulations", "Chaleur-Humidité dans les articulations"], ["Douleur abdominale, diarrhée, perte d'appétit, nausée, fatigue", "Vide de Qi de la Rate ; Chaleur-Humidité Foie-VB ou du Gros Intestin"], ["Transpiration nocturne, fièvre modérée", "Chaleur-Humidité ; Chaleur vide par vide de Yin des Reins"]]},
+ {"id": "mai-02", "chap": "M", "titre": "Les trois mécanismes physiopathologiques", "src": "cours maladies auto-immunes", "cols": ["Mécanisme", "Description"], "rows": [["1. La triade pathologique Foie + Rate + Rein", "Production de Chaleur pathogène interne (« trio infernal ») sur fond d'épuisement du Jing inné (Reins) et acquis (Rate)"], ["2. Le déséquilibre Cœur-Reins (axe Shao Yin)", "Rupture entre le Feu de l'Empereur (Cœur) et l'Eau des Reins"], ["3. Le pathogène externe séquestré", "Énergie perverse externe incomplètement expulsée, emprisonnée dans les couches profondes"]]},
+ {"id": "mai-03", "chap": "M", "titre": "Syndromes qui produisent la Chaleur interne", "src": "cours maladies auto-immunes", "cols": ["Syndrome de départ", "Ce qu'il produit"], "rows": [["Stagnation du Qi du Foie", "Feu du Foie (« feu de forêt »), Chaleur-Humidité Foie-VB, Chaleur du Sang, stase de Sang"], ["Feu du Cœur (« feu émotionnel »)", "Transformation du Feu du Foie"], ["Vide de Yin des Reins", "Chaleur vide (« feu sous la cendre »), sécheresse des liquides ; la Chaleur vide des Reins amplifie le Feu du Cœur (axe Shao Yin)"], ["Vide de Qi de la Rate", "Humidité, Humidité-Chaleur (« eau qui pourrit dans la mare au soleil »), Mucosités"]]},
+ {"id": "mai-04", "chap": "M", "titre": "Les trois stades de la maladie inflammatoire chronique", "src": "cours maladies auto-immunes", "cols": ["Stade", "Description", "Priorité"], "rows": [["Aigu", "Feu toxique qui tarit les liquides, enflamme le Shen du Cœur, lèse le Yin des Reins et du Foie", "Expulser la Chaleur perverse vers l'extérieur"], ["Chronique", "Combat entre pathogènes résiduels et défenses affaiblies : « guerre sans visage, ni vainqueur ni vaincu »", "Clarifier, drainer et renforcer"], ["Terminal", "Épuisement des réserves : Jing inné des Reins et acquis de la Rate", "Nourrir le Yin, réchauffer le Yang, reconstituer le Jing"]]},
+ {"id": "mai-05", "chap": "M", "titre": "Transformation chaude ou froide du Shao Yin", "src": "cours maladies auto-immunes", "cols": ["Signe", "Transformation chaude = vide de Yin Reins-Cœur", "Transformation froide = vide de Yang Reins-Cœur"], "rows": [["Température", "Fièvre modérée l'après-midi et le soir ; chaleur des 5 centres ; pommettes rouges, bouffées de chaleur", "Crainte du froid ; mains, pieds et abdomen froids ; teint pâle, yeux bouffis"], ["Sommeil · psychisme", "Insomnie, réveils fréquents ; anxiété, attaques de panique, agitation, irritabilité", "Somnolence diurne, hypersomnie ; dépression, manque de motivation"], ["Cœur · oreille", "Palpitations, tachycardie ; vertige, acouphènes", "Bradycardie, arythmie ; hypoacousie, surdité"], ["Sueurs", "Transpiration nocturne, bouffées de chaleur", "Transpiration diurne ou à l'effort"], ["Soif · bouche", "Gorge et bouche sèches, soif de boissons fraîches", "Pas de soif, hypersalivation"], ["Fatigue · mémoire", "Fatigue mais impossibilité de se reposer ; concentration et mémoire immédiate affaiblies", "Fatigue sévère, manque de souffle ; concentration et mémoire immédiate affaiblies"], ["Lombes · genoux", "Douleur et faiblesse des lombes, jambes, genoux", "Douleur des lombes, genoux, chevilles aggravée par le froid"], ["Urines", "Pollakiurie nocturne, infections urinaires récidivantes", "Pollakiurie nocturne ; urines claires, abondantes et fréquentes le jour"], ["Selles", "Dures et sèches, constipation", "Molles, diarrhée avec aliments non digérés"], ["Ulcérations", "Rouges et douloureuses (bouche, organes génitaux)", "Pâles et peu douloureuses"], ["Œdèmes", "Absents", "Œdèmes des chevilles prenant le godet"], ["Articulations", "Inflammatoires, chaudes, rouges, aggravées la nuit et par la fatigue, améliorées par la mobilisation douce ; toutes peuvent être touchées", "Raides, douloureuses et froides au toucher"], ["Vaisseaux · peau", "Vascularite, purpura, dermite vasculaire pourpre violacé", "Pas de pigmentation vasculaire anormale"], ["Langue", "Rouge sombre, sèche, enduit sec, fissures multiples", "Gonflée, pâle, enduit humide ou gras, blanc, glissant"], ["Pouls", "Fin, rapide, faible", "Profond, lent, faible"]]},
+ {"id": "mai-06", "chap": "M", "titre": "Six grands méridiens et quatre couches", "src": "cours maladies auto-immunes", "cols": ["Grand méridien", "Méridiens principaux", "Couche"], "rows": [["Tai Yang", "Vessie – Intestin Grêle", "Wei Qi"], ["Shao Yang", "VB – Triple Réchauffeur", "Qi"], ["Yang Ming", "Estomac – Gros Intestin", "Qi"], ["Tai Yin", "Rate – Poumon", "Qi"], ["Shao Yin", "Reins – Cœur", "Ying"], ["Jue Yin", "Foie – Maître du Cœur", "Sang"]]},
+ {"id": "mai-07", "chap": "M", "titre": "Reconnaître le pathogène persistant", "src": "cours maladies auto-immunes", "cols": ["Signe", "Humidité > Chaleur", "Chaleur > Humidité"], "rows": [["Fièvre", "Modérée l'après-midi, « sous pression » (chaleur de la tête, des mains et des pieds)", "Élevée, ne baisse pas avec la transpiration"], ["Transpiration", "Mains et pieds ; corps chaud et humide", "Torse, dos, pieds, surtout la nuit"], ["Muscles", "Douleurs avec lourdeur, aggravées par l'effort et le climat chaud-humide", "Chaleur et douleurs des muscles et des grosses articulations ; genou gonflé et chaud"], ["Selles", "Molles ou diarrhée, glaires", "Diarrhée explosive malodorante, ténesme, impériosité, selles collantes"], ["Urines", "Concentrées, mousseuses", "Concentrées, sombres, troubles, brûlantes ; infections urinaires récidivantes"], ["Tête", "Céphalée avec tête lourde, embrumée ; vertige positionnel ; baisse de concentration", "Céphalée pulsatile, constrictive ; pensée confuse (montée du Yang du Foie)"], ["Digestion", "Pas d'appétit mais prise de poids ; rétention d'eau prémenstruelle ; ballonnement", "Ballonnement, régurgitations, mauvaise haleine ; nausée, vomissement"], ["Soif · bouche", "Pas de soif ; bouche pâteuse, collante", "Mauvaise haleine ; envie d'humecter la bouche et la gorge sèches sans envie de boire"], ["Comportement", "Extrême fatigue, lourdeur, envie de dormir", "Agitation, insomnie, réveils fréquents, sommeil non réparateur"], ["Langue", "Gonflée, empreintes dentaires, enduit blanc gras épais glissant", "Rouge, bords rouges parfois ulcérés, enduit jaune gras épais glissant"], ["Pouls", "Glissant, profond, faible", "Tendu, rapide"]]},
+ {"id": "mai-08", "chap": "M", "titre": "Points pour expulser le pathogène", "src": "cours maladies auto-immunes", "cols": ["Couche / cadre", "Points et actions"], "rows": [["Couche du Qi (surface)", "7 P : chasse les pathogènes de la couche du Qi par la surface, fait diffuser et descendre le Qi du Poumon (sortie par les urines) ; 14 DM : expulse la Chaleur de la couche du Qi ; 14 DM + 13 DM + 12 DM : Chaleur de la partie haute du corps ; 36 E : circulation du Qi ; 12 RM : Qi de la digestion ; 5 P + 17 RM : toux"], ["Chaleur (Yang Ming)", "11 GI + 44 E : clarifient la Chaleur du Yang Ming ; 6 R : si vide des liquides ; 25 E + 37 E : constipation ; 6 MC : nausée, vomissement"], ["Chaleur-Humidité", "11 GI ; 9 RP + 39 V + 7 R : clarifier la Chaleur-Humidité par les urines ; 9 RP + 36 E + 39 V + 22 V + 11 GI : clarifier et drainer par les urines ; 25 E + 37 E : diarrhée ; 6 MC : nausée ; 21 RP + 34 VB : faiblesse et douleurs musculaires"], ["Shao Yang", "5 TR + 41 VB ; 5 TR + 39 VB : expulser les pathogènes du Shao Yang ; 6 TR + 34 VB : débloquer le Qi des faces latérales du corps et de la tête ; 21 RP + 34 VB : douleurs musculaires ; 6 MC : nausée"], ["Couche Ying", "7 R + 3 R : nourrir le Yin et le Ying ; 3 R + 6 R : nourrir le Yin, clarifier la Chaleur vide ; 3 IG + 62 V : couple Du Mai – Yang Qiao Mai ; 7 P + 6 R : couple Ren Mai – Yin Qiao Mai ; Croisés (3 IG gauche + 62 V droit, 7 P droit + 6 R gauche), ces deux couples mobilisent le Yang Qi pour repousser les pathogènes résiduels vers la surface ; 23 V, 15 V, 18 V : clarifier la Chaleur des organes correspondants"], ["Couche du Sang", "11 GI + 2 F + 6 RP + 10 RP : clarifier la Chaleur du Sang, du Yang Ming et du Foie, préserver le Yin ; 3 MC + 40 V en saignée : clarifier la Chaleur du Sang"]]},
+ {"id": "mai-09", "chap": "M", "titre": "Terrain, intestin et stress", "src": "cours maladies auto-immunes", "cols": ["Champ", "Lecture MTC"], "rows": [["Feu pathologique des 5 organes", "Feu-Chaleur de stagnation du Foie → Feu toxique ; Chaleur vide des Reins ; Feu plénitude ou Feu vide de Yin du Cœur ; Chaleur toxique de la Rate ; Feu, Mucosités-Chaleur ou Chaleur vide du Poumon"], ["Défenses affaiblies", "Déficience du Yuan Qi des Reins, du Ying Qi de la Rate, du Wei Qi du Poumon"], ["« Intestin perméable »", "Défaut d'astringence du Qi de la Rate ; Humidité-Froid (fermentation) ou Humidité-Chaleur (putréfaction) ; mauvais drainage du Qi du Foie"], ["Stress", "Couple Foie-Rate : drainage du Qi, des émotions et du Sang · couple Reins-Cœur : régulation du Shen et du Jing (en regard de l'axe hypothalamo-hypophyso-surrénalien)"]]},
+ {"id": "mai-10", "chap": "M", "titre": "Fiche de révision rapide — maladies auto-immunes", "src": "cours maladies auto-immunes", "cols": ["Tableau", "Signes clés", "Points clés"], "rows": [["Stagnation du Qi du Foie", "Migraine temporale, hypocondre, réveil 1-3 h, stress", "3 F, 36 E + 6 RP, 20 VB, 6 MC + 7 C, Yin Tang, Tai Yang"], ["Chaleur toxique Foie-Rate", "Ulcérations purulentes, fièvre vespérale, langue rouge enduit jaune épais", "12 RM, 11 GI, 4 GI, 44 E, 9 RP, 5 RP, 2 F, 34 VB"], ["Chaleur-Humidité F-VB-Rate", "Yeux, genoux gonflés, nausée, enduit gras, pouls glissant", "Idem sans 2 F ni 34 VB"], ["Vide de Qi de Rate + Humidité", "Fatigue, selles molles, paupières bouffies, langue pâle gonflée", "12 RM, 36 E, 6 RP, 9 RP, 3 RP, 40 E, 13 F, 20 V ; 21 E + 13 RM"], ["Vide de Yin des Reins", "Sécheresse, chaleur des 5 centres, sueurs nocturnes, langue rouge sèche", "4 RM, 6 RM, 3 R, 3 F, 7 P + 6 R, 6 RP, 23 V, 52 V"], ["Vide de Yang Reins + Qi Rate", "Froid, œdèmes, ulcérations pâles, pouls profond faible", "4 RM, 6 RM moxa, 6 RP, 36 E, 3 R, 20 V, 23 V"], ["Vide Qi-Sang + stase", "Ulcérations pourpres, teint violacé, langue pourpre", "11 GI, 4 GI, 10 RP, 6 RP, 15 V, 17 V, 18 V, 20 V, 14 F, 13 F"], ["Feu du Cœur", "Aphtes de stress, cauchemars, palpitations, pointe de langue rouge", "20 DM, 9 C, 8 C, 3 IG, 4 GI, 11 GI, 34 VB, 40 E, 2 F"], ["Pathogène séquestré", "Fébricule, sueurs nocturnes, adénopathie, infections récidivantes", "7 P, 14 DM, 11 GI + 44 E, 5 TR + 41 VB ; 3 IG + 62 V, 7 P + 6 R"], ["Symptomatiques", "Bouche · OGE · yeux · vertige · articulations · fièvre", "24 RM + 6 E (8 MC, 4 E) · 5 F · 37 VB + 6 IG · 20 VB + 20 DM · 11 GI + 36 E · 2 R"]]},
  // ── Pneumologie (15/10/2026) — chap 'N' ──
  {id:'pn-poumon', chap:'N', titre:'Le Poumon — l\'essentiel', src:'cours pneumologie',
   cols:['Fonction','Rappel'],
@@ -9809,10 +9863,22 @@ const SPN_SPECIALTIES = [
     initSelects: ()=>_spnCoursSelects(ONCO_DB),
     showProtocole: (cat,motif)=>_spnCoursAfficher(ONCO_DB, cat, motif, _oncoSugg(cat, motif)),
     get db(){ return ONCO_DB; }
+  },
+  { key:'orl', label:'ORL 耳鼻喉', prefixe:'ORL',
+    get domaineOptions(){ return Object.entries(ORL_DB).map(([value, C]) => ({value, label:C.label})); },
+    initSelects: ()=>_spnCoursSelects(ORL_DB),
+    showProtocole: (cat,motif)=>_spnCoursAfficher(ORL_DB, cat, motif, _orlSugg(cat, motif)),
+    get db(){ return ORL_DB; }
+  },
+  { key:'mai', label:'Maladies auto-immunes 免疫 (cours SAMP)', prefixe:'MAI',
+    get domaineOptions(){ return Object.entries(MAI_DB).map(([value, C]) => ({value, label:C.label})); },
+    initSelects: ()=>_spnCoursSelects(MAI_DB),
+    showProtocole: (cat,motif)=>_spnCoursAfficher(MAI_DB, cat, motif, _maiSugg(cat, motif)),
+    get db(){ return MAI_DB; }
   }
 ];
 // Préfixe des points cochés dans le référentiel (« [Gynéco] RM4 », « [Rhumato] V23 ») — reconnu à la réouverture.
-const SPN_PREFIXE_RE = /^\[(Gynéco|Rhumato|Psy|Pneumo|Onco)\] /;
+const SPN_PREFIXE_RE = /^\[(Gynéco|Rhumato|Psy|Pneumo|Onco|ORL|MAI)\] /;
 function spnPrefixe(){
   const v = (document.getElementById('spn-spec')||{}).value;
   const sp = SPN_SPECIALTIES.find(s => s.key===v);
@@ -9820,7 +9886,7 @@ function spnPrefixe(){
 }
 function spnLibelleGroupe(){
   const v = (document.getElementById('spn-spec')||{}).value;
-  return v==='rhumato' ? 'Rhumatologie (réf. Sorbonne)' : v==='psy' ? 'Psychiatrie (réf. Sorbonne)' : v==='pneumo' ? 'Pneumologie (réf. Sorbonne)' : v==='onco' ? 'Oncologie (réf. Sorbonne)' : 'Gynéco-Obstétrical';
+  return v==='rhumato' ? 'Rhumatologie (réf. Sorbonne)' : v==='psy' ? 'Psychiatrie (réf. Sorbonne)' : v==='pneumo' ? 'Pneumologie (réf. Sorbonne)' : v==='onco' ? 'Oncologie (réf. Sorbonne)' : v==='orl' ? 'ORL (réf. Sorbonne)' : v==='mai' ? 'Maladies auto-immunes (cours SAMP)' : 'Gynéco-Obstétrical';
 }
 
 // Remplit le select Spécialité selon le sexe du patient (une spécialité avec sexeRestrict
@@ -11787,6 +11853,352 @@ function oncoRafraichir(){
 function oncoOuvrir(cat, motif, synd){ navTo('points'); spnOuvrir('onco', cat, motif, synd||''); oncoRafraichir(); }
 function _oncoSugg(cat, motif){ return new Map(oncoAnalyse().filter(s => s.cat===cat && s.motif===motif && s.idx!=null).map(s => [s.idx, s])); }
 function _convOnco(mt, impose){ return _convCours(ONCO_DB, mt, impose, oncoAnalyse); }
+
+// ══════ ORL — Référentiel Sorbonne (10/11/2026) ══════
+// Source : cours « L'ORL en MTC » (synthèse de quatre supports du DU, novembre 2026 ; notations discordantes tranchées
+// avec le praticien). Notation convertie à celle d'ACUconsult (VC → RM, VG → DM, RT → RP) ; points hors méridien
+// (Yin Tang, Bitong, Tai Yang, Yu Yao, Qiu Hou, Ba Huang Xue, Dingchuan) gardés tels quels.
+const ORL_DB = {
+
+  oreille: {
+    label: 'Oreille (acouphènes, vertiges, surdité, otites)',
+    note: 'L\'oreille est l\'orifice des Reins ; le Jing s\'y répand, la Rate la nourrit (Qi et Sang), le Foie et le Shao Yang (VB, TR) la parcourent. Deux fonctions : audition et équilibre. Acouphène et vertige = perte de qualité, surdité = perte de quantité.',
+    motifs: {
+      'Acouphènes et surdité (Er Ming, Er Long)': {
+        syn: ['acouphene','acouphenes','bourdonnement d oreille','bourdonnements','sifflement d oreille','sifflements dans les oreilles','er ming','surdite','hypoacousie','baisse de l audition','er long','traumatisme sonore'],
+        alerte: 'Acouphène unilatéral, isolé ou qui s\'aggrave d\'un côté : bilan ORL et neurologique (neurinome de l\'acoustique) avant l\'acupuncture. Surdité brusque : urgence ORL.',
+        note: 'Cadres (Zheng) : Feu du Foie et Mucosités-Feu (plénitude) ; vide de Jing, vide de Qi et de Sang (vide). Les supports ne donnent pas de formule par cadre : le traitement passe par les causes ci-dessous. Acouphène pulsatile = origine « Sang » ; composante anxieuse quasi constante. Échecs : acouphène « béquille », lésions anatomiques (fracture du rocher, sténose carotidienne), mauvais diagnostic.',
+        syndromes: [
+          {nom:'Charnière occipito-cervicale (1re cause)', signes:'Symptômes « projetés » (otalgie, acouphène, nez bouché sans cause ORL) chez un sujet insécurisé ou après un traumatisme cervical (coup du lapin, shampooing en hyperextension, manipulation) ; points spontanément douloureux ; 9V en cause si douleur dès que la tête touche l\'oreiller',
+           pp:['20VB','10V','16DM','12VB'], ps:['15DM','17DM','9V'], tech:'Ligne horizontale : 20VB et 10V (points Vent), 16DM (fenêtre du Ciel), 12VB (zone du Zong Mai) ; ligne verticale 15, 16, 17DM. Série de 1000 acouphènes : 152 relevaient de la charnière, 77 % améliorés ou guéris.'},
+          {nom:'Typologie Rate (2e cause)', signes:'Stress prolongé, surmenage, rumination ; acouphène fluctuant, aggravé par l\'alcool, non pulsatile ; empreintes dentaires ; terrain spasmophile, claustrophobe, sentiment d\'enfermement (Yin Wei Mai)',
+           pp:['17R','3RP','6MC','13F'], ps:['2RP','7MC'], tech:''},
+          {nom:'Points uniques d\'expérience', signes:'',
+           pp:['3VB','19IG','21TR','20VB','16TR'], ps:['26DM','18RM','9E'], tech:'3VB bouche ouverte, du côté atteint (acouphène par vide de l\'Estomac : ulcère, hernie hiatale, œsophagite) ; 26DM : algie faciale après un deuil ; 18RM (Yu Tang) : notion de lignée ; 9E : dysphonie, troubles circulatoires du haut.'},
+          {nom:'Endocrâne (acouphènes souvent bilatéraux)', signes:'Tête pleine, entend sans comprendre, angoisse épigastrique avec écoute altérée',
+           pp:['2VB','7V','8V','22DM'], ps:['20DM','21DM','23E','14RM','7C'], tech:'Mer des moelles : 2VB ; 7V et 8V si tête pleine ; 22DM (entend sans comprendre) avec 20 et 21DM. « Entendre » : 21TR (écoute), 19DM (audition), 22VB (entendement).'},
+          {nom:'Traumatisme sonore', signes:'Discothèque, feux d\'artifice, armes, hyperexcitabilité après des soirées bruyantes (sujet Yin Wei)',
+           pp:['16TR','17TR','7TR','4GI','3F','36VB'], ps:[], tech:'Traiter plutôt la Rate et le Yin Wei Mai.'}
+        ]
+      },
+      'Vertiges et maladie de Ménière (Xuan Yun)': {
+        syn: ['vertige','vertiges','tete qui tourne','meniere','maladie de meniere','xuan yun','oreille pleine','vertige positionnel'],
+        alerte: 'Vertige brutal avec céphalée inhabituelle, trouble de la parole, de la vision, de la marche ou déficit d\'un membre : urgence (15), suspicion d\'AVC.',
+        pointsBase: ['2TR'],
+        note: 'Le vestibule relève de l\'endocrâne, le labyrinthe de l\'oreille. Le Ménière est un trouble des liquides Ye : 2TR (porte des liquides) en dispersion ; les points Shui (28E, 9RM) sont inefficaces ici. L\'hyperacousie annonce souvent la crise ; l\'oreille « pleine » signe la plénitude. Cadres : Vent-Froid, Vent-Chaleur ; Mucosités du Foyer médian, Feu du Foie, montée du Yang du Foie ; vide de Sang du Cœur et de Qi de la Rate ; vide de Jing (Yin ou Yang) des Reins. Choix final selon la typologie du patient.',
+        syndromes: [
+          {nom:'Ménière à début acouphène', signes:'', pp:['2VB','11VB','12VB'], ps:[], tech:'2VB Ting Hui ; 11VB perméabilise les orifices ; 12VB Wan Gu (zone du Zong Mai).'},
+          {nom:'Ménière à début vertigineux', signes:'', pp:['5VB','12VB'], ps:[], tech:'5VB Xuan Lu.'},
+          {nom:'Plénitude endocrânienne (« plein la tête »)', signes:'', pp:['7V','8V','19VB','10V','17DM'], ps:[], tech:'19VB (creux du cerveau), 10V (fait monter les liquides).'},
+          {nom:'Points du haut et du bas', signes:'', pp:['5TR','8TR'], ps:['1TR','9TR','1IG','2IG','3IG','41VB','42VB','44VB'], tech:'5TR : bruits de tonnerre avec vertiges ; 8TR ouvre les orifices ; 1, 2, 3IG : hypertension oculaire.'}
+        ]
+      },
+      'Surdité brusque': {
+        syn: ['surdite brusque','surdite subite','perte brutale de l audition'],
+        alerte: 'Surdité brusque : urgence ORL (bilan et traitement dans les premiers jours) ; l\'acupuncture vient en complément.',
+        note: 'Hypothèses : problème vasculaire, stress (sept sentiments) déclenchant une cascade de mort cellulaire.',
+        syndromes: [
+          {nom:'Formule du cours', signes:'', pp:['16TR','19IG','17TR','2VB'], ps:['20VB','16DM','2F','3F','44VB'], tech:'16TR en dispersion (fait descendre, fenêtre du Ciel) ; points Vent : 20VB, 16DM, 17TR.'}
+        ]
+      },
+      'Otites': {
+        syn: ['otite','otites','otalgie','mal d oreille','douleur d oreille','otite sereuse','otite moyenne','trompe d eustache'],
+        alerte: 'Douleur et gonflement rétro-auriculaires avec fièvre (mastoïdite), otite du nourrisson fébrile, otorrhée persistante : avis médical sans délai.',
+        syndromes: [
+          {nom:'Otite aiguë — Vent-Chaleur', signes:'Crainte du vent, céphalée, fièvre, pus jaune, douleur à la pression soulagée par l\'écoulement', pp:['5TR','3TR','2F','17TR','21TR','2VB','19IG'], ps:[], tech:''},
+          {nom:'Otite moyenne aiguë — Humidité-Chaleur de la VB', signes:'Douleur intense, irritabilité, écoulement jaune', pp:['17TR','2VB','19IG','2F','43VB'], ps:['9RP','9DM'], tech:'Chaleur : 2F, 43VB ; Humidité : 9RP.'},
+          {nom:'Otite moyenne chronique — stagnation d\'Humidité', signes:'Tête lourde, hypoacousie ; langue grosse, pâle, indentée (vide de Yang du Rein souvent à l\'origine du vide de Rate)', pp:['9RP','3RP','36E','17TR','2VB'], ps:['3R','7R','23V'], tech:'Chasser l\'Humidité ; tonifier le Rein.'},
+          {nom:'Idées de points (support 2017)', signes:'', pp:['4R','7P','4GI','11GI','6GI','17TR','19IG'], ps:['12VB','41VB','5TR'], tech:'Si virale : penser à la sudorification. 7P + 4GI libèrent la face ; 11GI rafraîchit le haut ; 6GI (Luo). Menace de mastoïdite : 12VB, 41VB, 5TR (en complément de la prise en charge médicale).'}
+        ]
+      }
+    }
+  },
+
+  oeil: {
+    label: 'Œil',
+    note: 'Les cinq roues (Ling Shu 80) : Eau (pupille, cristallin, vitré) = Rein ; Vent (iris, uvée, rétine, nerf optique) = Foie ; Énergie (sclère) = Poumon ; Sang (canthus, vaisseaux) = Cœur ; Chair (paupières) = Rate.',
+    alerte: 'Œil rouge douloureux avec baisse de la vision, photophobie intense ou nausées : urgence ophtalmologique (glaucome aigu, uvéite, kératite).',
+    motifs: {
+      'Conjonctivite': {
+        syn: ['conjonctivite','oeil rouge','yeux rouges','yeux qui piquent','yeux qui grattent','conjonctivite allergique'],
+        syndromes: [
+          {nom:'Vent-Chaleur externe', signes:'Saisonnière (printemps), bactérienne, allergique : rougeur, prurit, douleur, larmoiement, yeux enflés ; Chaleur +++ : photophobie, pus, soif ; Vent +++ : fièvre, crainte du vent, céphalée, nez bouché | Pouls superficiel, rapide',
+           pp:['20VB','4GI','11GI','5TR','10P','11P'], ps:['12RM','1V','2V','Yu Yao','Tai Yang','1VB'], tech:'20VB piqué profondément vers l\'œil opposé (+ 12RM) ; 11P saigné ; locaux : 1V (risque d\'hématome), 2V (type Tai Yang), 1VB (type Shao Yang).'},
+          {nom:'Feu du Foie et de la VB', signes:'Mêmes signes + agitation, irritabilité, colère, bouche amère, constipation, urines foncées, acouphènes | Langue rouge, enduit jaune | Pouls tendu, rapide',
+           pp:['2F','43VB','4GI','3F','20VB','11P'], ps:[], tech:'4GI + 3F (quatre barrières) ; 11P saigné ; support 2017 : 2F en dispersion, 43VB en tonification.'},
+          {nom:'Vide de Yin du Foie et du Rein', signes:'Allergie saisonnière, urticaire, prurit, yeux secs | Pouls fin, profond, diminué au Yin du Rein',
+           pp:['8F','14F','8P','7P','4GI','7R'], ps:['23V'], tech:''},
+          {nom:'Formules générales', signes:'', pp:['3F','4GI','11GI','1V','23DM','Tai Yang'], ps:['2V','20VB','37VB'], tech:'Ou 2V, Tai Yang, 4GI, 20VB. Penser aussi à 37VB.'}
+        ]
+      },
+      'Kératite': {
+        syn: ['keratite','taie','ulcere de cornee','cornee'],
+        alerte: 'Kératite : prise en charge ophtalmologique ; l\'acupuncture en complément.',
+        syndromes: [
+          {nom:'Superficielle — vide de Yin du Poumon', signes:'Paupières rouges, photophobie, taies étoilées ; pommettes rouges | Langue rouge peu d\'enduit | Pouls Mao (très superficiel)',
+           pp:['10P','1P','4GI','11GI'], ps:['1IG','3IG','4IG','1TR','2TR','3TR','37VB','40VB','41VB','3F','8F','22DM','23DM','24DM'], tech:'Nourrir le Yin du Poumon, abaisser le Feu.'},
+          {nom:'Superficielle — Glaires', signes:'Œdème palpébral, photophobie, larmoiement, glaires blanches abondantes, nausées, oppression | Grosse langue, enduit gras | Pouls glissant',
+           pp:['12RM','40E','4GI','36E'], ps:['1V','1VB','Yu Yao'], tech:'Chasser l\'Humidité, libérer le Réchauffeur moyen et le Poumon.'},
+          {nom:'Profonde — Vent-Chaleur, poison-Chaleur Foie/VB', signes:'Rougeur, photophobie, larmoiement, douleur de tête et d\'œil | Enduit fin | Pouls superficiel, rapide',
+           pp:['20VB','4GI','2F','11GI','1VB'], ps:[], tech:''},
+          {nom:'Profonde — Feu du Foie', signes:'Cornée trouble, douleur aiguë, constipation, bouche amère', pp:['2F','3F','37VB'], ps:[], tech:'37VB Guang Ming (« grande lumière », Luo).'},
+          {nom:'Profonde — vide de Yin du Poumon', signes:'Lésions récidivantes, rougeur palpébrale, douleur sourde, toux sèche, gorge sèche | Pouls fin, rapide', pp:['11P','1P','10P'], ps:[], tech:''},
+          {nom:'Profonde — vide de Yin du Rein', signes:'Lésions récidivantes, vertiges, acouphènes, lombes et genoux faibles | Langue rouge peu d\'enduit | Pouls fin, rapide', pp:['3R','6R','10R','7R'], ps:['23V','52V'], tech:'Type Tai Yang : 23V ou 52V ; points locaux pour la Chaleur.'}
+        ]
+      },
+      'Œil sec': {
+        syn: ['oeil sec','yeux secs','secheresse oculaire','gougerot','sjogren','syndrome sec'],
+        note: 'Plénitude : Chaleur-Sécheresse Poumon-Rate (nez bouché, gorge sèche, œil sec qui gratte, langue rouge sèche, pouls rapide). Vide : vide de Yin du Rein et/ou du Foie (chaleur des cinq centres, lombes faibles, acouphènes, vertiges, fatigue visuelle). Terrains : sujet âgé, Gougerot-Sjögren.',
+        syndromes: [
+          {nom:'Tri et production des liquides', signes:'', pp:['11RM','13RM','5R','6C','6R','7P','7RP','7R'], ps:[], tech:'Améliorer le tri des liquides (11RM, 13RM) ; agir sur les liquides (5R, 6C, 6R, 7P, 7RP, 7R).'},
+          {nom:'Syndrome de Gougerot-Sjögren', signes:'', pp:['1IG','4IG','17IG','24RM','7P'], ps:[], tech:'1IG en dispersion ; 7P ouvre le Ren Mai (syndromes secs).'}
+        ]
+      },
+      'Glaucome': {
+        syn: ['glaucome','hypertension oculaire'],
+        alerte: 'Glaucome aigu (œil rouge douloureux, baisse brutale de la vision, nausées) : urgence ophtalmologique, hospitalisation. Glaucome chronique : suivi et traitement ophtalmologiques.',
+        pointsBase: ['20DM','Qiu Hou','Tai Yang','1V','4GI','2F'],
+        note: 'Foie et œil ; diminution de l\'Eau des Reins ; insuffisance de Yin Foie-VB ; Feu du Foie ; Glaires-Humidité ; stase de Sang. Tonifier les Reins (2R, 3R), disperser et régulariser le Foie.',
+        syndromes: [
+          {nom:'Rééquilibrer Yin et Yang', signes:'', pp:['8F','14F','6MC','52V','23V','10R','25VB','2F','20VB'], ps:['2R','3R','2V','2E'], tech:''},
+          {nom:'Feu du Foie', signes:'', pp:['18V','19V','2F','34VB'], ps:[], tech:''},
+          {nom:'Humidité interne', signes:'', pp:['20V','17V','36E','6RP'], ps:[], tech:'Glaucome chronique : 36E, 6RP.'},
+          {nom:'Vide de Yin', signes:'', pp:['15V','18V','3R','8F','17TR','3F','19IG','2R'], ps:['Ba Huang Xue'], tech:'Vertiges, éblouissements : Si Shen Cong, Ba Huang Xue, 34VB.'},
+          {nom:'Glaucome aigu (en complément de l\'hospitalisation)', signes:'', pp:['63V','62V','2F','20VB'], ps:[], tech:'En dispersion.'}
+        ]
+      },
+      'Orgelet, blépharite': {
+        syn: ['orgelet','blepharite','chalazion','paupiere'],
+        note: 'Humidité-Chaleur Rate-Estomac et Feu du Cœur, avec Vent-Chaleur externe. Paupière supérieure : Tai Yin ; inférieure : Yang Ming. Prurit = Vent ; croûtes, sérosités = Humidité ; rougeur, gonflement, douleur = Chaleur.',
+        syndromes: [
+          {nom:'Orgelet', signes:'', pp:['4GI','11GI','2V','1VB'], ps:[], tech:''},
+          {nom:'Atteinte des canthus (Feu du Cœur)', signes:'Pointe de langue rouge', pp:['5C','7C'], ps:['14DM'], tech:'5C : branche vers les yeux.'}
+        ]
+      }
+    }
+  },
+
+  nez: {
+    label: 'Nez et sinus',
+    note: 'Le nez est l\'orifice du Poumon. Rhinite aiguë : maladie externe (pouls superficiel, enduit fin) ; le Vent-Froid peut se transformer en Vent-Chaleur (rhinorrhée claire → épaisse et jaune).',
+    motifs: {
+      'Rhinite aiguë (rhume)': {
+        syn: ['rhinite','rhinite aigue','rhume de cerveau','nez bouche','nez qui coule','rhinorrhee','coryza','ji xing bi yan','congestion nasale'],
+        pointsBase: ['20DM','20VB','5TR'],
+        note: 'Dans tous les cas : 20DM, 20VB, 5TR en dispersion. Céphalée : Tai Yang, Yin Tang ; mucosités abondantes : 40E ; fatigue persistante : 36E, 6RM en tonification.',
+        syndromes: [
+          {nom:'Vent-Froid', signes:'Peu de fièvre, crainte importante du froid, pas de sueurs, pas de soif, céphalée, toux, gorge qui gratte, rhinorrhée claire, éternuements, courbatures | Enduit fin blanc | Pouls superficiel, serré',
+           pp:['20VB','12V','14DM','7P','4GI','23DM','20GI','Yin Tang','Bitong'], ps:[], tech:'Dispersion et réchauffement ; moxas possibles sur 20VB, 12V, 14DM ; 7P + 4GI (Luo-Yuan).'},
+          {nom:'Vent-Chaleur', signes:'Fièvre plus forte, peu de crainte du froid, sueurs avec crainte du vent, soif, gorge douloureuse, rhinorrhée épaisse jaune, urines foncées | Enduit fin jaune | Pouls superficiel, rapide',
+           pp:['20VB','12V','5TR','4GI','23DM','20GI','Yin Tang','Bitong'], ps:['14DM','11GI','10P','5P'], tech:'Dispersion ; si fièvre : 14DM, 4GI, 11GI.'},
+          {nom:'Prévention des rhumes à répétition (vide de Wei Qi)', signes:'', pp:['14DM','12DM','12V','36E'], ps:[], tech:'14DM, 12DM en moxas ; 12V en dispersion réchauffée ; 36E en tonification.'}
+        ]
+      },
+      'Rhinite allergique (rhume des foins)': {
+        syn: ['rhinite allergique','rhume des foins','allergie nasale','pollinose','allergie au pollen','bi qiu','eternuements'],
+        note: 'Racine : quadruple vide — Poumon, Rate, Reins et Du Mai. Branche : blocage de Vent-Froid dans le nez. Traiter la branche en poussée, la racine en accalmie. Deux traitements par an : fin septembre et fin janvier.',
+        syndromes: [
+          {nom:'Permanente (vide de Wei Yang)', signes:'Lombes et genoux faibles, frilosité ; congestion, rhinorrhée claire, éternuements | Langue et teint pâles | Pouls faible (Ruo), profond (Chen)',
+           pp:['13V','12DM','23V','4DM','20V','36E','4GI','20GI'], ps:['7P','9P','4RM','3R','12RM','14DM','Yin Tang','Bitong','23DM'], tech:'Poumon : 13V, 12DM, 7P, 9P · Reins : 23V, 4DM au moxa, 4RM, 3R · Qi : 20V, 36E, 12RM, 14DM · nez : 4GI, 20GI, Yin Tang, Bitong, 23DM.'},
+          {nom:'Saisonnière — Vent-Froid', signes:'Éternuements, écoulement abondant blanc aqueux, teint pâle, nez bouché, pas de soif',
+           pp:['20VB','23DM','12V','13V','4GI','7P','20GI','Bitong','Yin Tang'], ps:[], tech:'Ventouses possibles sur 12V, 13V.'},
+          {nom:'Saisonnière — Vent-Chaleur', signes:'Éternuements, rhinorrhée blanche, gorge et yeux qui démangent, yeux rouges, légère soif',
+           pp:['12V','13V','4GI','11GI','20GI','Bitong','Yin Tang'], ps:[], tech:''},
+          {nom:'Tonifier le Wei Qi Yang (en accalmie)', signes:'', pp:['24DM','20VB','3IG','62V'], ps:['7P','6R'], tech:'Homme : 3IG à gauche + 62V à droite (Du Mai, Yang Qiao). Femme : 3IG à droite + 62V à gauche, 7P à gauche + 6R à droite (Ren Mai, Yin Qiao).'},
+          {nom:'Traitement de saison (fin septembre, fin janvier)', signes:'', pp:['13V','20V','1P','25E','36E','7R','9P'], ps:['21V','8P','11GI','8F','14F','20DM','20GI','3E'], tech:'Fin septembre (donner du Qi) : 13V, 20V (21V si reflux), 1P, 25E, 36E, 7R, 9P, 8P si sécrétions, 11GI. Fin janvier, nourrir le Yin du Foie avant le printemps : mêmes points + 8F, 14F, 20DM ; locaux 20GI, 3E.'}
+        ]
+      },
+      'Sinusite': {
+        syn: ['sinusite','sinusite chronique','sinusite aigue','sinus','rhinorrhee purulente','bi yuan','polype nasal','polypose'],
+        alerte: 'Sinusite avec fièvre élevée, œdème ou rougeur de l\'orbite, trouble visuel, céphalée intense ou raideur de nuque : urgence médicale.',
+        pointsBase: ['4GI','20GI','Yin Tang','Bitong','23DM'],
+        note: 'Rhinorrhée purulente, obstruction, céphalée frontale, douleurs de la face, tête lourde et embrumée. Causes : invasions répétées de Vent-Chaleur (ou Vent-Froid) qui font stagner les liquides en Glaires-Chaleur ; alimentation grasse et chaude. Dans tous les cas : 4GI, 20GI, Yin Tang, Bitong, 23DM en dispersion.',
+        syndromes: [
+          {nom:'Vent-Chaleur externe (aiguë)', signes:'Rhinorrhée jaune collante, nez bouché, olfaction diminuée ; céphalée, légère crainte du vent, fièvre, sueurs, soif, toux | Bords ou avant de langue rouges | Pouls superficiel, rapide',
+           pp:['14DM','4GI','11GI','20VB','12V'], ps:['Tai Yang','5P','6P','7P','10P','11P'], tech:'Yin Tang ou Tai Yang si céphalée.'},
+          {nom:'Chaleur du Poumon (chronique)', signes:'Rhinorrhée collante jaune, sinus maxillaires sensibles, visage rouge, chaleur, soif, céphalée | Langue rouge, enduit jaune collant | Pouls glissant, plein (parfois au seul pouce droit)',
+           pp:['4GI','20GI','Yin Tang','Bitong','23DM'], ps:[], tech:'Le support ne détaille pas de points propres : points communs des sinusites.'},
+          {nom:'Humidité-Chaleur de la Rate et de l\'Estomac', signes:'Rhinorrhée jaune collante ; soif, lèvres sèches, tête lourde, céphalée frontale (Yang Ming), bouche pâteuse, oppression ; pommettes rouges | Enduit jaune gras au centre | Pouls glissant',
+           pp:['9RM','22V','9RP','20V','12RM','36E'], ps:['11GI','6RP','3RP'], tech:'9RM, 22V, 9RP en dispersion ; 20V, 12RM, 36E en tonification. Variante d\'école chinoise : 4GI à gauche, 11GI à droite, 6P ; 3E, 6E, 14VB en dispersion ; 36E à gauche, 12RM et 3R en tonification, 40E à droite en dispersion.'},
+          {nom:'Feu du Foie et de la VB', signes:'Rhinorrhée jaune odorante, sinus sensibles ; céphalée jugale et temporale (Shao Yang), gorge sèche, selles sèches, irritabilité, douleur costale, sommeil perturbé | Langue rouge à bords plus rouges | Pouls tendu, glissant, rapide',
+           pp:['2F','43VB','20VB','3F','7P'], ps:['40VB','39VB','15VB','14VB'], tech:'15VB, 14VB : Yang Wei Mai.'},
+          {nom:'Stagnation de Qi et stase de Sang (chronique)', signes:'Douleur des sinus, anosmie ; parole non exprimée, émotions refoulées | Langue mauve | Pouls tendu voire rugueux',
+           pp:['17V','10RP','2F','4GI','3F','11GI'], ps:['26DM','Bitong'], tech:'4GI + 3F (quatre barrières) : 11GI à droite, 4GI à gauche, 3F à droite ; polype nasal : 26DM et Bitong.'}
+        ]
+      },
+      'Épistaxis (saignement de nez)': {
+        syn: ['epistaxis','saignement de nez','saignements de nez','saigne du nez','nu xue'],
+        alerte: 'Épistaxis abondante, prolongée ou récidivante, sous anticoagulant ou avec hypertension : avis médical.',
+        pointsBase: ['4GI','23DM'],
+        note: 'Deux grands mécanismes : la Chaleur (contre-courant, pouls rapide, langue rouge) et le vide de Qi. Formule courte : 4GI + 23DM en dispersion ; Chaleur du Poumon + 11P ; Chaleur de l\'Estomac + 44E.',
+        syndromes: [
+          {nom:'Chaleur du Poumon', signes:'Sang rouge clair ; fièvre, légère crainte du vent, gorge douloureuse, toux, nez-bouche-gorge secs | Pointe de langue rouge, enduit mince jaune | Pouls superficiel, rapide',
+           pp:['4GI','11GI','20GI','23DM','Yin Tang','11P'], ps:['3P','5P','10P','14DM','16DM','24DM'], tech:'11P saigné.'},
+          {nom:'Chaleur de l\'Estomac', signes:'Sang rouge vif, gingivorragies ; soif de froid, aphtes, haleine fétide, agitation, constipation | Langue rouge, enduit jaune | Pouls vaste, rapide',
+           pp:['2GI','44E','23DM','45E','1RP','12RM'], ps:[], tech:''},
+          {nom:'Feu du Foie', signes:'Sang rouge abondant ; irritabilité, goût amer, céphalées, vertiges, acouphènes, hypocondres | Bords de langue rouges | Pouls tendu, rapide',
+           pp:['2F','34VB','5P','6P'], ps:['27DM','40V','1R','45V','11P','10P'], tech:'2F (Ying) ; 34VB (He de la VB) ; 45V Yixi.'},
+          {nom:'Vide de Yin, Feu prospère', signes:'Épistaxis intermittente rouge vif, gingivorragies ; bouche et nez secs, sueurs nocturnes, chaleur des cinq cœurs, vertiges, acouphènes, lombes faibles | Langue rouge peu d\'enduit | Pouls fin, rapide',
+           pp:['23V','3R','6R','7R','6RP'], ps:[], tech:'Points communs + deux points parmi 23V, 3R, 6R, 7R, 6RP en tonification.'},
+          {nom:'Vide de Qi et de Sang', signes:'Parfois gingivorragies, purpura ; asthénie, vertiges, palpitations, insomnie | Langue et teint pâles | Pouls fin, sans force',
+           pp:['15V','17V','6MC','20V','36E','6RP'], ps:['7P','3RP','6RM','1RP'], tech:'Tonification ; 1RP au moxa si saignement important.'}
+        ]
+      },
+      'Anosmie (perte de l\'odorat)': {
+        syn: ['anosmie','perte de l odorat','perte d odorat','perte du gout et de l odorat','shi xiu','hyposmie'],
+        alerte: 'Anosmie persistante sans cause ORL évidente, ou associée à des signes neurologiques : avis ORL et neurologique.',
+        syndromes: [
+          {nom:'Vent-Chaleur du méridien du Poumon', signes:'Anosmie avec obstruction et rhinorrhée jaune ; toux, fièvre | Pouls superficiel, rapide', pp:['7V','23DM','20GI','4GI','7P','5P'], ps:[], tech:'7V : point d\'expérience.'},
+          {nom:'Feu de la VB', signes:'Rhinorrhée jaune malodorante ; fièvre, céphalée, goût amer, gorge sèche | Pouls tendu, rapide', pp:['7V','23DM','20GI','20VB','40VB','2F'], ps:['39VB'], tech:''},
+          {nom:'Humidité-Chaleur de la Rate', signes:'Rhinorrhée jaune collante malodorante ; épigastre distendu, inappétence, selles collantes | Enduit jaune gras | Pouls glissant, rapide', pp:['7V','23DM','20GI','9RP','6RP','44E'], ps:['19GI'], tech:''},
+          {nom:'Stagnation de Qi, stase de Sang', signes:'Tête brumeuse, oppression, céphalée sévère | Langue mauve | Pouls rugueux, fin', pp:['20GI','Yin Tang','17V','4GI','6RP'], ps:['36E','13V','20V'], tech:''},
+          {nom:'Vide de Qi du Poumon et de la Rate', signes:'Anosmie intermittente, rhinorrhée blanche ; asthénie, souffle court, selles molles | Langue pâle | Pouls fin, faible, lent', pp:['20GI','Yin Tang','13V','9P','20V','36E'], ps:['4GI'], tech:''},
+          {nom:'Vide de Qi et de Sang', signes:'Anosmie, mucus rare ; asthénie, vertiges, palpitations, insomnie | Pouls fin, faible', pp:['20GI','Yin Tang','20V','36E','6RP','15V','17V'], ps:['13V'], tech:'15V, 17V Ge Shu : nourrir le Sang du Cœur.'},
+          {nom:'Anosmie brutale d\'une grippe', signes:'', pp:['19GI','20GI','23DM','5V'], ps:['7V','Bitong'], tech:'Aiguilles dirigées vers les narines, en dispersion, 30 min. Autre association : 7V, 20GI, Bitong.'}
+        ]
+      }
+    }
+  },
+
+  gorge: {
+    label: 'Gorge et voix',
+    note: 'Le Poumon est la porte de la parole, les Reins en sont la racine. La toux est traitée dans le module Pneumologie.',
+    motifs: {
+      'Angine, pharyngite, amygdalite (Hou Bi)': {
+        syn: ['angine','angines','pharyngite','mal de gorge','gorge douloureuse','gorge irritee','amygdalite','hou bi'],
+        alerte: 'Déglutition impossible, salivation, trismus, voix étouffée, gêne respiratoire ou fièvre élevée persistante : urgence médicale (phlegmon, épiglottite).',
+        note: 'Plénitude : Vent-Chaleur dans le Poumon ou Chaleur stagnante du Poumon et de l\'Estomac. Vide : perte du Yin du Rein, Feu vide ascendant (symptômes moins intenses, aggravés la nuit). Formule classique : plénitude → 11P, 5P, 4GI, 43E, 1TR en dispersion ; vide de Yin → 3R, 6R, 10P. En aigu, sudorification possible (tonifier 1 et 2RP, disperser 10 et 11P).',
+        syndromes: [
+          {nom:'Vent-Chaleur', signes:'Gorge gonflée et douloureuse, fièvre, légère crainte du froid, sueurs, céphalée, toux, soif, urines foncées | Langue rouge, enduit mince jaune | Pouls superficiel, rapide',
+           pp:['20VB','14DM','4GI','11GI','11P'], ps:['22RM','18GI','7P'], tech:'11P saigné ; voix rauque : 22RM, 18GI (local), 7P (à distance).'},
+          {nom:'Chaleur-plénitude (Poumon et Estomac)', signes:'Gorge très rouge, très gonflée, déglutition difficile, forte fièvre, céphalée, aphtes, soif, constipation ; yeux et visage rouges | Enduit jaune sec et épais | Pouls glissant ou vaste, rapide',
+           pp:['4GI','1GI','40E','44E','11P','5P','1TR'], ps:['22RM','18GI','7P','6TR','37E'], tech:'1GI et 1TR saignés ; constipation : 6TR, 37E.'},
+          {nom:'Chaleur-vide (vide de Yin)', signes:'Douleur et gonflement légers, fièvre ondulante, bouche et gorge sèches, chaleur des cinq cœurs, lombes faibles | Langue rouge peu d\'enduit | Pouls fin, rapide',
+           pp:['3R','6R','4GI','10P','23RM'], ps:['6C','8C','23V'], tech:'3R, 6R en tonification ; 6C si sueurs nocturnes, 8C si mains chaudes.'},
+          {nom:'Amygdalite — plénitude', signes:'', pp:['11P','4GI','11GI','14DM','17TR','17IG'], ps:['5P','43E'], tech:'Vent-Chaleur : 11P, 4GI, 11GI, 14DM + 17TR, 17IG · Chaleur Estomac-Poumon : 11P, 5P, 43E.'},
+          {nom:'Amygdalite — vide', signes:'', pp:['3R','6R','23V','52V','10P'], ps:['18V','38V'], tech:'Purifier la Chaleur, nourrir le Yin pour faire descendre le Feu.'}
+        ]
+      },
+      'Laryngite, aphonie': {
+        syn: ['aphonie','laryngite','extinction de voix','voix rauque','dysphonie','enrouement','perte de la voix','voix cassee'],
+        alerte: 'Dysphonie qui dure plus de 3 semaines (surtout chez un fumeur), avec gêne à la déglutition ou à la respiration : examen ORL (laryngoscopie).',
+        pointsBase: ['7R','13V','9P','23RM'],
+        note: 'Aphonie de la gorge (Poumon) ou de la langue (Cœur et Reins : aphasie des AVC, hors de ce cadre). Formules générales : 7R + 13V + 9P + 23RM, ou 7R + 5P + 44E. Chaleur externe : + 4GI ; vide de Yin et de Qi du Poumon : + 13V, 4GI ; aphonie sévère : + 7P, 23RM (et 9E).',
+        syndromes: [
+          {nom:'Vent-Froid', signes:'Perte subite de la voix ; crainte du froid, fièvre, nez bouché, rhinorrhée claire, gorge qui gratte, courbatures, toux | Enduit fin blanc | Pouls superficiel, serré',
+           pp:['4GI','7P','17GI','18GI','40E','6P','13V','23RM'], ps:[], tech:'13V dispersé et réchauffé.'},
+          {nom:'Vent-Chaleur', signes:'Perte subite de la voix ; gorge rouge, douloureuse, gonflée ; légère sueur ; mucosités jaunes | Enduit fin jaune | Pouls superficiel, rapide',
+           pp:['4GI','5TR','13V','5P','14DM','23RM','6P','11P'], ps:['11V','12V','40E','6TR'], tech:'11P saigné ; 11V, 12V si fièvre persistante.'},
+          {nom:'Chaleur du Poumon', signes:'Aphonie aiguë, prononciation difficile, dysphorie, gorge rouge, fièvre, soif, crachats jaunes épais, constipation | Langue rouge, enduit jaune | Pouls rapide',
+           pp:['7R','13V','9P','23RM','4GI'], ps:[], tech:'Le support ne détaille pas de points propres : formule générale + 4GI (Chaleur).'},
+          {nom:'Mucosités-Chaleur', signes:'Dysphonie voire aphonie progressive ; gorge sèche et douloureuse, mucosités collantes, toux, dyspnée | Langue rouge, enduit jaune gras | Pouls glissant, rapide',
+           pp:['5P','6P','11P','40E','23RM','9E'], ps:['22RM','Dingchuan','4GI','11GI','44E','10P','1GI','13V'], tech:'22RM et Dingchuan si toux et dyspnée.'},
+          {nom:'Troubles des sentiments', signes:'Aphonie qui survient et disparaît brutalement ; boule dans la gorge, irritabilité, vertiges, éructations | Pouls tendu',
+           pp:['17GI','18GI','16IG','3F','6C','5C'], ps:[], tech:'6C (Xi) en aigu ; 5C (Luo, branche vers la gorge).'},
+          {nom:'Vide de Qi du Poumon (et des Reins)', signes:'Aphonie chronique, voix et toux faibles, souffle court, sueurs au moindre effort, rhumes fréquents ; avec les Reins : lombes faibles, frilosité, nycturie | Pouls fin, faible, sans force',
+           pp:['7R','13V','9P','23RM','4GI'], ps:[], tech:'Formule générale + 13V, 4GI.'},
+          {nom:'Vide de Yin du Poumon et des Reins', signes:'Aphonie progressive et persistante ; gorge sèche qui démange, mucosités collantes ; lombalgie, sueurs nocturnes, chaleur des cinq cœurs, insomnie | Langue rouge peu d\'enduit | Pouls fin, rapide',
+           pp:['13V','9P','23V','3R','6R','7R','6RP','23RM'], ps:['1P','25VB','3F'], tech:'Tonification ; 1P + 25VB (Mu).'}
+        ]
+      }
+    }
+  },
+
+  bouche: {
+    label: 'Bouche et dents',
+    note: 'La bouche est l\'orifice de la Rate. Gencive supérieure : Estomac ; inférieure : Gros Intestin (et Foie). Les aphtes, comme toute ulcération, sont un dégagement de Feu au niveau de la bouche.',
+    motifs: {
+      'Aphtes (ulcérations buccales)': {
+        syn: ['aphte','aphtes','aphtose','ulceration buccale','ulcerations buccales','stomatite','ulcere de la bouche'],
+        alerte: 'Aphtes récidivants associés à des ulcérations génitales, une atteinte oculaire ou articulaire : penser à une maladie de Behçet (avis médical ; voir aussi le cours Maladies auto-immunes). Ulcération buccale qui ne guérit pas en 3 semaines : avis médical.',
+        syndromes: [
+          {nom:'Plénitude (Chaleur de la Rate et du Cœur)', signes:'Alimentation grasse, sucre, alcool, tabac, Vent-Chaleur externe, hygiène buccale insuffisante ; ulcérations multiples douloureuses de la taille d\'un petit pois, centre jaune ou blanc, bord enflé et rouge, aggravées par la mastication et la parole',
+           pp:['12RM','13RM','8MC','7C','44E'], ps:['23TR','6E'], tech:'12RM, 13RM en dispersion ; 8MC : toutes les Chaleurs de la bouche ; 7C calme le Shen ; 44E : point froid ; 23TR, 6E : excès de Yang du haut, mâchoires.'},
+          {nom:'Vide (Yin du Rein et du Cœur)', signes:'Constitution, surmenage, maladie chronique, convalescence ; ulcérations peu nombreuses, récidivantes, blanc grisâtre, bord normal ou rose pâle | Langue rouge sans enduit, peu de salive | Pouls fin, rapide',
+           pp:['17V','10RP','6RP','4RM','1R','27R','8MC'], ps:[], tech:'Tonifier le Sang et les liquides, faire descendre le Feu vide : 6RP, 4RM, 1R nourrissent le Yin ; 27R, 8MC font descendre le Feu.'},
+          {nom:'Autres formules', signes:'', pp:['4GI','36E','23RM','1GI','6E','24RM'], ps:['4RP','27R','6MC','9C','7R','6RM','39VB','26DM'], tech:'Modernes : 2 à 3 points par séance ; local : 24RM ; formes chroniques : Chong Mai (4RP, 27R, 6MC) ; formule fatigue : 9C, 7R, 36E, 6RM, 39VB ; aphtoses : 26DM (point Kou).'}
+        ]
+      },
+      'Gingivite': {
+        syn: ['gingivite','gencives','gencives qui saignent','saignement des gencives','parodontite','pyorrhee'],
+        syndromes: [
+          {nom:'Chaleur du Yang Ming (± vide du Rein)', signes:'Gencives enflées et douloureuses, gingivorragies', pp:['2GI','11GI','8IG','20TR','6E','8MC'], ps:['28DM'], tech:'2GI (Ying) en dispersion ; 20TR : ne peut mâcher ; 28DM, 6E : pyorrhée avec gingivorragie ; 8MC : Chaleur de bouche, infection.'}
+        ]
+      },
+      'Douleur dentaire': {
+        syn: ['mal de dents','mal de dent','douleur dentaire','odontalgie','rage de dents','dent'],
+        alerte: 'Douleur dentaire avec fièvre, gonflement de la joue ou du cou, trismus : abcès probable, consultation dentaire ou médicale rapide.',
+        syndromes: [
+          {nom:'Origine Rein (Feu des Reins par le Chong Mai)', signes:'Douleurs nocturnes intenses et insomniantes, gencives rouges puis atrophiées (déchaussement), douleur et fatigue lombaires | Langue rouge, enduit humide jaunâtre | Pouls fin, glissant, rapide',
+           pp:['2R','3R','2F','23V','7R'], ps:[], tech:'Tonifier le Yin et le Rein, faire descendre le Feu.'},
+          {nom:'Origine Estomac (Chaleur)', signes:'Aliments chauds et piquants : pyorrhée, caries, n\'aime pas boire chaud, haleine fétide, œdème des joues | Enduit jaunâtre | Pouls vaste, rapide',
+           pp:['4GI','44E','6E','7E','3VB'], ps:[], tech:'Rafraîchir la Chaleur ; locaux 6E, 7E, 3VB.'},
+          {nom:'Origine Vent (Vent-Feu externe)', signes:'Douleur dentaire et gingivite améliorées par le froid, aggravées par la chaleur | Enduit blanc et sec | Pouls superficiel, rapide',
+           pp:['4GI','2F','3F','44E','20VB','5TR'], ps:['2E','3E','3R'], tech:''}
+        ]
+      },
+      'Trismus': {
+        syn: ['trismus','machoire bloquee','blocage de la machoire'],
+        syndromes: [
+          {nom:'Trismus aigu', signes:'', pp:['34VB','20VB','6MC','6E'], ps:[], tech:''}
+        ]
+      }
+    }
+  }
+};
+function _orlSugg(){ return new Map(); }
+function _convOrl(mt, impose){ return _convCours(ORL_DB, mt, impose, null); }
+
+// ══════ MALADIES AUTO-IMMUNES ET INFLAMMATION CHRONIQUE — cours complémentaire SAMP (10/11/2026) ══════
+// Source : conférence « Inflammation chronique de bas grade, maladies auto-immunes et MTC » (Société d'acupuncture de
+// Midi-Pyrénées, Toulouse 2017, version 2019), synthèse « Maladies auto-immunes et inflammation chronique en MTC »
+// (novembre 2026, incohérences tranchées). Notation ACUconsult (VC → RM, VG → DM, RT → RP).
+const MAI_DB = {
+  mai: {
+    label: 'Maladies auto-immunes et inflammation chronique',
+    alerte: 'Les maladies auto-immunes relèvent d\'un diagnostic et d\'un traitement médicaux spécialisés : l\'acupuncture est un complément. Ne jamais arrêter ni réduire une corticothérapie ou un immunosuppresseur sans le prescripteur.',
+    note: 'Trois mécanismes : triade Foie-Rate-Rein (Chaleur interne sur épuisement du Jing inné et acquis), déséquilibre Cœur-Reins (axe Shao Yin), pathogène externe séquestré dans les couches profondes. Trois stades : aigu (Feu toxique : expulser), chronique (« ni vainqueur ni vaincu »), terminal (épuisement du Jing). Traiter la racine (terrain) et les branches (ulcérations, articulations, yeux, digestion, sommeil). Voir aussi Oncologie › Pathologies chroniques › Maladies auto-immunes (protocole Sorbonne).',
+    motifs: {
+      'Maladie auto-immune — terrain inflammatoire chronique': {
+        syn: ['maladie auto immune','maladies auto immunes','auto immunite','pathologie auto immune','inflammation chronique','maladie inflammatoire chronique','terrain inflammatoire','behcet','maladie de behcet','hu huo','lupus','polyarthrite rhumatoide','psoriasis','eczema chronique','thyroidite de hashimoto','hashimoto','maladie de basedow','basedow','maladie de crohn','crohn','rectocolite hemorragique','rch','mici','vascularite'],
+        note: 'Symptomatiques communs : ulcérations buccales 24RM + 6E (+ 4E, 8MC) ; ulcérations génitales 5F ; yeux 37VB + 6IG ; vertige 20VB + 20DM ; articulations 11GI + 36E ; fièvre 2R ; constipation 25E + 37E ; nausée 6MC ; diarrhée de Chaleur-Humidité 25V. Auriculothérapie (vide de Yin, Feu du Cœur) : Shen Men, Sympathique, point Zéro, Rein, Foie, Cœur, Bouche.',
+        syndromes: [
+          {nom:'Stagnation du Qi du Foie', signes:'Migraine temporale, douleur de l\'hypocondre, constipation, réveils entre 1 h et 3 h, irritabilité alternant avec dépression, syndrome prémenstruel, bouche amère ; tout est accentué par le stress',
+           pp:['3F','36E','6RP','20VB','6MC','7C'], ps:['Yin Tang','Tai Yang'], tech:'Tai Yang : dépression à 1 cun en arrière du milieu entre 23TR et 1VB.'},
+          {nom:'Chaleur toxique du Foie et de la Rate', signes:'Ulcérations douloureuses parfois purulentes, douleurs articulaires, fièvre modérée l\'après-midi et le soir, chaleur des 5 centres, constipation, urines concentrées, pertes vaginales | Langue rouge, enduit jaune gras épais',
+           pp:['12RM','11GI','4GI','44E','9RP','5RP','2F','34VB'], ps:['41VB','3TR','5F','8MC','24RM','6E','4E','25E','37E','6MC','25V'], tech:'2F +++ draine le Feu et la Chaleur-Humidité du Foie ; 34VB ++. Symptomatiques : yeux 41VB + 3TR ; ulcérations génitales sévères 5F ; buccales 8MC + 24RM + 6E + 4E ; constipation 25E + 37E ; nausée 6MC ; diarrhée 25V.'},
+          {nom:'Chaleur-Humidité du Foie, de la VB et de la Rate', signes:'Ulcérations ; yeux irrités, vision trouble, photophobie ; fièvre modérée l\'après-midi, sueurs nocturnes ; nodules rouges des membres ; genoux douloureux et gonflés ; anorexie, nausée, distension épigastrique ; fatigue, agitation, insomnie ; selles molles difficiles à expulser | Enduit blanc ou jaune, gras, glissant | Pouls glissant, un peu rapide',
+           pp:['12RM','11GI','4GI','44E','9RP','5RP'], ps:['41VB','3TR','5F','24RM','6E','25E','37E','6MC','25V'], tech:'Points de la Chaleur toxique sans 2F ni 34VB (trop clarifiants) ; mêmes points symptomatiques.'},
+          {nom:'Vide de Qi de la Rate avec Humidité-Mucosités', signes:'Épuisement, burn-out, faiblesse musculaire ; vertige aux changements de position ; selles molles, ballonnement, fatigue après le repas, rétention d\'eau ; prise de poids malgré l\'appétit diminué ou appétit pour le sucre ; ulcérations chroniques ; genoux gonflés ; paupières bouffies, tête embrumée | Langue pâle, gonflée | Pouls profond, fin, tendu',
+           pp:['12RM','36E','6RP','9RP','20V','21E','13RM'], ps:['3RP','40E','13F','25E','21RP','62V','20DM','8E','2V','37VB'], tech:'Renforcer la Rate, faire monter son Yang, transformer l\'Humidité ; 12RM + 21E + 13RM : stagnation de nourriture. Symptomatiques : distension 3RP + 25E ; lourdeur musculaire 21RP ; tête embrumée 62V + 20DM ; vision trouble 8E + 2V + 37VB.'},
+          {nom:'Vide de Yin des Reins avec Chaleur vide', signes:'Stade avancé, sujet âgé, corticothérapie prolongée ; ulcérations rouge sombre ; yeux secs, photophobie ; fièvre l\'après-midi ou la nuit, sueurs nocturnes, bouffées de chaleur, chaleur des 5 centres ; joues rouges ; lombes et genoux faibles ; insomnie, esprit agité ; vertiges, acouphènes ; selles sèches, infections urinaires à chaque fatigue | Langue rouge, enduit fin et sec (pelée) | Pouls fin, rapide, faible (tendu si le Yang du Foie monte)',
+           pp:['4RM','6RM','3R','3F','7P','6R','6RP','23V','52V'], ps:['24RM','6E','5F','37VB','6IG','20VB','20DM','11GI','36E','2R'], tech:'Nourrir le Yin des Reins, clarifier la Chaleur vide, humidifier la Sécheresse. 7P + 6R : couple Ren Mai – Yin Qiao Mai. Auriculo : Shen Men, Sympathique, Rein, Foie, Bouche. Pas de décroissance de corticoïde sans le prescripteur.'},
+          {nom:'Vide de Yang des Reins et de Qi de la Rate', signes:'Ulcérations chroniques pâles ; mauvaise adaptation aux changements de temps ; douleurs abdominales et lombaires améliorées par la chaleur ; œdèmes des chevilles, nycturie ; diarrhée ou constipation | Langue rose pâle, ou rouge et sèche | Pouls fin, profond, faible',
+           pp:['4RM','6RM','6RP','36E','3R','20V','23V'], ps:['9R','24RM','6E','5F','37VB','6IG','7R','9RP'], tech:'4RM + 6RM tonifiés avec moxas. Symptomatiques : bouche 9R + 24RM + 6E ; génital 5F ; vision 37VB + 6IG ; œdèmes 7R + 9RP.'},
+          {nom:'Vide de Qi et de Sang, stase de Sang', signes:'Ulcérations chroniques à bords pourpres ; gencives pourpres ; teint violacé, dermite ocre, cernes violacés ; douleur abdominale aggravée par la pression ; articulations raides ; parfois rectorragie ou hématurie | Langue pourpre, taches violettes, veines sublinguales dilatées | Pouls fin, tendu (ou rugueux)',
+           pp:['11GI','4GI','10RP','6RP','17V','18V','14F','13F'], ps:['5F','15V','20V','12RM','36E'], tech:'17V (réunion du Sang) disperse les stases ; 14F (Mu du Foie) ; 13F (Mu de la Rate). Rectorragie, hématurie, thrombose : avis médical sans délai.'},
+          {nom:'Feu du Cœur (axe Shao Yin)', signes:'Ulcérations rouges et douloureuses de la langue et de la bouche aggravées par le stress ; insomnie avec cauchemars ; dépression alternant avec agitation ou colères ; yeux rouges ; palpitations, tachycardie ; lésions cutanées qui suppurent ; urines foncées | Langue rouge (pointe), enduit jaune épais | Pouls rapide, glissant, vaste',
+           pp:['20DM','9C','8C','3IG','4GI','11GI','34VB','40E','2F'], ps:[], tech:'Clarifier la Chaleur du Foie et du Cœur, calmer le Shen ; 3IG : ouverture du Du Mai. Auriculo : Shen Men, Sympathique, point Zéro, Cœur, Foie, Occiput.'}
+        ]
+      },
+      'Inflammation à bas bruit — pathogène résiduel': {
+        syn: ['inflammation a bas bruit','pathogene residuel','infections a repetition','infections recidivantes','infection chronique','fatigue post infectieuse','syndrome post viral','covid long','febricule','petite fievre le soir'],
+        alerte: 'Fièvre prolongée inexpliquée, adénopathie persistante, sueurs nocturnes, amaigrissement : bilan médical d\'abord (infection, hémopathie, cancer, maladie auto-immune).',
+        note: 'Pénétration des pathogènes : Wei (Tai Yang) → Qi (Shao Yang, Yang Ming, Tai Yin) → Ying (Shao Yin) → Sang (Jue Yin). Les fragilités du Shao Yin ouvrent le Tai Yang au Froid pervers, qui se transforme en Chaleur à bas bruit. Humidité > Chaleur : fièvre « sous pression », lourdeur, selles molles, enduit blanc gras, pouls glissant faible ; Chaleur > Humidité : fièvre élevée, diarrhée explosive, urines brûlantes, enduit jaune gras, pouls tendu rapide.',
+        syndromes: [
+          {nom:'Couche du Qi (surface)', signes:'', pp:['7P','14DM','36E','12RM'], ps:['13DM','12DM','5P','17RM'], tech:'7P chasse les pathogènes de la couche du Qi par la surface et les fait sortir par les urines ; 14DM + 13DM + 12DM : Chaleur du haut du corps ; toux 5P + 17RM.'},
+          {nom:'Chaleur du Yang Ming', signes:'', pp:['11GI','44E'], ps:['6R','25E','37E','6MC'], tech:'6R si vide des liquides ; constipation 25E + 37E ; nausée 6MC.'},
+          {nom:'Chaleur-Humidité', signes:'', pp:['11GI','9RP','39V','7R','36E','22V'], ps:['25E','37E','6MC','21RP','34VB'], tech:'Clarifier la Chaleur-Humidité et drainer par les urines ; faiblesse musculaire 21RP + 34VB.'},
+          {nom:'Shao Yang', signes:'', pp:['5TR','41VB','39VB','6TR','34VB'], ps:['6MC','21RP'], tech:'5TR + 41VB ou 5TR + 39VB : expulser du Shao Yang ; 6TR + 34VB : faces latérales du corps et tête.'},
+          {nom:'Couche Ying', signes:'', pp:['7R','3R','6R','3IG','62V','7P'], ps:['23V','15V','18V'], tech:'3IG + 62V : couple Du Mai – Yang Qiao Mai ; 7P + 6R : couple Ren Mai – Yin Qiao Mai ; croisés (3IG gauche + 62V droit, 7P droit + 6R gauche), ils mobilisent le Yang Qi pour repousser les pathogènes résiduels vers la surface.'},
+          {nom:'Couche du Sang', signes:'', pp:['11GI','2F','6RP','10RP'], ps:['3MC','40V'], tech:'Clarifier la Chaleur du Sang, du Yang Ming et du Foie, préserver le Yin ; 3MC + 40V en saignée. Chaleur du Ying et du Sang à fièvre élevée (tableau septique) : urgence médicale.'}
+        ]
+      }
+    }
+  }
+};
+function _maiSugg(){ return new Map(); }
+function _convMai(mt, impose){ return _convCours(MAI_DB, mt, impose, null); }
 
 // ══════ Recherche dans le Référentiel Sorbonne Paris Nord (13/10/2026) ══════
 // Parcourt toutes les spécialités proposées pour ce patient (titres de motifs, mots-clés du cours, noms
@@ -15735,7 +16147,7 @@ function convVoirProtocole(i){
     const el = document.getElementById('motif-panel-ebm'); if(el) el.scrollIntoView({behavior:'smooth', block:'start'}); return; }
   if(p.spec) spnOuvrir(p.spec, p.cat, p.titre, '');
 }
-const CONV_PROT_LBL = {ebm:'EBM', gyno:'Référentiel Sorbonne (gynéco-obstétrique)', rhumato:'Référentiel Sorbonne (rhumatologie)', psy:'Référentiel Sorbonne (psychiatrie)', pneumo:'Référentiel Sorbonne (pneumologie)', onco:'Référentiel Sorbonne (oncologie)', urg:'Recette du Mode Urgence', periop:'Indication péri-opératoire'};
+const CONV_PROT_LBL = {ebm:'EBM', gyno:'Référentiel Sorbonne (gynéco-obstétrique)', rhumato:'Référentiel Sorbonne (rhumatologie)', psy:'Référentiel Sorbonne (psychiatrie)', pneumo:'Référentiel Sorbonne (pneumologie)', onco:'Référentiel Sorbonne (oncologie)', orl:'Référentiel Sorbonne (ORL)', mai:'Cours SAMP (maladies auto-immunes)', urg:'Recette du Mode Urgence', periop:'Indication péri-opératoire'};
 function computeConvergence(){
   const pts = new Map(), names = {};
   const add = (raw, src, w, why, nom) => {
@@ -15793,7 +16205,7 @@ function computeConvergence(){
   //    (protocole affiché : ses points de base + les points cochés par le praticien, pas tous ses tableaux)
   const specAff = (document.getElementById('spn-spec')||{}).value||'';
   const protAff = document.querySelectorAll('#gyno-result .gyno-chk').length ? ((document.getElementById('gyno-motif')||{}).value||'') : '';
-  const cours = specAff==='rhumato' || specAff==='psy' || specAff==='pneumo' || specAff==='onco';
+  const cours = ['rhumato','psy','pneumo','onco','orl','mai'].includes(specAff);
   const gyAff = cours ? '' : protAff;
   let GY = cours && protAff ? null : _convGyno(mt, gyAff);
   if(GY && !garder('gyno', GY.titre, !(specAff==='gyneco' && protAff), GY.cat, 'gyneco')) GY = null;
@@ -15814,6 +16226,13 @@ function computeConvergence(){
   let ON = typeof _convOnco==='function' ? _convOnco(mt, specAff==='onco' ? protAff : '') : null;
   if(ON && !garder('onco', ON.titre, !(specAff==='onco' && protAff), ON.cat, 'onco')) ON = null;
   if(ON){ ctx.onco = ON.titre; ON.pts.forEach(p => { const o = _rhPt(p.raw).oms; if(o) add(o,'gyno',p.w,'Référentiel SPN — '+ON.titre+' ('+p.why+')'); }); }
+  // 4 sexies. ORL (Référentiel Sorbonne) et maladies auto-immunes (cours SAMP) : protocole affiché, sinon motif reconnu (10/11/2026)
+  let OR = typeof _convOrl==='function' ? _convOrl(mt, specAff==='orl' ? protAff : '') : null;
+  if(OR && !garder('orl', OR.titre, !(specAff==='orl' && protAff), OR.cat, 'orl')) OR = null;
+  if(OR){ ctx.orl = OR.titre; OR.pts.forEach(p => { const o = _rhPt(p.raw).oms; if(o) add(o,'gyno',p.w,'Référentiel SPN — '+OR.titre+' ('+p.why+')'); }); }
+  let MA = typeof _convMai==='function' ? _convMai(mt, specAff==='mai' ? protAff : '') : null;
+  if(MA && !garder('mai', MA.titre, !(specAff==='mai' && protAff), MA.cat, 'mai')) MA = null;
+  if(MA){ ctx.mai = MA.titre; MA.pts.forEach(p => { const o = _rhPt(p.raw).oms; if(o) add(o,'gyno',p.w,'Cours SAMP — '+MA.titre+' ('+p.why+')'); }); }
   document.querySelectorAll('#gyno-result .gyno-chk:checked').forEach(cb => add(cb.dataset.code,'gyno',1,'Référentiel SPN — coché',cb.dataset.nom));
   // 5. Mode Urgence : recettes reconnues dans le motif
   if(mt.length) URGENCE_RECIPES.forEach(r => {
@@ -15880,7 +16299,7 @@ function renderConvergence(){
   const C = computeConvergence(), deja = _convDejaRetenus(), N = _conv.n;
   // Sources du motif entièrement « reconnues » (aucun protocole choisi) : badge marqué °
   const P = (C.ctx.prot||[]).filter(x => !x.ecarte);
-  const autoKey = k => { const L = P.filter(x => (k==='gyno' ? ['gyno','rhumato','psy','pneumo','onco'].includes(x.key) : x.key===k)); return L.length && L.every(x => x.auto) && !(k==='gyno' && document.querySelector('#gyno-result .gyno-chk:checked')); };
+  const autoKey = k => { const L = P.filter(x => (k==='gyno' ? ['gyno','rhumato','psy','pneumo','onco','orl','mai'].includes(x.key) : x.key===k)); return L.length && L.every(x => x.auto) && !(k==='gyno' && document.querySelector('#gyno-result .gyno-chk:checked')); };
   const badge = k => `<span style="font-size:9.5px;font-weight:700;color:#fff;background:${CONV_SOURCES[k].col};border-radius:8px;padding:1px 6px;margin:1px 3px 1px 0;display:inline-block;white-space:nowrap">${CONV_SOURCES[k].lbl}${autoKey(k)?' °':''}</span>`;
   const ctx = [];
   if(C.ctx.synds.length) ctx.push((C.ctx.syndChoisi?(C.ctx.synds.length>1?'Syndromes retenus : ':'Syndrome retenu : '):'Syndromes suggérés : ')+C.ctx.synds.join(' + '));
