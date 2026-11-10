@@ -614,7 +614,8 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
         <div id="guide-changelog" style="font-size:12px;color:var(--ink);line-height:1.8">
           <div style="font-size:12px;line-height:1.65;margin-bottom:10px">
             <div style="font-weight:700;color:var(--jade);margin-bottom:4px">Gastro-entérologie (novembre 2026)</div>
-            <div>• Nouvelle spécialité <strong>Gastro-entérologie</strong> (Référentiel Sorbonne) : estomac (régurgitations acides, nausées et vomissements, douleur de l'estomac), hypochondre, intestins (douleur abdominale, ballonnement, constipation) et proctologie (hémorroïdes, fissure, fistule, abcès, prurit anal) — 12 motifs, 65 tableaux avec signes, langue, pouls, principe, points et points symptomatiques, et signes d'alerte. • Reconnue dans le motif (convergence des points), cherchable ; chapitre « Gastro-entérologie » du Référentiel MTC (21 tableaux : étiologies, clés du diagnostic, fiches de révision). Pas encore d'orientation automatique depuis l'examen.</div>
+            <div>• Nouvelle spécialité <strong>Gastro-entérologie</strong> (Référentiel Sorbonne) : estomac (régurgitations acides, nausées et vomissements, douleur de l'estomac), hypochondre, intestins (douleur abdominale, ballonnement, constipation) et proctologie (hémorroïdes, fissure, fistule, abcès, prurit anal) — 12 motifs, 65 tableaux avec signes, langue, pouls, principe, points et points symptomatiques, et signes d'alerte. • Reconnue dans le motif (convergence des points), cherchable ; chapitre « Gastro-entérologie » du Référentiel MTC (21 tableaux : étiologies, clés du diagnostic, fiches de révision). </div>
+            <div>• <strong>Orientation gastro-entérologique à l'examen</strong> : nouvelle carte « Digestion, abdomen, anus » (caractère du reflux, aspect du vomi, douleur, ballonnement, selles, anus, signes d'alerte). Avec les questions 4, 5, 6 et 8, la langue et le pouls, elle propose le motif et le tableau correspondants (d'après les clés du diagnostic du cours) et affiche les signes d'alerte (hémorragie digestive, abdomen aigu, difficulté à avaler, amaigrissement, jaunisse, sang dans les selles, abcès). Le protocole s'ouvre avec le tableau mis en évidence.</div>
           </div>
           <div style="font-size:12px;line-height:1.65;margin-bottom:10px">
             <div style="font-weight:700;color:var(--jade);margin-bottom:4px">ORL et maladies auto-immunes (novembre 2026)</div>
@@ -1761,6 +1762,72 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
         <input id="d-orl" style="display:none" oninput="markDirty();orlRafraichir()">
         <div id="orl-analyse-examen" style="margin-top:6px"></div>
       </div>
+      <div class="card" style="margin-top:12px" id="card-gastro">
+        <div class="ct">Digestion, abdomen, anus 脾胃</div>
+        <div style="font-size:11px;color:var(--slate);margin-bottom:6px">Complète les questions 4 (selles), 5 (appétit, goût, nausées), 6 (épigastre, abdomen) et 8 (bouche). L'orientation gastro-entérologique lit aussi les questions 1, 2, 3, 9, 10, la langue et le pouls.</div>
+        <div class="tr">
+          <div style="flex-basis:100%;font-size:10px;font-weight:700;color:#B9770E;text-transform:uppercase;letter-spacing:.4px;margin:6px 0 1px">Reflux et estomac</div>
+          <span class="tg" onclick="togEx(this,'d-gastro')">Reflux aggravé par le stress</span>
+          <span class="tg" onclick="togEx(this,'d-gastro')">Reflux aggravé par café / alcool / épices</span>
+          <span class="tg" onclick="togEx(this,'d-gastro')">Reflux en position allongée ou penchée</span>
+          <span class="tg" onclick="togEx(this,'d-gastro')">Reflux qui réveille la nuit (vers 1 h)</span>
+          <span class="tg" onclick="togEx(this,'d-gastro')">Éructations</span>
+          <span class="tg" onclick="togEx(this,'d-gastro')">Faim sans envie de manger</span>
+          <span class="tg" onclick="togEx(this,'d-gastro')">Douleur réveillant tôt le matin</span>
+          <div style="flex-basis:100%;font-size:10px;font-weight:700;color:#B9770E;text-transform:uppercase;letter-spacing:.4px;margin:6px 0 1px">Nausées et vomissements</div>
+          <span class="tg" onclick="togEx(this,'d-gastro')">Vomissements</span>
+          <span class="tg" onclick="togEx(this,'d-gastro')">Vomi acide et malodorant</span>
+          <span class="tg" onclick="togEx(this,'d-gastro')">Vomi d&#39;aliments non digérés</span>
+          <span class="tg" onclick="togEx(this,'d-gastro')">Vomissement sec</span>
+          <span class="tg" onclick="togEx(this,'d-gastro')">Vomi clair et fluide</span>
+          <span class="tg" onclick="togEx(this,'d-gastro')">Vomi de glaires</span>
+          <span class="tg" onclick="togEx(this,'d-gastro')">Nausée déclenchée par les odeurs</span>
+          <span class="tg" onclick="togEx(this,'d-gastro')">Nausée du matin</span>
+          <span class="tg" onclick="togEx(this,'d-gastro')">Soulagé après avoir vomi</span>
+          <span class="tg" onclick="togEx(this,'d-gastro')">Début brutal avec fièvre</span>
+          <div style="flex-basis:100%;font-size:10px;font-weight:700;color:#B9770E;text-transform:uppercase;letter-spacing:.4px;margin:6px 0 1px">Douleur et ballonnement</div>
+          <span class="tg" onclick="togEx(this,'d-gastro')">Douleur violente en crampes</span>
+          <span class="tg" onclick="togEx(this,'d-gastro')">Douleur en brûlure</span>
+          <span class="tg" onclick="togEx(this,'d-gastro')">Douleur nocturne</span>
+          <span class="tg" onclick="togEx(this,'d-gastro')">Douleur liée aux émotions</span>
+          <span class="tg" onclick="togEx(this,'d-gastro')">Douleur pendant les règles</span>
+          <span class="tg" onclick="togEx(this,'d-gastro')">Masse palpable</span>
+          <span class="tg" onclick="togEx(this,'d-gastro')">Après un repas copieux</span>
+          <span class="tg" onclick="togEx(this,'d-gastro')">Ballonnement dès le réveil</span>
+          <span class="tg" onclick="togEx(this,'d-gastro')">Ballonnement pire l&#39;après-midi</span>
+          <span class="tg" onclick="togEx(this,'d-gastro')">Ballonnement pire le soir / à la fatigue</span>
+          <span class="tg" onclick="togEx(this,'d-gastro')">Soulagé par les gaz ou les selles</span>
+          <span class="tg" onclick="togEx(this,'d-gastro')">Jaunisse (teint ou yeux jaunes)</span>
+          <span class="tg" onclick="togEx(this,'d-gastro')">Alternance fièvre-frissons</span>
+          <div style="flex-basis:100%;font-size:10px;font-weight:700;color:#B9770E;text-transform:uppercase;letter-spacing:.4px;margin:6px 0 1px">Selles</div>
+          <span class="tg" onclick="togEx(this,'d-gastro')">Selles en petits cailloux</span>
+          <span class="tg" onclick="togEx(this,'d-gastro')">Selles normales mais difficiles à expulser</span>
+          <span class="tg" onclick="togEx(this,'d-gastro')">Épuisé après la selle</span>
+          <span class="tg" onclick="togEx(this,'d-gastro')">Glaires dans les selles</span>
+          <span class="tg" onclick="togEx(this,'d-gastro')">Ténesme (fausse envie)</span>
+          <div style="flex-basis:100%;font-size:10px;font-weight:700;color:#B9770E;text-transform:uppercase;letter-spacing:.4px;margin:6px 0 1px">Anus</div>
+          <span class="tg" onclick="togEx(this,'d-gastro')">Hémorroïdes</span>
+          <span class="tg" onclick="togEx(this,'d-gastro')">Saignement anal (sang frais)</span>
+          <span class="tg" onclick="togEx(this,'d-gastro')">Prolapsus (hémorroïdes ou rectum)</span>
+          <span class="tg" onclick="togEx(this,'d-gastro')">Douleur anale à la selle</span>
+          <span class="tg" onclick="togEx(this,'d-gastro')">Fissure anale</span>
+          <span class="tg" onclick="togEx(this,'d-gastro')">Écoulement de pus anal</span>
+          <span class="tg" onclick="togEx(this,'d-gastro')">Gonflement douloureux de l&#39;anus</span>
+          <span class="tg" onclick="togEx(this,'d-gastro')">Démangeaisons anales</span>
+          <span class="tg" onclick="togEx(this,'d-gastro')">Démangeaisons pires la nuit</span>
+          <span class="tg" onclick="togEx(this,'d-gastro')">Zone anale humide / suintante</span>
+          <span class="tg" onclick="togEx(this,'d-gastro')">Grincement de dents la nuit</span>
+          <div style="flex-basis:100%;font-size:10px;font-weight:700;color:#B9770E;text-transform:uppercase;letter-spacing:.4px;margin:6px 0 1px">Signes d'alerte</div>
+          <span class="tg" onclick="togEx(this,'d-gastro')">Sang dans les vomissements</span>
+          <span class="tg" onclick="togEx(this,'d-gastro')">Selles noires</span>
+          <span class="tg" onclick="togEx(this,'d-gastro')">Amaigrissement inexpliqué</span>
+          <span class="tg" onclick="togEx(this,'d-gastro')">Difficulté à avaler</span>
+          <span class="tg" onclick="togEx(this,'d-gastro')">Ventre dur / douleur intense</span>
+          <span class="tg" onclick="togEx(this,'d-gastro')">Arrêt des gaz et des selles</span>
+          </div>
+        <input id="d-gastro" style="display:none" oninput="markDirty();gastroRafraichir()">
+        <div id="gastro-analyse-examen" style="margin-top:6px"></div>
+      </div>
 
       <!-- CONTEXTE ONCOLOGIQUE (17/10/2026) : orientation oncologique, avec les questions, la langue et le pouls -->
       <div class="card" style="margin-top:12px" id="card-onco">
@@ -2262,6 +2329,7 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
           <div id="pneumo-analyse-points" style="display:none;background:#EBF5FB;border-radius:6px;padding:6px 10px;margin-bottom:8px"></div>
           <div id="onco-analyse-points" style="display:none;background:#F4ECF7;border-radius:6px;padding:6px 10px;margin-bottom:8px"></div>
           <div id="orl-analyse-points" style="display:none;background:#F5EEF8;border-radius:6px;padding:6px 10px;margin-bottom:8px"></div>
+          <div id="gastro-analyse-points" style="display:none;background:#FEF5E7;border-radius:6px;padding:6px 10px;margin-bottom:8px"></div>
           <p id="spn-empty-msg" style="font-size:11px;color:var(--slate);font-style:italic">Sélectionnez une spécialité pour afficher ses domaines et motifs cliniques. D'autres spécialités du référentiel (ORL, pédiatrie…) seront ajoutées progressivement.</p>
           <div id="gyno-result-wrapper" style="display:none">
             <div id="gyno-result" style="font-size:12px"></div>
@@ -3878,6 +3946,7 @@ function navTo(pg){
   if((pg==='points' || pg==='examen') && typeof pneumoRafraichir==='function') setTimeout(pneumoRafraichir, 50);
   if((pg==='points' || pg==='examen') && typeof oncoRafraichir==='function') setTimeout(oncoRafraichir, 50);
   if((pg==='points' || pg==='examen') && typeof orlRafraichir==='function') setTimeout(orlRafraichir, 50);
+  if((pg==='points' || pg==='examen') && typeof gastroRafraichir==='function') setTimeout(gastroRafraichir, 50);
   if(pg==='fiche') setTimeout(toggleSAfield, 30);
   if(pg==='synthese') setTimeout(autoFillSynthese, 50);
   if(pg==='points'){
@@ -4165,7 +4234,7 @@ function loadSeance(sc){
     'palp-oreille':ex.palpOreille, 'palp-oreille-notes':ex.palpOreilleNotes,
     // Douleur
     'd-localisation':ex.dLocalisation, 'd-type':ex.dType, 'd-rythme':ex.dRythme,
-    'd-aggrave':ex.dAggrave, 'd-ameliore':ex.dAmeliore, 'd-rhumato':ex.dRhumato, 'd-psy':ex.dPsy, 'd-resp':ex.dResp, 'd-onco':ex.dOnco, 'd-orl':ex.dOrl, 'd-libre':ex.dLibre,
+    'd-aggrave':ex.dAggrave, 'd-ameliore':ex.dAmeliore, 'd-rhumato':ex.dRhumato, 'd-psy':ex.dPsy, 'd-resp':ex.dResp, 'd-onco':ex.dOnco, 'd-orl':ex.dOrl, 'd-gastro':ex.dGastro, 'd-libre':ex.dLibre,
     // Langue
     'l-forme':ex.lForme, 'l-epaisseur':ex.lEpaisseur, 'l-couleur':ex.lCouleur, 'l-couleur-loc':ex.lCouleurLoc,
     'l-enduit-couleur':ex.lEnduitCouleur, 'l-enduit-dist':ex.lEnduitDist,
@@ -4303,7 +4372,7 @@ function collectSc(){
     palpAhshiT:gT('palp-ahshi-t'),palpAhshi:g('palp-ahshi'),palpNotes:g('palp-notes'),
     palpOreille:gT('palp-oreille'),palpOreilleNotes:g('palp-oreille-notes'),
     dLocalisation:gT('d-localisation'),dType:gT('d-type'),dRythme:gT('d-rythme'),
-    dAggrave:gT('d-aggrave'),dAmeliore:gT('d-ameliore'),dRhumato:gT('d-rhumato'),dPsy:gT('d-psy'),dResp:gT('d-resp'),dOnco:gT('d-onco'),dOrl:gT('d-orl'),dLibre:g('d-libre'),dZones:g('d-zones')};
+    dAggrave:gT('d-aggrave'),dAmeliore:gT('d-ameliore'),dRhumato:gT('d-rhumato'),dPsy:gT('d-psy'),dResp:gT('d-resp'),dOnco:gT('d-onco'),dOrl:gT('d-orl'),dGastro:gT('d-gastro'),dLibre:g('d-libre'),dZones:g('d-zones')};
   sc.ccmq={};CQ.forEach(i=>{const v=g('c-'+i.n);if(v)sc.ccmq[i.n]=v;});
   const syndChk2=document.querySelectorAll('.pt-chk:checked:not(.ebm-chk):not(.auri-chk):not(.gyno-chk):not(.libre-chk)');
   const ebmChk2=document.querySelectorAll('.ebm-chk:checked');
@@ -10043,6 +10112,7 @@ function onSpnSpecChange(){
   if(typeof pneumoRafraichir==='function') pneumoRafraichir();
   if(typeof oncoRafraichir==='function') oncoRafraichir();
   if(typeof orlRafraichir==='function') orlRafraichir();
+  if(typeof gastroRafraichir==='function') gastroRafraichir();
   if(catSel) catSel.innerHTML = '<option value="">— Sélectionner —</option>' +
     spec.domaineOptions.map(o=>`<option value="${o.value}">${o.label}</option>`).join('');
   if(motifSel) motifSel.innerHTML = '<option value="">— Sélectionner un motif —</option>';
@@ -12442,8 +12512,151 @@ const GASTRO_DB = {
     "Prurit anal": {"syn": ["prurit anal", "demangeaisons anales", "demangeaison anale", "oxyures", "vers intestinaux"], "note": "Démangeaison de l'anus en l'absence de toute lésion (hémorroïdes, abcès, fissure, fistule). Causes occidentales : dermatite, eczéma, allergie locale (savon, papier toilette) ; allergie alimentaire (citron, bière, café, sodas, piments) ; diarrhée chronique et antibiotiques au long cours ; mauvaise hygiène, obésité ++ ; parasites (oxyures), Candida albicans, gale ; diabète, maladies du foie, maladie de Crohn. Points locaux constants : 1DM (ou 30V si douillet), 57V, Erbai ; + 31-34V pour la Chaleur-Humidité ; 58V + 54V si rougeur-gonflement ; 4MC + 10RP si saignement sévère. Hémorroïdes : Vent (saignement frais seul), sécheresse (constipation), Chaleur-Humidité (stades 2-3), vide de Qi (prolapsus : 20DM moxa), stase (thrombose : chirurgie souvent). Fissure = constipation à traiter ; fistule = chirurgie + MTC pour cicatriser ; abcès aigu : 12DM + 10DM ; prurit : 10RP + 31VB.", "syndromes": [{"nom": "Vent-Chaleur (système Biao-Li : Poumon → GI)", "signes": "Le Vent-Chaleur envahit le Poumon puis est transmis au GI, son entraille couplée. Prurit sporadique par temps chaud et humide ; muqueuse nasale et bouche sèches, toux sèche, gorge qui gratte, céphalée | Pouls fin et rapide, parfois flottant", "pp": ["4GI", "11GI", "3IG", "30V", "57V", "10RP", "31VB"], "ps": ["58V", "54V", "1DM", "14DM"], "tech": "Principe : Disperser le Vent, clarifier la Chaleur. Points : 4GI, 11GI (He du GI) : clarifient Vent-Chaleur et Chaleur-Humidité du GI et des Poumons ; 3IG (Shu-rivière, maître du Du Mai) : disperse le Vent (+ 62V) · 30V + 57V · 10RP : régule le Sang · 31VB : disperse le Vent, soulage le prurit. Symptomatiques : 58V + 54V + 1DM (sinon 30V +++) si rougeur et douleur anale · 4GI + 14DM si toux et mal de gorge."}, {"nom": "Chaleur-Humidité (candidose souvent)", "signes": "Prurit souvent sévère, pire la nuit et au stress ; zones génitales humides, parfois suintantes ; insomnie, réveils dus au prurit (mycose) ; migraine temporale, goût amer, yeux rouges ; selles collantes ou molles difficiles à expulser ; urines très concentrées ; surpoids, forte odeur corporelle (Chaleur-Humidité de la VB + stagnation du Qi du Foie : transpiration collante qui tache le linge, odeur forte sous les aisselles) | Pouls glissant, rapide — langue gonflée, rouge, enduit gras, épais et jaune", "pp": ["57V", "31VB", "31V", "32V", "33V", "34V", "25E", "37E", "10RP", "5F", "2F", "11GI"], "ps": ["58V", "30V", "1DM", "8F", "34VB"], "tech": "Cause : Mauvaise diététique, dysharmonie Foie-Rate : la Chaleur-Humidité descend dans le foyer inférieur et s'accumule dans l'anus et le rectum. Principe : Clarifier la Chaleur-Humidité du foyer inférieur, disperser le Vent, arrêter le prurit. Points : 57V · 31VB · 31V à 34V · 25E + 37E ; 10RP : clarifie la Chaleur du Sang, disperse le Vent, arrête le prurit ; 5F (Luo du Foie) : clarifie la Chaleur-Humidité du Foie et du foyer inférieur · 2F (Ying-Feu) : clarifie le Feu du Foie · 11GI. Symptomatiques : 58V + 30V si rougeur et gonflement sévères · 1DM + 8F si prurit sévère · 34VB si migraine temporale."}, {"nom": "Vide de Sang + Vent interne", "signes": "Le Sang insuffisant ne remplit pas les vaisseaux et se transforme en Vent interne. Prurit chronique, modéré le jour, pire la nuit, à la fatigue, au froid ou après les règles ; atteint les organes génitaux externes ; peau sèche ou épaisse ; fatigue, ongles et conjonctives pâles ; insomnie d'endormissement, réveils dus au prurit ; vertige positionnel | Langue fine et pâle, enduit humide — pouls fin et faible", "pp": ["30V", "57V", "4RM", "6RP", "12RM", "36E", "20V", "10RP", "31VB"], "ps": [], "tech": "Principe : Nourrir le Sang, disperser le Vent, calmer le prurit. Points : 30V + 57V : expulsent le Vent, calment le prurit · 4RM moxa : nourrit le Yuan Qi · + 6RP : nourrit le Sang ; 12RM moxa · 36E moxa · 20V moxa : tiédissent Rate-Estomac pour produire le Sang ; 10RP : régule le Sang, disperse le Vent, arrête le prurit · 31VB."}, {"nom": "Parasites", "signes": "Prurit anal, douleur abdominale intermittente, distension ; faim excessive ou perte d'appétit, sensibilités alimentaires ; grincement des dents, cernes sombres. Si vide chronique de Sang et de Qi : peau et teint pâles, fatigue, vertige positionnel | Langue mince, pâle, enduit mince et humide — pouls fin et faible", "pp": ["12RM", "13F", "25E", "36E", "3RP", "6RP", "20V", "21V"], "ps": [], "tech": "Principe : Renforcer Rate et Estomac ; traitement antiparasitaire (prescription médicale). Points : 12RM moxa · 13F (Mu de la Rate) : renforce le Qi de Rate, draine le Qi du Foie · 25E (Mu du GI) ; 36E moxa · 3RP (point Terre, Shu-rivière) : renforce la Rate, transforme l'Humidité · 6RP · 20V · 21V."}]}
   }}
 };
-function _gastroSugg(){ return new Map(); }
-function _convGastro(mt, impose){ return _convCours(GASTRO_DB, mt, impose, null); }
+function _gastroSugg(cat, motif){ return new Map(gastroAnalyse().filter(s => s.cat===cat && s.motif===motif && s.idx!=null).map(s => [s.idx, s])); }
+// ── Orientation gastro-entérologique d'après l'examen (10/11/2026) ──
+// Lit la carte « Digestion, abdomen, anus » (d-gastro), les questions 1 à 10, la langue et le pouls. Motif évoqué d'abord
+// (porte), puis tableau départagé par ses signes (cours : clés du diagnostic, signes des tableaux). Proposition seulement.
+function gastroAnalyse(){
+  const V = _rhVals, tq = q => Array.from(document.querySelectorAll('#tr-'+q+' .tg.on')).map(t=>t.textContent);
+  const Q1=tq('q1'), Q2=tq('q2'), Q3=tq('q3'), Q4=tq('q4'), Q5=tq('q5'), Q6=tq('q6'), Q7=tq('q7'), Q8=tq('q8'), Q9=tq('q9'), Q10=tq('q10');
+  const S = V('d-gastro');
+  const LC=V('l-couleur'), LE=V('l-enduit-couleur'), LL=V('l-couleur-loc'), LH=V('l-humidite'), LF=V('l-forme');
+  const P=[].concat(V('pq'),V('pq-force'),V('pq-forme'),V('pq-freq'),V('pq-prof'));
+  const has=(a,x)=>a.includes(x), any=(a,re)=>a.some(x=>re.test(x)), pouls=re=>any(P,re), g=x=>has(S,x);
+  const rouge=any(LC,/^Rouge/), pale=has(LC,'Pâle'), violet=any(LC,/Violacé/)||any(LL,/violac/i), sansEnduit=has(LE,'Absent (langue miroir)');
+  const jaune=any(LE,/^Jaune/), gras=any(LH,/Gras|Collant/)||any(LE,/épais/i), sec=any(LH,/Sec/), gonflee=any(LF,/Gonflée/), empreintes=has(LF,'Marques de dents');
+  const bordsRouges=any(LL,/Bords rouges/);
+  const rapide=pouls(/Rapide|Précipité/), lent=pouls(/Lent/), glissant=pouls(/Glissant/), corde=pouls(/corde/), fin=pouls(/^Fin/), faible=pouls(/Vide|Ténu|Épuisé|Mou/), profond=pouls(/Profond/), surface=pouls(/Superficiel/), serre=pouls(/Serré/), rugueux=pouls(/Rugueux/);
+  const fievre=has(Q1,'Fièvre'), frissons=has(Q1,'Frissons'), fatigue=any(Q9,/^Fatigue|Manque de tonus|Coup de pompe/);
+  const froid=has(Q1,'Froid permanent')||has(Q1,'Aggravé par le froid')||has(Q6,'Amélioré par chaleur')||has(Q5,'Préfère chaud');
+  const soifFroid=has(Q8,'Soif intense boissons froides')||has(Q5,'Préfère froid'), amer=has(Q5,'Goût amer');
+  const colere=has(Q10,'Irritabilité')||has(Q10,'Colère facile')||has(Q10,'Frustration'), stress=g('Reflux aggravé par le stress')||g('Douleur liée aux émotions')||has(Q4,'Diarrhée après stress');
+  const hypoch=has(Q6,'Douleur flancs droit')||has(Q6,'Douleur flancs gauche');
+  const cFoie=[[colere,1,'irritabilité, frustration'],[stress,1,'lié au stress'],[corde,1,'pouls tendu'],[bordsRouges,1,'bords de langue rouges'],[hypoch,1,'hypochondres']];
+  const cChal=[[soifFroid,1,'soif ou préférence pour le froid'],[has(Q8,'Halitose'),1,'mauvaise haleine'],[rouge&&jaune,1,'langue rouge, enduit jaune'],[rapide,1,'pouls rapide'],[has(Q5,'Faim rapide après repas')||has(Q5,'Appétit excessif'),1,'faim excessive']];
+  const cAlim=[[g('Après un repas copieux'),1,'après un repas copieux'],[has(Q6,'Aggravé après repas'),1,'aggravé par les repas'],[has(Q6,'Aggravé par pression'),1,'aggravé par la pression'],[g('Soulagé après avoir vomi')||g('Soulagé par les gaz ou les selles')||g('Éructations'),1,'soulagé par éructation, vomissement ou selle'],[gras,1,'enduit épais']];
+  const cMuco=[[gras,1,'enduit gras'],[glissant,1,'pouls glissant'],[has(Q3,'Lourdeur corps')||has(Q3,'Lourdeur tête'),1,'lourdeur'],[g('Nausée déclenchée par les odeurs')||g('Vomi de glaires')||g('Glaires dans les selles'),1,'glaires, sensibilité aux odeurs'],[gonflee,1,'langue gonflée']];
+  const cVide=[[pale,1,'langue pâle'],[empreintes,1,'empreintes dentaires'],[has(Q4,'Selles molles'),1,'selles molles'],[has(Q5,'Peu d\'appétit'),1,'appétit faible'],[has(Q6,'Amélioré par pression')||has(Q6,'Amélioré après repas'),1,'amélioré par la pression ou le repas'],[faible,1,'pouls faible'],[fatigue,1,'fatigue']];
+  const cYin=[[rouge&&sansEnduit,2,'langue rouge sans enduit'],[has(Q8,'Bouche sèche nocturne')||has(Q8,'Gorge sèche'),1,'bouche sèche'],[has(Q4,'Selles sèches dures'),1,'selles sèches'],[fin&&rapide,1,'pouls fin et rapide'],[g('Faim sans envie de manger'),1,'faim sans envie de manger']];
+  const cStase=[[has(Q6,'Douleur fixe'),2,'douleur fixe'],[g('Douleur nocturne'),1,'douleur nocturne'],[violet,1,'langue violacée'],[rugueux,1,'pouls rugueux'],[g('Masse palpable'),1,'masse palpable']];
+  const cFroid=[[g('Douleur violente en crampes'),2,'douleur violente en crampes'],[has(Q6,'Amélioré par chaleur'),1,'calmée par la chaleur'],[has(Q5,'Préfère chaud')||has(Q5,'Soif intense boissons chaudes'),1,'désir de chaud'],[serre,1,'pouls serré']];
+  const R=[];
+  const regle=(cat,motif,nom,porte,crit,seuil)=>{ if(!porte) return; const ok=crit.filter(c=>c[0]); const sc=ok.reduce((a,c)=>a+c[1],0);
+    if(sc>=(seuil||3)){ const M=GASTRO_DB[cat].motifs[motif]; const i=M.syndromes.findIndex(s=>s.nom===nom);
+      R.push({cat, motif, idx:i>=0?i:null, nom, score:sc, raisons:ok.map(c=>c[2])}); } };
+  const N=(i,c,m)=>GASTRO_DB[c].motifs[m].syndromes[i].nom;
+  // Estomac
+  const E='estomac', MR='Régurgitations acides (reflux)', pr = has(Q5,'Renvois acides')||has(Q5,'Régurgitations')||has(Q6,'Brûlures épigastriques')||any(S,/^Reflux/);
+  regle(E,MR,N(0,E,MR),pr,[[g('Reflux aggravé par le stress'),2,'reflux de stress']].concat(cFoie));
+  regle(E,MR,N(1,E,MR),pr,[[g('Reflux aggravé par café / alcool / épices'),2,'aggravé par café, alcool, épices'],[amer,1,'goût amer']].concat(cChal));
+  regle(E,MR,N(2,E,MR),pr,cMuco);
+  regle(E,MR,N(3,E,MR),pr,cAlim);
+  regle(E,MR,N(4,E,MR),pr,[[g('Reflux en position allongée ou penchée'),2,'reflux allongé ou penché'],[froid,1,'froid']].concat(cVide),4);
+  regle(E,MR,N(5,E,MR),pr,[[g('Reflux qui réveille la nuit (vers 1 h)'),2,'reflux nocturne vers 1 h']].concat(cYin));
+  const MN='Nausées et vomissements', pn = has(Q5,'Nausées')||any(S,/^Vomi|^Nausée|^Vomissement/);
+  regle(E,MN,N(0,E,MN),pn,[[g('Début brutal avec fièvre'),2,'début brutal avec fièvre'],[fievre,1,'fièvre'],[frissons,1,'frissons'],[surface,1,'pouls superficiel']]);
+  regle(E,MN,N(1,E,MN),pn,[[g('Vomi d\'aliments non digérés'),1,'vomi d\'aliments non digérés'],[g('Vomi acide et malodorant'),1,'vomi acide']].concat(cAlim));
+  regle(E,MN,N(2,E,MN),pn,[[g('Nausée du matin'),1,'nausée du matin']].concat(cMuco));
+  regle(E,MN,N(3,E,MN),pn,cFoie);
+  regle(E,MN,N(4,E,MN),pn,[[froid,1,'froid'],[g('Vomi clair et fluide'),1,'vomi clair']].concat(cVide),4);
+  regle(E,MN,N(5,E,MN),pn,[[g('Vomissement sec'),2,'vomissement sec']].concat(cYin));
+  const ME='Douleur de l\'estomac (épigastralgie)', pe = has(Q6,'Douleur épigastrique')||has(Q6,'Brûlures épigastriques');
+  regle(E,ME,N(0,E,ME),pe,cFroid);
+  regle(E,ME,N(1,E,ME),pe,cAlim);
+  regle(E,ME,N(2,E,ME),pe,[[g('Douleur liée aux émotions'),2,'liée aux émotions'],[has(Q9,'Réveils 1h-3h (Foie)'),1,'réveil 1 h-3 h']].concat(cFoie));
+  regle(E,ME,N(3,E,ME),pe,[[g('Douleur en brûlure')||has(Q6,'Brûlures épigastriques'),2,'douleur en brûlure']].concat(cChal),4);
+  regle(E,ME,N(4,E,ME),pe,cStase);
+  regle(E,ME,N(5,E,ME),pe,[[froid,1,'calmée par la chaleur']].concat(cVide),4);
+  regle(E,ME,N(6,E,ME),pe,[[g('Douleur réveillant tôt le matin'),1,'réveil matinal par la douleur']].concat(cYin));
+  // Hypochondre
+  const FO='foie', MH='Douleur de l\'hypochondre', jaun=g('Jaunisse (teint ou yeux jaunes)'), ph = hypoch||jaun;
+  regle(FO,MH,N(0,FO,MH),ph,cFoie.filter(c=>c[2]!=='hypochondres').concat([[has(Q10,'Tristesse')||has(Q10,'Labilité émotionnelle'),1,'humeur changeante']]));
+  regle(FO,MH,N(1,FO,MH),ph,[[jaun,2,'jaunisse'],[g('Alternance fièvre-frissons')||has(Q1,'Alternance froid/chaud'),1,'alternance fièvre-frissons'],[has(Q4,'Urines foncées')||has(Q4,'Brûlures urinaires'),1,'urines foncées'],[gras&&jaune,1,'enduit gras jaune'],[rapide,1,'pouls rapide'],[amer,1,'goût amer']]);
+  regle(FO,MH,N(2,FO,MH),ph,cStase);
+  regle(FO,MH,N(3,FO,MH),ph,[[has(Q7,'Yeux secs')||has(Q7,'Vision trouble'),1,'yeux secs, vision trouble'],[has(Q6,'Amélioré par pression'),1,'soulagé par la pression']].concat(cYin));
+  // Intestins
+  const I='intestins', MA='Douleur abdominale', regles=g('Douleur pendant les règles'), pa = has(Q6,'Douleur hypogastrique')||has(Q6,'Douleur ombilicale')||regles;
+  regle(I,MA,N(0,I,MA),pa,[[frissons,1,'frissons'],[surface,1,'pouls superficiel']].concat(cFroid));
+  regle(I,MA,N(1,I,MA),pa&&!g('Douleur violente en crampes'),[[has(Q6,'Amélioré par chaleur'),1,'calmée par la chaleur'],[has(Q1,'Froid permanent'),1,'frilosité'],[pale,1,'langue pâle'],[faible,1,'pouls faible'],[has(Q4,'Selles molles'),1,'selles molles'],[has(Q6,'Amélioré par pression'),1,'soulagée par le massage']]);
+  regle(I,MA,N(2,I,MA),pa&&!regles,[[has(Q4,'Selles malodorantes'),1,'selles malodorantes'],[has(Q4,'Constipation'),1,'constipation'],[has(Q6,'Aggravé par pression'),1,'aggravée par la pression']].concat(cChal),4);
+  regle(I,MA,N(3,I,MA),regles,[[regles,1,'douleur des règles']].concat(cChal));
+  regle(I,MA,N(4,I,MA),pa,[[g('Douleur liée aux émotions'),2,'liée aux émotions'],[has(Q6,'Douleur mobile / crampes'),1,'douleur mobile']].concat(cFoie));
+  regle(I,MA,N(5,I,MA),pa&&!regles,[[g('Glaires dans les selles')||has(Q4,'Sang dans les selles'),1,'glaires ou sang dans les selles']].concat(cStase));
+  regle(I,MA,N(6,I,MA),regles,[[regles,1,'douleur des règles']].concat(cStase));
+  regle(I,MA,N(7,I,MA),pa,cAlim);
+  const MD='Distension et ballonnement abdominal', pd = has(Q6,'Distension abdominale')||any(S,/^Ballonnement/);
+  regle(I,MD,N(0,I,MD),pd,cAlim);
+  regle(I,MD,N(1,I,MD),pd,[[g('Ballonnement dès le réveil'),2,'dès le réveil']].concat(cMuco));
+  regle(I,MD,N(2,I,MD),pd,cFoie);
+  regle(I,MD,N(3,I,MD),pd&&any(Q6,/Essoufflement/),[[true,1,'essoufflement'],[has(Q2,'Sueurs spontanées diurnes'),1,'transpiration spontanée'],[faible||profond,1,'pouls profond, faible'],[pale,1,'langue pâle']]);
+  regle(I,MD,N(4,I,MD),pd,[[g('Ballonnement pire l\'après-midi'),2,'pire l\'après-midi'],[has(Q4,'Selles malodorantes'),1,'selles malodorantes'],[gras&&jaune,1,'enduit gras jaune'],[amer,1,'bouche amère'],[glissant&&rapide,1,'pouls glissant et rapide']]);
+  regle(I,MD,N(5,I,MD),pd,[[g('Ballonnement pire le soir / à la fatigue'),1,'pire le soir, à la fatigue']].concat(cVide),4);
+  regle(I,MD,N(6,I,MD),pd&&froid,[[froid,2,'froid, amélioré par la chaleur']].concat(cVide),4);
+  regle(I,MD,N(7,I,MD),pd,cYin,4);
+  const MC='Constipation', pc = has(Q4,'Constipation')||has(Q4,'Selles sèches dures')||g('Selles en petits cailloux')||g('Selles normales mais difficiles à expulser')||g('Épuisé après la selle');
+  regle(I,MC,N(0,I,MC),pc,[[g('Selles en petits cailloux'),2,'selles en petits cailloux']].concat(cChal));
+  regle(I,MC,N(1,I,MC),pc,[[has(Q4,'Selles collantes'),1,'selles collantes']].concat(cAlim));
+  regle(I,MC,N(2,I,MC),pc,[[g('Selles normales mais difficiles à expulser'),2,'selles normales difficiles à expulser'],[has(Q4,'Selles incomplètes'),1,'évacuation incomplète'],[stress||colere,1,'stress'],[corde,1,'pouls tendu']]);
+  regle(I,MC,N(3,I,MC),pc,[[g('Glaires dans les selles'),2,'glaires'],[has(Q4,'Selles collantes'),1,'selles collantes'],[gras,1,'enduit gras'],[glissant,1,'pouls glissant'],[g('Ténesme (fausse envie)'),1,'ténesme']]);
+  regle(I,MC,N(4,I,MC),pc&&pale&&!gonflee,[[pale,1,'teint et langue pâles'],[has(Q6,'Palpitations'),1,'palpitations'],[fin,1,'pouls fin'],[has(Q7,'Yeux secs'),1,'yeux secs'],[has(Q4,'Selles sèches dures'),1,'selles dures']]);
+  regle(I,MC,N(5,I,MC),pc,[[g('Selles normales mais difficiles à expulser'),1,'efforts pour des selles non dures'],[faible,1,'pouls faible'],[pale,1,'langue pâle'],[empreintes,1,'empreintes dentaires'],[any(Q6,/Essoufflement/),1,'souffle court'],[fatigue,1,'fatigue']],4);
+  regle(I,MC,N(6,I,MC),pc,cYin);
+  regle(I,MC,N(7,I,MC),pc,[[g('Épuisé après la selle'),2,'épuisé après la selle'],[froid,1,'froid'],[has(Q4,'Urines claires abondantes'),1,'urines claires abondantes'],[pale,1,'langue pâle'],[profond&&lent,1,'pouls profond et lent']]);
+  // Proctologie
+  const PR='procto', saign=g('Saignement anal (sang frais)'), prol=g('Prolapsus (hémorroïdes ou rectum)'), gonfl=g('Gonflement douloureux de l\'anus'), douleurA=g('Douleur anale à la selle');
+  const MHe='Hémorroïdes', phe = g('Hémorroïdes')||(saign&&!g('Fissure anale'))||prol;
+  regle(PR,MHe,N(0,PR,MHe),phe&&!douleurA&&!prol&&!gonfl,[[saign,2,'saignement de sang frais'],[true,1,'sans douleur ni prolapsus']]);
+  regle(PR,MHe,N(1,PR,MHe),phe,[[has(Q4,'Constipation')||has(Q4,'Selles sèches dures')||g('Selles en petits cailloux'),2,'constipation, selles sèches'],[fin&&rapide,1,'pouls fin et rapide'],[sec,1,'langue sèche']]);
+  regle(PR,MHe,N(2,PR,MHe),phe,[[saign,1,'saignement'],[prol,1,'hémorroïdes qui sortent'],[gras&&jaune,1,'enduit gras jaune'],[corde&&rapide,1,'pouls tendu et rapide'],[gonfl,1,'gonflement douloureux']]);
+  regle(PR,MHe,N(3,PR,MHe),phe,[[prol,2,'prolapsus'],[pale||empreintes,1,'langue pâle, indentée'],[faible,1,'pouls faible'],[fatigue,1,'fatigue']]);
+  regle(PR,MHe,N(4,PR,MHe),phe,[[gonfl,2,'gonflement douloureux (thrombose)'],[violet,1,'langue pourpre'],[rugueux,1,'pouls rugueux']]);
+  const MFi='Fissure anale', pfi = g('Fissure anale')||(douleurA&&!g('Hémorroïdes'));
+  regle(PR,MFi,N(0,PR,MFi),pfi,[[g('Selles en petits cailloux')||has(Q4,'Selles sèches dures'),1,'selles dures'],[rouge,1,'langue rouge'],[corde&&rapide,1,'pouls tendu et rapide'],[saign,1,'sang frais sur les selles'],[soifFroid,1,'soif']]);
+  regle(PR,MFi,N(1,PR,MFi),pfi,[[g('Démangeaisons anales'),1,'prurit anal'],[g('Ténesme (fausse envie)'),1,'ténesme'],[gras&&jaune,1,'enduit gras jaune'],[has(Q4,'Selles collantes'),1,'selles collantes']]);
+  regle(PR,MFi,N(2,PR,MFi),pfi,[[fin,1,'pouls fin'],[faible,1,'pouls faible'],[pale,1,'langue pâle'],[sec,1,'langue sèche'],[has(Q4,'Selles sèches dures'),1,'selles sèches']]);
+  const pus=g('Écoulement de pus anal'), MFs='Fistule anale', pfs = pus&&!gonfl;
+  regle(PR,MFs,N(0,PR,MFs),pfs,[[douleurA,1,'douleur anale'],[amer,1,'goût amer'],[gras&&jaune,1,'enduit gras jaune'],[has(Q1,'Chaleur vespérale (après-midi)'),1,'fièvre de l\'après-midi'],[has(Q4,'Selles collantes'),1,'selles collantes']]);
+  regle(PR,MFs,N(1,PR,MFs),pfs,[[pale,1,'teint et langue pâles'],[faible,1,'pouls faible'],[fatigue,1,'fatigue'],[has(Q2,'Sueurs spontanées diurnes'),1,'transpiration spontanée'],[has(Q4,'Selles molles'),1,'selles molles']]);
+  regle(PR,MFs,N(2,PR,MFs),pfs,[[has(Q2,'Sueurs nocturnes'),1,'sueurs nocturnes']].concat(cYin));
+  const MAb='Abcès anal', pab = gonfl&&!g('Hémorroïdes');
+  regle(PR,MAb,N(0,PR,MAb),pab,[[gonfl,2,'anus rouge, gonflé, douloureux'],[fievre,1,'fièvre'],[frissons,1,'frissons'],[rapide,1,'pouls rapide']]);
+  regle(PR,MAb,N(1,PR,MAb),pab||pus,[[pus,1,'écoulement intermittent'],[has(Q2,'Sueurs nocturnes'),1,'sueurs nocturnes'],[has(Q1,'Chaleur vespérale (après-midi)'),1,'fièvre vespérale'],[rouge&&sansEnduit,1,'langue rouge sans enduit'],[fin&&rapide,1,'pouls fin et rapide']],4);
+  regle(PR,MAb,N(2,PR,MAb),pab||pus,[[pus,1,'écoulement de liquide clair'],[pale,1,'langue pâle'],[faible,1,'pouls faible'],[fatigue,1,'fatigue'],[has(Q4,'Selles molles'),1,'selles molles']],4);
+  const MPr='Prurit anal', ppr = g('Démangeaisons anales')||g('Démangeaisons pires la nuit');
+  regle(PR,MPr,N(0,PR,MPr),ppr&&!g('Zone anale humide / suintante'),[[surface,1,'pouls superficiel'],[fin&&rapide,1,'pouls fin et rapide'],[has(Q6,'Toux')||has(Q8,'Gorge sèche'),1,'toux, gorge sèche'],[rouge,1,'langue rouge']]);
+  regle(PR,MPr,N(1,PR,MPr),ppr,[[g('Zone anale humide / suintante'),2,'zone humide, suintante'],[g('Démangeaisons pires la nuit'),1,'pire la nuit'],[gras&&jaune,1,'enduit gras jaune'],[glissant&&rapide,1,'pouls glissant et rapide']]);
+  regle(PR,MPr,N(2,PR,MPr),ppr&&!g('Zone anale humide / suintante'),[[g('Démangeaisons pires la nuit'),1,'pire la nuit'],[pale,1,'langue pâle'],[fin,1,'pouls fin'],[faible,1,'pouls faible']]);
+  regle(PR,MPr,N(3,PR,MPr),ppr,[[g('Grincement de dents la nuit'),2,'grincement de dents'],[has(Q5,'Appétit excessif')||has(Q5,'Peu d\'appétit'),1,'appétit perturbé'],[has(Q6,'Douleur ombilicale')||has(Q6,'Distension abdominale'),1,'douleur, distension abdominales']]);
+  // Motif seul si aucun tableau ne se détache
+  const motif=(porte,cat,m,raisons)=>{ if(porte && !R.some(r=>r.motif===m)) R.push({cat,motif:m,idx:null,nom:m,score:1.5,raisons}); };
+  motif(pr,E,MR,['reflux']); motif(pn,E,MN,['nausées, vomissements']); motif(pe,E,ME,['douleur épigastrique']); motif(ph,FO,MH,['hypochondre']);
+  motif(pa,I,MA,['douleur abdominale']); motif(pd,I,MD,['distension']); motif(pc,I,MC,['constipation']);
+  motif(phe,PR,MHe,['hémorroïdes']); motif(pfi,PR,MFi,['fissure']); motif(pfs,PR,MFs,['écoulement de pus']); motif(pab,PR,MAb,['anus gonflé']); motif(ppr,PR,MPr,['prurit anal']);
+  return R.sort((a,b)=>b.score-a.score);
+}
+function gastroAnalyseHTML(){
+  const S = _rhVals('d-gastro'), Q4 = Array.from(document.querySelectorAll('#tr-q4 .tg.on')).map(t=>t.textContent);
+  const al = [];
+  if(S.includes('Sang dans les vomissements') || S.includes('Selles noires')) al.push('Vomissement de sang ou selles noires : hémorragie digestive possible, urgence médicale (15).');
+  if(S.includes('Ventre dur / douleur intense') || S.includes('Arrêt des gaz et des selles')) al.push('Ventre dur, douleur intense ou arrêt des gaz et des selles : urgence (occlusion, péritonite, appendicite).');
+  if(S.includes('Difficulté à avaler') || S.includes('Amaigrissement inexpliqué')) al.push('Difficulté à avaler ou amaigrissement inexpliqué : avis gastro-entérologique (endoscopie) avant de traiter.');
+  if(S.includes('Jaunisse (teint ou yeux jaunes)')) al.push('Jaunisse : bilan hépatique et biliaire.');
+  if(Q4.includes('Sang dans les selles') || S.includes('Saignement anal (sang frais)')) al.push('Sang dans les selles : éliminer une autre cause (polype, cancer colorectal, maladie inflammatoire) avant de l\'attribuer aux hémorroïdes.');
+  if(S.includes('Gonflement douloureux de l\'anus') && Array.from(document.querySelectorAll('#tr-q1 .tg.on')).some(t=>t.textContent==='Fièvre')) al.push('Anus gonflé et fièvre : abcès probable, avis chirurgical.');
+  let h = al.map(t => '<div style="font-size:11px;color:#922B21;background:#FDEDEC;border-radius:6px;padding:5px 9px;margin-bottom:4px">⚠️ '+_rhEsc(t)+'</div>').join('');
+  const L = gastroAnalyse().slice(0,3);
+  if(!L.length) return h + '<div style="font-size:11px;color:var(--slate);font-style:italic">Orientation gastro-entérologique : renseignez cette carte et les questions 4, 5, 6 et 8, avec les questions 1, 2, 3, 9, 10, la langue et le pouls.</div>';
+  return h + '<div style="font-size:11px;font-weight:700;color:#B9770E;margin-bottom:3px">Orientation gastro-entérologique (référentiel Sorbonne) — proposition à confirmer</div>'
+    + L.map(r => '<div style="font-size:11px;margin:2px 0">• <strong>'+_rhEsc(r.nom)+'</strong>'+(r.idx!=null?' <span style="color:var(--slate)">— '+_rhEsc(r.motif)+'</span>':'')+' <span style="color:var(--slate)">('+_rhEsc(r.raisons.join(', '))+')</span> '
+      + '<button class="btn" style="font-size:10px;padding:1px 7px" onclick="gastroOuvrir(\''+r.cat+'\',\''+_rhEsc(r.motif).replace(/'/g,"\\'")+'\',\''+_rhEsc(r.idx==null?'':r.nom).replace(/'/g,"\\'")+'\')">→ Protocole</button></div>').join('');
+}
+function gastroRafraichir(){
+  ['gastro-analyse-examen','gastro-analyse-points'].forEach(id => { const el = document.getElementById(id); if(el) el.innerHTML = gastroAnalyseHTML(); });
+  const spec = (document.getElementById('spn-spec')||{}).value;
+  const pts = document.getElementById('gastro-analyse-points'); if(pts) pts.style.display = spec==='gastro' ? '' : 'none';
+}
+function gastroOuvrir(cat, motif, synd){ navTo('points'); spnOuvrir('gastro', cat, motif, synd||''); gastroRafraichir(); }
+function _convGastro(mt, impose){ return _convCours(GASTRO_DB, mt, impose, gastroAnalyse); }
 
 // ══════ Recherche dans le Référentiel Sorbonne Paris Nord (13/10/2026) ══════
 // Parcourt toutes les spécialités proposées pour ce patient (titres de motifs, mots-clés du cours, noms
@@ -12529,6 +12742,7 @@ function spnOuvrir(spec, cat, motif, synd){
   if(typeof pneumoRafraichir==='function') pneumoRafraichir();
   if(typeof oncoRafraichir==='function') oncoRafraichir();
   if(typeof orlRafraichir==='function') orlRafraichir();
+  if(typeof gastroRafraichir==='function') gastroRafraichir();
   const res = document.getElementById('gyno-result'); if(!res) return;
   let cible = null;
   if(synd){
@@ -14050,6 +14264,7 @@ function togEx(el, inputId) {
   if(/^(d-resp|e-resp|l-.*|pq.*)$/.test(inputId) && typeof pneumoRafraichir==='function') pneumoRafraichir();
   if(/^(d-onco|l-.*|pq.*)$/.test(inputId) && typeof oncoRafraichir==='function') oncoRafraichir();
   if(/^(d-orl|d-resp|l-.*|pq.*)$/.test(inputId) && typeof orlRafraichir==='function') orlRafraichir();
+  if(/^(d-gastro|l-.*|pq.*)$/.test(inputId) && typeof gastroRafraichir==='function') gastroRafraichir();
 }
 
 // ══════ SCHÉMA DE LA LANGUE (dessin vivant + zones cliquables) ══════
