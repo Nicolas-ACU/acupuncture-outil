@@ -614,9 +614,10 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
         <div id="guide-changelog" style="font-size:12px;color:var(--ink);line-height:1.8">
           <div style="font-size:12px;line-height:1.65;margin-bottom:10px">
             <div style="font-weight:700;color:var(--jade);margin-bottom:4px">ORL et maladies auto-immunes (novembre 2026)</div>
+            <div>• <strong>Orientation ORL à l'examen</strong> : nouvelle carte « Oreille, œil, nez, gorge, bouche » (acouphène unilatéral ou fluctuant, surdité brutale, otalgie, œil douloureux, saignement de nez, perte de l'odorat, sinus, amygdales, perte de voix, aphtes, gencives, douleur dentaire…). Avec les questions 7 et 8, la carte respiratoire, la langue et le pouls, elle propose le motif et le tableau ORL correspondants, avec les signes d'alerte (surdité brutale, œil rouge douloureux, mastoïdite, phlegmon, maladie de Behçet). Le protocole s'ouvre avec ce tableau mis en évidence.</div>
             <div>• Nouvelle spécialité <strong>ORL</strong> (Référentiel Sorbonne) : oreille (acouphènes et surdité, vertiges et Ménière, surdité brusque, otites), œil (conjonctivite, kératite, œil sec, glaucome, orgelet), nez (rhinite aiguë, rhinite allergique, sinusite, épistaxis, anosmie), gorge (angine, laryngite et aphonie), bouche (aphtes, gingivite, douleur dentaire, trismus), avec signes d'alerte. Notations des supports corrigées (45V Yixi, 17V Ge Shu, 17TR dans la surdité brusque…).</div>
             <div>• Nouvelle spécialité <strong>Maladies auto-immunes</strong> (cours complémentaire SAMP) : terrain inflammatoire chronique en 8 tableaux (stagnation du Qi du Foie, Chaleur toxique, Chaleur-Humidité, vide de Rate, vide de Yin et vide de Yang des Reins, stase, Feu du Cœur) et pathogène résiduel par couche (Qi, Yang Ming, Chaleur-Humidité, Shao Yang, Ying, Sang). Rappel : jamais d'arrêt de corticoïde sans le prescripteur.</div>
-            <div>• Les deux sont reconnues dans le motif (convergence des points), cherchables, et ont leur chapitre dans le Référentiel MTC (ORL : 23 tableaux ; maladies auto-immunes : 10 tableaux). Pas encore d'orientation automatique depuis l'examen pour ces deux spécialités.</div>
+            <div>• Les deux sont reconnues dans le motif (convergence des points), cherchables, et ont leur chapitre dans le Référentiel MTC (ORL : 23 tableaux ; maladies auto-immunes : 10 tableaux). Orientation automatique depuis l'examen : ORL oui (ci-dessus), maladies auto-immunes pas encore.</div>
           </div>
           <div style="font-size:12px;line-height:1.65;margin-bottom:10px">
             <div style="font-weight:700;color:var(--jade);margin-bottom:4px">Psychiatrie : insomnies et addictions (novembre 2026)</div>
@@ -1700,6 +1701,55 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
         <input id="d-resp" style="display:none" oninput="markDirty();pneumoRafraichir()">
         <div id="pneumo-analyse-examen" style="margin-top:6px"></div>
       </div>
+      <div class="card" style="margin-top:12px" id="card-orl">
+        <div class="ct">Oreille, œil, nez, gorge, bouche 耳鼻喉</div>
+        <div style="font-size:11px;color:var(--slate);margin-bottom:6px">Complète la question 7 (oreilles, yeux), la question 8 (bouche, gorge) et la carte « Respiration, toux, nez et gorge ». L'orientation ORL lit aussi les questions 1 à 5 et 10, la langue et le pouls.</div>
+        <div class="tr">
+          <div style="flex-basis:100%;font-size:10px;font-weight:700;color:#7D3C98;text-transform:uppercase;letter-spacing:.4px;margin:6px 0 1px">Oreille</div>
+          <span class="tg" onclick="togEx(this,'d-orl')">Acouphène d&#39;un seul côté</span>
+          <span class="tg" onclick="togEx(this,'d-orl')">Acouphène pulsatile</span>
+          <span class="tg" onclick="togEx(this,'d-orl')">Acouphène fluctuant (alcool / stress)</span>
+          <span class="tg" onclick="togEx(this,'d-orl')">Oreille pleine / hyperacousie</span>
+          <span class="tg" onclick="togEx(this,'d-orl')">Surdité brutale</span>
+          <span class="tg" onclick="togEx(this,'d-orl')">Après un bruit violent</span>
+          <span class="tg" onclick="togEx(this,'d-orl')">Otalgie</span>
+          <span class="tg" onclick="togEx(this,'d-orl')">Écoulement d&#39;oreille</span>
+          <span class="tg" onclick="togEx(this,'d-orl')">Douleur derrière l&#39;oreille</span>
+          <span class="tg" onclick="togEx(this,'d-orl')">Nuque raide ou douloureuse</span>
+          <span class="tg" onclick="togEx(this,'d-orl')">Traumatisme cervical (coup du lapin)</span>
+          <div style="flex-basis:100%;font-size:10px;font-weight:700;color:#7D3C98;text-transform:uppercase;letter-spacing:.4px;margin:6px 0 1px">Œil</div>
+          <span class="tg" onclick="togEx(this,'d-orl')">Démangeaisons des yeux</span>
+          <span class="tg" onclick="togEx(this,'d-orl')">Sécrétions purulentes</span>
+          <span class="tg" onclick="togEx(this,'d-orl')">Œil douloureux</span>
+          <span class="tg" onclick="togEx(this,'d-orl')">Baisse brutale de la vision</span>
+          <span class="tg" onclick="togEx(this,'d-orl')">Orgelet / paupière gonflée</span>
+          <span class="tg" onclick="togEx(this,'d-orl')">Yeux et bouche secs (syndrome sec)</span>
+          <div style="flex-basis:100%;font-size:10px;font-weight:700;color:#7D3C98;text-transform:uppercase;letter-spacing:.4px;margin:6px 0 1px">Nez et sinus</div>
+          <span class="tg" onclick="togEx(this,'d-orl')">Saignement de nez</span>
+          <span class="tg" onclick="togEx(this,'d-orl')">Perte de l&#39;odorat</span>
+          <span class="tg" onclick="togEx(this,'d-orl')">Sinus douloureux</span>
+          <span class="tg" onclick="togEx(this,'d-orl')">Écoulement nasal malodorant</span>
+          <span class="tg" onclick="togEx(this,'d-orl')">Rhinite saisonnière</span>
+          <span class="tg" onclick="togEx(this,'d-orl')">Rhinite toute l&#39;année</span>
+          <div style="flex-basis:100%;font-size:10px;font-weight:700;color:#7D3C98;text-transform:uppercase;letter-spacing:.4px;margin:6px 0 1px">Gorge et voix</div>
+          <span class="tg" onclick="togEx(this,'d-orl')">Amygdales gonflées</span>
+          <span class="tg" onclick="togEx(this,'d-orl')">Déglutition difficile</span>
+          <span class="tg" onclick="togEx(this,'d-orl')">Boule dans la gorge</span>
+          <span class="tg" onclick="togEx(this,'d-orl')">Perte de voix brutale</span>
+          <span class="tg" onclick="togEx(this,'d-orl')">Perte de voix progressive</span>
+          <div style="flex-basis:100%;font-size:10px;font-weight:700;color:#7D3C98;text-transform:uppercase;letter-spacing:.4px;margin:6px 0 1px">Bouche et dents</div>
+          <span class="tg" onclick="togEx(this,'d-orl')">Aphtes douloureux à bord rouge</span>
+          <span class="tg" onclick="togEx(this,'d-orl')">Aphtes pâles récidivants</span>
+          <span class="tg" onclick="togEx(this,'d-orl')">Ulcérations génitales associées</span>
+          <span class="tg" onclick="togEx(this,'d-orl')">Gencives gonflées</span>
+          <span class="tg" onclick="togEx(this,'d-orl')">Douleur dentaire</span>
+          <span class="tg" onclick="togEx(this,'d-orl')">Douleur dentaire nocturne</span>
+          <span class="tg" onclick="togEx(this,'d-orl')">Douleur dentaire calmée par le froid</span>
+          <span class="tg" onclick="togEx(this,'d-orl')">Mâchoire bloquée</span>
+          </div>
+        <input id="d-orl" style="display:none" oninput="markDirty();orlRafraichir()">
+        <div id="orl-analyse-examen" style="margin-top:6px"></div>
+      </div>
 
       <!-- CONTEXTE ONCOLOGIQUE (17/10/2026) : orientation oncologique, avec les questions, la langue et le pouls -->
       <div class="card" style="margin-top:12px" id="card-onco">
@@ -2200,6 +2250,7 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
           <div id="psy-analyse-points" style="display:none;background:#F5EEF8;border-radius:6px;padding:6px 10px;margin-bottom:8px"></div>
           <div id="pneumo-analyse-points" style="display:none;background:#EBF5FB;border-radius:6px;padding:6px 10px;margin-bottom:8px"></div>
           <div id="onco-analyse-points" style="display:none;background:#F4ECF7;border-radius:6px;padding:6px 10px;margin-bottom:8px"></div>
+          <div id="orl-analyse-points" style="display:none;background:#F5EEF8;border-radius:6px;padding:6px 10px;margin-bottom:8px"></div>
           <p id="spn-empty-msg" style="font-size:11px;color:var(--slate);font-style:italic">Sélectionnez une spécialité pour afficher ses domaines et motifs cliniques. D'autres spécialités du référentiel (ORL, pédiatrie…) seront ajoutées progressivement.</p>
           <div id="gyno-result-wrapper" style="display:none">
             <div id="gyno-result" style="font-size:12px"></div>
@@ -3815,6 +3866,7 @@ function navTo(pg){
   if((pg==='points' || pg==='examen') && typeof psyRafraichir==='function') setTimeout(psyRafraichir, 45);
   if((pg==='points' || pg==='examen') && typeof pneumoRafraichir==='function') setTimeout(pneumoRafraichir, 50);
   if((pg==='points' || pg==='examen') && typeof oncoRafraichir==='function') setTimeout(oncoRafraichir, 50);
+  if((pg==='points' || pg==='examen') && typeof orlRafraichir==='function') setTimeout(orlRafraichir, 50);
   if(pg==='fiche') setTimeout(toggleSAfield, 30);
   if(pg==='synthese') setTimeout(autoFillSynthese, 50);
   if(pg==='points'){
@@ -4102,7 +4154,7 @@ function loadSeance(sc){
     'palp-oreille':ex.palpOreille, 'palp-oreille-notes':ex.palpOreilleNotes,
     // Douleur
     'd-localisation':ex.dLocalisation, 'd-type':ex.dType, 'd-rythme':ex.dRythme,
-    'd-aggrave':ex.dAggrave, 'd-ameliore':ex.dAmeliore, 'd-rhumato':ex.dRhumato, 'd-psy':ex.dPsy, 'd-resp':ex.dResp, 'd-onco':ex.dOnco, 'd-libre':ex.dLibre,
+    'd-aggrave':ex.dAggrave, 'd-ameliore':ex.dAmeliore, 'd-rhumato':ex.dRhumato, 'd-psy':ex.dPsy, 'd-resp':ex.dResp, 'd-onco':ex.dOnco, 'd-orl':ex.dOrl, 'd-libre':ex.dLibre,
     // Langue
     'l-forme':ex.lForme, 'l-epaisseur':ex.lEpaisseur, 'l-couleur':ex.lCouleur, 'l-couleur-loc':ex.lCouleurLoc,
     'l-enduit-couleur':ex.lEnduitCouleur, 'l-enduit-dist':ex.lEnduitDist,
@@ -4240,7 +4292,7 @@ function collectSc(){
     palpAhshiT:gT('palp-ahshi-t'),palpAhshi:g('palp-ahshi'),palpNotes:g('palp-notes'),
     palpOreille:gT('palp-oreille'),palpOreilleNotes:g('palp-oreille-notes'),
     dLocalisation:gT('d-localisation'),dType:gT('d-type'),dRythme:gT('d-rythme'),
-    dAggrave:gT('d-aggrave'),dAmeliore:gT('d-ameliore'),dRhumato:gT('d-rhumato'),dPsy:gT('d-psy'),dResp:gT('d-resp'),dOnco:gT('d-onco'),dLibre:g('d-libre'),dZones:g('d-zones')};
+    dAggrave:gT('d-aggrave'),dAmeliore:gT('d-ameliore'),dRhumato:gT('d-rhumato'),dPsy:gT('d-psy'),dResp:gT('d-resp'),dOnco:gT('d-onco'),dOrl:gT('d-orl'),dLibre:g('d-libre'),dZones:g('d-zones')};
   sc.ccmq={};CQ.forEach(i=>{const v=g('c-'+i.n);if(v)sc.ccmq[i.n]=v;});
   const syndChk2=document.querySelectorAll('.pt-chk:checked:not(.ebm-chk):not(.auri-chk):not(.gyno-chk):not(.libre-chk)');
   const ebmChk2=document.querySelectorAll('.ebm-chk:checked');
@@ -9951,6 +10003,7 @@ function onSpnSpecChange(){
   if(typeof psyRafraichir==='function') psyRafraichir();
   if(typeof pneumoRafraichir==='function') pneumoRafraichir();
   if(typeof oncoRafraichir==='function') oncoRafraichir();
+  if(typeof orlRafraichir==='function') orlRafraichir();
   if(catSel) catSel.innerHTML = '<option value="">— Sélectionner —</option>' +
     spec.domaineOptions.map(o=>`<option value="${o.value}">${o.label}</option>`).join('');
   if(motifSel) motifSel.innerHTML = '<option value="">— Sélectionner un motif —</option>';
@@ -12146,8 +12199,132 @@ const ORL_DB = {
     }
   }
 };
-function _orlSugg(){ return new Map(); }
-function _convOrl(mt, impose){ return _convCours(ORL_DB, mt, impose, null); }
+function _orlSugg(cat, motif){ return new Map(orlAnalyse().filter(s => s.cat===cat && s.motif===motif && s.idx!=null).map(s => [s.idx, s])); }
+// ── Orientation ORL d'après l'examen (10/11/2026) ──
+// Lit la carte « Oreille, œil, nez, gorge, bouche » (d-orl), la carte respiratoire (d-resp, partie nez-gorge-voix), les
+// questions 1 à 5, 7, 8, 10, la langue et le pouls. Motif évoqué d'abord (porte), puis tableau départagé par ses signes.
+// Proposition seulement : le praticien choisit.
+function orlAnalyse(){
+  const V = _rhVals, tq = q => Array.from(document.querySelectorAll('#tr-'+q+' .tg.on')).map(t=>t.textContent);
+  const Q1=tq('q1'), Q2=tq('q2'), Q3=tq('q3'), Q4=tq('q4'), Q5=tq('q5'), Q6=tq('q6'), Q7=tq('q7'), Q8=tq('q8'), Q9=tq('q9'), Q10=tq('q10');
+  const S = V('d-orl').concat(V('d-resp'), Q7, Q8);
+  const LC=V('l-couleur'), LE=V('l-enduit-couleur'), LL=V('l-couleur-loc'), LH=V('l-humidite'), LF=V('l-forme');
+  const P=[].concat(V('pq'),V('pq-force'),V('pq-forme'),V('pq-freq'),V('pq-prof'));
+  const has=(a,x)=>a.includes(x), any=(a,re)=>a.some(x=>re.test(x)), pouls=re=>any(P,re);
+  const rouge=any(LC,/^Rouge/), pale=has(LC,'Pâle'), sansEnduit=has(LE,'Absent (langue miroir)'), jauneGras=any(LE,/^Jaune/)&&any(LH,/Gras|Collant/)||has(LE,'Jaune épais');
+  const bordsRouges=any(LL,/Bords rouges/), pointeRouge=any(LL,/Pointe rouge/), violet=any(LC,/Violacé/)||any(LL,/violac/i), empreintes=has(LF,'Marques de dents');
+  const aigu=has(S,'Début aigu'), chronique=has(S,'Évolution chronique')||has(S,'Crises récidivantes');
+  const fievre=has(Q1,'Fièvre'), froidExt=has(Q1,'Frissons')||has(Q1,'Aggravé par le froid'), vent=has(Q1,'Sensible au vent');
+  const surface=pouls(/Superficiel/), rapide=pouls(/Rapide|Précipité/), glissant=pouls(/Glissant/), corde=pouls(/corde/), fin=pouls(/^Fin/), faible=pouls(/Vide|Ténu|Épuisé|Mou/), profond=pouls(/Profond/);
+  const colere=has(Q10,'Irritabilité')||has(Q10,'Colère facile'), amer=has(Q5,'Goût amer'), constip=has(Q4,'Constipation')||has(Q4,'Selles sèches dures');
+  const yinVide=(has(Q1,'Chaleur des 5 centres (paumes/plantes/sternum)')?1:0)+(has(Q2,'Sueurs nocturnes')?1:0)+(rouge&&sansEnduit?1:0)+(fin&&rapide?1:0);
+  const soifFroid=has(Q8,'Soif intense boissons froides'), gorgeSeche=has(Q8,'Gorge sèche')||has(Q8,'Bouche sèche nocturne');
+  const R=[];
+  const regle=(cat,motif,nom,porte,crit,seuil)=>{ if(!porte) return; const ok=crit.filter(c=>c[0]); const sc=ok.reduce((a,c)=>a+c[1],0);
+    if(sc>=(seuil||3)){ const M=ORL_DB[cat].motifs[motif]; const i=M.syndromes.findIndex(s=>s.nom===nom);
+      R.push({cat, motif, idx:i>=0?i:null, nom, score:sc, raisons:ok.map(c=>c[2])}); } };
+  // Oreille
+  const O='oreille', MA='Acouphènes et surdité (Er Ming, Er Long)';
+  const acouph = any(S,/^Acouphène/), pa = acouph || any(Q7,/^Surdité/) || has(S,'Après un bruit violent');
+  regle(O,MA,'Charnière occipito-cervicale (1re cause)',pa,[[has(S,'Nuque raide ou douloureuse')||has(Q3,'Raideur nuque'),2,'nuque raide ou douloureuse'],[has(S,'Traumatisme cervical (coup du lapin)'),2,'traumatisme cervical'],[has(Q3,'Céphalées nuque'),1,'céphalées de la nuque']],2);
+  regle(O,MA,'Typologie Rate (2e cause)',pa,[[has(S,'Acouphène fluctuant (alcool / stress)'),2,'acouphène fluctuant'],[has(Q10,'Rumination')||has(Q10,'Anxiété')||has(Q10,'Inquiétude excessive'),1,'anxiété, rumination'],[empreintes,1,'empreintes dentaires'],[has(Q4,'Selles molles')||has(Q5,'Peu d\'appétit'),1,'signes de la Rate']],3);
+  regle(O,MA,'Traumatisme sonore',pa,[[has(S,'Après un bruit violent'),3,'après un bruit violent']]);
+  regle(O,MA,'Endocrâne (acouphènes souvent bilatéraux)',pa&&!has(S,'Acouphène d\'un seul côté'),[[has(Q3,'Lourdeur tête'),1,'tête lourde'],[has(S,'Oreille pleine / hyperacousie'),1,'tête ou oreille « pleine »'],[has(Q10,'Difficulté concentration')||has(Q10,'Brouillard mental'),1,'entend sans comprendre'],[has(Q6,'Plénitude épigastrique'),1,'angoisse épigastrique']],3);
+  const MV='Vertiges et maladie de Ménière (Xuan Yun)', pv = has(Q3,'Vertiges rotatoires')||has(Q7,'Vertiges auditifs');
+  regle(O,MV,'Plénitude endocrânienne (« plein la tête »)',pv,[[has(Q3,'Lourdeur tête'),2,'tête lourde'],[has(S,'Oreille pleine / hyperacousie'),1,'oreille pleine'],[has(Q3,'Céphalées vertex'),1,'céphalée du vertex']]);
+  regle(O,'Surdité brusque','Formule du cours',has(S,'Surdité brutale'),[[true,3,'surdité brutale']]);
+  const MO='Otites', po = has(S,'Otalgie')||has(S,'Écoulement d\'oreille')||has(S,'Douleur derrière l\'oreille');
+  regle(O,MO,'Otite aiguë — Vent-Chaleur',po&&!chronique,[[fievre,1,'fièvre'],[vent,1,'crainte du vent'],[has(S,'Écoulement d\'oreille'),1,'écoulement'],[surface,1,'pouls superficiel'],[aigu,1,'début aigu']]);
+  regle(O,MO,'Otite moyenne aiguë — Humidité-Chaleur de la VB',po,[[has(S,'Écoulement d\'oreille'),1,'écoulement jaune'],[colere,1,'irritabilité'],[amer,1,'goût amer'],[jauneGras,1,'enduit jaune gras'],[glissant&&rapide,1,'pouls glissant et rapide']]);
+  regle(O,MO,'Otite moyenne chronique — stagnation d\'Humidité',po,[[chronique,2,'évolution chronique'],[has(Q3,'Lourdeur tête'),1,'tête lourde'],[any(Q7,/^Surdité/),1,'hypoacousie'],[pale&&(empreintes||has(LF,'Gonflée / Œdématiée')),1,'langue pâle, gonflée, indentée']]);
+  // Œil
+  const OE='oeil', MC='Conjonctivite', pc = has(Q7,'Yeux rouges')||has(S,'Démangeaisons des yeux')||has(S,'Sécrétions purulentes');
+  regle(OE,MC,'Vent-Chaleur externe',pc,[[aigu,1,'début aigu'],[has(S,'Démangeaisons des yeux'),1,'prurit'],[has(S,'Sécrétions purulentes'),1,'pus'],[fievre||vent,1,'fièvre ou crainte du vent'],[surface,1,'pouls superficiel'],[has(S,'Rhinite saisonnière'),1,'saisonnière']]);
+  regle(OE,MC,'Feu du Foie et de la VB',pc,[[colere,1,'irritabilité, colère'],[amer,1,'goût amer'],[constip,1,'constipation'],[bordsRouges,1,'bords de langue rouges'],[corde,1,'pouls tendu'],[acouph||any(Q7,/^Acouphènes/),1,'acouphènes']]);
+  regle(OE,MC,'Vide de Yin du Foie et du Rein',pc,[[has(Q7,'Yeux secs'),1,'yeux secs'],[has(S,'Démangeaisons des yeux'),1,'prurit'],[yinVide>=2,2,'signes de vide de Yin'],[fin,1,'pouls fin']]);
+  const MS='Œil sec', ps = has(Q7,'Yeux secs')||has(S,'Yeux et bouche secs (syndrome sec)');
+  regle(OE,MS,'Syndrome de Gougerot-Sjögren',ps,[[has(S,'Yeux et bouche secs (syndrome sec)'),3,'syndrome sec']]);
+  regle(OE,MS,'Tri et production des liquides',ps&&!has(S,'Yeux et bouche secs (syndrome sec)'),[[has(Q7,'Yeux secs'),2,'yeux secs'],[gorgeSeche||has(Q8,'Bouche sèche sans soif'),1,'bouche ou gorge sèches']],2);
+  regle(OE,'Orgelet, blépharite','Orgelet',has(S,'Orgelet / paupière gonflée'),[[true,3,'orgelet, paupière gonflée']]);
+  // Nez
+  const N='nez', nez=any(S,/Nez bouché|Rhinorrhée|Éternuements/);
+  const pr = nez && aigu && !has(S,'Rhinite saisonnière') && !has(S,'Rhinite toute l\'année'), MR='Rhinite aiguë (rhume)';
+  regle(N,MR,'Vent-Froid',pr,[[froidExt,1,'frissons, crainte du froid'],[has(Q2,'Pas de transpiration'),1,'pas de sueurs'],[has(S,'Rhinorrhée claire'),1,'rhinorrhée claire'],[has(Q3,'Courbatures'),1,'courbatures'],[pouls(/Serré/),1,'pouls serré']]);
+  regle(N,MR,'Vent-Chaleur',pr,[[fievre,1,'fièvre'],[has(S,'Gorge douloureuse'),1,'gorge douloureuse'],[has(S,'Rhinorrhée épaisse / jaune'),1,'rhinorrhée épaisse'],[any(Q8,/Soif/),1,'soif'],[rapide,1,'pouls rapide']]);
+  const MRa='Rhinite allergique (rhume des foins)', pal = has(S,'Rhinite saisonnière')||has(S,'Rhinite toute l\'année')||has(S,'Allergie (pollen / poussière)'), saison=has(S,'Rhinite saisonnière');
+  regle(N,MRa,'Permanente (vide de Wei Yang)',pal&&!saison,[[has(S,'Rhinite toute l\'année'),2,'toute l\'année'],[has(Q1,'Froid permanent'),1,'frilosité'],[has(Q4,'Pollakiurie nocturne')||has(Q4,'Urines claires abondantes'),1,'signes des Reins'],[pale,1,'langue pâle'],[profond||faible,1,'pouls profond ou faible']]);
+  regle(N,MRa,'Saisonnière — Vent-Froid',pal&&saison,[[has(S,'Rhinorrhée claire'),1,'écoulement clair'],[has(Q8,'Pas de soif'),1,'pas de soif'],[has(S,'Éternuements'),1,'éternuements'],[pale,1,'teint pâle']]);
+  regle(N,MRa,'Saisonnière — Vent-Chaleur',pal&&saison,[[has(S,'Démangeaisons des yeux'),1,'yeux qui démangent'],[has(Q7,'Yeux rouges'),1,'yeux rouges'],[has(S,'Gorge qui pique'),1,'gorge qui démange'],[has(Q8,'Soif modérée'),1,'légère soif']],2);
+  const MSi='Sinusite', psi = has(S,'Sinus douloureux')||has(S,'Écoulement nasal malodorant')||(has(S,'Rhinorrhée épaisse / jaune')&&has(Q3,'Céphalées front'));
+  regle(N,MSi,'Vent-Chaleur externe (aiguë)',psi&&!chronique,[[aigu,1,'début aigu'],[fievre,1,'fièvre'],[vent,1,'crainte du vent'],[surface,1,'pouls superficiel'],[rapide,1,'pouls rapide']]);
+  regle(N,MSi,'Humidité-Chaleur de la Rate et de l\'Estomac',psi,[[has(Q3,'Lourdeur tête'),1,'tête lourde'],[has(Q3,'Céphalées front'),1,'céphalée frontale'],[jauneGras,1,'enduit jaune gras'],[glissant,1,'pouls glissant'],[has(Q4,'Selles collantes')||has(Q6,'Oppression thoracique'),1,'Humidité']]);
+  regle(N,MSi,'Feu du Foie et de la VB',psi,[[has(Q3,'Céphalées temporales'),1,'céphalée temporale'],[has(S,'Écoulement nasal malodorant'),1,'écoulement odorant'],[colere,1,'irritabilité'],[bordsRouges,1,'bords de langue rouges'],[corde,1,'pouls tendu'],[amer,1,'goût amer']]);
+  regle(N,MSi,'Stagnation de Qi et stase de Sang (chronique)',psi&&chronique,[[has(S,'Perte de l\'odorat'),1,'anosmie'],[violet,1,'langue mauve'],[pouls(/Rugueux/),1,'pouls rugueux'],[corde,1,'pouls tendu']],2);
+  regle(N,MSi,'Chaleur du Poumon (chronique)',psi&&chronique,[[has(S,'Rhinorrhée épaisse / jaune'),1,'rhinorrhée jaune'],[any(Q8,/Soif/),1,'soif'],[rouge&&any(LE,/^Jaune/),1,'langue rouge, enduit jaune'],[glissant,1,'pouls glissant']],4);
+  const ME='Épistaxis (saignement de nez)', pe = has(S,'Saignement de nez');
+  regle(N,ME,'Chaleur du Poumon',pe,[[fievre,1,'fièvre'],[has(S,'Gorge douloureuse'),1,'gorge douloureuse'],[has(Q8,'Gorge sèche'),1,'gorge sèche'],[pointeRouge,1,'pointe de langue rouge'],[surface,1,'pouls superficiel']]);
+  regle(N,ME,'Chaleur de l\'Estomac',pe,[[has(Q8,'Saignements gingivaux'),1,'gingivorragies'],[soifFroid,1,'soif de froid'],[has(Q8,'Halitose'),1,'haleine fétide'],[has(Q8,'Aphtes récurrents'),1,'aphtes'],[constip,1,'constipation']]);
+  regle(N,ME,'Feu du Foie',pe,[[colere,1,'irritabilité'],[amer,1,'goût amer'],[has(Q3,'Vertiges'),1,'vertiges'],[any(Q7,/^Acouphènes/),1,'acouphènes'],[bordsRouges,1,'bords rouges'],[corde,1,'pouls tendu']]);
+  regle(N,ME,'Vide de Yin, Feu prospère',pe,[[yinVide>=2,2,'signes de vide de Yin'],[gorgeSeche,1,'bouche et nez secs'],[has(Q8,'Saignements gingivaux'),1,'gingivorragies']]);
+  regle(N,ME,'Vide de Qi et de Sang',pe,[[has(Q9,'Fatigue permanente'),1,'asthénie'],[pale,1,'langue pâle'],[has(Q6,'Palpitations'),1,'palpitations'],[faible,1,'pouls sans force'],[has(Q3,'Vertiges'),1,'vertiges']]);
+  const MAn='Anosmie (perte de l\'odorat)', pan = has(S,'Perte de l\'odorat');
+  regle(N,MAn,'Vent-Chaleur du méridien du Poumon',pan,[[has(S,'Rhinorrhée épaisse / jaune'),1,'rhinorrhée jaune'],[fievre,1,'fièvre'],[any(S,/^Toux/)||has(Q6,'Toux'),1,'toux'],[surface,1,'pouls superficiel']]);
+  regle(N,MAn,'Feu de la VB',pan,[[has(S,'Écoulement nasal malodorant'),1,'rhinorrhée malodorante'],[amer,1,'goût amer'],[has(Q8,'Gorge sèche'),1,'gorge sèche'],[corde,1,'pouls tendu']]);
+  regle(N,MAn,'Humidité-Chaleur de la Rate',pan,[[has(Q4,'Selles collantes'),1,'selles collantes'],[has(Q5,'Peu d\'appétit'),1,'inappétence'],[jauneGras,1,'enduit jaune gras'],[glissant,1,'pouls glissant']]);
+  regle(N,MAn,'Vide de Qi du Poumon et de la Rate',pan,[[has(Q4,'Selles molles'),1,'selles molles'],[has(Q6,'Essoufflement à l\'effort'),1,'souffle court'],[pale,1,'langue pâle'],[has(S,'Rhinorrhée claire'),1,'rhinorrhée blanche'],[fin&&faible,1,'pouls fin, faible']]);
+  // Gorge
+  const GO='gorge', MG='Angine, pharyngite, amygdalite (Hou Bi)', pg = has(S,'Gorge douloureuse')||has(Q8,'Gorge enflée')||has(S,'Amygdales gonflées');
+  regle(GO,MG,'Vent-Chaleur',pg&&!chronique,[[fievre,1,'fièvre'],[vent||has(Q1,'Frissons'),1,'légère crainte du froid'],[surface,1,'pouls superficiel'],[any(Q8,/Soif/),1,'soif'],[aigu,1,'début aigu']]);
+  regle(GO,MG,'Chaleur-plénitude (Poumon et Estomac)',pg,[[has(S,'Amygdales gonflées'),1,'amygdales gonflées'],[has(S,'Déglutition difficile'),1,'déglutition difficile'],[fievre,1,'forte fièvre'],[constip,1,'constipation'],[soifFroid,1,'soif'],[any(LE,/^Jaune/),1,'enduit jaune']],4);
+  regle(GO,MG,'Chaleur-vide (vide de Yin)',pg,[[chronique,1,'évolution chronique'],[gorgeSeche,1,'gorge sèche'],[yinVide>=2,2,'signes de vide de Yin']]);
+  const ML='Laryngite, aphonie', brut=has(S,'Perte de voix brutale'), prog=has(S,'Perte de voix progressive'), pl = brut||prog||has(S,'Voix rauque / aphonie');
+  regle(GO,ML,'Vent-Froid',pl&&!prog,[[brut,1,'perte subite de la voix'],[froidExt,1,'crainte du froid'],[has(S,'Rhinorrhée claire'),1,'rhinorrhée claire'],[has(Q2,'Pas de transpiration'),1,'pas de sueurs'],[pouls(/Serré/),1,'pouls serré']]);
+  regle(GO,ML,'Vent-Chaleur',pl&&!prog,[[brut,1,'perte subite de la voix'],[has(S,'Gorge douloureuse'),1,'gorge douloureuse'],[fievre,1,'fièvre'],[has(S,'Rhinorrhée épaisse / jaune')||has(S,'Crachats jaunes épais'),1,'mucosités jaunes'],[rapide,1,'pouls rapide']]);
+  regle(GO,ML,'Mucosités-Chaleur',pl&&!brut,[[prog,1,'aphonie progressive'],[has(S,'Crachats jaunes épais')||has(S,'Expectoration difficile'),1,'mucosités collantes'],[jauneGras,1,'enduit jaune gras'],[glissant,1,'pouls glissant']]);
+  regle(GO,ML,'Troubles des sentiments',pl,[[has(S,'Boule dans la gorge'),2,'boule dans la gorge'],[brut,1,'survenue brutale'],[colere||has(Q10,'Anxiété'),1,'émotions'],[corde,1,'pouls tendu']]);
+  regle(GO,ML,'Vide de Qi du Poumon (et des Reins)',pl&&!brut,[[prog||chronique,1,'aphonie chronique'],[has(S,'Voix faible'),1,'voix faible'],[has(Q2,'Sueurs spontanées diurnes')||has(Q2,'Sueurs à l\'effort'),1,'sueurs au moindre effort'],[has(S,'Essoufflement à l\'effort'),1,'souffle court'],[faible,1,'pouls faible']]);
+  regle(GO,ML,'Vide de Yin du Poumon et des Reins',pl&&!brut,[[prog,1,'aphonie progressive'],[gorgeSeche,1,'gorge sèche'],[yinVide>=2,2,'signes de vide de Yin']]);
+  // Bouche
+  const B='bouche', MAp='Aphtes (ulcérations buccales)', pap = has(Q8,'Aphtes récurrents')||any(S,/^Aphtes/)||has(LF,'Ulcérations / aphtes');
+  regle(B,MAp,'Plénitude (Chaleur de la Rate et du Cœur)',pap,[[has(S,'Aphtes douloureux à bord rouge'),2,'aphtes douloureux à bord rouge'],[pointeRouge,1,'pointe de langue rouge'],[soifFroid,1,'soif de froid'],[has(Q8,'Halitose'),1,'haleine forte'],[constip,1,'constipation']]);
+  regle(B,MAp,'Vide (Yin du Rein et du Cœur)',pap,[[has(S,'Aphtes pâles récidivants'),2,'aphtes pâles récidivants'],[rouge&&sansEnduit,1,'langue rouge sans enduit'],[has(Q8,'Bouche sèche nocturne'),1,'peu de salive'],[has(Q2,'Sueurs nocturnes'),1,'sueurs nocturnes'],[fin&&rapide,1,'pouls fin, rapide']]);
+  regle(B,'Gingivite','Chaleur du Yang Ming (± vide du Rein)',has(S,'Gencives gonflées')||has(Q8,'Saignements gingivaux'),[[has(S,'Gencives gonflées'),2,'gencives gonflées'],[has(Q8,'Saignements gingivaux'),2,'gencives qui saignent'],[has(Q8,'Halitose'),1,'haleine forte']],2);
+  const MD='Douleur dentaire', pd = any(S,/^Douleur dentaire/);
+  regle(B,MD,'Origine Rein (Feu des Reins par le Chong Mai)',pd,[[has(S,'Douleur dentaire nocturne'),2,'douleur nocturne'],[has(Q4,'Pollakiurie nocturne'),1,'signes des Reins'],[rouge,1,'langue rouge'],[fin,1,'pouls fin']]);
+  regle(B,MD,'Origine Estomac (Chaleur)',pd,[[has(Q8,'Halitose'),1,'haleine fétide'],[soifFroid||has(Q5,'Préfère froid'),1,'n\'aime pas le chaud'],[any(LE,/^Jaune/),1,'enduit jaunâtre'],[pouls(/Ample/)||rapide,1,'pouls vaste ou rapide']]);
+  regle(B,MD,'Origine Vent (Vent-Feu externe)',pd,[[has(S,'Douleur dentaire calmée par le froid'),2,'calmée par le froid'],[aigu,1,'début aigu'],[surface,1,'pouls superficiel']]);
+  regle(B,'Trismus','Trismus aigu',has(S,'Mâchoire bloquée'),[[true,3,'mâchoire bloquée']]);
+  // Motif seul si aucun tableau ne se détache
+  const motif=(porte,cat,m,raisons)=>{ if(porte && !R.some(r=>r.motif===m)) R.push({cat,motif:m,idx:null,nom:m,score:1.5,raisons}); };
+  motif(pa, O, MA, ['acouphène ou surdité']); motif(pv, O, MV, ['vertiges']); motif(po, O, MO, ['otalgie ou écoulement']);
+  motif(pc, OE, MC, ['yeux rouges ou qui démangent']); motif(ps, OE, MS, ['yeux secs']);
+  motif(pal, N, MRa, ['rhinite allergique']); motif(psi, N, MSi, ['sinus']); motif(pe, N, ME, ['saignement de nez']); motif(pan, N, MAn, ['perte de l\'odorat']);
+  motif(pg, GO, MG, ['gorge douloureuse']); motif(pl, GO, ML, ['voix']); motif(pap, B, MAp, ['aphtes']); motif(pd, B, MD, ['douleur dentaire']);
+  return R.sort((a,b)=>b.score-a.score);
+}
+function orlAnalyseHTML(){
+  const S = _rhVals('d-orl'), tq = q => Array.from(document.querySelectorAll('#tr-'+q+' .tg.on')).map(t=>t.textContent), Q1 = tq('q1'), Q7 = tq('q7');
+  const al = [];
+  if(S.includes('Surdité brutale')) al.push('Surdité brutale : urgence ORL (bilan et traitement dans les premiers jours).');
+  if(S.includes('Baisse brutale de la vision') || (S.includes('Œil douloureux') && Q7.includes('Yeux rouges'))) al.push('Œil rouge douloureux ou baisse brutale de la vision : urgence ophtalmologique (glaucome aigu, uvéite, kératite).');
+  if(S.includes('Acouphène d\'un seul côté')) al.push('Acouphène unilatéral : bilan ORL et neurologique avant l\'acupuncture.');
+  if(S.includes('Douleur derrière l\'oreille') && Q1.includes('Fièvre')) al.push('Douleur rétro-auriculaire fébrile : menace de mastoïdite, avis médical sans délai.');
+  if(S.includes('Déglutition difficile') && Q1.includes('Fièvre')) al.push('Déglutition difficile et fièvre : éliminer un phlegmon (avis médical).');
+  if(S.includes('Ulcérations génitales associées')) al.push('Aphtes avec ulcérations génitales : penser à une maladie de Behçet (avis médical ; voir Maladies auto-immunes).');
+  let h = al.map(t => '<div style="font-size:11px;color:#922B21;background:#FDEDEC;border-radius:6px;padding:5px 9px;margin-bottom:4px">⚠️ '+_rhEsc(t)+'</div>').join('');
+  const L = orlAnalyse().slice(0,3);
+  if(!L.length) return h + '<div style="font-size:11px;color:var(--slate);font-style:italic">Orientation ORL : renseignez l\'oreille, l\'œil, le nez, la gorge ou la bouche (cette carte, questions 7 et 8), avec les questions 1 à 5 et 10, la langue et le pouls.</div>';
+  return h + '<div style="font-size:11px;font-weight:700;color:#7D3C98;margin-bottom:3px">Orientation ORL (référentiel Sorbonne) — proposition à confirmer</div>'
+    + L.map(r => '<div style="font-size:11px;margin:2px 0">• <strong>'+_rhEsc(r.nom)+'</strong>'+(r.idx!=null?' <span style="color:var(--slate)">— '+_rhEsc(r.motif)+'</span>':'')+' <span style="color:var(--slate)">('+_rhEsc(r.raisons.join(', '))+')</span> '
+      + '<button class="btn" style="font-size:10px;padding:1px 7px" onclick="orlOuvrir(\''+r.cat+'\',\''+_rhEsc(r.motif).replace(/'/g,"\\'")+'\',\''+_rhEsc(r.idx==null?'':r.nom).replace(/'/g,"\\'")+'\')">→ Protocole</button></div>').join('');
+}
+function orlRafraichir(){
+  ['orl-analyse-examen','orl-analyse-points'].forEach(id => { const el = document.getElementById(id); if(el) el.innerHTML = orlAnalyseHTML(); });
+  const spec = (document.getElementById('spn-spec')||{}).value;
+  const pts = document.getElementById('orl-analyse-points'); if(pts) pts.style.display = spec==='orl' ? '' : 'none';
+}
+function orlOuvrir(cat, motif, synd){ navTo('points'); spnOuvrir('orl', cat, motif, synd||''); orlRafraichir(); }
+function _convOrl(mt, impose){ return _convCours(ORL_DB, mt, impose, orlAnalyse); }
 
 // ══════ MALADIES AUTO-IMMUNES ET INFLAMMATION CHRONIQUE — cours complémentaire SAMP (10/11/2026) ══════
 // Source : conférence « Inflammation chronique de bas grade, maladies auto-immunes et MTC » (Société d'acupuncture de
@@ -12283,6 +12460,7 @@ function spnOuvrir(spec, cat, motif, synd){
   if(typeof psyRafraichir==='function') psyRafraichir();
   if(typeof pneumoRafraichir==='function') pneumoRafraichir();
   if(typeof oncoRafraichir==='function') oncoRafraichir();
+  if(typeof orlRafraichir==='function') orlRafraichir();
   const res = document.getElementById('gyno-result'); if(!res) return;
   let cible = null;
   if(synd){
@@ -13803,6 +13981,7 @@ function togEx(el, inputId) {
   if(/^(d-psy|l-.*|pq.*)$/.test(inputId) && typeof psyRafraichir==='function') psyRafraichir();
   if(/^(d-resp|e-resp|l-.*|pq.*)$/.test(inputId) && typeof pneumoRafraichir==='function') pneumoRafraichir();
   if(/^(d-onco|l-.*|pq.*)$/.test(inputId) && typeof oncoRafraichir==='function') oncoRafraichir();
+  if(/^(d-orl|d-resp|l-.*|pq.*)$/.test(inputId) && typeof orlRafraichir==='function') orlRafraichir();
 }
 
 // ══════ SCHÉMA DE LA LANGUE (dessin vivant + zones cliquables) ══════
