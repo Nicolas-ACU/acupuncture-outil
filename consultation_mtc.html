@@ -65,6 +65,12 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
 .sh h2{font-size:17px;font-weight:600}.sh .zh{color:var(--jade);font-size:13px;opacity:.7}
 .card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:12px;box-shadow:0 2px 8px rgba(26,58,42,.08)}
 .ct{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--gold);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.card.pli>.ct{cursor:pointer;user-select:none;margin-bottom:6px}
+.card.pli>.ct::before{content:'▾';font-size:12px;color:var(--slate);transition:transform .15s}
+.card.pli.ferme>.ct::before{transform:rotate(-90deg)}
+.card.pli.ferme>.pli-corps{display:none}
+.card.pli.ferme{padding-bottom:6px}
+.pli-nb{font-size:10px;font-weight:600;text-transform:none;letter-spacing:0;background:var(--jade);color:#fff;border-radius:10px;padding:1px 7px}
 .ct::after{content:'';flex:1;height:1px;background:var(--gold-lt)}
 .fg{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .f{display:flex;flex-direction:column;gap:3px}
@@ -612,6 +618,10 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
         <div class="ct">Journal des évolutions</div>
         <div style="font-size:11px;color:var(--slate);font-style:italic;margin-bottom:8px">Cette liste s'enrichit à chaque amélioration de l'application — vous pouvez vérifier ici ce qui a changé depuis votre dernière utilisation. Remise à zéro le 1er octobre 2026, au lancement de la bêta.</div>
         <div id="guide-changelog" style="font-size:12px;color:var(--ink);line-height:1.8">
+          <div style="font-size:12px;line-height:1.65;margin-bottom:10px">
+            <div style="font-weight:700;color:var(--jade);margin-bottom:4px">Examen : cadre ORL – Pneumologie et cadres dépliants (novembre 2026)</div>
+            <div>• Les cartes « Respiration, toux, nez et gorge » et « Oreille, œil, nez, gorge, bouche » sont regroupées en un seul cadre <strong>ORL – Pneumologie</strong> : toux, crachats, respiration, nez et sinus, gorge et voix, oreille, œil, bouche et dents, contexte — chaque signe une seule fois. Les orientations pneumologique et ORL continuent de lire leurs signes. • Les compléments par spécialité (ORL – Pneumologie, Digestion, Oncologie, Psychisme) sont des <strong>cadres dépliants</strong> : repliés par défaut, un clic sur le titre les ouvre ; un compteur indique le nombre de signes cochés, et un cadre qui en contient s'ouvre à la reprise d'une séance.</div>
+          </div>
           <div style="font-size:12px;line-height:1.65;margin-bottom:10px">
             <div style="font-weight:700;color:var(--jade);margin-bottom:4px">Consigne de l'IA plus rigoureuse (novembre 2026)</div>
             <div>• « ✨ Affiner IA » et le prompt du motif transmettent maintenant chaque constitution CCMQ avec son score et son statut (PRÉSENTE, tendance, absente), séparent la couleur de toute la langue des anomalies localisées et joignent l'analyse automatique de l'appli comme hypothèse à confirmer ou réfuter. • Règles imposées à l'IA : seule une constitution « PRÉSENTE » peut être dite confirmée par le CCMQ ; pas de signe ni de référence inventés ; signes contradictoires, données manquantes et signes d'alerte à signaler ; tableaux mixtes dits comme tels ; repères du praticien (fatigue vespérale, aisselles, horloge et midi-minuit, alternance des selles). • Motif « perte de poids » ambigu signalé à l'IA.</div>
@@ -1687,9 +1697,12 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
       </div>
 
       <!-- RESPIRATION, TOUX, NEZ ET GORGE (15/10/2026) : orientation pneumologique -->
-      <div class="card" style="margin-top:12px" id="card-resp">
-        <div class="ct">Respiration, toux, nez et gorge 肺</div>
-        <div style="font-size:11px;color:var(--slate);margin-bottom:6px">Interrogatoire respiratoire détaillé : il complète l'inspection (« Respiration &amp; voix ») et la question 6. L'orientation lit aussi les questions 1, 2, 8, la langue et le pouls.</div>
+      <!-- ══ Compléments par spécialité : cadres dépliants (20/11/2026) ══ -->
+      <div style="font-size:11px;color:var(--slate);margin:14px 0 2px;font-style:italic">Compléments par spécialité — dépliez le cadre utile au motif ; un cadre qui contient des signes cochés s'ouvre à la reprise de la séance.</div>
+      <div class="card pli" style="margin-top:12px" id="card-orl-pneumo">
+        <div class="ct">ORL – Pneumologie 耳鼻喉 · 肺</div>
+        <div class="pli-corps">
+        <div style="font-size:11px;color:var(--slate);margin-bottom:6px">Respiration, nez, gorge, oreille, œil, bouche : complète l'inspection (« Respiration &amp; voix ») et les questions 6 (respiration, toux), 7 (oreilles, yeux) et 8 (bouche, gorge). Les orientations pneumologique et ORL lisent aussi les questions 1, 2, 5 et 10, la langue et le pouls.</div>
         <div class="tr">
           <div style="flex-basis:100%;font-size:10px;font-weight:700;color:#1A5276;text-transform:uppercase;letter-spacing:.4px;margin:6px 0 1px">Toux</div>
           <span class="tg" onclick="togEx(this,'d-resp')">Toux sèche</span>
@@ -1713,15 +1726,55 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
           <span class="tg" onclick="togEx(this,'d-resp')">Sifflement (wheezing)</span>
           <span class="tg" onclick="togEx(this,'d-resp')">Ne peut pas s&#39;allonger</span>
           <span class="tg" onclick="togEx(this,'d-resp')">Dyspnée déclenchée par les émotions</span>
-          <div style="flex-basis:100%;font-size:10px;font-weight:700;color:#1A5276;text-transform:uppercase;letter-spacing:.4px;margin:6px 0 1px">Nez, gorge, voix</div>
+          <div style="flex-basis:100%;font-size:10px;font-weight:700;color:#1A5276;text-transform:uppercase;letter-spacing:.4px;margin:6px 0 1px">Nez et sinus</div>
           <span class="tg" onclick="togEx(this,'d-resp')">Éternuements</span>
           <span class="tg" onclick="togEx(this,'d-resp')">Nez bouché</span>
           <span class="tg" onclick="togEx(this,'d-resp')">Rhinorrhée claire</span>
           <span class="tg" onclick="togEx(this,'d-resp')">Rhinorrhée épaisse / jaune</span>
+          <span class="tg" onclick="togEx(this,'d-orl')">Saignement de nez</span>
+          <span class="tg" onclick="togEx(this,'d-orl')">Perte de l&#39;odorat</span>
+          <span class="tg" onclick="togEx(this,'d-orl')">Sinus douloureux</span>
+          <span class="tg" onclick="togEx(this,'d-orl')">Écoulement nasal malodorant</span>
+          <span class="tg" onclick="togEx(this,'d-orl')">Rhinite saisonnière</span>
+          <span class="tg" onclick="togEx(this,'d-orl')">Rhinite toute l&#39;année</span>
+          <div style="flex-basis:100%;font-size:10px;font-weight:700;color:#1A5276;text-transform:uppercase;letter-spacing:.4px;margin:6px 0 1px">Gorge et voix</div>
           <span class="tg" onclick="togEx(this,'d-resp')">Gorge qui pique</span>
           <span class="tg" onclick="togEx(this,'d-resp')">Gorge douloureuse</span>
+          <span class="tg" onclick="togEx(this,'d-orl')">Amygdales gonflées</span>
+          <span class="tg" onclick="togEx(this,'d-orl')">Déglutition difficile</span>
+          <span class="tg" onclick="togEx(this,'d-orl')">Boule dans la gorge</span>
           <span class="tg" onclick="togEx(this,'d-resp')">Voix faible</span>
           <span class="tg" onclick="togEx(this,'d-resp')">Voix rauque / aphonie</span>
+          <span class="tg" onclick="togEx(this,'d-orl')">Perte de voix brutale</span>
+          <span class="tg" onclick="togEx(this,'d-orl')">Perte de voix progressive</span>
+          <div style="flex-basis:100%;font-size:10px;font-weight:700;color:#1A5276;text-transform:uppercase;letter-spacing:.4px;margin:6px 0 1px">Oreille</div>
+          <span class="tg" onclick="togEx(this,'d-orl')">Acouphène d&#39;un seul côté</span>
+          <span class="tg" onclick="togEx(this,'d-orl')">Acouphène pulsatile</span>
+          <span class="tg" onclick="togEx(this,'d-orl')">Acouphène fluctuant (alcool / stress)</span>
+          <span class="tg" onclick="togEx(this,'d-orl')">Oreille pleine / hyperacousie</span>
+          <span class="tg" onclick="togEx(this,'d-orl')">Surdité brutale</span>
+          <span class="tg" onclick="togEx(this,'d-orl')">Après un bruit violent</span>
+          <span class="tg" onclick="togEx(this,'d-orl')">Otalgie</span>
+          <span class="tg" onclick="togEx(this,'d-orl')">Écoulement d&#39;oreille</span>
+          <span class="tg" onclick="togEx(this,'d-orl')">Douleur derrière l&#39;oreille</span>
+          <span class="tg" onclick="togEx(this,'d-orl')">Nuque raide ou douloureuse</span>
+          <span class="tg" onclick="togEx(this,'d-orl')">Traumatisme cervical (coup du lapin)</span>
+          <div style="flex-basis:100%;font-size:10px;font-weight:700;color:#1A5276;text-transform:uppercase;letter-spacing:.4px;margin:6px 0 1px">Œil</div>
+          <span class="tg" onclick="togEx(this,'d-orl')">Démangeaisons des yeux</span>
+          <span class="tg" onclick="togEx(this,'d-orl')">Sécrétions purulentes</span>
+          <span class="tg" onclick="togEx(this,'d-orl')">Œil douloureux</span>
+          <span class="tg" onclick="togEx(this,'d-orl')">Baisse brutale de la vision</span>
+          <span class="tg" onclick="togEx(this,'d-orl')">Orgelet / paupière gonflée</span>
+          <span class="tg" onclick="togEx(this,'d-orl')">Yeux et bouche secs (syndrome sec)</span>
+          <div style="flex-basis:100%;font-size:10px;font-weight:700;color:#1A5276;text-transform:uppercase;letter-spacing:.4px;margin:6px 0 1px">Bouche et dents</div>
+          <span class="tg" onclick="togEx(this,'d-orl')">Aphtes douloureux à bord rouge</span>
+          <span class="tg" onclick="togEx(this,'d-orl')">Aphtes pâles récidivants</span>
+          <span class="tg" onclick="togEx(this,'d-orl')">Ulcérations génitales associées</span>
+          <span class="tg" onclick="togEx(this,'d-orl')">Gencives gonflées</span>
+          <span class="tg" onclick="togEx(this,'d-orl')">Douleur dentaire</span>
+          <span class="tg" onclick="togEx(this,'d-orl')">Douleur dentaire nocturne</span>
+          <span class="tg" onclick="togEx(this,'d-orl')">Douleur dentaire calmée par le froid</span>
+          <span class="tg" onclick="togEx(this,'d-orl')">Mâchoire bloquée</span>
           <div style="flex-basis:100%;font-size:10px;font-weight:700;color:#1A5276;text-transform:uppercase;letter-spacing:.4px;margin:6px 0 1px">Contexte</div>
           <span class="tg" onclick="togEx(this,'d-resp')">Début aigu</span>
           <span class="tg" onclick="togEx(this,'d-resp')">Évolution chronique</span>
@@ -1734,60 +1787,15 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
           <span class="tg" onclick="togEx(this,'d-resp')">Cyanose des lèvres</span>
           <span class="tg" onclick="togEx(this,'d-resp')">Œdèmes des chevilles</span>
         </div>
-        <input id="d-resp" style="display:none" oninput="markDirty();pneumoRafraichir()">
-        <div id="pneumo-analyse-examen" style="margin-top:6px"></div>
-      </div>
-      <div class="card" style="margin-top:12px" id="card-orl">
-        <div class="ct">Oreille, œil, nez, gorge, bouche 耳鼻喉</div>
-        <div style="font-size:11px;color:var(--slate);margin-bottom:6px">Complète la question 7 (oreilles, yeux), la question 8 (bouche, gorge) et la carte « Respiration, toux, nez et gorge ». L'orientation ORL lit aussi les questions 1 à 5 et 10, la langue et le pouls.</div>
-        <div class="tr">
-          <div style="flex-basis:100%;font-size:10px;font-weight:700;color:#7D3C98;text-transform:uppercase;letter-spacing:.4px;margin:6px 0 1px">Oreille</div>
-          <span class="tg" onclick="togEx(this,'d-orl')">Acouphène d&#39;un seul côté</span>
-          <span class="tg" onclick="togEx(this,'d-orl')">Acouphène pulsatile</span>
-          <span class="tg" onclick="togEx(this,'d-orl')">Acouphène fluctuant (alcool / stress)</span>
-          <span class="tg" onclick="togEx(this,'d-orl')">Oreille pleine / hyperacousie</span>
-          <span class="tg" onclick="togEx(this,'d-orl')">Surdité brutale</span>
-          <span class="tg" onclick="togEx(this,'d-orl')">Après un bruit violent</span>
-          <span class="tg" onclick="togEx(this,'d-orl')">Otalgie</span>
-          <span class="tg" onclick="togEx(this,'d-orl')">Écoulement d&#39;oreille</span>
-          <span class="tg" onclick="togEx(this,'d-orl')">Douleur derrière l&#39;oreille</span>
-          <span class="tg" onclick="togEx(this,'d-orl')">Nuque raide ou douloureuse</span>
-          <span class="tg" onclick="togEx(this,'d-orl')">Traumatisme cervical (coup du lapin)</span>
-          <div style="flex-basis:100%;font-size:10px;font-weight:700;color:#7D3C98;text-transform:uppercase;letter-spacing:.4px;margin:6px 0 1px">Œil</div>
-          <span class="tg" onclick="togEx(this,'d-orl')">Démangeaisons des yeux</span>
-          <span class="tg" onclick="togEx(this,'d-orl')">Sécrétions purulentes</span>
-          <span class="tg" onclick="togEx(this,'d-orl')">Œil douloureux</span>
-          <span class="tg" onclick="togEx(this,'d-orl')">Baisse brutale de la vision</span>
-          <span class="tg" onclick="togEx(this,'d-orl')">Orgelet / paupière gonflée</span>
-          <span class="tg" onclick="togEx(this,'d-orl')">Yeux et bouche secs (syndrome sec)</span>
-          <div style="flex-basis:100%;font-size:10px;font-weight:700;color:#7D3C98;text-transform:uppercase;letter-spacing:.4px;margin:6px 0 1px">Nez et sinus</div>
-          <span class="tg" onclick="togEx(this,'d-orl')">Saignement de nez</span>
-          <span class="tg" onclick="togEx(this,'d-orl')">Perte de l&#39;odorat</span>
-          <span class="tg" onclick="togEx(this,'d-orl')">Sinus douloureux</span>
-          <span class="tg" onclick="togEx(this,'d-orl')">Écoulement nasal malodorant</span>
-          <span class="tg" onclick="togEx(this,'d-orl')">Rhinite saisonnière</span>
-          <span class="tg" onclick="togEx(this,'d-orl')">Rhinite toute l&#39;année</span>
-          <div style="flex-basis:100%;font-size:10px;font-weight:700;color:#7D3C98;text-transform:uppercase;letter-spacing:.4px;margin:6px 0 1px">Gorge et voix</div>
-          <span class="tg" onclick="togEx(this,'d-orl')">Amygdales gonflées</span>
-          <span class="tg" onclick="togEx(this,'d-orl')">Déglutition difficile</span>
-          <span class="tg" onclick="togEx(this,'d-orl')">Boule dans la gorge</span>
-          <span class="tg" onclick="togEx(this,'d-orl')">Perte de voix brutale</span>
-          <span class="tg" onclick="togEx(this,'d-orl')">Perte de voix progressive</span>
-          <div style="flex-basis:100%;font-size:10px;font-weight:700;color:#7D3C98;text-transform:uppercase;letter-spacing:.4px;margin:6px 0 1px">Bouche et dents</div>
-          <span class="tg" onclick="togEx(this,'d-orl')">Aphtes douloureux à bord rouge</span>
-          <span class="tg" onclick="togEx(this,'d-orl')">Aphtes pâles récidivants</span>
-          <span class="tg" onclick="togEx(this,'d-orl')">Ulcérations génitales associées</span>
-          <span class="tg" onclick="togEx(this,'d-orl')">Gencives gonflées</span>
-          <span class="tg" onclick="togEx(this,'d-orl')">Douleur dentaire</span>
-          <span class="tg" onclick="togEx(this,'d-orl')">Douleur dentaire nocturne</span>
-          <span class="tg" onclick="togEx(this,'d-orl')">Douleur dentaire calmée par le froid</span>
-          <span class="tg" onclick="togEx(this,'d-orl')">Mâchoire bloquée</span>
-          </div>
+        <input id="d-resp" style="display:none" oninput="markDirty();pneumoRafraichir();orlRafraichir()">
         <input id="d-orl" style="display:none" oninput="markDirty();orlRafraichir()">
+        <div id="pneumo-analyse-examen" style="margin-top:6px"></div>
         <div id="orl-analyse-examen" style="margin-top:6px"></div>
+        </div>
       </div>
-      <div class="card" style="margin-top:12px" id="card-gastro">
+      <div class="card pli" style="margin-top:12px" id="card-gastro">
         <div class="ct">Digestion, abdomen, anus 脾胃</div>
+        <div class="pli-corps">
         <div style="font-size:11px;color:var(--slate);margin-bottom:6px">Complète les questions 4 (selles), 5 (appétit, goût, nausées), 6 (épigastre, abdomen) et 8 (bouche). L'orientation gastro-entérologique lit aussi les questions 1, 2, 3, 9, 10, la langue et le pouls.</div>
         <div class="tr">
           <div style="flex-basis:100%;font-size:10px;font-weight:700;color:#B9770E;text-transform:uppercase;letter-spacing:.4px;margin:6px 0 1px">Reflux et estomac</div>
@@ -1851,11 +1859,13 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
           </div>
         <input id="d-gastro" style="display:none" oninput="markDirty();gastroRafraichir()">
         <div id="gastro-analyse-examen" style="margin-top:6px"></div>
+        </div>
       </div>
 
       <!-- CONTEXTE ONCOLOGIQUE (17/10/2026) : orientation oncologique, avec les questions, la langue et le pouls -->
-      <div class="card" style="margin-top:12px" id="card-onco">
+      <div class="card pli" style="margin-top:12px" id="card-onco">
         <div class="ct">Contexte oncologique et effets des traitements 腫瘤</div>
+        <div class="pli-corps">
         <div style="font-size:11px;color:var(--slate);margin-bottom:6px">À remplir pour un patient atteint de cancer : traitement en cours, précautions et effets indésirables. L'orientation lit aussi les questions 1, 2, 4, 5, 6, 8, 9, 10, 11, la langue et le pouls.</div>
         <div class="tr">
           <div style="flex-basis:100%;font-size:10px;font-weight:700;color:#6C3483;text-transform:uppercase;letter-spacing:.4px;margin:6px 0 1px">Traitement, situation</div>
@@ -1916,11 +1926,13 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
         </div>
         <input id="d-onco" style="display:none" oninput="markDirty();oncoRafraichir()">
         <div id="onco-analyse-examen" style="margin-top:6px"></div>
+        </div>
       </div>
 
       <!-- SIGNES PSYCHIQUES (15/10/2026) : orientation psychiatrique, avec la question 10, la langue et le pouls -->
-      <div class="card" style="margin-top:12px" id="card-psy">
+      <div class="card pli" style="margin-top:12px" id="card-psy">
         <div class="ct">Signes psychiques et comportement 神志</div>
+        <div class="pli-corps">
         <div style="font-size:11px;color:var(--slate);margin-bottom:6px">À compléter par la question 10 (Émotions &amp; Mental). L'orientation lit aussi le sommeil, la digestion, la langue et le pouls.</div>
         <div class="tr">
               <span class="tg" onclick="togEx(this,'d-psy')">Agitation / logorrhée</span>
@@ -1952,6 +1964,7 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
         </div>
         <input id="d-psy" style="display:none" oninput="markDirty();psyRafraichir()">
         <div id="psy-analyse-examen" style="margin-top:6px"></div>
+        </div>
       </div>
 
       <!-- AURICULOTHÉRAPIE (placée en dernier, 3 oct. 2026) -->
@@ -4295,12 +4308,14 @@ function loadSeance(sc){
     while(prev && !prev.classList.contains('tr')) prev = prev.previousElementSibling;
     if(prev && prev.classList.contains('tr')){
       prev.querySelectorAll('.tg').forEach(t => {
+        if(!(t.getAttribute('onclick')||'').includes("'"+fid+"'")) return; // étiquette d'un autre champ du même groupe
         t.classList.toggle('on', vals.some(v => v === t.textContent));
       });
     }
   });
   if(typeof renderLangueSchema==='function') renderLangueSchema();
   if(typeof renderShuMu==='function') renderShuMu();
+  if(typeof pliRafraichir==='function') pliRafraichir(true);
   s('d-zones', ex.dZones||''); if(typeof renderDouleurMap==='function') renderDouleurMap();
   // Restaurer les zones auriculaires sélectionnées sur la carte SVG (délai pour laisser le DOM se stabiliser)
   setTimeout(()=>restoreEarZones(ex.palpOreille), 80);
@@ -12154,7 +12169,7 @@ const PNEUMO_DB = {
 };
 
 // ── Orientation pneumologique d'après l'examen (15/10/2026) ──
-// Lit la carte « Respiration, toux, nez et gorge » (d-resp), l'inspection (e-resp), les questions 1, 2, 5, 6, 8, 9, 10,
+// Lit le cadre « ORL – Pneumologie » (d-resp), l'inspection (e-resp), les questions 1, 2, 5, 6, 8, 9, 10,
 // la langue et le pouls. Domaine évoqué d'abord (toux, dyspnée, asthme, grippe/rhume), puis tableau départagé par ses signes.
 function pneumoAnalyse(){
   const V = _rhVals, tq = q => Array.from(document.querySelectorAll('#tr-'+q+' .tg.on')).map(t=>t.textContent);
@@ -14790,6 +14805,23 @@ function inspectionToutNormal(){
   markDirty();
   showToast(n ? `Réponse normale cochée pour ${n} question${n>1?'s':''} — décochez ce qui ne l'est pas` : 'Toutes les questions sont déjà renseignées');
 }
+// ══ Cadres dépliants des compléments par spécialité (20/11/2026) ══
+function pliMaj(card){
+  if(!card) return;
+  const n = card.querySelectorAll('.tg.on').length, ct = card.querySelector(':scope > .ct'); if(!ct) return;
+  let b = ct.querySelector('.pli-nb');
+  if(n){ if(!b){ b = document.createElement('span'); b.className = 'pli-nb'; ct.appendChild(b); } b.textContent = n + ' signe' + (n > 1 ? 's' : ''); }
+  else if(b) b.remove();
+}
+// ouvrir : true = ouvrir les cadres qui contiennent des signes (reprise d'une séance) ; false = tout replier
+function pliRafraichir(ouvrir){
+  document.querySelectorAll('.card.pli').forEach(c => { pliMaj(c); if(ouvrir === false || (ouvrir && !c.querySelector('.tg.on'))) c.classList.add('ferme'); else if(ouvrir) c.classList.remove('ferme'); });
+}
+document.addEventListener('click', e => {
+  const ct = e.target.closest('.card.pli > .ct'); if(!ct) return;
+  ct.parentElement.classList.toggle('ferme');
+});
+if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => pliRafraichir(false)); else setTimeout(() => pliRafraichir(false), 0);
 function togEx(el, inputId) {
   el.classList.toggle('on');
   _inspectionExclusion(el, inputId);
@@ -14797,8 +14829,11 @@ function togEx(el, inputId) {
   if (!inp) return;
   // Collecter tous les .tg.on du même groupe (parent commun)
   const group = el.parentElement;
-  const sel = group ? Array.from(group.querySelectorAll('.tg.on')).map(t=>t.textContent) : [];
+  // Seules les étiquettes de ce champ (un même groupe peut en servir deux : cadre ORL – Pneumologie)
+  const cible = "'" + inputId + "'";
+  const sel = group ? Array.from(group.querySelectorAll('.tg.on')).filter(t => (t.getAttribute('onclick')||'').includes(cible)).map(t=>t.textContent) : [];
   inp.value = sel.join(', ');
+  pliMaj(el.closest('.card.pli'));
   markDirty();
   updateLangueDiag();
   if(/^pq/.test(inputId) && typeof renderPoulsSchema==='function') renderPoulsSchema();
@@ -16011,6 +16046,7 @@ function clearForms(){
     const disp=document.getElementById('disp-'+fid);
     if(disp){disp.textContent='—';disp.classList.add('empty');}
   });
+  if(typeof pliRafraichir==='function') pliRafraichir(false);
   // Réinitialiser COMPLÈTEMENT l'onglet Points (sécurité patient)
   resetPoints();
   // Réinitialiser résultats CCMQ visuels
