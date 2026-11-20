@@ -613,6 +613,10 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
         <div style="font-size:11px;color:var(--slate);font-style:italic;margin-bottom:8px">Cette liste s'enrichit à chaque amélioration de l'application — vous pouvez vérifier ici ce qui a changé depuis votre dernière utilisation. Remise à zéro le 1er octobre 2026, au lancement de la bêta.</div>
         <div id="guide-changelog" style="font-size:12px;color:var(--ink);line-height:1.8">
           <div style="font-size:12px;line-height:1.65;margin-bottom:10px">
+            <div style="font-weight:700;color:var(--jade);margin-bottom:4px">Analyse syndromique et Ba Gang plus fidèles (novembre 2026)</div>
+            <div>• <strong>Langue</strong> : une anomalie localisée (pointe rouge, fissure médiane…) n'est plus lue comme la couleur de toute la langue ; elle oriente vers le syndrome indiqué par son libellé (pointe rouge → Feu du Cœur…). Auparavant, une pointe rouge favorisait les Vides de Yin et pénalisait le Vide de Yang de Rate. • <strong>CCMQ</strong> : poids plein pour les syndromes de terrain (racine), +1 pour une branche ; une simple tendance ne valide plus un signe exigé ; « Stagnation du Sang » ne compte plus pour le Vide de Sang. • « Alternance diarrhée / constipation » n'est plus comptée comme une diarrhée ou une constipation isolée. • Nouveaux syndromes : <strong>Stagnation du Qi du Foie avec vide de Qi de Rate</strong> (dysharmonie Foie-Rate) et <strong>Vide de Yang de la Rate et des Reins</strong>. • Fatigue vespérale (vide de l'énergie du Rein), sueurs des aisselles (Chaleur / Humidité-Chaleur Foie-VB) et heures de réveil (horloge circadienne, loi midi-minuit) prises en compte. • <strong>Confiance</strong> en valeur absolue (Très probable : ≥ 9 pts avec langue ou pouls concordant ; Probable : 6 à 8 ; Possible : &lt; 6) et nombre de critères concordants affiché. • <strong>Ba Gang</strong> : pouls par position, stagnation (pouls tendu), résultat « Mixte » et « Peu de signes » au lieu de pourcentages trompeurs. • Motif « perte de poids » sans précision : alerte (amaigrissement involontaire ?) ; noter « surpoids / obésité » ou « volonté de perdre du poids ». • Compte-rendu et fiche de séance : anomalies localisées de la langue reprises.</div>
+          </div>
+          <div style="font-size:12px;line-height:1.65;margin-bottom:10px">
             <div style="font-weight:700;color:var(--jade);margin-bottom:4px">CCMQ et séances enregistrées (novembre 2026)</div>
             <div>• En modifiant une séance enregistrée qui n'a pas son propre CCMQ, l'appli reprend le CCMQ le plus récent du patient (moins de 3 mois) au lieu d'afficher des scores vides ; un bandeau sur la page CCMQ indique la séance d'origine. Même chose pour une nouvelle séance. • Sécurité : l'ouverture d'un dossier vide désormais aussi les réponses CCMQ ; auparavant, celles du patient précédent pouvaient rester à l'écran.</div>
           </div>
@@ -2400,11 +2404,11 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
           <!-- Légende code couleur -->
           <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;font-size:10px;align-items:center">
             <span style="padding:2px 8px;border-radius:20px;background:#D1FAE5;color:#065F46;font-weight:600">Très probable</span>
-            <span style="color:var(--slate)">≥80 pts — prescrire directement</span>
+            <span style="color:var(--slate)">≥ 9 pts avec langue ou pouls concordant — prescrire directement</span>
             <span style="padding:2px 8px;border-radius:20px;background:#FEF3C7;color:#92400E;font-weight:600;margin-left:6px">Probable</span>
-            <span style="color:var(--slate)">55-79 pts — valider cliniquement</span>
+            <span style="color:var(--slate)">6 à 8 pts — valider cliniquement</span>
             <span style="padding:2px 8px;border-radius:20px;background:var(--cream2);color:var(--slate);font-weight:600;margin-left:6px">Possible</span>
-            <span style="color:var(--slate)">&lt;55 pts — ✨ Affiner IA recommandé</span>
+            <span style="color:var(--slate)">&lt; 6 pts — ✨ Affiner IA recommandé</span>
           </div>
           <div id="synd-suggestions" style="display:none;margin-top:10px"></div>
         </div>
@@ -2421,7 +2425,7 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
                 <optgroup label="🌿 Rate"><option value="Vide de Qi de Rate">Vide de Qi de Rate</option><option value="Vide de Yang de Rate">Vide de Yang de Rate</option><option value="Effondrement du Qi de Rate">Effondrement du Qi de Rate</option><option value="Rate ne contrôle pas le Sang">Rate ne contrôle pas le Sang</option><option value="Humidité-Chaleur Rate">Humidité-Chaleur Rate</option></optgroup>
                 <optgroup label="🌱 Foie"><option value="Stagnation du Qi du Foie">Stagnation du Qi du Foie</option><option value="Stase de Sang du Foie">Stase de Sang du Foie</option><option value="Feu du Foie">Feu du Foie</option><option value="Vent du Foie">Vent du Foie</option><option value="Chaleur Humidité du Foie et VB">Chaleur Humidité du Foie et VB</option><option value="Stagnation du Froid dans le méridien du Foie">Stagnation du Froid dans le méridien du Foie</option><option value="Vide de Sang du Foie">Vide de Sang du Foie</option><option value="Vide de Yin du Foie">Vide de Yin du Foie</option><option value="Vide de Yin du Foie avec montée de Yang">Vide de Yin du Foie avec montée de Yang</option><option value="Stagnation du Qi du Foie avec vide de Qi de Rate">Stagnation du Qi du Foie avec vide de Qi de Rate</option></optgroup>
                 <optgroup label="🫁 Poumon"><option value="Vide de Qi du Poumon">Vide de Qi du Poumon</option><option value="Vide de Yin du Poumon">Vide de Yin du Poumon</option><option value="Sécheresse du Poumon">Sécheresse du Poumon</option><option value="Invasion du Poumon par Vent Froid">Invasion du Poumon par Vent Froid</option><option value="Invasion du Poumon par Vent Chaleur">Invasion du Poumon par Vent Chaleur</option><option value="Mucosités Humidité obstruent le Poumon">Mucosités Humidité obstruent le Poumon</option></optgroup>
-                <optgroup label="💧 Reins"><option value="Vide de Yin des Reins">Vide de Yin des Reins</option><option value="Vide de Yang des Reins">Vide de Yang des Reins</option><option value="Vide de l'Essence des Reins">Vide de l'Essence des Reins</option><option value="Qi des Reins non ferme">Qi des Reins non ferme</option><option value="Vide de Yang des Reins avec inondation par l'eau">Vide de Yang des Reins avec inondation par l'eau</option><option value="Reins et Cœur ne communiquent plus">Reins et Cœur ne communiquent plus</option></optgroup>
+                <optgroup label="💧 Reins"><option value="Vide de Yin des Reins">Vide de Yin des Reins</option><option value="Vide de Yang des Reins">Vide de Yang des Reins</option><option value="Vide de Yang de la Rate et des Reins">Vide de Yang de la Rate et des Reins</option><option value="Vide de l'Essence des Reins">Vide de l'Essence des Reins</option><option value="Qi des Reins non ferme">Qi des Reins non ferme</option><option value="Vide de Yang des Reins avec inondation par l'eau">Vide de Yang des Reins avec inondation par l'eau</option><option value="Reins et Cœur ne communiquent plus">Reins et Cœur ne communiquent plus</option></optgroup>
                 <optgroup label="🔷 Gros Intestin"><option value="Chaleur Humidité dans le GI">Chaleur Humidité dans le GI</option><option value="Chaleur Sécheresse du GI">Chaleur Sécheresse du GI</option><option value="Obstruction du GI par la Chaleur">Obstruction du GI par la Chaleur</option><option value="Sécheresse du GI">Sécheresse du GI</option><option value="Effondrement du Qi du GI">Effondrement du Qi du GI</option></optgroup>
                 <optgroup label="🔹 Intestin Grêle"><option value="Chaleur plénitude de l'IG">Chaleur plénitude de l'IG</option><option value="Stagnation du Qi dans l'IG">Stagnation du Qi dans l'IG</option><option value="Vide de Qi de l'IG+Froid interne">Vide de Qi de l'IG+Froid interne</option></optgroup>
                 <optgroup label="💛 Vésicule Biliaire"><option value="Chaleur Humidité de la VB">Chaleur Humidité de la VB</option><option value="Vide de Qi de la VB">Vide de Qi de la VB</option></optgroup>
@@ -2948,7 +2952,7 @@ const DIX_Q=[
    tags:['Froid permanent','Chaleur permanente','Bouffées de chaleur','Frissons','Fièvre','Alternance froid/chaud','Aggravé par le froid','Aggravé par la chaleur','Sensible au vent','Chaleur des 5 centres (paumes/plantes/sternum)','Chaleur vespérale (après-midi)','Fièvre os (sensation interne)','Fièvre légère chronique','Corps chaud la nuit','Extrémités froides malgré chaleur interne']},
   {id:'q2',n:2,lbl:'Transpiration',zh:'汗',alt:false,
    hint:'sueurs spontanées (jour), nocturnes, à l\'effort, localisées, absence totale',
-   itp:'Sueurs spontanées diurnes → Wei Qi xu / Yang xu | Sueurs nocturnes → Yin xu (pathognomonique) | Sueurs froides → Yang xu grave | Absence → Bi/Vent-Froid | Sueurs localisées mains/pieds → Hum-Chaleur',
+   itp:'Sueurs spontanées diurnes → Wei Qi xu / Yang xu | Sueurs nocturnes → Yin xu (pathognomonique) | Sueurs froides → Yang xu grave | Absence → Bi/Vent-Froid | Sueurs localisées mains/pieds → Hum-Chaleur | Sueurs des aisselles → Chaleur ou Humidité-Chaleur du Foie et de la VB (leurs méridiens passent par les côtes et l\'aisselle) : stagnation du Qi du Foie transformée en Chaleur (stress, irritabilité, colère), parfois avec odeur marquée',
    tags:['Sueurs spontanées diurnes','Sueurs nocturnes','Sueurs à l\'effort','Pas de transpiration','Sueurs froides','Sueurs abondantes','Sueurs de la tête/cou','Sueurs des mains et pieds','Sueurs localisées aisselles','Sueurs après repas','Sueurs jaunes colorant les vêtements']},
   {id:'q3',n:3,lbl:'Tête & Corps',zh:'頭身',alt:false,
    hint:'céphalées (localisation clé diagnostique), vertiges, lourdeur, raideur nuque',
@@ -2975,8 +2979,8 @@ const DIX_Q=[
    itp:'Soif intense boissons froides → Chaleur Estomac/Yangming | Soif boissons chaudes ou tièdes → Froid interne / Mucosités | Soif sans envie de boire → Humidité (ou Chaleur du Ying) | Bouche sèche nocturne sans soif → Yin xu | Gorge sèche chronique → Yin xu Rein/Poumon',
    tags:['Soif intense boissons froides','Soif boissons chaudes','Soif sans envie de boire','Soif modérée','Pas de soif','Bouche sèche nocturne','Bouche sèche sans soif','Gorge sèche','Gorge enflée','Lèvres sèches','Lèvres rouges et sèches','Halitose','Aphtes récurrents','Saignements gingivaux']},
   {id:'q9',n:9,lbl:'Sommeil & Énergie',zh:'睡眠',alt:false,
-   hint:'qualité sommeil, rêves (contenu diagnostique), énergie (horaire creux)',   itp:'Insomnie agitée rêves nombreux → Cœur-Rein dissocié / Feu Cœur | Endormissement diff. → Foie Qi stagnant | Réveils 1-3h → Foie | Réveils 3-5h → Poumon | Hypersomnie → Rate/Humidité | Fatigue matin → Yang xu | Fatigue après repas → Rate xu',
-   tags:['Insomnie totale','Endormissement difficile','Réveils nocturnes','Réveils 1h-3h (Foie)','Réveils 3h-5h (Poumon)','Cauchemars','Rêves agités nombreux','Rêves récurrents','Hypersomnie','Fatigue matinale','Fatigue vespérale','Fatigue permanente','Coup de pompe après repas','Coup de pompe 17h','Manque de tonus général']},
+   hint:'qualité sommeil, rêves (contenu diagnostique), énergie (horaire creux)',   itp:'Insomnie agitée rêves nombreux → Cœur-Rein dissocié / Feu Cœur | Endormissement diff. → Foie Qi stagnant | Heure de réveil → méridien de l\'horloge circadienne : 23-1 h VB, 1-3 h Foie, 3-5 h Poumon, 5-7 h Gros Intestin ; loi midi-minuit : traiter aussi le méridien opposé (VB ↔ Cœur, Foie ↔ Intestin Grêle, Poumon ↔ Vessie, Gros Intestin ↔ Rein) | Hypersomnie → Rate/Humidité | Fatigue matin → Yang xu | Fatigue vespérale → vide de l\'énergie du Rein, souvent avec un vide de Yin ou un épuisement du Qi de la Rate | Fatigue après repas → Rate xu',
+   tags:['Insomnie totale','Endormissement difficile','Réveils nocturnes','Réveils 23h-1h (VB)','Réveils 1h-3h (Foie)','Réveils 3h-5h (Poumon)','Réveils 5h-7h (Gros Intestin)','Cauchemars','Rêves agités nombreux','Rêves récurrents','Hypersomnie','Fatigue matinale','Fatigue vespérale','Fatigue permanente','Coup de pompe après repas','Coup de pompe 17h','Manque de tonus général']},
   {id:'q10',n:10,lbl:'Émotions & Mental',zh:'情志',alt:false,
    hint:'7 émotions (chacune est organe-spécifique en MTC), mémoire, concentration',
    itp:'Colère/Irritabilité → Foie Qi stagnant | Tristesse/Deuil → Poumon xu | Peur/Frayeur → Rein xu | Anxiété/Inquiétude → Rate/Cœur xu | Joie excessive → Cœur | Rumination → Rate | Oublis → Rein/Cœur xu | Pensée embrouillée → Mucosités',
@@ -3305,6 +3309,13 @@ const PDB = {
     ps:[{c:'CV1',n:'Huiyin',a:'1VC — Pollakiurie nocturne'},{c:'HT7',n:'Shenmen',a:'7C — Agitation, Reins-Cœur'}],
     tech:'Tonification du Yin. Pas de moxa.',
     cons:'Éviter excès sexuels, veilles tardives. Alimentation nourrissante pour le Yin.'
+  },
+  'Vide de Yang de la Rate et des Reins':{
+    principe:'Tiédir et tonifier le Yang de la Rate et des Reins, transformer l\'Humidité',
+    pp:[{c:'GV4',n:'Mingmen',a:'4VG — Porte de la Vie, tiédit le Yang + moxa'},{c:'CV4',n:'Guanyuan',a:'4VC — Yang originel + moxa'},{c:'BL23',n:'Shenshu',a:'23V — Shu Rein + moxa'},{c:'BL20',n:'Pishu',a:'20V — Shu Rate + moxa'},{c:'ST36',n:'Zusanli',a:'36E — Tonifie Qi et Yang de la Rate'},{c:'CV6',n:'Qihai',a:'6VC — Mer du Qi'}],
+    ps:[{c:'SP3',n:'Taibai',a:'3RP — Yuan Rate'},{c:'SP9',n:'Yinlingquan',a:'9RP — Draine l\'Humidité'},{c:'CV8',n:'Shenque',a:'8VC — Moxa (jamais d\'aiguille)'}],
+    tech:'Tonification + moxa sur 4VG, 4VC, 8VC (moxa seul), 23V, 20V (cours : hypersomnie par vide de Yang de la Rate et du Rein ; Vide de Yang de Rate).',
+    cons:'Alimentation chaude et cuite. Éviter le cru, le froid, les laitages et le sucré.'
   },
   'Vide de Yang des Reins':{
     principe:'Tonifier et tiédir le Yang des Reins',
@@ -4573,6 +4584,7 @@ function viewScIdx(idx){
   const ex=sc.ex||{};
   const exLines=[
     ex.lCouleur?`Langue couleur : ${ex.lCouleur}`:'',
+    ex.lCouleurLoc?`Langue (localisation) : ${ex.lCouleurLoc}`:'',
     ex.lForme?`Langue forme : ${ex.lForme}`:'',
     ex.lEnduitCouleur?`Enduit : ${ex.lEnduitCouleur}`:'',
     ex.lHumidite?`Humidité : ${ex.lHumidite}`:'',
@@ -5509,6 +5521,9 @@ function calcBaGang(){
   const q4t = q.q4_t||[], q5t = q.q5_t||[], q6t = q.q6_t||[], q8t = q.q8_t||[];
   if(q4t.length > 0 || q5t.length > 0 || q6t.length > 0) scores.li += 1;
   if(_valMatch(['Profond — Chen'], ex.pqProf)) scores.li += 2;
+  // Pouls saisis par position (20/11/2026) : profond sur 3 positions ou plus = Li (+2), sur 1 ou 2 = +1
+  const nPosChen = [ex.cunG,ex.cunD,ex.guanG,ex.guanD,ex.chiG,ex.chiD].filter(v => _tagMatch(['Profond — Chen'], String(v||'').split(',').map(x=>x.trim()))).length;
+  if(!_valMatch(['Profond — Chen'], ex.pqProf) && nPosChen) scores.li += nPosChen >= 3 ? 2 : 1;
 
   // Valeurs des 6 positions du pouls (popup par position), utilisées en complément
   // des qualités globales pq-*, car un praticien peut ne renseigner que l'un ou l'autre.
@@ -5531,6 +5546,7 @@ function calcBaGang(){
   if(_valMatch(['Pâle'], ex.lCouleur)) scores.vide += 1;
   if(q4t.includes('Selles molles')) scores.vide += 1;
   if(_valMatch(['Retardé — Huan'], ex.pqFreq)) scores.vide += 1;
+  if(q9t.includes('Fatigue vespérale')) scores.vide += 1; // vide de l'énergie du Rein (20/11/2026)
   // Plénitude
   if(_valMatch(['Plein — Shi'], ex.pqForce)) scores.plen += 2;
   if(_tagMatch(['Plein — Shi'], posVals)) scores.plen += 1;
@@ -5540,6 +5556,9 @@ function calcBaGang(){
   // Synthèse 1 — Plénitude : pouls glissant, constipation.
   if(_valMatch(['Glissant — Hua'], ex.pq)) scores.plen += 1;
   if(q4t.includes('Constipation')) scores.plen += 1;
+  // Stagnation (pouls tendu en corde) : plénitude relative, signalée à part (20/11/2026)
+  const stagnation = _valMatch(['Tendu en corde — Xuan'], ex.pq) || _tagMatch(['Tendu en corde — Xuan'], posVals.flatMap(v => String(v).split(',').map(x=>x.trim())));
+  if(stagnation) scores.plen += 1;
   // Veines sublinguales distendues / foncées = Stase de Sang (plénitude)
   if(_tagMatch(['Distendues','Foncées','Ramifiées'], (ex.lSublinguale||'').split(',').map(v=>v.trim()))) scores.plen += 1;
 
@@ -5576,6 +5595,9 @@ function calcBaGang(){
   if(q5t.includes('Préfère froid')) scores.chaleur += 1;
   if(q1t.includes('Aggravé par la chaleur')) scores.chaleur += 1;
   if(q4t.includes('Selles sèches dures')) scores.chaleur += 1;
+  // Chaleur localisée de la langue (pointe, bords, milieu, racine rouges) : +1 (20/11/2026)
+  const chaleurLoc = _tagMatch(['Pointe rouge (Feu Cœur)','Bords rouges (Feu Foie/VB)','Milieu rouge (Chaleur Rate-E.)','Racine rouge (Chaleur Rein)','Points rouges pointe (Chaleur Cœur)','Points rouges bords (Chaleur Foie)'], String(ex.lCouleurLoc||'').split(',').map(v=>v.trim()));
+  if(chaleurLoc) scores.chaleur += 1;
 
   // ── Douleur : facteurs aggravants/améliorants (souvent le seul signe distinctif net) ──
   const dAggBg = (ex.dAggrave||'').split(',').map(v=>v.trim()).filter(Boolean);
@@ -5592,9 +5614,13 @@ function calcBaGang(){
   scores.yang = scores.chaleur + scores.plen + scores.biao;
 
   // ── RENDU ──
+  // Moins de 3 points sur un axe : pas de pourcentage trompeur ; deux pôles proches : « Mixte » (20/11/2026)
+  const mixte = (sa, sb) => sa + sb >= 3 && Math.min(sa, sb) >= 1 && Math.min(sa, sb) >= .4 * Math.max(sa, sb);
   const axe = (a, b, sa, sb) => {
     const tot = sa + sb;
     if(tot === 0) return `<span style="color:var(--slate)">—</span>`;
+    if(tot < 3) return `<span style="color:var(--slate)">Peu de signes</span> <span style="color:var(--slate);font-size:10px">(${a} ${sa} · ${b} ${sb})</span>`;
+    if(mixte(sa, sb)) return `<strong style="color:#6C3483">Mixte</strong> <span style="color:var(--slate);font-size:10px">(${a} ${sa} · ${b} ${sb})</span>`;
     const pA = Math.round(sa/(tot)*100), pB = 100-pA;
     const domA = sa >= sb;
     return `<strong style="color:${domA?'#922B21':'#1A5276'}">${domA?a:b}</strong>
@@ -5605,7 +5631,7 @@ function calcBaGang(){
   const doleurAmelioreeFroid = _tagMatch(['Le froid',"L'application de froid"], dAmelBg);
   const videYinProbable = q1t.includes('Chaleur des 5 centres (paumes/plantes/sternum)')||q2t.includes('Sueurs nocturnes')||langueSecheRouge||doleurAmelioreeFroid;
   // Mémorisé pour « → Orienter vers syndrome », qui doit suivre les scores et non le texte affiché.
-  window._baGang = {scores:{...scores}, videYinProbable};
+  window._baGang = {scores:{...scores}, videYinProbable, stagnation};
   const chaleurType = () => {
     if(videYinProbable){
       return ' <span style="background:#FADBD8;color:#922B21;font-size:10px;padding:1px 6px;border-radius:10px">⚠️ Vide de Yin probable</span>';
@@ -5621,7 +5647,7 @@ function calcBaGang(){
       </div>
       <div style="background:#F8F9FA;border-radius:6px;padding:8px">
         <div style="font-size:10px;color:var(--slate);font-weight:600;margin-bottom:3px">VIDE / PLÉNITUDE 虛實</div>
-        ${axe('Vide (Xu)','Plénitude (Shi)',scores.vide,scores.plen)}
+        ${axe('Vide (Xu)','Plénitude (Shi)',scores.vide,scores.plen)}${stagnation?' <span style="background:#E8F8F5;color:#117A65;font-size:10px;padding:1px 6px;border-radius:10px">stagnation (pouls tendu)</span>':''}
       </div>
       <div style="background:#F8F9FA;border-radius:6px;padding:8px">
         <div style="font-size:10px;color:var(--slate);font-weight:600;margin-bottom:3px">FROID / CHALEUR 寒熱</div>
@@ -5650,7 +5676,10 @@ function baGangTherapeutique(scores, ex){
       ? {lbl:'Soutenir le droit — Tonifier', zh:'補 Bu', col:'#1A5276'}
       : {lbl:'Chasser le pervers — Disperser', zh:'瀉 Xie', col:'#922B21'});
   }
-  if(totFC){
+  const mixteFC = totFC >= 3 && Math.min(scores.froid, scores.chaleur) >= 1 && Math.min(scores.froid, scores.chaleur) >= .4 * Math.max(scores.froid, scores.chaleur);
+  if(mixteFC){
+    parts.push({lbl:'Réchauffer', zh:'溫 Wen', col:'#B8860B'}, {lbl:'Clarifier la chaleur', zh:'清 Qing', col:'#117A65'});
+  } else if(totFC){
     parts.push(scores.froid >= scores.chaleur
       ? {lbl:'Réchauffer', zh:'溫 Wen', col:'#B8860B'}
       : {lbl:'Clarifier la chaleur', zh:'清 Qing', col:'#117A65'});
@@ -6150,7 +6179,7 @@ function _synSignes(){
     return v.length ? _SYN_Q_LBL[id] + ' : ' + v.join(', ') : '';
   }).filter(Boolean);
   if(q.length) out.push('À l\'interrogatoire (10+1 questions) — ' + q.join(' ; ') + '.');
-  const langue = [..._synVal('l-couleur').map(_synMin), ..._synVal('l-forme').map(_synMin), ...(_synVal('l-enduit-couleur').length ? ['enduit ' + _synVal('l-enduit-couleur').map(_synMin).join(', ')] : []), ..._synVal('l-humidite').map(_synMin)];
+  const langue = [..._synVal('l-couleur').map(_synMin), ..._synVal('l-couleur-loc').map(x => _synMin(x).replace(/\s*\(.*\)$/,'')), ..._synVal('l-forme').map(_synMin), ...(_synVal('l-enduit-couleur').length ? ['enduit ' + _synVal('l-enduit-couleur').map(_synMin).join(', ')] : []), ..._synVal('l-humidite').map(_synMin)];
   // Pouls : positions regroupées par qualité (« lent, profond : Cun, Guan ; mou : Chi »)
   const POS = [['cun-g','Cun G'],['cun-d','Cun D'],['guan-g','Guan G'],['guan-d','Guan D'],['chi-g','Chi G'],['chi-d','Chi D']];
   const groupes = new Map();
@@ -6744,14 +6773,59 @@ const CONTRE_CHALEUR = [{langueG:['Pâle']},{pouls:['Lent — Chi']}];
 const CONTRE_VIDE_YIN = [{pouls:['Plein — Shi','Ample — Hong']},{enduit:['Jaune épais','Blanc épais']}];
 const CONTRE_PLENITUDE_CHALEUR = [{enduit:['Absent (langue miroir)']},{enduitDist:['Pelé zone centrale','Pelé zone racine','Pelé géographique']}];
 
+// Groupes de signes exigés des syndromes combinés (20/11/2026)
+const SIGNES_FOIE_STAGNATION = [
+  {tags:{q10:['Irritabilité','Colère facile','Frustration'],q4:['Diarrhée après stress','Alternance diarrhée / constipation'],q6:['Douleur flancs droit','Douleur flancs gauche']}},
+  {pouls:['Tendu en corde — Xuan']},
+  {ccmq:'Stase de Qi'},
+];
+const SIGNES_RATE_VIDE = [
+  {tags:{q4:['Selles molles','Alternance diarrhée / constipation'],q5:["Peu d'appétit",'Bouche fade'],q6:['Distension abdominale'],q9:['Coup de pompe après repas']}},
+  {ccmq:'Vide de Qi'},
+];
+const SIGNES_REIN_VIDE = [
+  {tags:{q4:['Urines claires abondantes','Pollakiurie nocturne','Diarrhée matinale (coq)'],q9:['Fatigue vespérale','Fatigue matinale'],q11:['Libido diminuée']}},
+];
+// Anomalies localisées de la langue → syndrome indiqué par leur libellé (+1 si la règle ne la cite pas déjà)
+const LANGUE_LOC_SYND = {
+  'Feu du Cœur':['Pointe rouge','Points rouges pointe'], 'Vide de Yin du Cœur':['Pointe rouge'],
+  'Feu du Foie':['Bords rouges','Points rouges bords'], 'Stagnation du Qi du Foie':['Bords rouges'],
+  "Feu de l'Estomac":['Milieu rouge'], 'Humidité-Chaleur':['Milieu rouge'], 'Vide de Yin des Reins':['Racine rouge'],
+  'Vide de Sang du Cœur':['Pointe pâle'], 'Vide de Qi du Cœur':['Pointe pâle'], 'Vide de Sang du Foie':['Bords pâles'],
+  "Vide de Yin de l'Estomac":['Fissure médiane'], 'Vide de Yin du Foie':['Fissures bords'], 'Stase de Sang':['Taches violacées','Bords violacés'],
+};
 const SYND_RULES = {
+  // ══ SYNDROMES COMBINÉS (20/11/2026) ══
+  'Stagnation du Qi du Foie avec vide de Qi de Rate': {
+    couleur:'🟢',offline:true,
+    ccmq:['Stase de Qi','Vide de Qi'],
+    langue:{couleur:['Normal (rose)','Pâle','Bords rouges'],forme:['Marques de dents']},
+    pouls:{global:['Tendu en corde — Xuan'],positions:{gG:['Tendu en corde — Xuan'],gD:['Vide — Xu','Mou — Ru','Fin — Xi']}},
+    q10:{q4:['Alternance diarrhée / constipation','Diarrhée après stress','Selles molles'],q6:['Distension abdominale','Douleur flancs','Borborygmes'],q10:['Irritabilité','Rumination','Frustration'],q5:["Peu d'appétit"],q9:['Fatigue permanente']},
+    douleur:{},
+    axe:'branche',
+    requisTous:[SIGNES_FOIE_STAGNATION, SIGNES_RATE_VIDE],
+    descr:"Dysharmonie Foie-Rate : le Qi du Foie stagnant agresse la Rate — irritabilité, distension abdominale, alternance diarrhée / constipation, borborygmes, fatigue ; Guan gauche tendu, Guan droit faible"
+  },
+  'Vide de Yang de la Rate et des Reins': {
+    couleur:'🟢',offline:true,
+    ccmq:['Vide de Yang'],
+    langue:{couleur:['Pâle'],forme:['Gonflée / Œdématiée','Marques de dents'],humidite:['Humide / Glissant']},
+    pouls:{global:['Profond — Chen','Lent — Chi','Vide — Xu','Épuisé — Ruo'],positions:{chiG:['Profond — Chen','Fin — Xi','Vide — Xu'],chiD:['Profond — Chen','Fin — Xi','Vide — Xu'],gD:['Vide — Xu','Mou — Ru']}},
+    q10:{q1:['Froid permanent','Aggravé par le froid'],q4:['Selles molles','Diarrhée matinale (coq)','Urines claires abondantes','Pollakiurie nocturne'],q5:['Préfère chaud'],q9:['Fatigue vespérale','Fatigue matinale','Hypersomnie'],q3:['Lourdeur corps','Lourdeur tête']},
+    douleur:{ameliore:['La chaleur']},
+    axe:'racine',
+    requisTous:[SIGNES_FROID, SIGNES_REIN_VIDE],
+    contre:CONTRE_FROID,
+    descr:'Vide de Yang de la Rate et des Reins : frilosité, préférence pour le chaud, selles molles, urines claires, fatigue (vespérale ou matinale), œdèmes, Humidité qui s\'accumule (surpoids) ; langue pâle gonflée, marques de dents ; pouls profond et faible aux Pieds'
+  },
   // ══ RATE / ESTOMAC ══
   'Vide de Qi de Rate': {
     couleur:'🟢',offline:true,
     ccmq:['Vide de Qi'],
     langue:{couleur:['Pâle'],forme:['Gonflée / Œdématiée','Marques de dents'],enduitCouleur:['Blanc mince (normal)','Blanc épais']},
     pouls:{global:['Vide — Xu','Retardé — Huan','Mou — Ru','Épuisé — Ruo'],positions:{gG:['Vide — Xu','Mou — Ru'],gD:['Vide — Xu','Mou — Ru']}},
-    q10:{q5:["Peu d'appétit",'Bouche fade','Goût sucré persistant'],q4:['Selles molles','Diarrhée'],q3:['Lourdeur corps','Faiblesse membres'],q9:['Fatigue matinale','Fatigue permanente','Coup de pompe après repas']},
+    q10:{q5:["Peu d'appétit",'Bouche fade','Goût sucré persistant'],q4:['Selles molles','Diarrhée'],q3:['Lourdeur corps','Faiblesse membres'],q9:['Fatigue matinale','Fatigue permanente','Coup de pompe après repas','Fatigue vespérale']},
     douleur:{ameliore:['La chaleur','La pression']},
     axe:'racine',
     descr:"Fatigue, selles molles, peu d'appétit, langue pâle avec marques de dents"
@@ -6824,7 +6898,7 @@ const SYND_RULES = {
     ccmq:['Vide de Qi'],
     langue:{couleur:['Pâle'],forme:['Normale','Mince / Maigre']},
     pouls:{global:['Vide — Xu','Épuisé — Ruo'],positions:{cunD:['Vide — Xu','Épuisé — Ruo']}},
-    q10:{q2:['Sueurs spontanées',"Sueurs à l'effort"],q9:['Fatigue permanente','Fatigue matinale'],q10:['Tristesse']},
+    q10:{q2:['Sueurs spontanées',"Sueurs à l'effort"],q9:['Fatigue permanente','Fatigue matinale','Réveils 3h-5h (Poumon)'],q10:['Tristesse']},
     douleur:{},
     axe:'racine',
     descr:'Essoufflement à l\'effort, voix faible, sueurs spontanées, rhumes fréquents, pouls faible'
@@ -6834,7 +6908,7 @@ const SYND_RULES = {
     ccmq:['Vide de Yin'],
     langue:{couleur:['Rouge'],humidite:['Sec']},
     pouls:{global:['Fin — Xi','Rapide — Shu'],positions:{cunD:['Fin — Xi','Rapide — Shu']}},
-    q10:{q8:['Gorge sèche','Bouche sèche nocturne'],q2:['Sueurs nocturnes'],q1:['Chaleur vespérale (après-midi)','Chaleur des 5 centres (paumes/plantes/sternum)','Fièvre légère chronique']},
+    q10:{q8:['Gorge sèche','Bouche sèche nocturne'],q2:['Sueurs nocturnes'],q1:['Chaleur vespérale (après-midi)','Chaleur des 5 centres (paumes/plantes/sternum)','Fièvre légère chronique'],q9:['Réveils 3h-5h (Poumon)']},
     douleur:{},
     axe:'racine',
     requisTous:[[{motif:true}],SIGNES_CHALEUR_VIDE],
@@ -6874,7 +6948,7 @@ const SYND_RULES = {
     ccmq:['Vide de Qi'],
     langue:{couleur:['Pâle'],forme:['Normale']},
     pouls:{global:['Vide — Xu','Profond — Chen','Épuisé — Ruo'],positions:{chiG:['Vide — Xu'],chiD:['Vide — Xu']}},
-    q10:{q4:['Pollakiurie nocturne','Urines claires abondantes','Incontinence urinaire'],q9:['Fatigue matinale'],q11:['Éjaculation précoce']},
+    q10:{q4:['Pollakiurie nocturne','Urines claires abondantes','Incontinence urinaire'],q9:['Fatigue matinale','Fatigue vespérale'],q11:['Éjaculation précoce']},
     douleur:{},
     axe:'racine',
     descr:'Mictions fréquentes claires, incontinence, énurésie, éjaculation précoce, lombes faibles, Chi vide et profond'
@@ -6897,7 +6971,7 @@ const SYND_RULES = {
     langue:{couleur:['Rouge'],forme:['Mince / Maigre','Fissures longitudinales'],humidite:['Sec','Très sec / Brûlé'],enduitCouleur:['Absent (langue miroir)','Jaune mince']},
     pouls:{global:['Rapide — Shu','Fin — Xi','Profond — Chen'],positions:{chiG:['Rapide — Shu','Fin — Xi'],chiD:['Rapide — Shu','Fin — Xi']}},
     // « Soif intense » retiré (signe de Chaleur plénitude) : le Vide de Yin donne une soif de boissons tièdes.
-    q10:{q2:['Sueurs nocturnes'],q1:['Chaleur des 5 centres (paumes/plantes/sternum)','Bouffées de chaleur','Chaleur vespérale (après-midi)','Corps chaud la nuit'],
+    q10:{q9:['Fatigue vespérale'],q2:['Sueurs nocturnes'],q1:['Chaleur des 5 centres (paumes/plantes/sternum)','Bouffées de chaleur','Chaleur vespérale (après-midi)','Corps chaud la nuit'],
       q8:['Gorge sèche','Bouche sèche nocturne'],q7:['Acouphènes graves'],q3:['Vertiges']},
     douleur:{ameliore:['Le froid']},
     axe:'racine',
@@ -6911,7 +6985,7 @@ const SYND_RULES = {
     ccmq:['Stase de Qi'],
     langue:{couleur:['Normal (rose)','Rouge','Bords rouges'],enduitCouleur:['Blanc mince (normal)']},
     pouls:{global:['Tendu en corde — Xuan'],positions:{gG:['Tendu en corde — Xuan']}},
-    q10:{q6:['Douleur flancs','Distension abdominale','Oppression thoracique'],q10:['Irritabilité','Colère','Frustration','Labilité émotionnelle','Tristesse'],q5:['Nausées','Régurgitations'],q11:['SPM irritabilité/seins'],q4:['Diarrhée après stress','Alternance diarrhée / constipation']},
+    q10:{q6:['Douleur flancs','Distension abdominale','Oppression thoracique'],q10:['Irritabilité','Colère','Frustration','Labilité émotionnelle','Tristesse'],q5:['Nausées','Régurgitations'],q11:['SPM irritabilité/seins'],q4:['Diarrhée après stress','Alternance diarrhée / constipation'],q2:['Sueurs localisées aisselles'],q9:['Réveils 1h-3h (Foie)']},
     douleur:{aggrave:['Le stress / émotions'],ameliore:['Le massage','Le mouvement']},
     axe:'branche',
     descr:"Distension des flancs, soupirs, labilité émotionnelle, SPM, Guan gauche tendu en corde"
@@ -6921,7 +6995,7 @@ const SYND_RULES = {
     ccmq:[],
     langue:{couleur:['Rouge','Bords rouges'],enduitCouleur:['Jaune mince','Jaune épais']},
     pouls:{global:['Tendu en corde — Xuan','Rapide — Shu','Ample — Hong'],positions:{gG:['Tendu en corde — Xuan','Rapide — Shu']}},
-    q10:{q3:['Céphalées temporales','Vertiges'],q7:['Yeux rouges','Acouphènes aigus soudains'],q10:['Colère facile','Irritabilité'],q5:['Goût amer'],q4:['Constipation','Selles sèches dures']},
+    q10:{q3:['Céphalées temporales','Vertiges'],q7:['Yeux rouges','Acouphènes aigus soudains'],q10:['Colère facile','Irritabilité'],q5:['Goût amer'],q4:['Constipation','Selles sèches dures'],q2:['Sueurs localisées aisselles'],q9:['Réveils 1h-3h (Foie)']},
     douleur:{aggrave:['Le stress / émotions']},
     axe:'branche',
     requisTous:[
@@ -7027,7 +7101,7 @@ const SYND_RULES = {
   },
   'Vide de Sang': {
     couleur:'🟡',offline:false,
-    ccmq:['Vide de Yin','Stagnation Sang'],
+    ccmq:['Vide de Yin'], // la constitution « Stagnation du Sang » relève de la Stase de Sang, pas du Vide de Sang
     langue:{couleur:['Pâle'],forme:['Mince / Maigre'],sublinguale:['Pâles et fines']},
     pouls:{global:['Fin — Xi','Vide — Xu','Rugueux — Se']},
     q10:{q7:['Yeux secs','Vision trouble'],q9:['Endormissement difficile','Insomnie totale','Réveils nocturnes'],q3:['Vertiges','Fourmillements'],q6:['Palpitations'],q11:['Règles peu abondantes','Sang pâle dilué']},
@@ -7050,7 +7124,7 @@ const SYND_RULES = {
     ccmq:['Humidité-Chaleur'],
     langue:{couleur:['Rouge'],enduitCouleur:['Jaune épais','Jaune mince'],humidite:['Gras / Huileux','Collant']},
     pouls:{global:['Rapide — Shu','Glissant — Hua']},
-    q10:{q4:['Selles collantes','Brûlures urinaires','Urines foncées','Selles malodorantes'],q5:['Goût amer'],q8:['Soif sans envie de boire'],q1:['Chaleur permanente']},
+    q10:{q4:['Selles collantes','Brûlures urinaires','Urines foncées','Selles malodorantes'],q5:['Goût amer'],q8:['Soif sans envie de boire'],q1:['Chaleur permanente'],q2:['Sueurs localisées aisselles']},
     douleur:{aggrave:['La chaleur']},
     axe:'branche',
     contre:[...CONTRE_CHALEUR,...CONTRE_PLENITUDE_CHALEUR],
@@ -7123,7 +7197,7 @@ const SYND_RULES = {
 
 // Organe de chaque syndrome d'organe (libellés de SHU_PTS / MU_PTS) : pour le bonus Shu / Mu.
 const SYND_ORGANE = {
-  'Vide de Qi de Rate':'Rate','Vide de Yang de Rate':'Rate','Effondrement du Qi de Rate':'Rate',
+  'Vide de Qi de Rate':'Rate','Vide de Yang de Rate':'Rate','Effondrement du Qi de Rate':'Rate','Vide de Yang de la Rate et des Reins':'Rein','Stagnation du Qi du Foie avec vide de Qi de Rate':'Foie',
   "Qi à contre courant de l'Estomac":'Estomac',"Feu de l'Estomac":'Estomac',"Vide de Yin de l'Estomac":'Estomac',
   'Vide de Qi du Poumon':'Poumon','Vide de Yin du Poumon':'Poumon','Invasion du Poumon par Vent Chaleur':'Poumon',
   'Qi des Reins non ferme':'Rein','Vide de Yang des Reins':'Rein','Vide de Yin des Reins':'Rein',
@@ -7137,7 +7211,7 @@ const SYND_ORGANE = {
 // plutôt que simplement ne pas la conforter — sinon un syndrome "Vide de Qi" (où la couleur
 // de langue n'est qu'un signe secondaire, pas définitoire) serait à tort exclu.
 const SYND_THERMAL_AXIS = new Set([
-  'Vide de Yang des Reins','Vide de Yang de Rate',
+  'Vide de Yang des Reins','Vide de Yang de Rate','Vide de Yang de la Rate et des Reins',
   'Vide de Yin des Reins','Vide de Yin du Foie','Vide de Yin du Cœur','Vide de Yin du Poumon','Vide de Yin de l\'Estomac',
   'Vide de Yin du Foie avec montée de Yang',
   'Vent-Froid externe','Invasion du Poumon par Vent Chaleur',
@@ -7154,7 +7228,8 @@ function _q10Matches(qid, qtags){
   const tr=document.getElementById('tr-'+qid);
   const chk=tr?Array.from(tr.querySelectorAll('.tg.on')).map(t=>t.textContent):[];
   const repTok=MTCNorm.tokens((document.getElementById('rep-'+qid)||{}).value||'');
-  return qtags.filter(t => chk.some(v=>MTCNorm.phraseIn(v,t)) || MTCNorm.phraseIn(repTok,t));
+  // « Alternance diarrhée / constipation » ne compte pas comme « Diarrhée » ni comme « Constipation » (20/11/2026)
+  return qtags.filter(t => chk.some(v=>(!/^Alternance /.test(v) || /^Alternance /.test(t)) && MTCNorm.phraseIn(v,t)) || MTCNorm.phraseIn(repTok,t));
 }
 
 function suggestSyndromes() {
@@ -7172,7 +7247,14 @@ function suggestSyndromes() {
   });
 
   // Couleur de langue : couleur globale + couleur localisée (points rouges de la pointe, bords…).
-  const lCouleur=[...tags('l-couleur'),...tags('l-couleur-loc')], lForme=tags('l-forme'), lEnduit=tags('l-enduit-couleur'), lHum=tags('l-humidite'), lSub=tags('l-sublinguale');
+   // Couleur globale et anomalies localisées lues séparément (20/11/2026) : une « Pointe rouge » n'est pas une
+   // langue rouge (elle donnait +2 aux Vides de Yin et −3 au Vide de Yang de Rate) ; une règle qui cite une anomalie
+   // localisée (« Pointe rouge », « Taches violacées »…) la retrouve dans l-couleur-loc.
+   const lCouleur=tags('l-couleur'), lLoc=tags('l-couleur-loc');
+   const LOC_RE=/^(Pointe|Bords|Milieu|Racine|Points rouges|Taches|Fissure)/;
+   const langueMatch = vals => { if(!vals || !vals.length) return null; const loc=vals.filter(v=>LOC_RE.test(v)), col=vals.filter(v=>!LOC_RE.test(v));
+     return _tagMatch(col, lCouleur) || _tagMatch(loc, lLoc); };
+   const lForme=tags('l-forme'), lEnduit=tags('l-enduit-couleur'), lHum=tags('l-humidite'), lSub=tags('l-sublinguale');
   const dLoc=tags('d-localisation');
   const pGlobal=[...tags('pq'),...tags('pq-freq'),...tags('pq-prof'),...tags('pq-force'),...tags('pq-forme')];
   const pPos={cunG:tags('cun-g'),cunD:tags('cun-d'),gG:tags('guan-g'),gD:tags('guan-d'),chiG:tags('chi-g'),chiD:tags('chi-d')};
@@ -7190,7 +7272,9 @@ function suggestSyndromes() {
     'Vide de Qi du Poumon':['essoufflement','toux','rhume','fatigue','infections'],
     'Qi des Reins non ferme':['fatigue','lombaire','lombes','reins','urinaire','pollakiurie'],
     'Vide de Yang des Reins':['froid','frilosité','lombaire','reins','libido','oedème'],
-    'Vide de Yang de Rate':['froid','diarrhée','digestion','fatigue','poids'],
+    'Vide de Yang de Rate':['froid','diarrhée','digestion','fatigue','surpoids','obésité','prise de poids','perdre du poids'],
+    'Vide de Yang de la Rate et des Reins':['froid','frilosité','fatigue','œdème','surpoids','obésité','prise de poids','perdre du poids'],
+    'Stagnation du Qi du Foie avec vide de Qi de Rate':['ballonnement','colite','côlon irritable','colopathie','stress','alternance'],
     'Vide de Yin des Reins':['bouffées','sueurs nocturnes','sécheresse','acouphène','vertiges','ménopause'],
     'Vide de Yin du Foie':['yeux','vertiges','sécheresse','ménopause','règles'],
     'Vide de Yin du Cœur':['insomnie','palpitations','anxiété','stress','agitation'],
@@ -7198,7 +7282,7 @@ function suggestSyndromes() {
     // Mots trop génériques retirés (« douleur », « règles », « circulation », « dos ») : ils
     // donnaient un point à ces syndromes pour quasiment tout motif douloureux.
     'Stase de Sang':['douleur fixe','douleur lancinante','dysménorrhée','caillots','varices','ecchymose','hématome'],
-    'Glaires-Humidité':['lourdeur','poids','mucosités','glaires','cholestérol'],
+    'Glaires-Humidité':['lourdeur','surpoids','obésité','prise de poids','perdre du poids','mucosités','glaires','cholestérol'],
     'Humidité-Chaleur':['inflammation','infection','brûlure','urinaire','peau','acné'],
     'Vide de Sang':['pâleur','vertiges','règles peu','anémie'],
     'Feu du Cœur':['agitation','insomnie','ulcères','palpitations'],
@@ -7232,12 +7316,12 @@ function suggestSyndromes() {
     if(r.motifMots) return motifTok.length ? (r.motifMots.find(k=>MTCNorm.phraseIn(motifTok, k)) || null) : null;
     if(r.tags){ for(const [qid,vals] of Object.entries(r.tags)){ const m=_q10Matches(qid, vals); if(m.length) return m[0]; } return null; }
     if(r.pouls) return m1(r.pouls, pGlobal) || Object.values(pPos).map(v=>m1(r.pouls, v)).find(Boolean) || null;
-    if(r.langue) return m1(r.langue, lCouleur);
+    if(r.langue) return langueMatch(r.langue);
     if(r.langueG) return m1(r.langueG, lCouleurG);
     if(r.enduit) return m1(r.enduit, lEnduit);
     if(r.enduitDist) return m1(r.enduitDist, lEnduitDist);
     if(r.sublinguale) return m1(r.sublinguale, lSub);
-    if(r.ccmq) return (ccmqPres.includes(r.ccmq) || ccmqPres.includes(r.ccmq+'_tendance')) ? 'CCMQ '+r.ccmq : null;
+    if(r.ccmq) return ccmqPres.includes(r.ccmq) ? 'CCMQ '+r.ccmq : null; // une simple tendance ne valide pas un signe exigé
     if(typeof r.douleur==='string') return m1((rule.douleur||{})[r.douleur], dSrc[r.douleur]||[]);
     if(r.douleur){ for(const [f,vals] of Object.entries(r.douleur)){ const m=m1(vals, dSrc[f]||[]); if(m) return m; } return null; }
     return null;
@@ -7275,12 +7359,17 @@ function suggestSyndromes() {
     // CCMQ : constitution présente +3 ; simple tendance (30-39) +1 seulement (auparavant +3 aussi).
     const cMatch = (rule.ccmq||[]).filter(c => ccmqPres.includes(c));
     const cTend = (rule.ccmq||[]).filter(c => !cMatch.includes(c) && ccmqPres.includes(c+'_tendance'));
-    if (cMatch.length) { sc+=3; det.push('CCMQ: '+cMatch.join(', ')); }
-    else if (cTend.length) { sc+=1; det.push('CCMQ (tendance): '+cTend.join(', ')); }
+    // Le CCMQ décrit le terrain : poids plein pour la racine, +1 seulement pour une branche (20/11/2026).
+    const brancheC = rule.axe === 'branche';
+    if (cMatch.length) { sc += brancheC ? 1 : 3; det.push('CCMQ'+(brancheC?' (terrain)':'')+': '+cMatch.join(', ')); }
+    else if (cTend.length && !brancheC) { sc+=1; det.push('CCMQ (tendance): '+cTend.join(', ')); }
     // Langue — comparaison robuste sur le mot-clé central (voir _tagMatch) : évite les faux
     // négatifs quand le libellé réel est une variante ('Rouge foncé / Cramoisi' pour 'Rouge').
     const lCheck = (arr, src, pts, lbl) => { const m=_tagMatch(arr, src); if(m){sc+=pts;det.push(lbl+': '+m);} };
-    lCheck(rule.langue?.couleur, lCouleur, 2, 'Langue couleur');
+    { const mC = langueMatch(rule.langue?.couleur); if(mC){ sc+=2; det.push('Langue couleur: '+mC); }
+      // Anomalie localisée rattachée à ce syndrome par son libellé, quand la règle ne la cite pas déjà
+      const loc = (LANGUE_LOC_SYND[nom]||[]).map(k => lLoc.find(v => v.startsWith(k))).find(Boolean);
+      if(loc && !(mC && LOC_RE.test(mC))){ sc+=1; det.push('Langue localisée: '+loc.replace(/\s*\(.*\)$/,'')); } }
     lCheck(rule.langue?.forme, lForme, 1, 'Langue forme');
     lCheck(rule.langue?.enduitCouleur, lEnduit, 1, 'Enduit');
     lCheck(rule.langue?.humidite, lHum, 1, 'Humidité');
@@ -7338,23 +7427,39 @@ function suggestSyndromes() {
     el.innerHTML='<p style="font-size:12px;color:var(--slate);font-style:italic">Données insuffisantes — renseignez la langue, le pouls et les 10 questions.</p>';
     return;
   }
+  // Motif « perte de poids » sans précision : souhait de maigrir ou amaigrissement involontaire (signe d'alerte) ? (20/11/2026)
+  const motifTxt = [((document.getElementById('dix-motif-input')||{}).value||''), ((document.getElementById('s-motif')||{}).value||'')].join(' ');
+  const alertePoids = /perte de poids|amaigri|maigrit|perd du poids/i.test(motifTxt) && !/surpoids|ob[ée]sit|volont|souhait|envie de (perdre|maigrir)|perdre du poids|maigrir/i.test(motifTxt);
   const racineList=all.filter(([nom])=>(SYND_RULES[nom]||{}).axe==='racine').slice(0,4);
   const brancheList=all.filter(([nom])=>(SYND_RULES[nom]||{}).axe==='branche').slice(0,4);
   const maxSc=all[0][1].sc;
   el.style.display='';
-  el.innerHTML='<div style="font-size:11px;font-weight:700;color:var(--jade);text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px">Syndromes sugg\u00e9r\u00e9s par l\'analyse clinique</div>'+
+  el.innerHTML=(alertePoids?'<div style="font-size:11px;background:#FDEDEC;color:#922B21;border-radius:6px;padding:6px 10px;margin-bottom:8px">⚠️ Motif « perte de poids » : s\'il s\'agit d\'un amaigrissement involontaire, c\'est un signe d\'alerte (bilan médical). Pour un souhait de maigrir, notez « surpoids / obésité » ou « volonté de perdre du poids ».</div>':'')+'<div style="font-size:11px;font-weight:700;color:var(--jade);text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px">Syndromes sugg\u00e9r\u00e9s par l\'analyse clinique</div>'+
     '<div style="font-size:10px;color:var(--slate);font-style:italic;margin-bottom:10px">Racine (\u672c Ben) : terrain de fond, cause profonde \u2014 souvent un Vide constitutionnel. Branche (\u6807 Biao) : manifestation actuelle, souvent une Pl\u00e9nitude/Stagnation surajout\u00e9e. R\u00e8gle classique : en urgence on traite la Branche en premier (\u6025\u5219\u6cbb\u6807), sinon on traite la Racine en fond (\u7f13\u5219\u6cbb\u672c). Les deux peuvent \u00eatre combin\u00e9s (bouton "2\u00e8me").</div>'+
     renderSyndGroup('🌱 Racine — terrain de fond','本 Ben','#6B4A00',racineList,maxSc,'Aucun syndrome de fond net ne se dégage — le terrain constitutionnel (CCMQ, Vide de Qi/Yang/Yin) reste à préciser.')+
     renderSyndGroup('🌿 Branche — manifestation actuelle','标 Biao','#8B3A3A',brancheList,maxSc,'Aucune manifestation aiguë/symptomatique nette ne se dégage à partir de la douleur et des 10 questions.');
 }
 
+// Confiance en valeur absolue (20/11/2026) : auparavant relative au meilleur score (7 pts devenaient « très probable »).
+// Très probable : ≥ 9 pts avec langue ou pouls concordant ; Probable : ≥ 6 pts ; sinon Possible.
+function _syndNiveau(data){
+  const lp = (data.det||[]).some(x => /^(Langue|Pouls|P-|Humidité|Enduit)/.test(x));
+  return data.sc>=9 && lp ? 'Très probable' : data.sc>=6 ? 'Probable' : 'Possible';
+}
+function _syndCriteres(rule, det){
+  const r = rule||{};
+  const N = ((r.ccmq||[]).length?1:0) + Object.keys(r.langue||{}).length + (r.pouls?.global?1:0) + Object.keys(r.pouls?.positions||{}).length + Object.keys(r.q10||{}).length + Object.keys(r.douleur||{}).length;
+  const n = (det||[]).filter(x => /^(CCMQ|Langue|Humidité|Enduit|Veines|Pouls|P-|Q\d|Aggravé|Amélioré|Type|Localisation)/.test(x)).length;
+  return {n: Math.min(n, N), N};
+}
 function renderSyndCard(nom,data,maxSc){
-  const pct=Math.round(data.sc/maxSc*100);
-  const conf=pct>=80?{lbl:'Très probable',bg:'#D1FAE5',col:'#065F46'}:pct>=55?{lbl:'Probable',bg:'#FEF3C7',col:'#92400E'}:{lbl:'Possible',bg:'var(--cream2)',col:'var(--slate)'};
+  const pct=Math.min(100, Math.round(data.sc/12*100));
+  const niv=_syndNiveau(data), cr=_syndCriteres(data.rule, data.det);
+  const conf=niv==='Très probable'?{lbl:niv,bg:'#D1FAE5',col:'#065F46'}:niv==='Probable'?{lbl:niv,bg:'#FEF3C7',col:'#92400E'}:{lbl:niv,bg:'var(--cream2)',col:'var(--slate)'};
   return`<div style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:9px 12px;margin-bottom:6px">
     <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px">
       <span style="font-size:13px;font-weight:600">${data.rule.couleur} ${nom}</span>
-      <span style="font-size:10px;padding:2px 8px;border-radius:20px;background:${conf.bg};color:${conf.col};font-weight:600">${conf.lbl} (${data.sc} pts)</span>
+      <span style="font-size:10px;padding:2px 8px;border-radius:20px;background:${conf.bg};color:${conf.col};font-weight:600">${conf.lbl} (${data.sc} pts · ${cr.n}/${cr.N} critères)</span>
       <button class="btn bg" style="font-size:11px;padding:3px 10px;margin-left:auto" onclick="applySyndrome('${nom.replace(/'/g,"\'")}')">Sélectionner →</button>
       <button class="btn" style="font-size:10px;padding:2px 8px" onclick="addSecondSyndrome2('${nom.replace(/'/g,String.fromCharCode(39))}')" title="Ajouter comme 2ème syndrome">➕ 2ème</button>
     </div>
@@ -14213,6 +14318,9 @@ const AURI_SYND_MAP = {
   'Vide Yin Foie':      ['Foie (GAN)','Rein (SHEN)','Œil (YAN)','Shen Men','Cœur (CO)'],
   'Vide Yin Coeur':     ['Cœur (CO)','Shen Men','Rein (SHEN)','Nerf Grand Auriculaire','Occipital'],
   'Stagnation Qi Foie': ['Foie (GAN)','Shen Men','Point Antidépresseur','Vésicule biliaire','Sympathique'],
+  // Ajouts du 20/11/2026 — syndromes combinés : points d'organe des deux syndromes + régulateurs
+  'Dysharmonie Foie-Rate': ['Foie (GAN)','Rate (PI)','Shen Men','Sympathique','Point Zéro'],
+  'Vide Yang Rate Rein':   ['Rate (PI)','Rein (SHEN)','Glande surrénale','Triple Réchauffeur','Point Zéro'],
   'Stase du Sang':      ['Foie (GAN)','Cœur (CO)','Sillon post-anthélix','Rate (PI)','Thalamus (Analgésie)'],
   'Glaires-Humidité':   ['Rate (PI)','Estomac (WEI)','Faim (Appétit)','Triple Réchauffeur','Endocrine'],
   'Humidité-Chaleur':   ['Foie (GAN)','Vésicule biliaire','Apex (Pointe)','Détoxification','Rate (PI)'],
@@ -14309,6 +14417,7 @@ const SYND_TO_AURI_KEY = {
   'Qi des Reins non ferme':'Vide Qi Rein', 'Vide de Yang des Reins':'Vide Yang Rein',
   'Vide de Yang de Rate':'Vide Yang Rate', 'Vide de Yin des Reins':'Vide Yin Rein',
   'Vide de Yin du Foie':'Vide Yin Foie', 'Vide de Yin du Cœur':'Vide Yin Coeur',
+  'Stagnation du Qi du Foie avec vide de Qi de Rate':'Dysharmonie Foie-Rate', 'Vide de Yang de la Rate et des Reins':'Vide Yang Rate Rein',
   'Stagnation du Qi du Foie':'Stagnation Qi Foie', 'Stase de Sang':'Stase du Sang',
   'Effondrement du Qi de Rate':'Effondrement Qi Rate', 'Qi à contre courant de l\'Estomac':'Qi Ni Estomac',
   'Feu de l\'Estomac':'Feu Estomac', 'Vide de Yin de l\'Estomac':'Vide Yin Estomac',
@@ -17122,7 +17231,7 @@ function computeConvergence(){
 function _syndSuggeres(){
   if(typeof suggestSyndromes==='function') suggestSyndromes();
   const L = window._lastSynd || [], max = L.length ? L[0].sc : 0;
-  return [L.find(s=>s.axe==='racine'), L.find(s=>s.axe==='branche')].filter(s => s && s.sc >= .55*max).map(s=>s.nom);
+  return [L.find(s=>s.axe==='racine'), L.find(s=>s.axe==='branche')].filter(s => s && s.sc >= 6).map(s=>s.nom); // au moins « Probable » (valeur absolue)
 }
 // Champ « Syndromes retenus » de la Synthèse : le syndrome choisi par le praticien, sinon celui suggéré par
 // l'analyse (signalé comme tel). Plus le motif du référentiel ou de l'EBM, qui n'est pas un syndrome.
