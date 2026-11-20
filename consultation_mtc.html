@@ -619,6 +619,13 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
         <div style="font-size:11px;color:var(--slate);font-style:italic;margin-bottom:8px">Cette liste s'enrichit à chaque amélioration de l'application — vous pouvez vérifier ici ce qui a changé depuis votre dernière utilisation. Remise à zéro le 1er octobre 2026, au lancement de la bêta.</div>
         <div id="guide-changelog" style="font-size:12px;color:var(--ink);line-height:1.8">
           <div style="font-size:12px;line-height:1.65;margin-bottom:10px">
+            <div style="font-weight:700;color:var(--jade);margin-bottom:4px">Correspondances signes ↔ syndromes (novembre 2026)</div>
+            <div>• Chaque signe de l'examen (10+1 Questions, langue, pouls, douleur, inspection) renvoie désormais à au moins un syndrome ; seuls les signes « normaux » n'orientent vers rien.</div>
+            <div>• L'analyse syndromique lit maintenant l'inspection (Shen, teint, yeux, nez et oreilles, lèvres, ongles et cheveux, morphologie, membres, respiration et voix), le rythme de la douleur, l'épaisseur de la langue et la répartition de l'enduit.</div>
+            <div>• Les 31 syndromes de la liste des points qui n'avaient pas de règle (Cœur, Rate, Foie, Poumon, Reins, Gros Intestin, Intestin grêle, Vésicule biliaire, Vessie, Vide de Qi, Stagnation de Qi) ont maintenant leur cortège classique de signes et peuvent être suggérés. Le Collapsus du Yang du Cœur est signalé comme une urgence.</div>
+            <div>• Référentiel MTC › « Correspondances signes ↔ syndromes » : deux tableaux générés à partir des règles, à relire (cortège attendu pour chaque syndrome ; syndromes rattachés à chaque signe).</div>
+          </div>
+          <div style="font-size:12px;line-height:1.65;margin-bottom:10px">
             <div style="font-weight:700;color:var(--jade);margin-bottom:4px">Langue fissurée (novembre 2026)</div>
             <div>• Les fissures transversales (et longitudinales) de la langue, à cocher dans « Forme », sont désormais interprétées comme un vide de Yin ou un manque de Liquides organiques : elles comptent pour les Vides de Yin (Reins, Cœur, Foie, Poumon, Estomac), valident le « signe propre au Vide » exigé par ces syndromes et comptent dans l'axe Vide du Ba Gang.</div>
           </div>
@@ -773,6 +780,7 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
             <option value="M">Maladies auto-immunes</option>
             <option value="G">Gastro-entérologie</option>
             <option value="A">Associations de points</option>
+            <option value="C">Correspondances signes ↔ syndromes</option>
             <option value="S">Synonymes (analyse croisée)</option>
           </select>
           <button class="btn" style="font-size:11px" onclick="document.getElementById('ref-q').value='';document.getElementById('ref-chap').value='';refRender()">Effacer</button>
@@ -877,6 +885,12 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
         <div class="ct">La gastro-entérologie en MTC — tableaux de référence</div>
         <div class="ref-doc" style="font-size:11px;color:var(--slate);margin-bottom:6px">Cours « Gastroentérologie en MTC » (DU Sorbonne Paris Nord : reflux, nausées et vomissements, douleur de l'estomac, de l'hypochondre, abdominale, ballonnement, constipation, proctologie). Les protocoles par motif sont dans Points › Motif clinique › Référentiel Sorbonne › Gastro-entérologie.</div>
         <div class="ref-tables" data-sec="G"></div>
+      </div>
+
+      <div class="card ref-sec" data-sec="C" id="ref-corresp">
+        <div class="ct">🔗 Correspondances signes ↔ syndromes (analyse automatisée)</div>
+        <div class="ref-doc" style="font-size:11px;color:var(--slate);margin-bottom:6px">Tableaux générés à partir des règles de l'analyse syndromique : ce que l'appli attend pour chaque syndrome, et à quels syndromes elle rattache chaque signe de l'examen. À valider par le praticien ; toute correction des règles se reporte ici automatiquement.</div>
+        <div class="ref-tables" data-sec="C"></div>
       </div>
 
       <div class="card ref-sec" data-sec="S" id="ref-syn">
@@ -7289,6 +7303,392 @@ const SYND_THERMAL_AXIS = new Set([
   'Humidité-Chaleur','Chaleur Humidité de la Vessie','Feu du Cœur','Feu du Foie','Feu de l\'Estomac'
 ]);
 
+// ══ CORRESPONDANCES SIGNES ↔ SYNDROMES (20/11/2026) ══
+// Exigence : chaque signe de l'examen renvoie à au moins un syndrome, et chaque syndrome de la liste
+// des points (synd-sel / PDB) a une règle avec son cortège classique (10+1 Questions, langue, pouls,
+// et le cas échéant douleur et inspection). Clés d'inspection : voir SYND_INSP_IDS.
+// Signes « normaux » volontairement sans correspondance : SIGNES_NEUTRES.
+const SYND_INSP_IDS = {shen:'e-shen',teint:'e-teint',yeux:'e-yeux',nez:'e-nez-oreilles',levres:'e-levres',ongles:'e-ongles',morpho:'e-morpho',membres:'e-membres',resp:'e-resp'};
+const SIGNES_NEUTRES = ['Règles régulières','Shen intact (yeux vifs)','Normal','Normaux','Normales','Normale','Nez normal','Oreilles normales',
+  'Ongles roses (normal)','Cheveux brillants (normal)','Morphologie normale','Membres normaux','Abdomen souple','Uniforme (normal)','Normal (rose)','Normal (blanc mince)'];
+const SIGNES_OEDEME = [{inspection:{membres:['Œdèmes membres inf.','Ascite'],teint:['Teint bouffi'],yeux:['Paupières gonflées']}}];
+const SIGNES_SAIGNEMENT = [{tags:{q4:['Sang dans les selles'],q11:['Règles abondantes','Règles en avance'],q8:['Saignements gingivaux']}}];
+const SIGNES_VENT_INTERNE = [{tags:{q3:['Tremblements','Vertiges rotatoires'],q7:['Diplopie']}},{forme:['Tremblements','Déviation latérale']},{inspection:{membres:['Tremblements membres'],levres:['Tremblantes']}}];
+const SIGNES_VENT_EXTERNE = [{pouls:['Superficiel — Fu']},{tags:{q1:['Frissons','Sensible au vent']}}];
+
+const SYND_RULES_NOUVELLES = {
+  // ══ CŒUR ══
+  'Vide de Yang du Cœur': {couleur:'🔴',offline:true, ccmq:['Vide de Yang'],
+    langue:{couleur:['Pâle'],forme:['Gonflée / Œdématiée'],humidite:['Humide / Glissant']},
+    pouls:{global:['Profond — Chen','Lent — Chi','Noué — Jie','Intermittent — Dai','Épuisé — Ruo'],positions:{cunG:['Vide — Xu','Profond — Chen']}},
+    q10:{q6:['Palpitations','Oppression thoracique','Essoufflement à l\'effort'],q1:['Froid permanent','Aggravé par le froid'],q2:['Sueurs spontanées diurnes'],q9:['Fatigue permanente'],q10:['Apathie']},
+    douleur:{localisation:['Thorax'],ameliore:['La chaleur']},
+    inspection:{teint:['Pâle'],shen:['Prostration / Apathie'],levres:['Pâles','Violacées / Cyanosées']},
+    axe:'racine', requisTous:[SIGNES_FROID], contre:CONTRE_FROID,
+    descr:'Palpitations, oppression thoracique, essoufflement à l\'effort, frilosité, sueurs spontanées, teint pâle ; langue pâle gonflée humide ; pouls profond, lent, faible ou irrégulier'},
+  'Collapsus du Yang du Cœur': {couleur:'🔴',offline:true, ccmq:['Vide de Yang'],
+    langue:{couleur:['Pâle','Violacé','Bleuté'],forme:['Courte / Rétractée'],enduitCouleur:['Noir'],humidite:['Humide / Glissant']},
+    pouls:{global:['Caché — Fu','Ténu — Wei','Dispersé — San','Intermittent — Dai']},
+    q10:{q2:['Sueurs froides','Sueurs abondantes'],q1:['Froid permanent'],q6:['Palpitations','Essoufflement au repos']},
+    douleur:{},
+    inspection:{shen:['Shen absent (regard vide)','Prostration / Apathie'],teint:['Pâle'],levres:['Violacées / Cyanosées'],resp:['Voix faible','Superficielle']},
+    axe:'racine', requisTous:[SIGNES_FROID], contre:CONTRE_FROID,
+    descr:'URGENCE : sueurs froides profuses, membres glacés, respiration faible, lèvres cyanosées, conscience altérée ; pouls caché, ténu ou dispersé — orienter vers les urgences'},
+  'Mucosités Feu agite le Cœur': {couleur:'🔴',offline:true, ccmq:['Humidité-Chaleur','Glaires-Humidité'],
+    langue:{couleur:['Rouge','Pointe rouge'],enduitCouleur:['Jaune épais'],humidite:['Collant / Visqueux']},
+    pouls:{global:['Glissant — Hua','Rapide — Shu','Plein — Shi','Précipité — Cu']},
+    q10:{q10:['Joie excessive/agitation','Irritabilité','Labilité émotionnelle'],q9:['Insomnie totale','Rêves agités nombreux'],q6:['Palpitations'],q5:['Goût amer'],q11:['Agitation pédiatrique']},
+    douleur:{},
+    inspection:{shen:['Agitation / Excitation'],teint:['Rouge'],resp:['Voix forte']},
+    axe:'branche', requisTous:[SIGNES_CHALEUR], contre:CONTRE_CHALEUR,
+    descr:'Agitation mentale, insomnie, rêves agités, propos incohérents, palpitations, goût amer ; langue rouge, pointe rouge, enduit jaune collant ; pouls glissant et rapide'},
+  'Mucosités troubles obstrue le Shen': {couleur:'🔴',offline:true, ccmq:['Glaires-Humidité'],
+    langue:{forme:['Gonflée / Œdématiée','Rigide'],enduitCouleur:['Blanc épais'],humidite:['Collant / Visqueux'],epaisseur:['Épaisse']},
+    pouls:{global:['Glissant — Hua','Mou — Ru','Retardé — Huan']},
+    q10:{q10:['Apathie','Brouillard mental','Oublis récents'],q3:['Lourdeur tête'],q9:['Hypersomnie'],q6:['Oppression thoracique']},
+    douleur:{},
+    inspection:{shen:['Prostration / Apathie','Shen diminué (regard terne)'],teint:['Terne / Grisâtre'],resp:['Bruyante / Stertoreuse']},
+    axe:'branche',
+    descr:'Esprit embrumé, torpeur, apathie, somnolence, lourdeur de tête, regard terne ; langue gonflée, enduit blanc épais et collant ; pouls glissant'},
+  'Stase de Sang du Cœur': {couleur:'🔴',offline:true, ccmq:['Stagnation Sang'],
+    langue:{couleur:['Violacé','Taches violacées'],sublinguale:['Distendues / gonflées','Foncées / violacées']},
+    pouls:{global:['Noué — Jie','Rugueux — Se','Intermittent — Dai'],positions:{cunG:['Rugueux — Se','Noué — Jie']}},
+    q10:{q6:['Douleur thoracique','Oppression thoracique','Palpitations','Douleur fixe']},
+    douleur:{type:['Fixe / Stabbing'],localisation:['Thorax'],rythme:['Nocturne']},
+    inspection:{levres:['Violacées / Cyanosées'],ongles:['Ongles violacés','Ongles en verre de montre']},
+    axe:'branche',
+    descr:'Douleur thoracique fixe et piquante irradiant au bras gauche, palpitations, lèvres et ongles violacés ; langue violacée ; pouls noué ou rugueux — éliminer une cause cardiaque'},
+  // ══ RATE ══
+  'Rate ne contrôle pas le Sang': {couleur:'🟢',offline:true, ccmq:['Vide de Qi'],
+    langue:{couleur:['Pâle'],forme:['Marques de dents']},
+    pouls:{global:['Fin — Xi','Vide — Xu','Creux — Kou','Peau de tambour — Gé'],positions:{gD:['Vide — Xu','Fin — Xi']}},
+    q10:{q4:['Sang dans les selles'],q11:['Règles abondantes','Règles en avance','Sang pâle dilué'],q8:['Saignements gingivaux'],q9:['Fatigue permanente'],q5:['Peu d\'appétit']},
+    douleur:{},
+    inspection:{teint:['Pâle','Jaune'],levres:['Pâles'],ongles:['Ongles pâles']},
+    axe:'racine', requisUn:SIGNES_SAIGNEMENT,
+    descr:'Saignements de sang pâle (règles abondantes ou en avance, sang dans les selles, ecchymoses, gencives) avec fatigue et peu d\'appétit ; langue pâle ; pouls fin, faible ou creux'},
+  'Humidité-Chaleur Rate': {couleur:'🟢',offline:true, ccmq:['Humidité-Chaleur'],
+    langue:{couleur:['Rouge','Milieu rouge'],enduitCouleur:['Jaune épais'],humidite:['Collant / Visqueux'],enduitDist:['Milieu épais']},
+    pouls:{global:['Glissant — Hua','Rapide — Shu','Mou — Ru'],positions:{gD:['Glissant — Hua']}},
+    q10:{q4:['Selles collantes','Selles malodorantes'],q5:['Goût sucré persistant','Nausées'],q6:['Plénitude épigastrique'],q8:['Soif sans envie de boire'],q3:['Lourdeur corps'],q2:['Sueurs des mains et pieds','Sueurs de la tête/cou']},
+    douleur:{type:['Pesanteur / Lourdeur'],localisation:['Épigastre','Abdomen']},
+    inspection:{teint:['Jaune','Brillant / Huileux'],nez:['Rougeur ailes du nez']},
+    axe:'branche', requisTous:[SIGNES_CHALEUR], contre:CONTRE_CHALEUR,
+    descr:'Plénitude épigastrique, nausées, selles collantes et malodorantes, lourdeur, soif sans envie de boire, teint jaune huileux ; langue à enduit jaune collant au centre ; pouls glissant et rapide'},
+  // ══ FOIE / VÉSICULE BILIAIRE ══
+  'Stase de Sang du Foie': {couleur:'🟡',offline:true, ccmq:['Stagnation Sang'],
+    langue:{couleur:['Violacé','Bords violacés'],sublinguale:['Distendues / gonflées','Foncées / violacées','Ramifiées / tortueuses']},
+    pouls:{global:['Tendu en corde — Xuan','Rugueux — Se'],positions:{gG:['Tendu en corde — Xuan','Rugueux — Se']}},
+    q10:{q6:['Douleur flancs droit','Douleur flancs gauche','Douleur fixe'],q11:['Caillots foncés','Dysménorrhée pendant règles']},
+    douleur:{type:['Fixe / Stabbing'],localisation:['Flancs / Hypocondres','Hypogastre'],rythme:['Nocturne','Permanente']},
+    inspection:{teint:['Verdâtre','Noirâtre'],membres:['Masse palpable']},
+    axe:'branche',
+    descr:'Douleur fixe et piquante des flancs ou du bas-ventre, masse palpable, règles avec caillots foncés, teint sombre ; langue violacée sur les bords ; pouls tendu et rugueux'},
+  'Vent du Foie': {couleur:'🟡',offline:true, ccmq:['Vide de Yin'],
+    langue:{couleur:['Rouge'],forme:['Tremblements','Déviation latérale','Rigide','Courte / Rétractée']},
+    pouls:{global:['Tendu en corde — Xuan','Fin — Xi'],positions:{gG:['Tendu en corde — Xuan']}},
+    q10:{q3:['Tremblements','Vertiges rotatoires','Raideur nuque','Fourmillements'],q7:['Diplopie']},
+    douleur:{type:['Mobile / Migrante'],aggrave:['Le vent'],localisation:['Tête / Crâne','Membres supérieurs']},
+    inspection:{membres:['Tremblements membres'],levres:['Tremblantes']},
+    axe:'branche', requisUn:SIGNES_VENT_INTERNE,
+    descr:'Vent interne : tremblements, vertiges rotatoires, engourdissements, tics, raideur ; langue tremblante ou déviée ; pouls tendu — penser à un avis neurologique devant un signe déficitaire'},
+  'Chaleur Humidité du Foie et VB': {couleur:'🟡',offline:true, ccmq:['Humidité-Chaleur'],
+    langue:{couleur:['Rouge','Bords rouges'],enduitCouleur:['Jaune épais'],humidite:['Collant / Visqueux'],enduitDist:['Bords épais']},
+    pouls:{global:['Tendu en corde — Xuan','Glissant — Hua','Rapide — Shu'],positions:{gG:['Tendu en corde — Xuan','Glissant — Hua']}},
+    q10:{q5:['Goût amer','Nausées'],q6:['Douleur flancs droit'],q2:['Sueurs localisées aisselles','Sueurs jaunes colorant les vêtements'],q11:['Pertes jaunes malodorantes'],q4:['Urines foncées'],q1:['Alternance froid/chaud']},
+    douleur:{localisation:['Flancs / Hypocondres']},
+    inspection:{teint:['Jaune'],yeux:['Jaunisse sclérotique']},
+    axe:'branche', requisTous:[SIGNES_CHALEUR], contre:CONTRE_CHALEUR,
+    descr:'Douleur des flancs, goût amer, nausées, sueurs des aisselles malodorantes, pertes ou urines jaunes, ictère ; langue rouge à enduit jaune collant sur les bords ; pouls tendu, glissant, rapide'},
+  'Stagnation du Froid dans le méridien du Foie': {couleur:'🟡',offline:true, ccmq:['Vide de Yang'],
+    langue:{couleur:['Pâle'],enduitCouleur:['Blanc épais'],humidite:['Humide / Glissant']},
+    pouls:{global:['Tendu en corde — Xuan','Profond — Chen','Lent — Chi','Serré — Jin','Laborieux — Lao']},
+    q10:{q6:['Douleur hypogastrique'],q1:['Aggravé par le froid','Froid permanent']},
+    douleur:{type:['Contracture','Crampe / Spasme','Irradiante'],localisation:['Hypogastre'],aggrave:['Le froid'],ameliore:['La chaleur','La chaleur locale']},
+    inspection:{teint:['Verdâtre']},
+    axe:'branche', requisTous:[SIGNES_FROID], contre:CONTRE_FROID,
+    descr:'Douleur du bas-ventre irradiant aux organes génitaux, contractée, aggravée par le froid et soulagée par la chaleur ; langue pâle humide ; pouls profond, tendu et lent'},
+  // ══ POUMON ══
+  'Sécheresse du Poumon': {couleur:'⚪',offline:true, ccmq:['Vide de Yin'],
+    langue:{humidite:['Sec','Très sec / Brûlé'],enduitCouleur:['Normal (blanc mince)']},
+    pouls:{global:['Fin — Xi','Superficiel — Fu'],positions:{cunD:['Fin — Xi']}},
+    q10:{q6:['Toux'],q8:['Gorge sèche','Lèvres sèches','Bouche sèche sans soif'],q4:['Selles sèches dures']},
+    douleur:{},
+    inspection:{resp:['Toux sèche'],levres:['Sèches / Craquelées']},
+    axe:'branche',
+    descr:'Toux sèche sans crachats, gorge, nez et lèvres secs, peau sèche ; langue sèche ; pouls fin'},
+  'Invasion du Poumon par Vent Froid': {couleur:'⚪',offline:true, ccmq:[],
+    langue:{enduitCouleur:['Normal (blanc mince)'],humidite:['Humide / Glissant']},
+    pouls:{global:['Superficiel — Fu','Serré — Jin'],positions:{cunD:['Superficiel — Fu']}},
+    q10:{q1:['Frissons','Aggravé par le froid','Sensible au vent'],q2:['Pas de transpiration'],q3:['Céphalées nuque','Courbatures','Raideur nuque'],q6:['Toux','Respiration sifflante']},
+    douleur:{aggrave:['Le froid','Le vent'],localisation:['Nuque / Cou']},
+    inspection:{nez:['Nez bouché','Rhinorrhée claire']},
+    axe:'branche', requisUn:SIGNES_VENT_EXTERNE, contre:CONTRE_FROID,
+    descr:'Frissons prédominants, fébricule, absence de sueurs, nez bouché, rhinorrhée claire, toux, courbatures ; enduit blanc mince ; pouls superficiel et serré'},
+  'Mucosités Humidité obstruent le Poumon': {couleur:'⚪',offline:true, ccmq:['Glaires-Humidité'],
+    langue:{forme:['Gonflée / Œdématiée'],enduitCouleur:['Blanc épais'],humidite:['Collant / Visqueux'],enduitDist:['Pointe épaisse'],epaisseur:['Épaisse']},
+    pouls:{global:['Glissant — Hua'],positions:{cunD:['Glissant — Hua']}},
+    q10:{q6:['Toux','Crachats','Oppression thoracique','Respiration sifflante','Essoufflement au repos'],q3:['Lourdeur corps']},
+    douleur:{},
+    inspection:{resp:['Toux grasse','Bruyante / Stertoreuse','Courte / Dyspnée'],ongles:['Ongles en verre de montre']},
+    axe:'branche',
+    descr:'Toux grasse avec crachats abondants blancs, oppression thoracique, respiration bruyante ou sifflante ; langue gonflée, enduit blanc épais et collant ; pouls glissant'},
+  // ══ REINS ══
+  "Vide de l'Essence des Reins": {couleur:'🔵',offline:true, ccmq:[],
+    langue:{forme:['Mince / Maigre'],epaisseur:['Fine']},
+    pouls:{global:['Fin — Xi','Dispersé — San','Profond — Chen','Peau de tambour — Gé'],positions:{chiG:['Fin — Xi','Vide — Xu'],chiD:['Fin — Xi','Vide — Xu']}},
+    q10:{q7:['Surdité partielle','Surdité totale'],q10:['Oublis récents','Manque de motivation'],q11:['Retard développement','Libido diminuée','Dysfonction érectile'],q3:['Faiblesse membres']},
+    douleur:{localisation:['Lombes / Reins','Sacrum / Coccyx']},
+    inspection:{ongles:['Chute de cheveux','Cheveux blancs précoces'],teint:['Terne / Grisâtre'],yeux:['Ternes'],nez:['Hypoacousie']},
+    axe:'racine',
+    descr:'Vieillissement précoce : cheveux blancs ou chute, surdité, mémoire défaillante, dents et os fragiles, retard de développement chez l\'enfant, infertilité ; pouls fin et profond aux Pieds'},
+  'Vide de Yang des Reins avec inondation par l\'eau': {couleur:'🔵',offline:true, ccmq:['Vide de Yang'],
+    langue:{couleur:['Pâle'],forme:['Gonflée / Œdématiée'],humidite:['Humide / Glissant']},
+    pouls:{global:['Profond — Chen','Lent — Chi','Fin — Xi','Épuisé — Ruo'],positions:{chiG:['Profond — Chen','Vide — Xu'],chiD:['Profond — Chen','Vide — Xu']}},
+    q10:{q1:['Froid permanent'],q4:['Rétention urinaire'],q6:['Essoufflement au repos','Palpitations'],q3:['Lourdeur corps']},
+    douleur:{localisation:['Lombes / Reins','Membres inférieurs']},
+    inspection:{membres:['Œdèmes membres inf.','Ascite'],teint:['Teint bouffi'],yeux:['Paupières gonflées']},
+    axe:'racine', requisTous:[SIGNES_FROID, SIGNES_OEDEME], contre:CONTRE_FROID,
+    descr:'Œdèmes prenant le godet (chevilles, jambes), urines rares, frilosité, lombes froides, essoufflement ; langue pâle gonflée humide ; pouls profond, lent et faible — rechercher une cause cardiaque ou rénale'},
+  'Reins et Cœur ne communiquent plus': {couleur:'🔵',offline:true, ccmq:['Vide de Yin'],
+    langue:{couleur:['Rouge','Pointe rouge'],enduitCouleur:['Absent (langue miroir)']},
+    pouls:{global:['Fin — Xi','Rapide — Shu'],positions:{cunG:['Rapide — Shu'],chiG:['Fin — Xi']}},
+    q10:{q9:['Insomnie totale','Endormissement difficile','Réveils nocturnes','Rêves agités nombreux'],q6:['Palpitations'],q1:['Chaleur des 5 centres (paumes/plantes/sternum)','Bouffées de chaleur'],q2:['Sueurs nocturnes'],q10:['Anxiété','Frayeurs/sursauts'],q11:['Ménopause bouffées'],q7:['Acouphènes graves progressifs']},
+    douleur:{localisation:['Lombes / Reins']},
+    inspection:{teint:['Rougeur pommettes']},
+    axe:'racine', requisTous:[SIGNES_CHALEUR_VIDE], contre:CONTRE_VIDE_YIN,
+    descr:'Insomnie avec agitation, palpitations, sueurs nocturnes, chaleur des 5 centres, acouphènes, lombes faibles ; langue rouge à pointe rouge, peu d\'enduit ; pouls fin et rapide'},
+  // ══ GROS INTESTIN ══
+  'Chaleur Humidité dans le GI': {couleur:'⚪',offline:true, ccmq:['Humidité-Chaleur'],
+    langue:{couleur:['Rouge'],enduitCouleur:['Jaune épais'],humidite:['Collant / Visqueux'],enduitDist:['Racine épaisse']},
+    pouls:{global:['Glissant — Hua','Rapide — Shu']},
+    q10:{q4:['Selles malodorantes','Selles collantes','Sang dans les selles','Selles incomplètes'],q6:['Douleur hypogastrique'],q9:['Réveils 5h-7h'],q1:['Fièvre']},
+    douleur:{type:['Brûlure'],localisation:['Abdomen','Hypogastre']},
+    inspection:{},
+    axe:'branche', requisTous:[SIGNES_CHALEUR], contre:CONTRE_CHALEUR,
+    descr:'Diarrhée urgente, malodorante, glaireuse ou sanglante, brûlure anale, ténesme, douleur abdominale ; langue rouge à enduit jaune collant à la racine ; pouls glissant et rapide'},
+  'Chaleur Sécheresse du GI': {couleur:'⚪',offline:true, ccmq:[],
+    langue:{couleur:['Rouge'],enduitCouleur:['Jaune mince','Jaune épais'],humidite:['Sec']},
+    pouls:{global:['Rapide — Shu','Plein — Shi']},
+    q10:{q4:['Selles sèches dures','Constipation'],q8:['Bouche sèche nocturne','Lèvres sèches','Soif intense boissons froides'],q9:['Réveils 5h-7h']},
+    douleur:{},
+    inspection:{levres:['Sèches / Craquelées']},
+    axe:'branche', requisTous:[SIGNES_CHALEUR], contre:CONTRE_CHALEUR,
+    descr:'Constipation avec selles sèches, bouche et lèvres sèches, soif ; langue rouge à enduit jaune sec ; pouls rapide'},
+  'Obstruction du GI par la Chaleur': {couleur:'⚪',offline:true, ccmq:[],
+    langue:{couleur:['Rouge foncé / Cramoisi'],enduitCouleur:['Jaune épais','Noir'],humidite:['Très sec / Brûlé']},
+    pouls:{global:['Profond — Chen','Plein — Shi','Rapide — Shu','Long','Large','Pressé — Ji']},
+    q10:{q4:['Constipation','Selles sèches dures'],q1:['Fièvre'],q6:['Aggravé par pression','Distension abdominale'],q2:['Sueurs abondantes']},
+    douleur:{aggrave:['La pression'],type:['Vive / Aiguë'],localisation:['Abdomen']},
+    inspection:{membres:['Abdomen distendu'],shen:['Agitation / Excitation']},
+    axe:'branche', requisTous:[SIGNES_CHALEUR], contre:CONTRE_CHALEUR,
+    descr:'Constipation complète, abdomen distendu et douloureux à la pression, fièvre l\'après-midi, sueurs ; langue rouge foncé à enduit jaune épais sec ou noir ; pouls profond et plein — éliminer une urgence chirurgicale'},
+  'Sécheresse du GI': {couleur:'⚪',offline:true, ccmq:['Vide de Yin'],
+    langue:{couleur:['Pâle'],humidite:['Sec'],epaisseur:['Fine']},
+    pouls:{global:['Fin — Xi','Rugueux — Se']},
+    q10:{q4:['Selles sèches dures','Constipation'],q8:['Bouche sèche sans soif','Lèvres sèches']},
+    douleur:{},
+    inspection:{levres:['Sèches / Craquelées'],morpho:['Mince / Maigre']},
+    axe:'racine',
+    descr:'Constipation par manque de Liquides organiques ou de Sang (sujet âgé, post-partum) : selles sèches difficiles, bouche sèche, corps mince ; langue sèche ou pâle ; pouls fin ou rugueux'},
+  'Effondrement du Qi du GI': {couleur:'⚪',offline:true, ccmq:['Vide de Qi'],
+    langue:{couleur:['Pâle'],forme:['Flasque / Molle']},
+    pouls:{global:['Vide — Xu','Fin — Xi','Ténu — Wei']},
+    q10:{q4:['Selles molles','Incontinence urinaire'],q9:['Fatigue permanente','Manque de tonus général'],q3:['Faiblesse membres']},
+    douleur:{},
+    inspection:{morpho:['Posture affaissée']},
+    axe:'racine',
+    descr:'Diarrhée chronique, prolapsus anal, hémorroïdes, fatigue, sensation de pesanteur ; langue pâle ; pouls faible'},
+  // ══ INTESTIN GRÊLE ══
+  "Chaleur plénitude de l'IG": {couleur:'🔴',offline:true, ccmq:[],
+    langue:{couleur:['Rouge','Pointe rouge'],enduitCouleur:['Jaune mince','Jaune épais']},
+    pouls:{global:['Rapide — Shu','Plein — Shi']},
+    q10:{q4:['Urines foncées','Brûlures urinaires'],q8:['Aphtes récurrents'],q6:['Sensation chaleur poitrine'],q10:['Joie excessive/agitation']},
+    douleur:{type:['Brûlure']},
+    inspection:{levres:['Ulcérations buccales']},
+    axe:'branche', requisTous:[SIGNES_CHALEUR], contre:CONTRE_CHALEUR,
+    descr:'Aphtes, agitation, chaleur dans la poitrine, urines foncées et brûlantes ; langue rouge à pointe plus rouge, enduit jaune ; pouls rapide'},
+  "Stagnation du Qi dans l'IG": {couleur:'🔴',offline:true, ccmq:['Stase de Qi'],
+    langue:{enduitCouleur:['Blanc épais']},
+    pouls:{global:['Tendu en corde — Xuan','Profond — Chen']},
+    q10:{q6:['Douleur ombilicale','Distension abdominale','Borborygmes','Douleur hypogastrique','Aggravé par pression'],q4:['Constipation']},
+    douleur:{type:['Distensive','Crampe / Spasme'],aggrave:['La pression'],localisation:['Abdomen']},
+    inspection:{membres:['Abdomen distendu']},
+    axe:'branche',
+    descr:'Douleur abdominale tordante irradiant au dos, borborygmes, ballonnement, gaz soulageant, constipation ; enduit blanc ; pouls profond et tendu'},
+  "Vide de Qi de l'IG+Froid interne": {couleur:'🔴',offline:true, ccmq:['Vide de Yang'],
+    langue:{couleur:['Pâle'],enduitCouleur:['Normal (blanc mince)','Blanc épais']},
+    pouls:{global:['Profond — Chen','Lent — Chi','Vide — Xu']},
+    q10:{q6:['Douleur ombilicale','Borborygmes','Amélioré par pression','Amélioré par chaleur'],q4:['Selles molles','Urines claires abondantes'],q5:['Préfère chaud']},
+    douleur:{ameliore:['La pression','La chaleur','Les repas'],type:['Sourde / Profonde'],localisation:['Abdomen']},
+    inspection:{},
+    axe:'racine', requisTous:[SIGNES_FROID], contre:CONTRE_FROID,
+    descr:'Douleur abdominale sourde améliorée par la pression et la chaleur, borborygmes, selles molles, urines claires ; langue pâle ; pouls profond, lent, faible'},
+  // ══ VÉSICULE BILIAIRE ══
+  'Chaleur Humidité de la VB': {couleur:'🟡',offline:true, ccmq:['Humidité-Chaleur'],
+    langue:{couleur:['Rouge','Bords rouges'],enduitCouleur:['Jaune épais'],humidite:['Collant / Visqueux'],enduitDist:['Bords épais']},
+    pouls:{global:['Tendu en corde — Xuan','Glissant — Hua','Rapide — Shu'],positions:{gG:['Tendu en corde — Xuan','Glissant — Hua']}},
+    q10:{q5:['Goût amer','Nausées'],q6:['Douleur flancs droit'],q9:['Réveils 23h-1h'],q1:['Alternance froid/chaud','Fièvre'],q4:['Urines foncées']},
+    douleur:{localisation:['Flancs / Hypocondres'],type:['Distensive']},
+    inspection:{yeux:['Jaunisse sclérotique'],teint:['Jaune']},
+    axe:'branche', requisTous:[SIGNES_CHALEUR], contre:CONTRE_CHALEUR,
+    descr:'Douleur de l\'hypocondre droit, goût amer, nausées, intolérance aux graisses, alternance de froid et de chaleur, ictère ; enduit jaune collant ; pouls tendu et glissant'},
+  'Vide de Qi de la VB': {couleur:'🟡',offline:true, ccmq:['Vide de Qi'],
+    langue:{couleur:['Pâle','Normal (rose)']},
+    pouls:{global:['Fin — Xi','Vide — Xu','Remuant — Dong'],positions:{gG:['Fin — Xi','Vide — Xu']}},
+    q10:{q10:['Frayeurs/sursauts','Peur','Inquiétude excessive'],q9:['Réveils 23h-1h','Réveils nocturnes','Cauchemars','Rêves récurrents'],q3:['Vertiges']},
+    douleur:{aggrave:['Le bruit']},
+    inspection:{shen:['Shen diminué (regard terne)']},
+    axe:'racine',
+    descr:'Timidité, indécision, manque de courage, sursauts, réveils précoces avec rêves, vertiges ; langue pâle ou normale ; pouls fin et faible'},
+  // ══ VESSIE ══
+  'Humidité Froide de la Vessie': {couleur:'🔵',offline:true, ccmq:['Glaires-Humidité'],
+    langue:{couleur:['Pâle'],enduitCouleur:['Blanc épais','Gris'],humidite:['Humide / Glissant'],enduitDist:['Racine épaisse']},
+    pouls:{global:['Glissant — Hua','Lent — Chi'],positions:{chiG:['Glissant — Hua','Lent — Chi'],chiD:['Glissant — Hua']}},
+    q10:{q4:['Urines troubles','Rétention urinaire','Pollakiurie nocturne'],q1:['Aggravé par le froid'],q6:['Douleur hypogastrique'],q3:['Lourdeur corps']},
+    douleur:{type:['Pesanteur / Lourdeur'],localisation:['Hypogastre'],aggrave:['Le froid','L\'humidité']},
+    inspection:{},
+    axe:'branche', requisTous:[SIGNES_FROID], contre:CONTRE_FROID,
+    descr:'Mictions fréquentes et difficiles, urines troubles et pâles, pesanteur sus-pubienne, aggravation par le froid ; enduit blanc épais à la racine ; pouls glissant et lent'},
+  'Vide de Qi de la Vessie': {couleur:'🔵',offline:true, ccmq:['Vide de Qi'],
+    langue:{couleur:['Pâle']},
+    pouls:{global:['Vide — Xu','Profond — Chen','Fin — Xi'],positions:{chiG:['Vide — Xu','Fin — Xi'],chiD:['Vide — Xu']}},
+    q10:{q4:['Incontinence urinaire','Pollakiurie nocturne','Rétention urinaire','Urines claires abondantes'],q9:['Fatigue permanente']},
+    douleur:{},
+    inspection:{},
+    axe:'racine',
+    descr:'Fuites ou incontinence urinaire, mictions fréquentes de petit volume, jet faible, énurésie ; langue pâle ; pouls faible aux Pieds'},
+  // ══ SYNDROMES GÉNÉRAUX ══
+  'Vide de Qi': {couleur:'⚪',offline:true, ccmq:['Vide de Qi'],
+    langue:{couleur:['Pâle'],forme:['Flasque / Molle','Marques de dents']},
+    pouls:{global:['Vide — Xu','Épuisé — Ruo','Court','Fin — Xi','Retardé — Huan']},
+    q10:{q9:['Fatigue permanente','Manque de tonus général'],q2:['Sueurs spontanées diurnes','Sueurs à l\'effort'],q6:['Essoufflement à l\'effort'],q3:['Fatigue musculaire chronique','Faiblesse membres'],q10:['Manque de motivation'],q4:['Selles incomplètes']},
+    douleur:{aggrave:['La fatigue','Le mouvement'],ameliore:['Le repos'],rythme:['À l\'effort'],type:['Sourde / Profonde']},
+    inspection:{shen:['Shen diminué (regard terne)'],resp:['Voix faible','Superficielle'],morpho:['Posture affaissée'],teint:['Pâle']},
+    axe:'racine',
+    descr:'Fatigue aggravée par l\'effort, voix faible, essoufflement, sueurs spontanées, manque d\'entrain ; langue pâle ; pouls faible'},
+  'Stagnation de Qi': {couleur:'⚪',offline:true, ccmq:['Stase de Qi'],
+    langue:{couleur:['Normal (rose)','Bords rouges']},
+    pouls:{global:['Tendu en corde — Xuan']},
+    q10:{q6:['Oppression thoracique','Distension abdominale','Douleur mobile / crampes'],q10:['Frustration','Irritabilité','Mélancolie'],q4:['Selles incomplètes'],q1:['Extrémités froides malgré chaleur interne']},
+    douleur:{type:['Distensive','Mobile / Migrante'],aggrave:['Le stress / émotions','Le repos'],localisation:['Diffuse / Générale'],ameliore:['Le mouvement','Le relâchement','Le massage'],rythme:['Intermittente']},
+    inspection:{resp:['Soupirs fréquents']},
+    axe:'branche',
+    descr:'Sensations de distension et douleurs mobiles qui vont et viennent avec les émotions, soupirs, améliorées par le mouvement ; pouls tendu'},
+};
+
+// Compléments fusionnés dans les règles existantes (union des listes, sans doublon)
+const SYND_COMPLEMENTS = {
+  'Stagnation du Qi du Foie avec vide de Qi de Rate': {inspection:{resp:['Soupirs fréquents'],teint:['Verdâtre','Jaune']}},
+  'Vide de Yang de la Rate et des Reins': {q10:{q8:['Pas de soif'],q11:['Pertes blanches claires']},inspection:{morpho:['Surpoids / Obèse'],membres:['Œdèmes membres inf.'],teint:['Pâle','Teint bouffi']}},
+  'Vide de Qi de Rate': {q10:{q2:['Sueurs des mains et pieds','Sueurs après repas'],q3:['Fatigue musculaire chronique'],q6:['Amélioré après repas'],q9:['Manque de tonus général'],q10:['Difficulté concentration','Pensées obsessionnelles']},
+    langue:{forme:['Tremblements'],enduitDist:['Partiel / Irrégulier','Enduit sans racine']},douleur:{aggrave:['La fatigue'],ameliore:['Le repos','Les repas'],rythme:['Liée aux repas']},
+    inspection:{teint:['Jaune','Pâle'],levres:['Pâles','Tremblantes'],yeux:['Paupières gonflées'],membres:['Abdomen distendu'],morpho:['Posture affaissée']}},
+  'Vide de Yang de Rate': {q10:{q6:['Amélioré après repas'],q8:['Pas de soif'],q11:['Pertes blanches claires']},inspection:{teint:['Pâle','Teint bouffi'],membres:['Œdèmes membres inf.']}},
+  'Effondrement du Qi de Rate': {inspection:{morpho:['Posture affaissée'],membres:['Varicosités / Varices']}},
+  "Qi à contre courant de l'Estomac": {langue:{enduitCouleur:['Blanc épais','Jaune mince'],enduitDist:['Milieu épais']},pouls:{global:['Glissant — Hua','Tendu en corde — Xuan'],positions:{gD:['Glissant — Hua','Tendu en corde — Xuan']}},
+    q10:{q6:['Aggravé après repas']},douleur:{aggrave:['Les repas'],rythme:['Liée aux repas'],localisation:['Épigastre']}},
+  "Feu de l'Estomac": {q10:{q2:['Sueurs de la tête/cou','Sueurs après repas'],q3:['Céphalées front'],q6:['Aggravé après repas']},pouls:{global:['Pressé — Ji','Large']},douleur:{aggrave:['Les repas'],type:['Brûlure']},
+    inspection:{levres:['Rouges vif','Ulcérations buccales'],nez:['Rougeur ailes du nez'],morpho:['Robuste / Fort']}},
+  "Vide de Yin de l'Estomac": {q10:{q8:['Lèvres sèches']},langue:{enduitDist:['Partiel / Irrégulier','Enduit sans racine']},inspection:{levres:['Sèches / Craquelées'],morpho:['Mince / Maigre']}},
+  'Vide de Qi du Poumon': {q10:{q6:['Essoufflement à l\'effort','Toux'],q10:['Mélancolie','Deuil prolongé']},pouls:{global:['Court']},
+    inspection:{resp:['Superficielle','Voix faible'],nez:['Rhinorrhée claire','Anosmie'],teint:['Pâle','Teint bouffi']}},
+  'Vide de Yin du Poumon': {q10:{q6:['Toux'],q8:['Soif modérée']},inspection:{teint:['Rougeur pommettes'],resp:['Toux sèche']}},
+  'Invasion du Poumon par Vent Chaleur': {q10:{q6:['Toux'],q8:['Soif modérée']},inspection:{nez:['Rhinorrhée épaisse/jaune','Nez bouché']}},
+  'Vent-Froid externe': {q10:{q3:['Raideur rachis'],q7:['Yeux larmoyants']},douleur:{aggrave:['Le vent'],localisation:['Épaules','Diffuse / Générale']},inspection:{nez:['Nez bouché','Rhinorrhée claire']}},
+  'Qi des Reins non ferme': {q10:{q6:['Inspiration difficile'],q9:['Coup de pompe 17h']},inspection:{resp:['Courte / Dyspnée']}},
+  'Vide de Yang des Reins': {q10:{q3:['Raideur rachis'],q4:['Rétention urinaire'],q5:['Goût salé'],q6:['Essoufflement au repos','Inspiration difficile'],q8:['Pas de soif'],q9:['Coup de pompe 17h'],q11:['Pertes blanches claires']},
+    douleur:{type:['Sourde / Profonde'],rythme:['Matinale'],localisation:['Lombes / Reins','Sacrum / Coccyx']},inspection:{teint:['Noirâtre','Pâle'],membres:['Œdèmes membres inf.']}},
+  'Vide de Yin des Reins': {q10:{q5:['Goût salé'],q7:['Surdité partielle','Vertiges auditifs'],q11:['Règles en avance','Ménopause bouffées']},douleur:{rythme:['Nocturne','Vespérale']},
+    inspection:{teint:['Rougeur pommettes'],yeux:['Cernes foncés'],nez:['Acouphènes','Hypoacousie'],ongles:['Cheveux blancs précoces'],morpho:['Mince / Maigre']}},
+  'Stagnation du Qi du Foie': {q10:{q1:['Extrémités froides malgré chaleur interne'],q5:['Goût acide'],q6:['Douleur mobile / crampes'],q10:['Mélancolie'],q4:['Selles incomplètes']},
+    douleur:{type:['Distensive','Irradiante'],ameliore:['Le relâchement'],rythme:['Intermittente','Périodique','Liée aux règles']},inspection:{resp:['Soupirs fréquents'],teint:['Verdâtre']}},
+  'Feu du Foie': {q10:{q3:['Céphalées pariétales'],q5:['Goût acide'],q7:['Photophobie','Surdité totale'],q11:['Règles en avance','Règles abondantes','Sang rouge vif']},pouls:{global:['Long']},
+    douleur:{type:['Pulsatile','Vive / Aiguë'],aggrave:['La lumière'],localisation:['Tête / Crâne']},inspection:{yeux:['Rouges / Injectés'],teint:['Rouge'],nez:['Acouphènes','Oreilles rouges'],resp:['Voix forte'],morpho:['Robuste / Fort']}},
+  'Vide de Sang du Foie': {q10:{q3:['Tremblements'],q6:['Douleur mobile / crampes'],q7:['Yeux larmoyants','Photophobie','Diplopie']},
+    inspection:{ongles:['Ongles striés / cassants','Ongles pâles'],yeux:['Secs','Ternes'],teint:['Pâle']}},
+  'Vide de Yin du Foie': {inspection:{yeux:['Secs'],ongles:['Ongles striés / cassants']}},
+  'Vide de Yin du Foie avec montée de Yang': {q10:{q3:['Céphalées pariétales']},douleur:{type:['Pulsatile'],localisation:['Tête / Crâne'],aggrave:['La lumière','Le bruit']},inspection:{yeux:['Brillants','Rouges / Injectés'],morpho:['Agitation / Hyperactivité'],teint:['Rougeur pommettes']}},
+  'Vide de Qi du Cœur': {langue:{couleur:['Pâle','Pointe pâle'],forme:['Gonflée / Œdématiée']},q10:{q6:['Essoufflement à l\'effort'],q10:['Frayeurs/sursauts']},douleur:{rythme:['À l\'effort']},
+    inspection:{teint:['Pâle'],shen:['Shen diminué (regard terne)'],resp:['Voix faible']}},
+  'Vide de Sang du Cœur': {q10:{q9:['Rêves récurrents'],q10:['Difficulté concentration','Pensées obsessionnelles']},inspection:{teint:['Pâle'],levres:['Pâles'],shen:['Shen diminué (regard terne)']}},
+  'Vide de Yin du Cœur': {inspection:{teint:['Rougeur pommettes'],shen:['Agitation / Excitation']}},
+  'Feu du Cœur': {q10:{q11:['Agitation pédiatrique','Sang rouge vif']},pouls:{global:['Remuant — Dong']},inspection:{teint:['Rouge'],shen:['Agitation / Excitation'],levres:['Ulcérations buccales'],yeux:['Brillants'],morpho:['Agitation / Hyperactivité']}},
+  'Stase de Sang': {douleur:{aggrave:['Le repos'],rythme:['Nocturne','Permanente','Au repos']},
+    inspection:{teint:['Terne / Grisâtre'],yeux:['Cernes foncés'],levres:['Violacées / Cyanosées'],ongles:['Ongles violacés'],membres:['Varicosités / Varices','Masse palpable']}},
+  'Vide de Sang': {q10:{q8:['Lèvres sèches']},langue:{forme:['Flasque / Molle'],epaisseur:['Fine']},pouls:{global:['Creux — Kou']},douleur:{aggrave:['La fatigue'],rythme:['Vespérale'],localisation:['Diffuse / Générale']},
+    inspection:{teint:['Pâle'],levres:['Pâles'],ongles:['Ongles pâles','Cheveux ternes / secs','Chute de cheveux']}},
+  'Glaires-Humidité': {q10:{q6:['Crachats'],q7:['Vertiges auditifs'],q8:['Pas de soif'],q11:['Pertes blanches claires']},langue:{enduitCouleur:['Gris'],enduitDist:['Milieu épais'],epaisseur:['Épaisse']},douleur:{rythme:['Matinale']},
+    inspection:{morpho:['Surpoids / Obèse'],resp:['Toux grasse'],teint:['Brillant / Huileux']}},
+  'Humidité-Chaleur': {q10:{q2:['Sueurs de la tête/cou'],q11:['Pertes jaunes malodorantes']},inspection:{teint:['Brillant / Huileux','Jaune'],membres:['Tuméfaction']}},
+  'Chaleur Humidité de la Vessie': {q10:{q4:['Rétention urinaire'],q6:['Douleur hypogastrique']},langue:{enduitDist:['Racine épaisse']},douleur:{type:['Brûlure'],localisation:['Hypogastre']}},
+  'Insomnie': {inspection:{shen:['Agitation / Excitation'],yeux:['Cernes foncés']}},
+  'Anxiété-stress': {pouls:{global:['Remuant — Dong']},inspection:{shen:['Agitation / Excitation'],resp:['Soupirs fréquents']}},
+  'Dysménorrhée par stase': {q10:{q6:['Douleur hypogastrique']},pouls:{global:['Tendu en corde — Xuan','Rugueux — Se']},douleur:{rythme:['Liée aux règles']}},
+  'Bi (obstruction-douleur)': {q10:{q3:['Raideur rachis','Courbatures']},douleur:{type:['Irradiante'],aggrave:['Le mouvement'],rythme:['Permanente','Au repos'],localisation:['Épaules','Hanches','Membres supérieurs','Membres inférieurs','Articulaire']},inspection:{membres:['Douleurs articulaires','Tuméfaction']}},
+};
+
+// Seconde passe (relecture du tableau signe → syndromes) : signes qui ne renvoyaient qu'à un syndrome
+const SYND_COMPLEMENTS_2 = {
+  'Feu du Foie': {q10:{q1:['Chaleur permanente','Aggravé par la chaleur']}},
+  'Feu du Cœur': {q10:{q1:['Chaleur permanente','Aggravé par la chaleur'],q6:['Sensation chaleur poitrine']}},
+  "Feu de l'Estomac": {q10:{q1:['Chaleur permanente','Aggravé par la chaleur'],q8:['Gorge enflée']}},
+  'Vide de Yin du Cœur': {q10:{q1:['Corps chaud la nuit'],q6:['Sensation chaleur poitrine']}},
+  'Vide de Yin des Reins': {q10:{q1:['Fièvre légère chronique']}},
+  'Vide de Yang des Reins': {q10:{q2:['Sueurs froides']}},
+  'Vide de Yang du Cœur': {q10:{q2:['Sueurs froides'],q6:['Douleur thoracique']}},
+  'Vide de Sang du Foie': {q10:{q3:['Céphalées vertex']}},
+  'Stagnation du Froid dans le méridien du Foie': {q10:{q3:['Céphalées vertex']}},
+  'Vide de Yang de Rate': {q10:{q5:['Bouche fade'],q6:['Amélioré par pression']}},
+  'Glaires-Humidité': {q10:{q5:['Bouche fade']}},
+  'Vide de Qi de Rate': {q10:{q6:['Amélioré par pression']}},
+  "Vide de Yin de l'Estomac": {q10:{q6:['Brûlures épigastriques']}},
+  'Stagnation du Qi du Foie': {q10:{q6:['Douleur flancs gauche','Douleur flancs droit']}},
+  'Stase de Sang': {q10:{q6:['Douleur thoracique']}},
+  'Invasion du Poumon par Vent Chaleur': {q10:{q7:['Yeux rouges']}},
+  'Chaleur Humidité du Foie et VB': {q10:{q7:['Yeux rouges']}},
+  'Vide de Yin du Foie': {q10:{q7:['Mouches volantes','Baisse acuité visuelle']}},
+  "Vide de l'Essence des Reins": {q10:{q7:['Baisse acuité visuelle']}},
+  'Humidité-Chaleur Rate': {q10:{q8:['Halitose']}},
+  'Vide de Qi du Cœur': {q10:{q10:['Deuil prolongé']}},
+  'Vide de Sang': {q10:{q11:['Aménorrhée','Règles en retard']}},
+  'Stagnation de Qi': {q10:{q11:['SPM irritabilité/seins']}},
+};
+
+(function(){
+  const uni = (a,b) => [...new Set([...(a||[]), ...(b||[])])];
+  const fusion = (cible, src) => { Object.entries(src||{}).forEach(([k,v]) => { cible[k] = uni(cible[k], v); }); };
+  Object.entries(SYND_RULES_NOUVELLES).forEach(([nom, r]) => { if(!SYND_RULES[nom]) SYND_RULES[nom] = r; });
+  [...Object.entries(SYND_COMPLEMENTS), ...Object.entries(SYND_COMPLEMENTS_2)].forEach(([nom, c]) => {
+    const r = SYND_RULES[nom]; if(!r) return;
+    if(c.ccmq) r.ccmq = uni(r.ccmq, c.ccmq);
+    ['q10','langue','douleur','inspection'].forEach(k => { if(c[k]){ r[k] = r[k] || {}; fusion(r[k], c[k]); } });
+    if(c.pouls){ r.pouls = r.pouls || {}; if(c.pouls.global) r.pouls.global = uni(r.pouls.global, c.pouls.global);
+      if(c.pouls.positions){ r.pouls.positions = r.pouls.positions || {}; fusion(r.pouls.positions, c.pouls.positions); } }
+  });
+  // Un syndrome de Chaleur (plénitude) ou de Froid compte aussi les signes généraux de sa nature,
+  // pas seulement comme condition d'accès (SIGNES_CHALEUR / SIGNES_FROID exigés).
+  Object.values(SYND_RULES).forEach(r => {
+    const req = r.requisTous || [];
+    const q = (r.q10 = r.q10 || {});
+    if(req.includes(SIGNES_CHALEUR)) q.q1 = uni(q.q1, ['Chaleur permanente','Aggravé par la chaleur']);
+    if(req.includes(SIGNES_FROID)) q.q1 = uni(q.q1, ['Froid permanent','Aggravé par le froid']);
+  });
+  Object.assign(SYND_ORGANE, {
+    'Vide de Yang du Cœur':'Cœur','Collapsus du Yang du Cœur':'Cœur','Mucosités Feu agite le Cœur':'Cœur','Mucosités troubles obstrue le Shen':'Cœur','Stase de Sang du Cœur':'Cœur',
+    'Rate ne contrôle pas le Sang':'Rate','Humidité-Chaleur Rate':'Rate',
+    'Stase de Sang du Foie':'Foie','Vent du Foie':'Foie','Chaleur Humidité du Foie et VB':'Vésicule biliaire','Stagnation du Froid dans le méridien du Foie':'Foie',
+    'Sécheresse du Poumon':'Poumon','Invasion du Poumon par Vent Froid':'Poumon','Mucosités Humidité obstruent le Poumon':'Poumon',
+    "Vide de l'Essence des Reins":'Rein',"Vide de Yang des Reins avec inondation par l'eau":'Rein','Reins et Cœur ne communiquent plus':'Rein',
+    'Chaleur Humidité dans le GI':'Gros Intestin','Chaleur Sécheresse du GI':'Gros Intestin','Obstruction du GI par la Chaleur':'Gros Intestin','Sécheresse du GI':'Gros Intestin','Effondrement du Qi du GI':'Gros Intestin',
+    "Chaleur plénitude de l'IG":'Intestin grêle',"Stagnation du Qi dans l'IG":'Intestin grêle',"Vide de Qi de l'IG+Froid interne":'Intestin grêle',
+    'Chaleur Humidité de la VB':'Vésicule biliaire','Vide de Qi de la VB':'Vésicule biliaire','Humidité Froide de la Vessie':'Vessie','Vide de Qi de la Vessie':'Vessie'});
+  ['Vide de Yang du Cœur','Collapsus du Yang du Cœur','Mucosités Feu agite le Cœur','Humidité-Chaleur Rate','Chaleur Humidité du Foie et VB',
+   'Stagnation du Froid dans le méridien du Foie','Invasion du Poumon par Vent Froid',"Vide de Yang des Reins avec inondation par l'eau",'Reins et Cœur ne communiquent plus',
+   'Chaleur Humidité dans le GI','Chaleur Sécheresse du GI','Obstruction du GI par la Chaleur',"Chaleur plénitude de l'IG","Vide de Qi de l'IG+Froid interne",
+   'Chaleur Humidité de la VB','Humidité Froide de la Vessie'].forEach(n => SYND_THERMAL_AXIS.add(n));
+})();
+
 // Signes des 10+1 Questions attendus par une règle, réellement présents chez le patient.
 // Tags cochés : le libellé de la règle doit être contenu, en mots entiers, dans le tag
 // (« Dysménorrhée » ⊂ « Dysménorrhée avant règles », mais « Règles en retard » ⊄ « Règles
@@ -7329,7 +7729,9 @@ function suggestSyndromes() {
   const dLoc=tags('d-localisation');
   const pGlobal=[...tags('pq'),...tags('pq-freq'),...tags('pq-prof'),...tags('pq-force'),...tags('pq-forme')];
   const pPos={cunG:tags('cun-g'),cunD:tags('cun-d'),gG:tags('guan-g'),gD:tags('guan-d'),chiG:tags('chi-g'),chiD:tags('chi-d')};
-  const dAgg=tags('d-aggrave'), dAmel=tags('d-ameliore'), dTyp=tags('d-type');
+  const dAgg=tags('d-aggrave'), dAmel=tags('d-ameliore'), dTyp=tags('d-type'), dRyt=tags('d-rythme'), lEp=tags('l-epaisseur');
+  // Inspection (② Examen) : lue depuis le 20/11/2026 (correspondances signes ↔ syndromes)
+  const insp={}; Object.entries(SYND_INSP_IDS).forEach(([k,id])=>{ insp[k]=tags(id); });
 
   // Motif de consultation
   // Chaque source est tokenisée séparément (la virgule/le point entre deux sources coupe la portée
@@ -7374,16 +7776,48 @@ function suggestSyndromes() {
     'Vide de Qi du Cœur':['palpitation','fatigue','essoufflement'],
     'Vide de Sang du Cœur':['palpitation','insomnie','trouble de mémoire','anxiété'],
     'Chaleur Humidité de la Vessie':['cystite','brûlure mictionnelle','pollakiurie'],
+    // Syndromes ajoutés le 20/11/2026
+    'Vide de Yang du Cœur':['palpitation','essoufflement','froid','oppression thoracique'],
+    'Collapsus du Yang du Cœur':['malaise','sueur froide','syncope'],
+    'Mucosités Feu agite le Cœur':['agitation','insomnie','manie','confusion'],
+    'Mucosités troubles obstrue le Shen':['brouillard mental','torpeur','somnolence','confusion'],
+    'Stase de Sang du Cœur':['douleur thoracique','angor','oppression thoracique'],
+    'Rate ne contrôle pas le Sang':['saignement','ecchymose','ménorragie','hémorragie'],
+    'Humidité-Chaleur Rate':['nausée','lourdeur','digestion','diarrhée'],
+    'Stase de Sang du Foie':['douleur fixe','endométriose','masse','kyste'],
+    'Vent du Foie':['tremblement','vertige','tic','engourdissement','parkinson'],
+    'Chaleur Humidité du Foie et VB':['ictère','vésicule','calcul biliaire','goût amer','transpiration'],
+    'Stagnation du Froid dans le méridien du Foie':['hernie','douleur testiculaire','douleur pelvienne'],
+    'Sécheresse du Poumon':['toux sèche','sécheresse','gorge sèche'],
+    'Invasion du Poumon par Vent Froid':['rhume','grippe','frissons','toux'],
+    'Mucosités Humidité obstruent le Poumon':['toux','crachat','bronchite','asthme','bpco'],
+    'Vide de l\'Essence des Reins':['infertilité','vieillissement','retard de développement','mémoire','surdité'],
+    'Vide de Yang des Reins avec inondation par l\'eau':['oedème','œdème','jambes gonflées','rétention d\'eau'],
+    'Reins et Cœur ne communiquent plus':['insomnie','palpitation','ménopause','anxiété'],
+    'Chaleur Humidité dans le GI':['diarrhée','colite','rectocolite','hémorroïde'],
+    'Chaleur Sécheresse du GI':['constipation'],
+    'Obstruction du GI par la Chaleur':['constipation','occlusion','ventre dur'],
+    'Sécheresse du GI':['constipation','sécheresse'],
+    'Effondrement du Qi du GI':['prolapsus','hémorroïde','diarrhée chronique'],
+    'Chaleur plénitude de l\'IG':['aphte','cystite','brûlure mictionnelle'],
+    'Stagnation du Qi dans l\'IG':['colique','ballonnement','douleur abdominale'],
+    'Vide de Qi de l\'IG+Froid interne':['douleur abdominale','borborygme','diarrhée'],
+    'Chaleur Humidité de la VB':['vésicule','calcul biliaire','cholécystite','ictère','goût amer'],
+    'Vide de Qi de la VB':['indécision','timidité','peur','manque de confiance'],
+    'Humidité Froide de la Vessie':['cystite','pollakiurie','urines troubles'],
+    'Vide de Qi de la Vessie':['incontinence','fuite urinaire','énurésie','pollakiurie'],
+    'Vide de Qi':['fatigue','asthénie','épuisement'],
+    'Stagnation de Qi':['stress','tension','ballonnement','oppression'],
   };
 
   const sexeP = curPt ? (curPt.sexe||'') : ((document.getElementById('p-sexe')||{}).value||'');
   const lCouleurG=tags('l-couleur'), lEnduitDist=tags('l-enduit-dist');
-  const dSrc={aggrave:dAgg, ameliore:dAmel, type:dTyp, localisation:dLoc};
+  const dSrc={aggrave:dAgg, ameliore:dAmel, type:dTyp, localisation:dLoc, rythme:dRyt};
   // Renvoie le libellé du signe trouvé chez le patient (ou null). Types : voir SIGNES_FROID.
   const signeTrouve = (r, rule, nom) => {
     const m1 = (vals, src) => _tagMatch(vals, src);
     if(r.q10) return _q10Matches(r.q10, (rule.q10||{})[r.q10]||[])[0] || null;
-    if(r.motif) return motifTok.length ? ((MOTIF_KEYS[nom]||[]).find(k=>MTCNorm.phraseIn(motifTok, k)) || null) : null;
+    if(r.motif) return motifTok.length ? ((MOTIF_KEYS[nom]||rule.motifKeys||[]).find(k=>MTCNorm.phraseIn(motifTok, k)) || null) : null;
     if(r.motifMots) return motifTok.length ? (r.motifMots.find(k=>MTCNorm.phraseIn(motifTok, k)) || null) : null;
     if(r.tags){ for(const [qid,vals] of Object.entries(r.tags)){ const m=_q10Matches(qid, vals); if(m.length) return m[0]; } return null; }
     if(r.pouls) return m1(r.pouls, pGlobal) || Object.values(pPos).map(v=>m1(r.pouls, v)).find(Boolean) || null;
@@ -7396,6 +7830,7 @@ function suggestSyndromes() {
     if(r.ccmq) return ccmqPres.includes(r.ccmq) ? 'CCMQ '+r.ccmq : null; // une simple tendance ne valide pas un signe exigé
     if(typeof r.douleur==='string') return m1((rule.douleur||{})[r.douleur], dSrc[r.douleur]||[]);
     if(r.douleur){ for(const [f,vals] of Object.entries(r.douleur)){ const m=m1(vals, dSrc[f]||[]); if(m) return m; } return null; }
+    if(r.inspection){ for(const [k,vals] of Object.entries(r.inspection)){ const m=m1(vals, insp[k]||[]); if(m) return m; } return null; }
     return null;
   };
   // Organes signalés par la palpation des Shu (dos) et des Mu (face) : un Shu ET le Mu du même organe
@@ -7446,6 +7881,8 @@ function suggestSyndromes() {
     lCheck(rule.langue?.enduitCouleur, lEnduit, 1, 'Enduit');
     lCheck(rule.langue?.humidite, lHum, 1, 'Humidité');
     lCheck(rule.langue?.sublinguale, lSub, 2, 'Veines sublinguales');
+    lCheck(rule.langue?.epaisseur, lEp, 1, 'Langue épaisseur');
+    lCheck(rule.langue?.enduitDist, lEnduitDist, 1, 'Enduit (répartition)');
     // Pouls global +2
     if (rule.pouls?.global) {
       const m=_tagMatch(rule.pouls.global, pGlobal);
@@ -7467,12 +7904,16 @@ function suggestSyndromes() {
     dCheck(rule.douleur?.ameliore, dAmel, 'Amélioré');
     dCheck(rule.douleur?.type, dTyp, 'Type');
     dCheck(rule.douleur?.localisation, dLoc, 'Localisation');
+    dCheck(rule.douleur?.rythme, dRyt, 'Rythme');
+    // Inspection +1 par rubrique concordante (teint, yeux, lèvres…)
+    Object.entries(rule.inspection||{}).forEach(([k,vals])=>{ const m=_tagMatch(vals, insp[k]||[]); if(m){ sc+=1; det.push('Inspection: '+m); } });
     // Shu / Mu de l'organe du syndrome (SYND_ORGANE)
     const org = SYND_ORGANE[nom], om = org && orgShuMu[org];
     if(om){ if(om.shu && om.mu){ sc+=2; det.push('Shu/Mu concordants : '+om.shu+' + '+om.mu); } else { sc+=1; det.push((om.shu?'Shu ':'Mu ')+(om.shu||om.mu)+' sensible'); } }
     // Motif de consultation +1 si mot-clé concordant
-    if(motifTok.length && MOTIF_KEYS[nom]){
-      const mMatch=MOTIF_KEYS[nom].filter(k=>MTCNorm.phraseIn(motifTok, k));
+    const mKeys = MOTIF_KEYS[nom] || rule.motifKeys;
+    if(motifTok.length && mKeys){
+      const mMatch=mKeys.filter(k=>MTCNorm.phraseIn(motifTok, k));
       if(mMatch.length){sc+=1;det.push('Motif: '+mMatch[0]);}
     }
     // ── Signes contradictoires : pénalité forte pour éviter des suggestions incohérentes,
@@ -7520,8 +7961,8 @@ function _syndNiveau(data){
 }
 function _syndCriteres(rule, det){
   const r = rule||{};
-  const N = ((r.ccmq||[]).length?1:0) + Object.keys(r.langue||{}).length + (r.pouls?.global?1:0) + Object.keys(r.pouls?.positions||{}).length + Object.keys(r.q10||{}).length + Object.keys(r.douleur||{}).length;
-  const n = (det||[]).filter(x => /^(CCMQ|Langue|Humidité|Enduit|Veines|Pouls|P-|Q\d|Aggravé|Amélioré|Type|Localisation)/.test(x)).length;
+  const N = ((r.ccmq||[]).length?1:0) + Object.keys(r.langue||{}).length + (r.pouls?.global?1:0) + Object.keys(r.pouls?.positions||{}).length + Object.keys(r.q10||{}).length + Object.keys(r.douleur||{}).filter(k=>(r.douleur[k]||[]).length).length + Object.keys(r.inspection||{}).filter(k=>(r.inspection[k]||[]).length).length;
+  const n = (det||[]).filter(x => /^(CCMQ|Langue|Humidité|Enduit|Veines|Pouls|P-|Q\d|Aggravé|Amélioré|Type|Localisation|Rythme|Inspection)/.test(x)).length;
   return {n: Math.min(n, N), N};
 }
 function renderSyndCard(nom,data,maxSc){
@@ -9092,6 +9533,41 @@ REF_TABLES.push({id:'synonymes', chap:'S', titre:'Synonymes reconnus par l’ana
   cols:['Thème','Forme de référence','Variantes considérées comme équivalentes'],
   rows: SYNONYMES.map(g=>[g.theme, g.canon, (g.variantes||[]).join(' · ')]),
   note:'Toute variante saisie (motif, 10+1 Questions, réponses libres) est ramenée à sa forme de référence avant comparaison, dans toutes les analyses (syndromes, méridiens, auriculothérapie, Mode Urgence) et dans la recherche de ce référentiel. Volontairement non fusionnés car distincts en MTC : crainte/aversion du froid ≠ frilosité ; extrémités froides ≠ frilosité ; selles molles ≠ diarrhée ; rêves abondants ≠ cauchemars ; rhume ≠ rhinorrhée.'});
+
+// Correspondances signes ↔ syndromes, générées depuis SYND_RULES pour relecture (20/11/2026)
+(function(){
+  const POS = {cunG:'Cun G',cunD:'Cun D',gG:'Guan G',gD:'Guan D',chiG:'Chi G',chiD:'Chi D'};
+  const LANG = {couleur:'couleur',forme:'forme',epaisseur:'épaisseur',enduitCouleur:'enduit',enduitDist:'répartition de l’enduit',humidite:'humidité',sublinguale:'veines sublinguales'};
+  const DOUL = {type:'type',aggrave:'aggravée par',ameliore:'améliorée par',rythme:'rythme',localisation:'localisation'};
+  const INSP = {shen:'Shen',teint:'teint',yeux:'yeux',nez:'nez / oreilles',levres:'lèvres',ongles:'ongles / cheveux',morpho:'morphologie',membres:'membres / abdomen',resp:'respiration / voix'};
+  const QLBL = {}; DIX_Q.forEach((q,i) => { QLBL[q.id] = 'Q'+(i+1)+' '+q.lbl; });
+  const j = a => (a||[]).join(' · ');
+  const noms = Object.keys(SYND_RULES).sort((a,b)=>a.localeCompare(b,'fr'));
+  const rows1 = noms.map(n => { const r = SYND_RULES[n];
+    return [n, r.axe==='racine'?'Racine':'Branche', j(r.ccmq),
+      Object.entries(r.q10||{}).map(([q,v]) => (QLBL[q]||q).replace(/^(Q\d+).*/,'$1')+' : '+v.join(', ')).join(' — '),
+      Object.entries(r.langue||{}).map(([k,v]) => LANG[k]+' : '+v.join(', ')).join(' — '),
+      [j(r.pouls?.global), ...Object.entries(r.pouls?.positions||{}).map(([p,v]) => POS[p]+' : '+v.join(', '))].filter(Boolean).join(' — '),
+      Object.entries(r.douleur||{}).filter(([,v])=>v.length).map(([k,v]) => DOUL[k]+' : '+v.join(', ')).join(' — '),
+      Object.entries(r.inspection||{}).filter(([,v])=>v.length).map(([k,v]) => INSP[k]+' : '+v.join(', ')).join(' — ')]; });
+  const idx = new Map(), ordre = [];
+  const add = (rub, sig, n) => { const k = rub+'\u0000'+sig; if(!idx.has(k)){ idx.set(k, new Set()); ordre.push([rub, sig, k]); } idx.get(k).add(n); };
+  noms.forEach(n => { const r = SYND_RULES[n];
+    Object.entries(r.q10||{}).forEach(([q,v]) => v.forEach(s => add(QLBL[q]||q, s, n)));
+    Object.entries(r.langue||{}).forEach(([k,v]) => v.forEach(s => add('Langue — '+LANG[k], s, n)));
+    [...(r.pouls?.global||[]), ...Object.values(r.pouls?.positions||{}).flat()].forEach(s => add('Pouls', s, n));
+    Object.entries(r.douleur||{}).forEach(([k,v]) => v.forEach(s => add('Douleur — '+DOUL[k], s, n)));
+    Object.entries(r.inspection||{}).forEach(([k,v]) => v.forEach(s => add('Inspection — '+INSP[k], s, n))); });
+  const rang = rub => { const m = /^Q(\d+)/.exec(rub); return m ? +m[1] : rub.startsWith('Langue') ? 20 : rub==='Pouls' ? 21 : rub.startsWith('Douleur') ? 22 : 23; };
+  ordre.sort((a,b) => rang(a[0])-rang(b[0]) || a[0].localeCompare(b[0],'fr') || a[1].localeCompare(b[1],'fr'));
+  REF_TABLES.push(
+    {id:'corresp-synd', chap:'C', titre:'Cortège de signes attendu pour chaque syndrome ('+noms.length+' syndromes)', src:'règles de l’analyse syndromique (SYND_RULES)', noLink:[0,1,2,3,4,5,6,7],
+     cols:['Syndrome','Axe','CCMQ','10+1 Questions','Langue','Pouls','Douleur','Inspection'], rows: rows1,
+     note:'Barème : CCMQ +3 (racine) ou +1 (branche) ; couleur de la langue et pouls global +2 ; veines sublinguales +2 ; chaque autre signe concordant +1. Les syndromes thermiques exigent un signe de Froid ou de Chaleur et sont démentis par un signe contraire.'},
+    {id:'corresp-signes', chap:'C', titre:'Syndromes rattachés à chaque signe ('+ordre.length+' signes)', src:'règles de l’analyse syndromique (SYND_RULES)', noLink:[0,1,2],
+     cols:['Rubrique','Signe','Syndromes'], rows: ordre.map(([rub,sig,k]) => [rub, sig, [...idx.get(k)].join(' · ')]),
+     note:'Les signes « normaux » (règles régulières, Shen intact, teint normal…) n’orientent volontairement vers aucun syndrome.'});
+})();
 
 // ══════ RENDU DU CATALOGUE DU RÉFÉRENTIEL ══════
 // Recherche par point (toutes notations → code canonique MTCNorm) ou par mots (tous les mots de la
@@ -14499,6 +14975,19 @@ const SYND_TO_AURI_KEY = {
   'Vide de Qi du Cœur':'Vide Qi Coeur', 'Vide de Sang du Cœur':'Vide Sang Coeur',
   'Chaleur Humidité de la Vessie':'Chaleur Humidité Vessie',
 };
+// Syndromes ajoutés le 20/11/2026 (correspondances signes ↔ syndromes) : clé auriculaire la plus proche
+Object.assign(SYND_TO_AURI_KEY, {
+  'Vide de Yang du Cœur':'Vide Qi Coeur','Collapsus du Yang du Cœur':'Vide Qi Coeur','Mucosités Feu agite le Cœur':'Feu du Cœur',
+  'Mucosités troubles obstrue le Shen':'Glaires-Humidité','Stase de Sang du Cœur':'Stase du Sang','Rate ne contrôle pas le Sang':'Vide Qi Rate',
+  'Humidité-Chaleur Rate':'Humidité-Chaleur','Stase de Sang du Foie':'Stase du Sang','Vent du Foie':'Vide Yin Foie Yang',
+  'Chaleur Humidité du Foie et VB':'Humidité-Chaleur','Stagnation du Froid dans le méridien du Foie':'Stagnation Qi Foie',
+  'Sécheresse du Poumon':'Vide Yin Poumon','Invasion du Poumon par Vent Froid':'Vent-Froid externe','Mucosités Humidité obstruent le Poumon':'Glaires-Humidité',
+  "Vide de l'Essence des Reins":'Vide Yin Rein',"Vide de Yang des Reins avec inondation par l'eau":'Vide Yang Rein','Reins et Cœur ne communiquent plus':'Insomnie',
+  'Chaleur Humidité dans le GI':'Humidité-Chaleur','Chaleur Sécheresse du GI':'Feu Estomac','Obstruction du GI par la Chaleur':'Feu Estomac',
+  'Sécheresse du GI':'Vide Yin Estomac','Effondrement du Qi du GI':'Effondrement Qi Rate',"Chaleur plénitude de l'IG":'Feu du Cœur',
+  "Stagnation du Qi dans l'IG":'Stagnation Qi Foie',"Vide de Qi de l'IG+Froid interne":'Vide Yang Rate','Chaleur Humidité de la VB':'Humidité-Chaleur',
+  'Vide de Qi de la VB':'Anxiété-stress','Humidité Froide de la Vessie':'Glaires-Humidité','Vide de Qi de la Vessie':'Vide Qi Rein',
+  'Vide de Qi':'Fatigue chronique','Stagnation de Qi':'Stagnation Qi Foie'});
 
 const AURI_STOPWORDS = new Set(['dans','avec','pour','depuis','chez','sans','vers','tres','plus','moins','cette','etre','avoir','tout','tous','toute','toutes','quand','comme','mais','donc','alors','aussi','encore','deja','entre','sous','leur','leurs','notre','votre','depuis','apres','avant']);
 // Correspondance nom de point (ADB.c) → numéro du schéma auriculaire (② Examen), pour affichage
