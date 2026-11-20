@@ -613,6 +613,10 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
         <div style="font-size:11px;color:var(--slate);font-style:italic;margin-bottom:8px">Cette liste s'enrichit à chaque amélioration de l'application — vous pouvez vérifier ici ce qui a changé depuis votre dernière utilisation. Remise à zéro le 1er octobre 2026, au lancement de la bêta.</div>
         <div id="guide-changelog" style="font-size:12px;color:var(--ink);line-height:1.8">
           <div style="font-size:12px;line-height:1.65;margin-bottom:10px">
+            <div style="font-weight:700;color:var(--jade);margin-bottom:4px">Synthèse, page Points, selles et soif (novembre 2026)</div>
+            <div>• Le bloc « Synthèse MTC » du compte-rendu suit désormais les points réalisés : un point ajouté ou retiré après sa génération met à jour la ligne « Points choisis en conséquence » (le reste du compte-rendu n'est pas modifié). • Page Points : « Valider et aller vers Synthèse » est placé en fin de page, après l'auriculothérapie. • Question 4 : « Alternance diarrhée / constipation » (dysharmonie Foie-Rate), prise en compte par l'analyse. • La soif est regroupée dans la question 8 « Soif & Bouche » (« Soif sans envie de boire » y est déplacée, « Soif intense boissons chaudes » fusionnée avec « Soif boissons chaudes ») ; la question 5 garde l'appétit, le goût, les préférences et les nausées. Les séances déjà enregistrées sont reprises automatiquement.</div>
+          </div>
+          <div style="font-size:12px;line-height:1.65;margin-bottom:10px">
             <div style="font-weight:700;color:var(--jade);margin-bottom:4px">Oncologie : module mis à jour 2025-2026 (novembre 2026)</div>
             <div>• Nouveaux motifs (Référentiel Sorbonne › Oncologie) : <strong>Syndromes du cancer — traitement de fond</strong> (formule de base, 5 Plénitudes, cancer du sein), <strong>Douleur cancéreuse — différenciation</strong> (4 Plénitudes, 3 Vides, 3 douleurs climatiques), <strong>Surcharge hépatique</strong>, <strong>Soutenir le Zheng Qi</strong>, <strong>Troubles de la mémoire après cancer</strong>. • Tableaux ajoutés : prévenir la radiodermite (aiguilles en périphérie), points tigres des taxanes, capécitabine, goût, axe FEC, Humidité-Mucosités de la fatigue, chimio-blues, dépression sous hormonothérapie, bouffées de chaleur (conduite), aider à « accepter », formule métabolique. • Corrections : loi Luo-Yuan 5C + 4IG (et non 4GI) ; Ji = organes, fixes, Sang / Ju = entrailles, mobiles, Qi (Nan Jing 55). • Référentiel MTC › Oncologie : 28 tableaux de la version 2026 (preuves CFA-MTC, précautions, douleur, fatigue, Yuzheng, cas cliniques, fiches), dont 5 remplacent l'ancienne version.</div>
           </div>
@@ -2467,14 +2471,6 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
             <button class="btn" onclick="addLibrePoint()" style="font-size:11px">+ Ajouter point libre</button>
           </div>
           <div id="pts-libres-list" style="margin-top:6px"></div>
-        <div style="margin-top:12px;padding-top:10px;border-top:2px solid var(--jade);display:flex;gap:8px;flex-wrap:wrap">
-          <button class="btn bg" onclick="validerVersSynthese()" style="flex:2;font-size:13px;padding:10px">
-            ✅ Valider et aller vers Synthèse →
-          </button>
-          <button class="btn" onclick="validerVersSynthese(false)" style="flex:1;font-size:12px;padding:10px">
-            📋 Copier sans naviguer
-          </button>
-        </div>
         </div>
       </div>
 
@@ -2670,6 +2666,16 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
         <div class="f"><label style="font-size:11px">Notes auriculothérapie</label>
           <textarea id="auri-notes" rows="2" placeholder="Aiguilles semi-permanentes, vaccariae, électrostimulation…" oninput="markDirty();syncRealises()" style="font-size:12px"></textarea>
         </div>
+      </div>
+
+      <!-- ══ DERNIÈRE ACTION : valider (après l'auriculothérapie, retour du 20/11/2026) ══ -->
+      <div class="card" id="pts-valider" style="margin-bottom:12px;border-top:2px solid var(--jade);display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn bg" onclick="validerVersSynthese()" style="flex:2;font-size:13px;padding:10px">
+            ✅ Valider et aller vers Synthèse →
+          </button>
+          <button class="btn" onclick="validerVersSynthese(false)" style="flex:1;font-size:12px;padding:10px">
+            📋 Copier sans naviguer
+          </button>
       </div>
 
       <!-- ══ AFFINAGE IA ══ -->
@@ -2945,12 +2951,12 @@ const DIX_Q=[
    tags:['Céphalées vertex','Céphalées nuque','Céphalées temporales','Céphalées front','Céphalées pariétales','Vertiges','Vertiges rotatoires','Lourdeur tête','Lourdeur corps','Courbatures','Tremblements','Faiblesse membres','Fourmillements','Raideur nuque','Raideur rachis','Fatigue musculaire chronique']},
   {id:'q4',n:4,lbl:'Selles & Urines',zh:'二便',alt:false,
    hint:'selles (consistance, odeur, fréquence, complétude), urines (couleur, jet, brûlures, fréquence)',
-   itp:'Selles molles/diarrhée → Rate xu / Froid | Constipation sèche → Chaleur/Yin xu | Selles collantes → Hum-Chaleur | Urines foncées → Chaleur/Hum-Chaleur | Urines claires abondantes → Yang xu Rein | Pollakiurie nocturne → Rein xu',
-   tags:['Selles molles','Diarrhée matinale (coq)','Diarrhée après stress','Constipation','Selles sèches dures','Selles collantes','Selles malodorantes','Sang dans les selles','Selles incomplètes','Urines foncées','Urines claires abondantes','Pollakiurie nocturne','Brûlures urinaires','Incontinence urinaire','Rétention urinaire','Urines troubles']},
+   itp:'Selles molles/diarrhée → Rate xu / Froid | Constipation sèche → Chaleur/Yin xu | Selles collantes → Hum-Chaleur | Urines foncées → Chaleur/Hum-Chaleur | Urines claires abondantes → Yang xu Rein | Pollakiurie nocturne → Rein xu | Alternance diarrhée / constipation → dysharmonie Foie-Rate (le Qi du Foie stagnant agresse la Rate)',
+   tags:['Selles molles','Diarrhée matinale (coq)','Diarrhée après stress','Alternance diarrhée / constipation','Constipation','Selles sèches dures','Selles collantes','Selles malodorantes','Sang dans les selles','Selles incomplètes','Urines foncées','Urines claires abondantes','Pollakiurie nocturne','Brûlures urinaires','Incontinence urinaire','Rétention urinaire','Urines troubles']},
   {id:'q5',n:5,lbl:'Appétit & Goût',zh:'飲食',alt:false,
-   hint:'appétit, goût en bouche (diagnostique clé), soif, préférences thermiques, nausées',
-   itp:'Peu d\'appétit → Rate xu | Appétit excessif/faim rapide → Feu Estomac | Goût amer → Feu Cœur/VB (pathognomonique) | Goût acide → Chaleur Foie | Goût sucré → Humidité Rate | Goût salé → Rein | Bouche fade → Rate xu | Soif sans envie boire → Humidité | Soif boissons chaudes → Froid interne',
-   tags:['Peu d\'appétit','Appétit excessif','Faim rapide après repas','Soif intense boissons chaudes','Soif sans envie de boire','Préfère chaud','Préfère froid','Goût amer','Goût acide','Goût sucré persistant','Goût salé','Bouche fade','Nausées','Renvois acides','Régurgitations','Hoquets']},
+   hint:'appétit, goût en bouche (diagnostique clé), préférences thermiques, nausées — la soif est à la question 8',
+   itp:'Peu d\'appétit → Rate xu | Appétit excessif/faim rapide → Feu Estomac | Goût amer → Feu Cœur/VB (pathognomonique) | Goût acide → Chaleur Foie | Goût sucré → Humidité Rate | Goût salé → Rein | Bouche fade → Rate xu | Préfère chaud → Froid interne | Préfère froid → Chaleur',
+   tags:['Peu d\'appétit','Appétit excessif','Faim rapide après repas','Préfère chaud','Préfère froid','Goût amer','Goût acide','Goût sucré persistant','Goût salé','Bouche fade','Nausées','Renvois acides','Régurgitations','Hoquets']},
   {id:'q6',n:6,lbl:'Poitrine & Abdomen',zh:'胸腹',alt:false,
    hint:'oppression, palpitations, douleurs (localisation, type, horaire), rapport aux repas',
    itp:'Flancs → Foie/VB, Stase Qi | Épigastre → Estomac/Rate | Hypogastre → Rein/Utérus/VessIe | Douleur fixe → Stase Sang | Mobile → Stase Qi | Amélioré chaleur → Froid | Amélioré pression → Vide',
@@ -2960,9 +2966,9 @@ const DIX_Q=[
    itp:'Acouphènes aigus soudains → Feu VB (Plénitude) | Acouphènes graves progressifs → Rein xu (Vide) | Surdité aiguë → Vent-Feu | Surdité chronique → Rein xu | Yeux secs/mouches volantes → Sang Foie xu | Yeux rouges → Feu Foie | Photophobie → Foie',
    tags:['Acouphènes aigus soudains','Acouphènes graves progressifs','Surdité partielle','Surdité totale','Vertiges auditifs','Yeux secs','Yeux rouges','Yeux larmoyants','Vision trouble','Mouches volantes','Photophobie','Baisse acuité visuelle','Diplopie']},
   {id:'q8',n:8,lbl:'Soif & Bouche',zh:'口渴',alt:false,
-   hint:'soif (intensité, préférence T°), goût, bouche sèche, lèvres',
-   itp:'Soif intense boissons froides → Chaleur Estomac/Yangming | Soif boissons chaudes ou tièdes → Froid/Mucosités | Bouche sèche nocturne sans soif → Yin xu | Bouche sèche + soif sans envie boire → Humidité | Gorge sèche chronique → Yin xu Rein/Poumon',
-   tags:['Soif intense boissons froides','Soif boissons chaudes','Soif modérée','Pas de soif','Bouche sèche nocturne','Bouche sèche sans soif','Gorge sèche','Gorge enflée','Lèvres sèches','Lèvres rouges et sèches','Halitose','Aphtes récurrents','Saignements gingivaux']},
+   hint:'soif (intensité, envie de boire, préférence de température), bouche sèche, lèvres, gorge, gencives',
+   itp:'Soif intense boissons froides → Chaleur Estomac/Yangming | Soif boissons chaudes ou tièdes → Froid interne / Mucosités | Soif sans envie de boire → Humidité (ou Chaleur du Ying) | Bouche sèche nocturne sans soif → Yin xu | Gorge sèche chronique → Yin xu Rein/Poumon',
+   tags:['Soif intense boissons froides','Soif boissons chaudes','Soif sans envie de boire','Soif modérée','Pas de soif','Bouche sèche nocturne','Bouche sèche sans soif','Gorge sèche','Gorge enflée','Lèvres sèches','Lèvres rouges et sèches','Halitose','Aphtes récurrents','Saignements gingivaux']},
   {id:'q9',n:9,lbl:'Sommeil & Énergie',zh:'睡眠',alt:false,
    hint:'qualité sommeil, rêves (contenu diagnostique), énergie (horaire creux)',   itp:'Insomnie agitée rêves nombreux → Cœur-Rein dissocié / Feu Cœur | Endormissement diff. → Foie Qi stagnant | Réveils 1-3h → Foie | Réveils 3-5h → Poumon | Hypersomnie → Rate/Humidité | Fatigue matin → Yang xu | Fatigue après repas → Rate xu',
    tags:['Insomnie totale','Endormissement difficile','Réveils nocturnes','Réveils 1h-3h (Foie)','Réveils 3h-5h (Poumon)','Cauchemars','Rêves agités nombreux','Rêves récurrents','Hypersomnie','Fatigue matinale','Fatigue vespérale','Fatigue permanente','Coup de pompe après repas','Coup de pompe 17h','Manque de tonus général']},
@@ -4193,13 +4199,15 @@ function migrerPoulsLibelles(ex){
   });
   return ex;
 }
-// Étiquettes de soif retirées de Q5 le 01/10/2026 (doublons de Q8 « Soif & Bouche ») : déplacées à l'ouverture.
-const Q5_VERS_Q8 = ['Pas de soif','Soif intense boissons froides','Bouche sèche sans soif'];
+// Étiquettes de soif retirées de Q5 le 01/10/2026 puis le 20/11/2026 (doublons de Q8 « Soif & Bouche ») : déplacées à
+// l'ouverture d'une séance enregistrée ; « Soif intense boissons chaudes » rejoint « Soif boissons chaudes ».
+const Q5_VERS_Q8 = ['Pas de soif','Soif intense boissons froides','Bouche sèche sans soif','Soif sans envie de boire','Soif intense boissons chaudes'];
+const Q5_VERS_Q8_LIB = {'Soif intense boissons chaudes':'Soif boissons chaudes'};
 function migrerSoifQ5(q){
   if(!q || !Array.isArray(q.q5_t)) return;
   const dep = q.q5_t.filter(t => Q5_VERS_Q8.includes(t)); if(!dep.length) return;
   q.q5_t = q.q5_t.filter(t => !Q5_VERS_Q8.includes(t));
-  q.q8_t = [...new Set([...(q.q8_t||[]), ...dep])];
+  q.q8_t = [...new Set([...(q.q8_t||[]), ...dep.map(t => Q5_VERS_Q8_LIB[t] || t)])];
 }
 function loadSeance(sc){
   if(!sc)return;
@@ -5064,6 +5072,7 @@ function syncPts(force){
   if(!manuel || force){ el.value=txt; el.dataset.auto=txt; }
   const alerte=document.getElementById('s-points-maj');
   if(alerte) alerte.style.display = (manuel && !force && txt && el.value!==txt) ? '' : 'none';
+  if(typeof _synMajPointsCR==='function') _synMajPointsCR();
 }
 function resetPointsDisplay(){
   // Vider l'affichage des points et décocher les cases syndrome
@@ -5506,7 +5515,7 @@ function calcBaGang(){
   if(_tagMatch(['Lent — Chi'], posVals)) scores.froid += 1;
   // Synthèse 1 — Froid : absence de soif, préférence pour le chaud, amélioré par la chaleur, sueurs froides.
   if(q8t.includes('Pas de soif')) scores.froid += 1;
-  if(q5t.includes('Préfère chaud')||q5t.includes('Soif intense boissons chaudes')||q8t.includes('Soif boissons chaudes')) scores.froid += 1;
+  if(q5t.includes('Préfère chaud')||q8t.includes('Soif boissons chaudes')) scores.froid += 1;
   if(q6t.includes('Amélioré par chaleur')) scores.froid += 1;
   if(q2t.includes('Sueurs froides')) scores.froid += 1;
   // Chaleur
@@ -6157,6 +6166,19 @@ function syntheseMTCTexte(){
   if(pts) L.push('Points choisis en conséquence : ' + pts.replace(/[.\s]+$/,'') + '.');
   return L.length > 1 && (diag || g('s-principe')) ? L.join('\n') : '';
 }
+// Le bloc « Synthèse MTC » déjà inséré dans le compte-rendu suit les points réalisés : seule sa ligne « Points choisis en
+// conséquence » est réécrite, le reste du compte-rendu (et du bloc) n'est pas touché. Retour du 20/11/2026 : un point
+// ajouté après la génération du bloc (RM4) manquait dans le compte-rendu.
+function _synMajPointsCR(){
+  const cr = document.getElementById('s-cr'), sp = document.getElementById('s-points'); if(!cr || !sp) return;
+  const v = cr.value, i = v.indexOf(_SYN_MTC_TITRE); if(i < 0) return;
+  const f = v.indexOf('\n\n', i), fin = f >= 0 ? f : v.length, bloc = v.slice(i, fin);
+  const pts = typeof _courrierPoints === 'function' ? _courrierPoints(sp.value.trim()) : '';
+  const ligne = pts ? 'Points choisis en conséquence : ' + pts.replace(/[.\s]+$/,'') + '.' : '';
+  const re = /\nPoints choisis en conséquence : [^\n]*/;
+  const nb = re.test(bloc) ? bloc.replace(re, ligne ? '\n' + ligne : '') : (ligne ? bloc + '\n' + ligne : bloc);
+  if(nb !== bloc) cr.value = v.slice(0, i) + nb + v.slice(fin);
+}
 // Remplace un bloc automatique déjà présent ; sinon le place en tête du compte-rendu (le texte existant est conservé).
 function insererSyntheseMTC(){
   const el = document.getElementById('s-cr'); if(!el) return;
@@ -6649,7 +6671,7 @@ document.addEventListener('click', e => {
 // motifMots [...] (motif de consultation) · q10 'qN' (liste de la règle) · motif true (MOTIF_KEYS).
 const SIGNES_FROID = [
   {tags:{q1:['Froid permanent','Aggravé par le froid'],q2:['Sueurs froides'],q4:['Urines claires abondantes','Diarrhée matinale (coq)'],
-    q5:['Préfère chaud','Soif intense boissons chaudes'],q6:['Amélioré par chaleur'],q8:['Soif boissons chaudes']}},
+    q5:['Préfère chaud'],q6:['Amélioré par chaleur'],q8:['Soif boissons chaudes']}},
   {pouls:['Lent — Chi']},
   {douleur:{aggrave:['Le froid'],ameliore:['La chaleur','La chaleur locale']}},
   {ccmq:'Vide de Yang'},
@@ -6850,7 +6872,7 @@ const SYND_RULES = {
     ccmq:['Stase de Qi'],
     langue:{couleur:['Normal (rose)','Rouge','Bords rouges'],enduitCouleur:['Blanc mince (normal)']},
     pouls:{global:['Tendu en corde — Xuan'],positions:{gG:['Tendu en corde — Xuan']}},
-    q10:{q6:['Douleur flancs','Distension abdominale','Oppression thoracique'],q10:['Irritabilité','Colère','Frustration','Labilité émotionnelle','Tristesse'],q5:['Nausées','Régurgitations'],q11:['SPM irritabilité/seins'],q4:['Diarrhée après stress']},
+    q10:{q6:['Douleur flancs','Distension abdominale','Oppression thoracique'],q10:['Irritabilité','Colère','Frustration','Labilité émotionnelle','Tristesse'],q5:['Nausées','Régurgitations'],q11:['SPM irritabilité/seins'],q4:['Diarrhée après stress','Alternance diarrhée / constipation']},
     douleur:{aggrave:['Le stress / émotions'],ameliore:['Le massage','Le mouvement']},
     axe:'branche',
     descr:"Distension des flancs, soupirs, labilité émotionnelle, SPM, Guan gauche tendu en corde"
@@ -6989,7 +7011,7 @@ const SYND_RULES = {
     ccmq:['Humidité-Chaleur'],
     langue:{couleur:['Rouge'],enduitCouleur:['Jaune épais','Jaune mince'],humidite:['Gras / Huileux','Collant']},
     pouls:{global:['Rapide — Shu','Glissant — Hua']},
-    q10:{q4:['Selles collantes','Brûlures urinaires','Urines foncées','Selles malodorantes'],q5:['Goût amer','Soif sans envie de boire'],q1:['Chaleur permanente']},
+    q10:{q4:['Selles collantes','Brûlures urinaires','Urines foncées','Selles malodorantes'],q5:['Goût amer'],q8:['Soif sans envie de boire'],q1:['Chaleur permanente']},
     douleur:{aggrave:['La chaleur']},
     axe:'branche',
     contre:[...CONTRE_CHALEUR,...CONTRE_PLENITUDE_CHALEUR],
@@ -11667,7 +11689,7 @@ function psyAnalyse(){
   const N='nevroses', MZ='Zang Zao — agitation de l\'organe du Cœur (hystérie)', MB='Ben Tun Qi — le porcelet qui court (attaque de panique)';
   const pz = has(S,'Labilité / théâtralisme');
   regle(N,MZ,'Stagnation de Qi et accumulation de Glaires (Chaleur-vide du Cœur)',pz,[[has(S,'Boule dans la gorge'),1,'boule dans la gorge'],[has(Q10,'Labilité émotionnelle')||has(S,'Rires immotivés'),1,'rires et pleurs alternés'],[palpit,1,'palpitations'],[gonflee||collant,1,'langue grosse, enduit gras'],[pouls(/Glissant/),1,'pouls glissant']]);
-  regle(N,MZ,'Stagnation du Qi du Foie',pz,[[any(Q6,/flancs/),1,'hypocondres'],[has(Q4,'Diarrhée après stress'),1,'alternance diarrhée / constipation'],[pouls(/corde/),1,'pouls tendu']]);
+  regle(N,MZ,'Stagnation du Qi du Foie',pz,[[any(Q6,/flancs/),1,'hypocondres'],[has(Q4,'Diarrhée après stress')||has(Q4,'Alternance diarrhée / constipation'),1,'alternance diarrhée / constipation'],[pouls(/corde/),1,'pouls tendu']]);
   const pb = has(S,'Masse qui monte du bas-ventre');
   regle(N,MB,'Le Qi du Foie et des Reins s\'élève à contre-courant',pb,[[true,1,'masse qui monte'],[has(Q10,'Colère facile')||has(Q10,'Frayeurs/sursauts'),1,'déclenché par colère ou frayeur'],[has(Q5,'Goût amer'),1,'goût amer'],[has(Q1,'Alternance froid/chaud'),1,'alternance froid / chaud'],[pouls(/corde/),1,'pouls en corde']]);
   regle(N,MB,'Le Froid et l\'Eau s\'élèvent à contre-courant',pb,[[true,1,'masse qui monte'],[has(Q1,'Froid permanent')||has(Q1,'Aggravé par le froid'),1,'crainte du froid'],[has(Q4,'Urines claires abondantes'),1,'urines claires abondantes'],[pale,1,'langue pâle']]);
@@ -12858,7 +12880,7 @@ function gastroAnalyse(){
   const fievre=has(Q1,'Fièvre'), frissons=has(Q1,'Frissons'), fatigue=any(Q9,/^Fatigue|Manque de tonus|Coup de pompe/);
   const froid=has(Q1,'Froid permanent')||has(Q1,'Aggravé par le froid')||has(Q6,'Amélioré par chaleur')||has(Q5,'Préfère chaud');
   const soifFroid=has(Q8,'Soif intense boissons froides')||has(Q5,'Préfère froid'), amer=has(Q5,'Goût amer');
-  const colere=has(Q10,'Irritabilité')||has(Q10,'Colère facile')||has(Q10,'Frustration'), stress=g('Reflux aggravé par le stress')||g('Douleur liée aux émotions')||has(Q4,'Diarrhée après stress');
+  const colere=has(Q10,'Irritabilité')||has(Q10,'Colère facile')||has(Q10,'Frustration'), stress=g('Reflux aggravé par le stress')||g('Douleur liée aux émotions')||has(Q4,'Diarrhée après stress')||has(Q4,'Alternance diarrhée / constipation');
   const hypoch=has(Q6,'Douleur flancs droit')||has(Q6,'Douleur flancs gauche');
   const cFoie=[[colere,1,'irritabilité, frustration'],[stress,1,'lié au stress'],[corde,1,'pouls tendu'],[bordsRouges,1,'bords de langue rouges'],[hypoch,1,'hypochondres']];
   const cChal=[[soifFroid,1,'soif ou préférence pour le froid'],[has(Q8,'Halitose'),1,'mauvaise haleine'],[rouge&&jaune,1,'langue rouge, enduit jaune'],[rapide,1,'pouls rapide'],[has(Q5,'Faim rapide après repas')||has(Q5,'Appétit excessif'),1,'faim excessive']];
@@ -12867,7 +12889,7 @@ function gastroAnalyse(){
   const cVide=[[pale,1,'langue pâle'],[empreintes,1,'empreintes dentaires'],[has(Q4,'Selles molles'),1,'selles molles'],[has(Q5,'Peu d\'appétit'),1,'appétit faible'],[has(Q6,'Amélioré par pression')||has(Q6,'Amélioré après repas'),1,'amélioré par la pression ou le repas'],[faible,1,'pouls faible'],[fatigue,1,'fatigue']];
   const cYin=[[rouge&&sansEnduit,2,'langue rouge sans enduit'],[has(Q8,'Bouche sèche nocturne')||has(Q8,'Gorge sèche'),1,'bouche sèche'],[has(Q4,'Selles sèches dures'),1,'selles sèches'],[fin&&rapide,1,'pouls fin et rapide'],[g('Faim sans envie de manger'),1,'faim sans envie de manger']];
   const cStase=[[has(Q6,'Douleur fixe'),2,'douleur fixe'],[g('Douleur nocturne'),1,'douleur nocturne'],[violet,1,'langue violacée'],[rugueux,1,'pouls rugueux'],[g('Masse palpable'),1,'masse palpable']];
-  const cFroid=[[g('Douleur violente en crampes'),2,'douleur violente en crampes'],[has(Q6,'Amélioré par chaleur'),1,'calmée par la chaleur'],[has(Q5,'Préfère chaud')||has(Q5,'Soif intense boissons chaudes'),1,'désir de chaud'],[serre,1,'pouls serré']];
+  const cFroid=[[g('Douleur violente en crampes'),2,'douleur violente en crampes'],[has(Q6,'Amélioré par chaleur'),1,'calmée par la chaleur'],[has(Q5,'Préfère chaud')||has(Q8,'Soif boissons chaudes'),1,'désir de chaud'],[serre,1,'pouls serré']];
   const R=[];
   const regle=(cat,motif,nom,porte,crit,seuil)=>{ if(!porte) return; const ok=crit.filter(c=>c[0]); const sc=ok.reduce((a,c)=>a+c[1],0);
     if(sc>=(seuil||3)){ const M=GASTRO_DB[cat].motifs[motif]; const i=M.syndromes.findIndex(s=>s.nom===nom);
