@@ -613,6 +613,10 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
         <div style="font-size:11px;color:var(--slate);font-style:italic;margin-bottom:8px">Cette liste s'enrichit à chaque amélioration de l'application — vous pouvez vérifier ici ce qui a changé depuis votre dernière utilisation. Remise à zéro le 1er octobre 2026, au lancement de la bêta.</div>
         <div id="guide-changelog" style="font-size:12px;color:var(--ink);line-height:1.8">
           <div style="font-size:12px;line-height:1.65;margin-bottom:10px">
+            <div style="font-weight:700;color:var(--jade);margin-bottom:4px">CCMQ et séances enregistrées (novembre 2026)</div>
+            <div>• En modifiant une séance enregistrée qui n'a pas son propre CCMQ, l'appli reprend le CCMQ le plus récent du patient (moins de 3 mois) au lieu d'afficher des scores vides ; un bandeau sur la page CCMQ indique la séance d'origine. Même chose pour une nouvelle séance. • Sécurité : l'ouverture d'un dossier vide désormais aussi les réponses CCMQ ; auparavant, celles du patient précédent pouvaient rester à l'écran.</div>
+          </div>
+          <div style="font-size:12px;line-height:1.65;margin-bottom:10px">
             <div style="font-weight:700;color:var(--jade);margin-bottom:4px">Synthèse, page Points, selles et soif (novembre 2026)</div>
             <div>• Le bloc « Synthèse MTC » du compte-rendu suit désormais les points réalisés : un point ajouté ou retiré après sa génération met à jour la ligne « Points choisis en conséquence » (le reste du compte-rendu n'est pas modifié). • Page Points : « Valider et aller vers Synthèse » est placé en fin de page, après l'auriculothérapie. • Question 4 : « Alternance diarrhée / constipation » (dysharmonie Foie-Rate), prise en compte par l'analyse. • La soif est regroupée dans la question 8 « Soif & Bouche » (« Soif sans envie de boire » y est déplacée, « Soif intense boissons chaudes » fusionnée avec « Soif boissons chaudes ») ; la question 5 garde l'appétit, le goût, les préférences et les nausées. Les séances déjà enregistrées sont reprises automatiquement.</div>
           </div>
@@ -2132,6 +2136,7 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
         <div style="flex:1;font-size:12px;color:var(--slate);font-style:italic">Saisissez manuellement ou importez le code reçu du patient</div>
         <button class="btn bg" onclick="importerCodeCCMQ()" style="font-size:11px;white-space:nowrap">📥 Importer code patient</button>
       </div>
+      <div id="ccmq-origine" style="display:none;font-size:12px;background:#E8F8F5;border-left:3px solid #117A65;border-radius:6px;padding:6px 10px;margin-bottom:10px;color:#0E6655"></div>
       <div class="card" style="border-left:4px solid var(--jade)">
         <div class="ct">Import scores depuis Excel</div>
         <p style="font-size:12px;color:var(--slate);margin-bottom:8px">Collez les scores du patient (<code>Q1=3, Q2=4…</code> ou colonne de 60 chiffres)</p>
@@ -4001,8 +4006,9 @@ async function renderPatients(){
   }).join('');
 }
 async function openPt(id){
-  // Isolation données : vider TOUT avant de charger le nouveau patient
+  // Isolation données : vider TOUT avant de charger le nouveau patient (CCMQ compris, conservé par clearForms)
   clearForms();
+  if(typeof _ccmqVide==='function') _ccmqVide();
   resetPoints();
   curPt=await dbGet(id);
   curScIdx=null;
@@ -4155,7 +4161,7 @@ function newSeance(){
             navTo('ccmq');
             showToast('CCMQ à renouveler — veuillez remplir le questionnaire');
           } else {
-            showToast('CCMQ conservé — renouvelez dès que possible');
+            showToast('CCMQ de plus de 3 mois non repris — à renouveler dès que possible');
           }
         }, 500);
       }
@@ -4168,6 +4174,10 @@ function newSeance(){
   // et étaient enregistrés dans la nouvelle séance.
   clearForms(); loadFiche();
   resetPoints();
+  // CCMQ : celui du patient s'il a moins de 3 mois (jamais celui d'un autre dossier resté à l'écran)
+  _ccmqVide();
+  const ccmqC = _ccmqPourSeance(sc, null);
+  if(_ccmqAfficher(ccmqC)) setTimeout(() => { if(typeof calcCCMQ==='function') calcCCMQ(); }, 0);
   loadSeance(sc);navTo('dix');isDirty=false;showToast('Nouvelle séance — tous les champs réinitialisés');
 }
 // Anciens libellés du pouls (avant le 01/10/2026) → libellés corrigés. Appliqué à l'ouverture d'une séance.
@@ -4618,6 +4628,38 @@ function viewScIdx(idx){
   document.body.appendChild(modal);
   modal.addEventListener('click', e=>{ if(e.target===modal) modal.remove(); });
 }
+// ══ CCMQ d'une séance (20/11/2026) ══
+// Le CCMQ est enregistré dans la séance où il a été saisi, mais il vaut 3 mois : une séance qui n'a pas le sien reprend
+// le plus récent du même patient (antérieur ou du même jour, de moins de 3 mois), avec la mention de son origine.
+// Retour du 20/11/2026 : en modifiant une séance enregistrée sans CCMQ propre, le CCMQ « disparaissait ».
+function _ccmqVide(){
+  CQ.forEach(i => { const e = document.getElementById('c-'+i.n); if(e) e.value = ''; });
+  if(typeof buildCCMQRes === 'function') buildCCMQRes();
+  const sy = document.getElementById('ccmq-synth'); if(sy) sy.innerHTML = '';
+  const o = document.getElementById('ccmq-origine'); if(o){ o.style.display = 'none'; o.textContent = ''; }
+}
+function _ccmqPourSeance(sc, idx){
+  if(sc && sc.ccmq && Object.keys(sc.ccmq).length) return {ccmq: sc.ccmq, src: null};
+  const L = (curPt && curPt.seances) || [], ref = sc && sc.date ? new Date(sc.date) : new Date();
+  let best = null;
+  L.forEach((s, k) => {
+    if(k === idx || !s || !s.ccmq || !Object.keys(s.ccmq).length || !s.date) return;
+    const d = new Date(s.date), mois = (ref - d) / (1000*60*60*24*30);
+    if(mois < 0 || mois >= 3) return;
+    if(!best || d > best.d || (+d === +best.d && k > best.k)) best = {d, k, s};
+  });
+  return best ? {ccmq: best.s.ccmq, src: {idx: best.k, date: best.s.date}} : null;
+}
+function _ccmqAfficher(C){
+  if(!C) return false;
+  CQ.forEach(i => { const e = document.getElementById('c-'+i.n); if(e) e.value = C.ccmq[i.n] || ''; });
+  const o = document.getElementById('ccmq-origine');
+  if(o){
+    if(C.src){ o.textContent = 'CCMQ repris de la séance N°' + (C.src.idx+1) + ' du ' + fmtD(C.src.date) + ' (valable 3 mois) : il sera enregistré avec cette séance. Pour un nouveau questionnaire, effacez-le puis saisissez ou importez les nouvelles réponses.'; o.style.display = ''; }
+    else { o.style.display = 'none'; o.textContent = ''; }
+  }
+  return true;
+}
 function loadScIdx(idx){
   curScIdx=idx;
   const sc=curPt.seances[idx];
@@ -4625,13 +4667,10 @@ function loadScIdx(idx){
   clearForms();
   // 2. Charger identité
   loadFiche();
-  // 3. Charger les scores CCMQ directement dans les inputs
-  if(sc.ccmq && Object.keys(sc.ccmq).length > 0){
-    CQ.forEach(i=>{
-      const el=document.getElementById('c-'+i.n);
-      if(el) el.value = sc.ccmq[i.n]||'';
-    });
-  }
+  // 3. CCMQ : celui de la séance, sinon le plus récent du patient (< 3 mois) ; jamais celui resté à l'écran
+  _ccmqVide();
+  const ccmqC = _ccmqPourSeance(sc, idx);
+  _ccmqAfficher(ccmqC);
   // 4. Charger la séance (sans recalculer CCMQ ici)
   loadSeanceNoCalc(sc);
   // 5. Naviguer
@@ -4640,7 +4679,7 @@ function loadScIdx(idx){
   // 6. Restaurer badges pouls après navigation (DOM stable)
   restorePoulsDisplays();
   // 6. Recalculer CCMQ après rendu complet
-  if(sc.ccmq && Object.keys(sc.ccmq).length > 0){
+  if(ccmqC){
     requestAnimationFrame(()=>{
       requestAnimationFrame(()=>{
         calcCCMQ();
