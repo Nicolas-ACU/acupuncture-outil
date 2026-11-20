@@ -613,6 +613,10 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
         <div style="font-size:11px;color:var(--slate);font-style:italic;margin-bottom:8px">Cette liste s'enrichit à chaque amélioration de l'application — vous pouvez vérifier ici ce qui a changé depuis votre dernière utilisation. Remise à zéro le 1er octobre 2026, au lancement de la bêta.</div>
         <div id="guide-changelog" style="font-size:12px;color:var(--ink);line-height:1.8">
           <div style="font-size:12px;line-height:1.65;margin-bottom:10px">
+            <div style="font-weight:700;color:var(--jade);margin-bottom:4px">Consigne de l'IA plus rigoureuse (novembre 2026)</div>
+            <div>• « ✨ Affiner IA » et le prompt du motif transmettent maintenant chaque constitution CCMQ avec son score et son statut (PRÉSENTE, tendance, absente), séparent la couleur de toute la langue des anomalies localisées et joignent l'analyse automatique de l'appli comme hypothèse à confirmer ou réfuter. • Règles imposées à l'IA : seule une constitution « PRÉSENTE » peut être dite confirmée par le CCMQ ; pas de signe ni de référence inventés ; signes contradictoires, données manquantes et signes d'alerte à signaler ; tableaux mixtes dits comme tels ; repères du praticien (fatigue vespérale, aisselles, horloge et midi-minuit, alternance des selles). • Motif « perte de poids » ambigu signalé à l'IA.</div>
+          </div>
+          <div style="font-size:12px;line-height:1.65;margin-bottom:10px">
             <div style="font-weight:700;color:var(--jade);margin-bottom:4px">Analyse syndromique et Ba Gang plus fidèles (novembre 2026)</div>
             <div>• <strong>Langue</strong> : une anomalie localisée (pointe rouge, fissure médiane…) n'est plus lue comme la couleur de toute la langue ; elle oriente vers le syndrome indiqué par son libellé (pointe rouge → Feu du Cœur…). Auparavant, une pointe rouge favorisait les Vides de Yin et pénalisait le Vide de Yang de Rate. • <strong>CCMQ</strong> : poids plein pour les syndromes de terrain (racine), +1 pour une branche ; une simple tendance ne valide plus un signe exigé ; « Stagnation du Sang » ne compte plus pour le Vide de Sang. • « Alternance diarrhée / constipation » n'est plus comptée comme une diarrhée ou une constipation isolée. • Nouveaux syndromes : <strong>Stagnation du Qi du Foie avec vide de Qi de Rate</strong> (dysharmonie Foie-Rate) et <strong>Vide de Yang de la Rate et des Reins</strong>. • Fatigue vespérale (vide de l'énergie du Rein), sueurs des aisselles (Chaleur / Humidité-Chaleur Foie-VB) et heures de réveil (horloge circadienne, loi midi-minuit) prises en compte. • <strong>Confiance</strong> en valeur absolue (Très probable : ≥ 9 pts avec langue ou pouls concordant ; Probable : 6 à 8 ; Possible : &lt; 6) et nombre de critères concordants affiché. • <strong>Ba Gang</strong> : pouls par position, stagnation (pouls tendu), résultat « Mixte » et « Peu de signes » au lieu de pourcentages trompeurs. • Motif « perte de poids » sans précision : alerte (amaigrissement involontaire ?) ; noter « surpoids / obésité » ou « volonté de perdre du poids ». • Compte-rendu et fiche de séance : anomalies localisées de la langue reprises.</div>
           </div>
@@ -5766,6 +5770,58 @@ function suggestCCMQ(){
   const libre=document.getElementById('synd-libre');if(libre)libre.value='';
   showPoints(suggs[0]);showToast('Protocole : '+pres[0].lbl);
 }
+// ══════ CONSIGNE IA : contexte clinique commun (20/11/2026) ══════
+// Retour du praticien sur un cas réel : l'IA écrivait « confirmé par le bilan CCMQ » pour une constitution absente,
+// confondait pointe rouge et langue rouge et ne relevait pas l'ambiguïté « perte de poids ». Le contexte transmis
+// donne désormais le statut exact de chaque constitution, sépare couleur globale et anomalies localisées, joint
+// l'analyse automatique de l'appli comme hypothèse à discuter, et fixe des règles de rigueur.
+function _iaCCMQ(){
+  const L = Object.entries(CC).map(([k, v]) => {
+    const sc = ((document.getElementById('rs-'+k)||{}).textContent||'').trim();
+    const st = ((document.getElementById('rb-'+k)||{}).textContent||'').trim();
+    if(!/\d/.test(sc)) return null;
+    const statut = /Présente|Plutôt/.test(st) ? 'PRÉSENTE' : /Tendance/.test(st) ? 'tendance' : 'absente';
+    return v.lbl + ' ' + sc + '/100 : ' + statut;
+  }).filter(Boolean);
+  if(!L.length) return 'non renseigné';
+  const o = ((document.getElementById('ccmq-origine')||{}).textContent||'').trim();
+  return L.join(' ; ') + (o ? ' — ' + o.split(' : ')[0] : '');
+}
+function _iaLangue(){
+  const g = id => ((document.getElementById(id)||{}).value||'').trim();
+  const autres = [
+    g('l-forme')?'Forme: '+g('l-forme'):'', g('l-enduit-couleur')?'Enduit: '+g('l-enduit-couleur'):'',
+    g('l-enduit-dist')?'Distribution enduit: '+g('l-enduit-dist'):'', g('l-humidite')?'Humidité: '+g('l-humidite'):'',
+    g('l-sublinguale')?'Veines sublinguales: '+g('l-sublinguale'):'', g('l-obs')?'Obs: '+g('l-obs'):''
+  ].filter(Boolean);
+  return 'Couleur globale (toute la langue) : ' + (g('l-couleur') || 'non renseignée')
+    + '\n- Anomalies localisées (elles ne qualifient PAS la couleur de toute la langue) : ' + (g('l-couleur-loc') || 'aucune')
+    + (autres.length ? '\n- ' + autres.join(' | ') : '');
+}
+function _iaMotifNote(motif){
+  return /perte de poids|amaigri|maigrit|perd du poids/i.test(motif||'') && !/surpoids|ob[ée]sit|volont|souhait|envie de (perdre|maigrir)|perdre du poids|maigrir/i.test(motif||'')
+    ? '\n⚠️ Motif ambigu : « perte de poids » peut désigner un souhait de maigrir (surpoids) ou un amaigrissement involontaire (signe d\'alerte). Ne tranche pas : examine les deux lectures et dis ce qu\'il faut vérifier.' : '';
+}
+function _iaAnalyseAppli(){
+  try{
+    if(typeof suggestSyndromes === 'function') suggestSyndromes();
+    const L = window._lastSynd || [];
+    const f = axe => L.filter(x => x.axe === axe).slice(0, 3).map(x => x.nom + ' (' + x.sc + ' pts, ' + _syndNiveau(x).toLowerCase() + ')').join(' ; ') || 'aucun';
+    if(typeof calcBaGang === 'function') calcBaGang();
+    const b = (window._baGang||{}).scores;
+    const bg = b ? 'Biao ' + b.biao + ' / Li ' + b.li + ' · Vide ' + b.vide + ' / Plénitude ' + b.plen + ((window._baGang||{}).stagnation ? ' (stagnation : pouls tendu)' : '') + ' · Froid ' + b.froid + ' / Chaleur ' + b.chaleur : 'non calculé';
+    return 'Racine : ' + f('racine') + '\n- Branche : ' + f('branche') + '\n- Ba Gang (points bruts) : ' + bg;
+  }catch(e){ return 'non disponible'; }
+}
+const _IA_RIGUEUR = `RÈGLES DE RIGUEUR :
+- CCMQ : seule une constitution « PRÉSENTE » peut être dite confirmée par le CCMQ ; une « tendance » n'est qu'un indice ; une constitution « absente » ne peut pas être invoquée comme argument.
+- Langue : ne déduis jamais la couleur de toute la langue d'une anomalie localisée (une pointe rouge n'est pas une langue rouge).
+- N'utilise que les signes fournis : n'invente aucun signe ; signale les signes contradictoires et les données manquantes qui changeraient ta conclusion.
+- Hiérarchise racine (terrain, souvent un Vide) et branche (manifestation actuelle) ; un tableau mixte (Vide + stagnation, Froid et Chaleur) doit être dit comme tel.
+- L'analyse automatique de l'appli est une hypothèse : dis où tu la confirmes et où tu t'en écartes, et pourquoi.
+- Signes d'alerte (amaigrissement involontaire, saignement, douleur thoracique, signes neurologiques…) : oriente vers un avis médical avant tout traitement.
+- Niveau de preuve : indique-le sans inventer de référence ; ne cite ni étude ni lien que tu ne peux pas vérifier.
+- Repères du praticien : fatigue vespérale = vide de l'énergie du Rein (souvent avec vide de Yin ou épuisement du Qi de la Rate) ; sueurs des aisselles = Chaleur ou Humidité-Chaleur du Foie et de la VB ; heure de réveil = méridien de l'horloge circadienne, avec la loi midi-minuit ; alternance diarrhée / constipation = dysharmonie Foie-Rate.`;
 async function refineAI(){
   // Axe 3 : diagnostic syndromique complet par l'IA à partir de TOUT le dossier
   const key=getApiKey();if(!key){setApiKey();return;}
@@ -5777,18 +5833,9 @@ async function refineAI(){
   if(aiCard)aiCard.style.display='';if(aiRes)aiRes.innerHTML=ldH();
 
   // Compiler tout le dossier
-  const ccmq=(document.getElementById('ccmq-synth')||{}).textContent?.replace(/\s+/g,' ').trim().slice(0,300)||'nc';
+  const ccmq=_iaCCMQ();
   const motif=g('dix-motif-input')||g('s-motif')||p.motif||'';
-  const langue=[
-    g('l-couleur')?'Couleur: '+g('l-couleur'):'',
-    g('l-couleur-loc')?'Localisation: '+g('l-couleur-loc'):'',
-    g('l-forme')?'Forme: '+g('l-forme'):'',
-    g('l-enduit-couleur')?'Enduit: '+g('l-enduit-couleur'):'',
-    g('l-enduit-dist')?'Distribution enduit: '+g('l-enduit-dist'):'',
-    g('l-humidite')?'Humidité: '+g('l-humidite'):'',
-    g('l-sublinguale')?'Veines sublinguales: '+g('l-sublinguale'):'',
-    g('l-obs')?'Obs: '+g('l-obs'):''
-  ].filter(Boolean).join(' | ')||'non renseignée';
+  const langue=_iaLangue();
   const pouls=[
     g('pq-freq')||'',g('pq-prof')||'',g('pq-force')||'',g('pq')||'',
     g('cun-g')?'Cun G: '+g('cun-g'):'',g('cun-d')?'Cun D: '+g('cun-d'):'',
@@ -5821,10 +5868,10 @@ async function refineAI(){
 Analyse ce tableau clinique complet et propose un DIAGNOSTIC SYNDROMIQUE précis.
 
 PATIENT : ${p.age||'?'} ans, ${p.sexe||''}
-MOTIF : ${motif}
+MOTIF : ${motif}${_iaMotifNote(motif)}
 ATCD : ${p.atcd||'aucun'}
 
-CCMQ (constitution) : ${ccmq}
+CCMQ (constitution — score /100 et statut calculé par l'appli selon les seuils de chaque constitution) : ${ccmq}
 
 10+1 QUESTIONS :
 - Froid/Chaleur : ${gQ('q1')}
@@ -5839,24 +5886,30 @@ CCMQ (constitution) : ${ccmq}
 - Émotions : ${gQ('q10')}
 - Gynéco/Urinaire : ${gQ('q11')}
 
-LANGUE : ${langue}
+LANGUE :
+- ${langue}
 POULS : ${pouls}
 INSPECTION : ${insp}
 PALPATION CORPORELLE (Huatuojiaji, Shu-postérieurs, Mu-antérieurs, points 4 membres, Ah Shi) : ${palpation}
 DOULEUR : ${douleur}
 
+ANALYSE AUTOMATIQUE DE L'APPLI (hypothèse à confirmer ou réfuter) :
+- ${_iaAnalyseAppli()}
+
+${_IA_RIGUEUR}
+
 Réponds en 3 parties :
-1. SYNDROME(S) RETENU(S) — principal + éventuels secondaires ou combinés (précise 🟢🟡🔵)
-2. ARGUMENTS CLINIQUES — les éléments qui fondent ce diagnostic, en t'appuyant notamment sur la concordance entre les Shu/Mu douloureux et les organes/entrailles suspectés
+1. SYNDROME(S) RETENU(S) — racine et branche, principal + éventuels secondaires ou combinés (précise 🟢🟡🔵) ; accord ou désaccord avec l'analyse de l'appli
+2. ARGUMENTS CLINIQUES — les éléments qui fondent ce diagnostic (statut CCMQ exact, langue globale / localisée, pouls par position), en t'appuyant notamment sur la concordance entre les Shu/Mu douloureux et les organes/entrailles suspectés ; signes contradictoires et données manquantes
 3. POINTS PROPOSÉS — 6-10 points avec code, nom, action, technique (tonification/dispersion/neutre/moxa) ; inclure les Shu/Mu douloureux pertinents et les points Ah Shi/locaux comme points d'appoint le cas échéant
 
-Sois précis, cliniquement utilisable. Max 400 mots.`;
+Sois précis, cliniquement utilisable. Max 450 mots.`;
 
   try{
     const res=await fetch('https://api.anthropic.com/v1/messages',{
       method:'POST',
       headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
-      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:800,messages:[{role:'user',content:_aiAnonymiser(prompt)}]})
+      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1200,messages:[{role:'user',content:_aiAnonymiser(prompt)}]})
     });
     if(!res.ok)throw new Error((await res.json()).error?.message||res.status);
     const data=await res.json();
@@ -6350,17 +6403,8 @@ function buildFullMotifPrompt(motifText){
     const tags = tr ? Array.from(tr.querySelectorAll('.tg.on')).map(t=>t.textContent).join(', ') : '';
     return [tags, g('rep-'+id)].filter(Boolean).join(' — ') || 'nr';
   };
-  const ccmq = (document.getElementById('ccmq-synth')||{}).textContent?.replace(/\s+/g,' ').trim().slice(0,300) || 'nc';
-  const langue = [
-    g('l-couleur')?'Couleur: '+g('l-couleur'):'',
-    g('l-couleur-loc')?'Localisation: '+g('l-couleur-loc'):'',
-    g('l-forme')?'Forme: '+g('l-forme'):'',
-    g('l-enduit-couleur')?'Enduit: '+g('l-enduit-couleur'):'',
-    g('l-enduit-dist')?'Distribution enduit: '+g('l-enduit-dist'):'',
-    g('l-humidite')?'Humidité: '+g('l-humidite'):'',
-    g('l-sublinguale')?'Veines sublinguales: '+g('l-sublinguale'):'',
-    g('l-obs')?'Obs: '+g('l-obs'):''
-  ].filter(Boolean).join(' | ') || 'non renseignée';
+  const ccmq = _iaCCMQ();
+  const langue = _iaLangue();
   const pouls = [
     g('pq-freq')||'',g('pq-prof')||'',g('pq-force')||'',g('pq')||'',
     g('cun-g')?'Cun G: '+g('cun-g'):'',g('cun-d')?'Cun D: '+g('cun-d'):'',
@@ -6390,12 +6434,12 @@ function buildFullMotifPrompt(motifText){
 
   return `Tu es l'acupuncteur MTC en charge de ce patient. En te fondant sur tes recherches et connaissances (littérature MTC et médecine basée sur les preuves), établis toi-même le diagnostic syndromique et propose la prescription de points comme si tu voyais le patient en consultation.
 
-MOTIF (texte libre du praticien) : ${motifText}
+MOTIF (texte libre du praticien) : ${motifText}${_iaMotifNote(motifText)}
 
 PATIENT : ${p.age||'?'} ans, ${p.sexe||''}
 ATCD : ${p.atcd||'aucun'}
 
-CCMQ (constitution) : ${ccmq}
+CCMQ (constitution — score /100 et statut calculé par l'appli selon les seuils de chaque constitution) : ${ccmq}
 
 10+1 QUESTIONS :
 - Froid/Chaleur : ${gQ('q1')}
@@ -6410,16 +6454,22 @@ CCMQ (constitution) : ${ccmq}
 - Émotions : ${gQ('q10')}
 - Gynéco/Urinaire : ${gQ('q11')}
 
-LANGUE : ${langue}
+LANGUE :
+- ${langue}
 POULS : ${pouls}
 INSPECTION : ${insp}
 PALPATION CORPORELLE (Huatuojiaji, Shu-postérieurs, Mu-antérieurs, points 4 membres, Ah Shi) : ${palpation}
 DOULEUR : ${douleur}
 
+ANALYSE AUTOMATIQUE DE L'APPLI (hypothèse à confirmer ou réfuter) :
+- ${_iaAnalyseAppli()}
+
+${_IA_RIGUEUR}
+
 Réponds en 3 parties :
-1. SYNDROME(S) RETENU(S) — ta lecture syndromique
-2. ARGUMENTS CLINIQUES — les éléments qui la fondent
-3. POINTS PROPOSÉS — code, nom, localisation, action, technique (tonification/dispersion/neutre/moxa), niveau de preuve si disponible
+1. SYNDROME(S) RETENU(S) — ta lecture syndromique (racine et branche) ; accord ou désaccord avec l'analyse de l'appli
+2. ARGUMENTS CLINIQUES — les éléments qui la fondent (statut CCMQ exact, langue globale / localisée, pouls par position) ; signes contradictoires et données manquantes
+3. POINTS PROPOSÉS — code, nom, localisation, action, technique (tonification/dispersion/neutre/moxa), niveau de preuve si disponible (sans référence inventée)
 
 Sois précis et cliniquement utilisable.`;
 }
