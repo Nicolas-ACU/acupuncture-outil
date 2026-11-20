@@ -619,6 +619,10 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
         <div style="font-size:11px;color:var(--slate);font-style:italic;margin-bottom:8px">Cette liste s'enrichit à chaque amélioration de l'application — vous pouvez vérifier ici ce qui a changé depuis votre dernière utilisation. Remise à zéro le 1er octobre 2026, au lancement de la bêta.</div>
         <div id="guide-changelog" style="font-size:12px;color:var(--ink);line-height:1.8">
           <div style="font-size:12px;line-height:1.65;margin-bottom:10px">
+            <div style="font-weight:700;color:var(--jade);margin-bottom:4px">Synthèse : syndrome modifié repris (novembre 2026)</div>
+            <div>• Quand on modifie une séance enregistrée et qu'on change le syndrome dans la page Points, la Synthèse reprend désormais le nouveau syndrome et le nouveau principe de traitement (auparavant elle gardait l'ancien, car ces champs n'étaient remplis que s'ils étaient vides). Un texte rédigé à la main n'est jamais écrasé : un bandeau signale l'écart et propose « Reprendre » ; une simple suggestion de l'analyse ne remplace pas un syndrome déjà retenu.</div>
+          </div>
+          <div style="font-size:12px;line-height:1.65;margin-bottom:10px">
             <div style="font-weight:700;color:var(--jade);margin-bottom:4px">Correspondances signes ↔ syndromes (novembre 2026)</div>
             <div>• Chaque signe de l'examen (10+1 Questions, langue, pouls, douleur, inspection) renvoie désormais à au moins un syndrome ; seuls les signes « normaux » n'orientent vers rien.</div>
             <div>• L'analyse syndromique lit maintenant l'inspection (Shen, teint, yeux, nez et oreilles, lèvres, ongles et cheveux, morphologie, membres, respiration et voix), le rythme de la douleur, l'épaisseur de la langue et la répartition de l'enduit.</div>
@@ -2800,8 +2804,12 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
       <div class="card">
         <div class="ct">Bilan MTC</div>
         <div class="fg">
-          <div class="f" style="grid-column:1/-1"><label>Syndromes retenus</label><textarea id="s-syndromes" rows="2" oninput="markDirty()"></textarea></div>
-          <div class="f" style="grid-column:1/-1"><label>Principes de traitement (Zhi Ze)</label><textarea id="s-principe" rows="2" oninput="markDirty()"></textarea></div>
+          <div class="f" style="grid-column:1/-1"><label>Syndromes retenus</label><textarea id="s-syndromes" rows="2" oninput="markDirty()"></textarea>
+            <div id="s-syndromes-maj" style="display:none;margin-top:4px;font-size:11px;color:#92400E;background:#FEF3C7;border-radius:6px;padding:5px 9px">⚠️ Ce champ a été rédigé à la main et diffère du syndrome retenu dans la page Points.
+              <button class="btn" style="font-size:10px;padding:1px 8px;margin-left:6px" onclick="_synSuivre('s-syndromes',_syndromePourSynthese(),true);markDirty()">↻ Reprendre le syndrome de la page Points</button></div></div>
+          <div class="f" style="grid-column:1/-1"><label>Principes de traitement (Zhi Ze)</label><textarea id="s-principe" rows="2" oninput="markDirty()"></textarea>
+            <div id="s-principe-maj" style="display:none;margin-top:4px;font-size:11px;color:#92400E;background:#FEF3C7;border-radius:6px;padding:5px 9px">⚠️ Ce champ a été rédigé à la main et diffère du principe de la page Points.
+              <button class="btn" style="font-size:10px;padding:1px 8px;margin-left:6px" onclick="_synSuivreSyndPrincipe(true);markDirty()">↻ Reprendre le principe de la page Points</button></div></div>
           <div class="f" style="grid-column:1/-1"><label>Points réalisés</label><textarea id="s-points" rows="3" oninput="markDirty();syncPts()"></textarea>
             <div id="s-points-maj" style="display:none;margin-top:4px;font-size:11px;color:#92400E;background:#FEF3C7;border-radius:6px;padding:5px 9px">⚠️ Ce champ a été modifié à la main et ne contient pas tous les points cochés.
               <button class="btn" style="font-size:10px;padding:1px 8px;margin-left:6px" onclick="syncPts(true);markDirty()">↻ Reprendre les points cochés</button></div></div>
@@ -3944,11 +3952,7 @@ function validerVersSynthese(navigate=true){
   if(sPoints) sPoints.value = all.join(', ');
 
   // Principe de traitement
-  const sPrincipe = document.getElementById('s-principe');
-  if(sPrincipe && !sPrincipe.value){
-    const princEl = document.getElementById('pts-principe');
-    if(princEl && princEl.textContent.trim()) sPrincipe.value = princEl.textContent.trim();
-  }
+  _synSuivreSyndPrincipe();
 
   // Technique depuis notes
   const sTech = document.getElementById('s-tech');
@@ -3957,12 +3961,6 @@ function validerVersSynthese(navigate=true){
     if(nlEl && nlEl.value.trim()) sTech.value = nlEl.value.trim();
   }
 
-  // Syndrome retenu
-  const sSyndromes = document.getElementById('s-syndromes');
-  if(sSyndromes && !sSyndromes.value){
-    const synd = _syndromePourSynthese();
-    if(synd) sSyndromes.value = synd;
-  }
 
   markDirty();
   if(navigate){
@@ -4004,6 +4002,7 @@ function navTo(pg){
   if(tBanner) tBanner.style.display=(hp&&curPt._test)?'flex':'none';
   if(pg==='patients')renderPatients();
   if(pg==='seances')renderSeances();
+  if(pg==='synthese' && typeof _synSuivreSyndPrincipe==='function') _synSuivreSyndPrincipe(); // syndrome / principe changés dans Points (20/11/2026)
   if(pg==='realises') setTimeout(syncRealises, 50);
   if(pg==='points') setTimeout(renderConvergence, 60);
   if((pg==='points' || pg==='examen') && typeof rhRafraichir==='function') setTimeout(rhRafraichir, 40);
@@ -4394,7 +4393,7 @@ function loadSeance(sc){
   }
   const syn=sc.syn||{};
   s('s-motif',syn.motif);s('s-syndromes',syn.syndromes);s('s-principe',syn.principe);
-  s('s-points',syn.points);{const sp=document.getElementById('s-points');if(sp)sp.dataset.auto=sp.value;}s('s-tech',syn.tech);s('s-duree',syn.duree);
+  s('s-points',syn.points);{const sp=document.getElementById('s-points');if(sp)sp.dataset.auto=sp.value;}['s-syndromes','s-principe'].forEach(id=>{const e=document.getElementById(id);if(e)e.dataset.auto=e.value;const a=document.getElementById(id+'-maj');if(a)a.style.display='none';});s('s-tech',syn.tech);s('s-duree',syn.duree);
   s('s-react',syn.react);s('s-conseils',syn.conseils);s('s-cr',syn.cr);s('s-rdv',syn.rdv);s('s-courrier',syn.courrier||'');
   s('dix-prep-notes',syn.prepNotes);
   // Sync motif vers la bannière 10+1 Questions
@@ -6345,6 +6344,35 @@ function insererSyntheseMTC(){
   markDirty(); showToast('📝 Synthèse MTC ' + (i >= 0 ? 'mise à jour' : 'ajoutée') + ' dans le compte-rendu');
 }
 
+// Syndromes retenus / principe de la Synthèse (20/11/2026) : auparavant remplis seulement s'ils étaient vides,
+// si bien qu'un syndrome changé en modifiant une séance enregistrée n'y était jamais repris.
+// Ils suivent désormais la page Points (comme « Points réalisés ») tant que leur contenu est automatique :
+// valeur posée par l'appli, « (suggéré par l'analyse) », ou uniquement des syndromes / principes de la base.
+// Un texte rédigé à la main n'est jamais écrasé : un bandeau propose de reprendre la page Points.
+function _synEstAuto(id, v){
+  v = (v||'').trim(); if(!v) return true;
+  const parts = v.replace(/\s*\(suggéré par l'analyse\)/g,'').split(/\s+\+\s+/).map(x => x.trim()).filter(Boolean);
+  if(id === 's-syndromes'){
+    if(/\(suggéré par l'analyse\)/.test(v)) return true;
+    return parts.every(p => (typeof findPDBKey === 'function' && findPDBKey(p)) || (typeof SYND_RULES !== 'undefined' && SYND_RULES[p]));
+  }
+  const princ = new Set(Object.values(typeof PDB !== 'undefined' ? PDB : {}).flatMap(d => [d.principe, d.pp?.[0]?.a]).filter(Boolean).map(x => String(x).trim()));
+  return parts.every(p => princ.has(p));
+}
+function _synSuivre(id, auto, force){
+  const el = document.getElementById(id); if(!el) return;
+  const alerte = document.getElementById(id+'-maj');
+  const manuel = el.value.trim() && el.value !== (el.dataset.auto||'') && !_synEstAuto(id, el.value);
+  if(auto && (!manuel || force)){ if(el.value !== auto && typeof markDirty === 'function') markDirty(); el.value = auto; el.dataset.auto = auto; }
+  if(alerte) alerte.style.display = (manuel && !force && auto && el.value.trim() !== auto) ? '' : 'none';
+}
+function _synSuivreSyndPrincipe(force){
+  // Une simple suggestion de l'analyse ne remplace jamais un syndrome déjà retenu (ex. séance rouverte)
+  const synd = _syndromePourSynthese(), cur = ((document.getElementById('s-syndromes')||{}).value||'').trim();
+  if(!/\(suggéré par l'analyse\)/.test(synd) || !cur || /\(suggéré par l'analyse\)/.test(cur)) _synSuivre('s-syndromes', synd, force);
+  const princEl = document.getElementById('pts-principe');
+  _synSuivre('s-principe', princEl ? princEl.textContent.replace(/\s+/g,' ').trim() : '', force);
+}
 function autoFillSynthese(){
   const sPoints    = document.getElementById('s-points');
   const sPrincipe  = document.getElementById('s-principe');
@@ -6353,15 +6381,8 @@ function autoFillSynthese(){
   const sSyndromes = document.getElementById('s-syndromes');
   if(!sPoints) return;
 
-  // Syndromes retenus
-  const synd = _syndromePourSynthese();
-  if(sSyndromes && !sSyndromes.value && synd) sSyndromes.value = synd;
-
-  // Principe de traitement depuis pts-principe si vide
-  if(sPrincipe && !sPrincipe.value){
-    const princEl = document.getElementById('pts-principe');
-    if(princEl && princEl.textContent.trim()) sPrincipe.value = princEl.textContent.trim();
-  }
+  // Syndromes retenus et principe : suivent la page Points tant qu'ils n'ont pas été rédigés à la main
+  _synSuivreSyndPrincipe();
 
   // Technique depuis pts-nl (notes de traitement) ou pts-tech
   if(sTech && !sTech.value){
