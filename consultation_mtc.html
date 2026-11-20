@@ -619,6 +619,10 @@ nav{flex:1;overflow-y:auto;padding:6px 0}
         <div style="font-size:11px;color:var(--slate);font-style:italic;margin-bottom:8px">Cette liste s'enrichit à chaque amélioration de l'application — vous pouvez vérifier ici ce qui a changé depuis votre dernière utilisation. Remise à zéro le 1er octobre 2026, au lancement de la bêta.</div>
         <div id="guide-changelog" style="font-size:12px;color:var(--ink);line-height:1.8">
           <div style="font-size:12px;line-height:1.65;margin-bottom:10px">
+            <div style="font-weight:700;color:var(--jade);margin-bottom:4px">Langue fissurée (novembre 2026)</div>
+            <div>• Les fissures transversales (et longitudinales) de la langue, à cocher dans « Forme », sont désormais interprétées comme un vide de Yin ou un manque de Liquides organiques : elles comptent pour les Vides de Yin (Reins, Cœur, Foie, Poumon, Estomac), valident le « signe propre au Vide » exigé par ces syndromes et comptent dans l'axe Vide du Ba Gang.</div>
+          </div>
+          <div style="font-size:12px;line-height:1.65;margin-bottom:10px">
             <div style="font-weight:700;color:var(--jade);margin-bottom:4px">Examen : cadre ORL – Pneumologie et cadres dépliants (novembre 2026)</div>
             <div>• Les cartes « Respiration, toux, nez et gorge » et « Oreille, œil, nez, gorge, bouche » sont regroupées en un seul cadre <strong>ORL – Pneumologie</strong> : toux, crachats, respiration, nez et sinus, gorge et voix, oreille, œil, bouche et dents, contexte — chaque signe une seule fois. Les orientations pneumologique et ORL continuent de lire leurs signes. • Les compléments par spécialité (ORL – Pneumologie, Digestion, Oncologie, Psychisme) sont des <strong>cadres dépliants</strong> : repliés par défaut, un clic sur le titre les ouvre ; un compteur indique le nombre de signes cochés, et un cadre qui en contient s'ouvre à la reprise d'une séance.</div>
           </div>
@@ -5555,6 +5559,7 @@ function calcBaGang(){
   if(_tagMatch(['Fin — Xi'], posVals)) scores.vide += 1;
   if(_valMatch(['Fin — Xi'], ex.pqForme)) scores.vide += 1; // même signe, saisi dans les qualités globales
   if(_valMatch(['Fine'], ex.lEpaisseur)) scores.vide += 1;
+  if(_tagMatch(['Fissures longitudinales','Fissures transversales'], (ex.lForme||'').split(',').map(v=>v.trim()))) scores.vide += 1; // vide de Yin / des Liquides organiques
   const q9t = q.q9_t||[], q10t = q.q10_t||[];
   if(q9t.includes('Fatigue permanente')||q9t.includes('Fatigue matinale')) scores.vide += 1;
   if(q5t.includes("Peu d'appétit")) scores.vide += 1;
@@ -6817,6 +6822,7 @@ const SIGNES_CHALEUR_VIDE = [
   // Il faut un signe propre au Vide : langue pelée / sans enduit / fissurée, chaleur des 5 centres…
   {enduit:['Absent (langue miroir)']},
   {langue:['Fissure médiane','Fissures bords']},
+  {forme:['Fissures longitudinales','Fissures transversales']}, // langue fissurée : vide de Yin ou manque de Liquides organiques (20/11/2026)
   {enduitDist:['Pelé zone centrale','Pelé zone racine','Pelé géographique']},
   {douleur:{ameliore:['Le froid',"L'application de froid"]}},
   {ccmq:'Vide de Yin'},
@@ -6946,7 +6952,7 @@ const SYND_RULES = {
   'Vide de Yin de l\'Estomac': {
     couleur:'🟢',offline:true,
     ccmq:['Vide de Yin'],
-    langue:{couleur:['Rouge','Fissure médiane'],enduitCouleur:['Absent (langue miroir)']},
+    langue:{couleur:['Rouge','Fissure médiane'],forme:['Fissures longitudinales','Fissures transversales'],enduitCouleur:['Absent (langue miroir)']},
     pouls:{global:['Fin — Xi','Rapide — Shu']},
     q10:{q6:['Douleur épigastrique','Plénitude épigastrique'],q5:["Peu d'appétit"],q8:['Bouche sèche sans soif','Bouche sèche nocturne','Gorge sèche'],q4:['Selles sèches dures','Constipation']},
     douleur:{},
@@ -6971,7 +6977,7 @@ const SYND_RULES = {
   'Vide de Yin du Poumon': {
     couleur:'🟢',offline:true,
     ccmq:['Vide de Yin'],
-    langue:{couleur:['Rouge'],humidite:['Sec']},
+    langue:{couleur:['Rouge'],forme:['Fissures transversales'],humidite:['Sec']},
     pouls:{global:['Fin — Xi','Rapide — Shu'],positions:{cunD:['Fin — Xi','Rapide — Shu']}},
     q10:{q8:['Gorge sèche','Bouche sèche nocturne'],q2:['Sueurs nocturnes'],q1:['Chaleur vespérale (après-midi)','Chaleur des 5 centres (paumes/plantes/sternum)','Fièvre légère chronique'],q9:['Réveils 3h-5h (Poumon)']},
     douleur:{},
@@ -7033,7 +7039,7 @@ const SYND_RULES = {
   'Vide de Yin des Reins': {
     couleur:'🟢',offline:true,
     ccmq:['Vide de Yin'],
-    langue:{couleur:['Rouge'],forme:['Mince / Maigre','Fissures longitudinales'],humidite:['Sec','Très sec / Brûlé'],enduitCouleur:['Absent (langue miroir)','Jaune mince']},
+    langue:{couleur:['Rouge'],forme:['Mince / Maigre','Fissures longitudinales','Fissures transversales'],humidite:['Sec','Très sec / Brûlé'],enduitCouleur:['Absent (langue miroir)','Jaune mince']},
     pouls:{global:['Rapide — Shu','Fin — Xi','Profond — Chen'],positions:{chiG:['Rapide — Shu','Fin — Xi'],chiD:['Rapide — Shu','Fin — Xi']}},
     // « Soif intense » retiré (signe de Chaleur plénitude) : le Vide de Yin donne une soif de boissons tièdes.
     q10:{q9:['Fatigue vespérale'],q2:['Sueurs nocturnes'],q1:['Chaleur des 5 centres (paumes/plantes/sternum)','Bouffées de chaleur','Chaleur vespérale (après-midi)','Corps chaud la nuit'],
@@ -7083,7 +7089,7 @@ const SYND_RULES = {
   'Vide de Yin du Foie': {
     couleur:'🟢',offline:true,
     ccmq:['Vide de Yin'],
-    langue:{couleur:['Rouge'],forme:['Mince / Maigre'],humidite:['Sec'],enduitCouleur:['Absent (langue miroir)']},
+    langue:{couleur:['Rouge'],forme:['Mince / Maigre','Fissures transversales'],humidite:['Sec'],enduitCouleur:['Absent (langue miroir)']},
     pouls:{global:['Tendu en corde — Xuan','Fin — Xi','Rapide — Shu'],positions:{gG:['Tendu en corde — Xuan','Fin — Xi']}},
     q10:{q7:['Yeux secs','Vision trouble'],q10:['Irritabilité','Colère'],q2:['Sueurs nocturnes'],q9:['Réveils nocturnes','Rêves agités nombreux'],q3:['Vertiges'],q11:['Règles peu abondantes','Oligoménorrhée']},
     douleur:{},
@@ -7132,7 +7138,7 @@ const SYND_RULES = {
   'Vide de Yin du Cœur': {
     couleur:'🟢',offline:true,
     ccmq:['Vide de Yin'],
-    langue:{couleur:['Rouge','Pointe rouge'],forme:['Fissures longitudinales'],enduitCouleur:['Absent (langue miroir)']},
+    langue:{couleur:['Rouge','Pointe rouge'],forme:['Fissures longitudinales','Fissures transversales'],enduitCouleur:['Absent (langue miroir)']},
     pouls:{global:['Rapide — Shu','Fin — Xi','Précipité — Cu'],positions:{cunG:['Rapide — Shu','Fin — Xi','Vide — Xu']}},
     q10:{q6:['Palpitations'],q9:['Réveils nocturnes','Rêves agités nombreux','Insomnie totale'],q10:['Anxiété','Irritabilité','Labilité émotionnelle'],q2:['Sueurs nocturnes'],q1:['Chaleur des 5 centres (paumes/plantes/sternum)']},
     douleur:{},
@@ -7383,6 +7389,7 @@ function suggestSyndromes() {
     if(r.pouls) return m1(r.pouls, pGlobal) || Object.values(pPos).map(v=>m1(r.pouls, v)).find(Boolean) || null;
     if(r.langue) return langueMatch(r.langue);
     if(r.langueG) return m1(r.langueG, lCouleurG);
+    if(r.forme) return m1(r.forme, lForme);
     if(r.enduit) return m1(r.enduit, lEnduit);
     if(r.enduitDist) return m1(r.enduitDist, lEnduitDist);
     if(r.sublinguale) return m1(r.sublinguale, lSub);
@@ -14719,8 +14726,8 @@ const LANGUE_HINTS = {
   'l-forme': {
     'Gonflée / Œdématiée':'Humidité-Glaires, Vide Yang Rate',
     'Mince / Maigre':'Vide de Yin ou de Sang',
-    'Fissures longitudinales':'Vide de Yin — Rein, Estomac',
-    'Fissures transversales':'Vide de Yin ou de Sang (classiquement Vide de Yin de l’Estomac/Rein)',
+    'Fissures longitudinales':'Vide de Yin ou manque de Liquides organiques — Rein, Estomac',
+    'Fissures transversales':'Vide de Yin ou manque de Liquides organiques (Jin Ye) — classiquement Estomac, Rein ; parfois Vide de Sang',
     'Courte / Rétractée':'Froid intense (langue pâle humide) ou Chaleur consumant les liquides (langue rouge sèche)',
     'Marques de dents':'Vide Qi Rate, Humidité',
     'Tremblements':'Vent interne — Foie',
